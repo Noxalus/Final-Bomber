@@ -990,7 +990,7 @@ namespace Final_Bomber.Screens
             deadPlayersNumber = 0;
 
             createWorld();
-            ParseMap("classic.map");
+            //ParseMap("classic.map");
 
             Vector2 origin = new Vector2(hudOrigin.X / 2 - ((32 * world.Levels[world.CurrentLevel].Size.X) / 2),
                 GameRef.GraphicsDevice.Viewport.Height / 2 - ((32 * world.Levels[world.CurrentLevel].Size.Y) / 2));
@@ -1014,10 +1014,15 @@ namespace Final_Bomber.Screens
             // Item Map
             MapItem mapItem;
 
+            // List of player position
+            Dictionary<int, Point> playerPositions = new Dictionary<int, Point>();
+
             // We don't put wall around the players
             for (int i = 0; i < Config.PlayersNumber; i++)
             {
                 Point playerPosition = Config.PlayersPositions[i];
+                playerPositions[i + 1] = playerPosition;
+                
                 mapPlayersPosition[playerPosition.X, playerPosition.Y] = 2;
                 mapPlayersPosition[playerPosition.X + 1, playerPosition.Y] = 1;
                 mapPlayersPosition[playerPosition.X, playerPosition.Y + 1] = 1;
@@ -1044,11 +1049,11 @@ namespace Final_Bomber.Screens
             map[10, 1] = mapItem;
             */
 
-            for (int x = 0; x < mapSize.X; x++)
+            for (int x = 0; x < Config.MapSize.X; x++)
             {
-                for (int y = 0; y < mapSize.Y; y++)
+                for (int y = 0; y < Config.MapSize.Y; y++)
                 {
-                    if(!(x == 0 || y == 0 || x == (mapSize.X - 1) || y == (mapSize.Y - 1) ||
+                    if(!(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
                         (x % 2 == 0 && y % 2 == 0)) && (mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2))
                         voidPosition.Add(new Point(x, y));
                 }
@@ -1075,10 +1080,10 @@ namespace Final_Bomber.Screens
                 {
                     Point[] teleporterPositions = new Point[]
                     {
-                        new Point((int)Math.Ceiling((double)(mapSize.X - 2)/(double)2), 1),
-                        new Point(1, (int)Math.Ceiling((double)(mapSize.Y - 2)/(double)2)),
-                        new Point((int)Math.Ceiling((double)(mapSize.X - 2)/(double)2), mapSize.Y - 2),
-                        new Point(mapSize.X - 2, (int)Math.Ceiling((double)(mapSize.Y - 2)/(double)2))
+                        new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), 1),
+                        new Point(1, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2)),
+                        new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), Config.MapSize.Y - 2),
+                        new Point(Config.MapSize.X - 2, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2))
                     };
 
                     for (int i = 0; i < teleporterPositions.Length; i++)
@@ -1115,7 +1120,7 @@ namespace Final_Bomber.Screens
                 else if (Config.ArrowPositionType == ArrowPositionTypeEnum.SquareForm)
                 {
                     int outsideArrowsLag = 0;
-                    int ratio = (int)Math.Ceiling((double)(4 * (mapSize.X - 2))/(double)5);
+                    int ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5);
                     if (ratio % 2 == 0)
                         outsideArrowsLag = 1;
 
@@ -1124,44 +1129,44 @@ namespace Final_Bomber.Screens
                         // ~~ Inside ~~ //
                         // Top left
                         new Point(
-                            (int)Math.Ceiling((double)(mapSize.X - 2)/(double)4) + 1, 
-                            (int)Math.Ceiling((double)(mapSize.Y - 2)/(double)4) + 1),
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)4) + 1, 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)4) + 1),
 
                         // Top right
                         new Point(
-                            (int)Math.Ceiling((double)(3 * (mapSize.X - 2))/(double)4) - 1, 
-                            (int)Math.Ceiling((double)(mapSize.Y - 2)/(double)4) + 1),
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.X - 2))/(double)4) - 1, 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)4) + 1),
 
                         // Bottom left
                         new Point(
-                            (int)Math.Ceiling((double)(mapSize.X - 2)/(double)4) + 1, 
-                            (int)Math.Ceiling((double)(3 * (mapSize.Y - 2))/(double)4) - 1),
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)4) + 1, 
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.Y - 2))/(double)4) - 1),
 
                         // Bottom right
                         new Point(
-                            (int)Math.Ceiling((double)(3 * (mapSize.X - 2))/(double)4) - 1, 
-                            (int)Math.Ceiling((double)(3 * (mapSize.Y - 2))/(double)4) - 1),
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.X - 2))/(double)4) - 1, 
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.Y - 2))/(double)4) - 1),
 
                         // ~~ Outside ~~ //
                         // Top left
                         new Point(
-                            (int)Math.Ceiling((double)(mapSize.X - 2)/(double)5), 
-                            (int)Math.Ceiling((double)(mapSize.Y - 2)/(double)5)),
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)5), 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)5)),
 
                         // Top right
                         new Point(
-                            (int)Math.Ceiling((double)(4 * (mapSize.X - 2))/(double)5) + outsideArrowsLag, 
-                            (int)Math.Ceiling((double)(mapSize.Y - 2)/(double)5)),
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5) + outsideArrowsLag, 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)5)),
 
                         // Bottom left
                         new Point(
-                            (int)Math.Ceiling((double)(mapSize.X - 2)/(double)5), 
-                            (int)Math.Ceiling((double)(4 * (mapSize.Y - 2))/(double)5) + outsideArrowsLag),
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)5), 
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.Y - 2))/(double)5) + outsideArrowsLag),
 
                         // Bottom right
                         new Point(
-                            (int)Math.Ceiling((double)(4 * (mapSize.X - 2))/(double)5 + outsideArrowsLag), 
-                            (int)Math.Ceiling((double)(4 * (mapSize.Y - 2))/(double)5) + outsideArrowsLag)
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5 + outsideArrowsLag), 
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.Y - 2))/(double)5) + outsideArrowsLag)
                     };
 
                     for (int i = 0; i < arrowPositions.Length; i++)
@@ -1178,16 +1183,16 @@ namespace Final_Bomber.Screens
             #endregion
 
             int counter = 0;
-            for (int x = 0; x < mapSize.X; x++)
+            for (int x = 0; x < Config.MapSize.X; x++)
             {
-                for (int y = 0; y < mapSize.Y; y++)
+                for (int y = 0; y < Config.MapSize.Y; y++)
                 {
                     Tile tile = new Tile(0, 0);
-                    if (x == 0 || y == 0 || x == (mapSize.X - 1) || y == (mapSize.Y - 1) ||
+                    if (x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
                         (x % 2 == 0 && y % 2 == 0))
                     {
                         // Inside wallList
-                        if ((x % 2 == 0 && y % 2 == 0 && !(x == 0 || y == 0 || x == (mapSize.X - 1) || y == (mapSize.Y - 1))) && mapPlayersPosition[x, y] != 2)
+                        if ((x % 2 == 0 && y % 2 == 0 && !(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1))) && mapPlayersPosition[x, y] != 2)
                         {
                             mapItem = new UnbreakableWall(GameRef, new Vector2(x * Engine.TileHeight, y * Engine.TileWidth));
                             this.unbreakableWallList.Add((UnbreakableWall)mapItem);
@@ -1225,11 +1230,20 @@ namespace Final_Bomber.Screens
             mapLayers.Add(layer);
 
             TileMap tileMap = new TileMap(tilesets, mapLayers);
-            Level level = new Level(mapSize, tileMap, map, collisionLayer);
+            Level level = new Level(Config.MapSize, tileMap, map, collisionLayer);
 
             world = new World(GameRef, GameRef.ScreenRectangle);
             world.Levels.Add(level);
             world.CurrentLevel = 0;
+
+            foreach (int playerId in playerPositions.Keys)
+            {
+                Player player = new Player(Math.Abs(playerId), GameRef,
+                    Engine.CellToVector(new Point(playerPositions[playerId].X, playerPositions[playerId].Y)));
+                playerList.Add(player);
+                map[playerPositions[playerId].X, playerPositions[playerId].Y] = player;
+
+            }
         }
 
         private void ParseMap(string file)

@@ -53,7 +53,7 @@ namespace Final_Bomber
         };
 
         public static bool isThereAIPlayer = true;
-        public static bool[] AIPlayers = new bool[] { false, true, true, true, true };
+        public static bool[] AIPlayers = new bool[] { true, true, true, true, true };
 
         // Joueur
         public static Color[] PlayersColor = new Color[] { Color.White, Color.White, Color.White, Color.White };
