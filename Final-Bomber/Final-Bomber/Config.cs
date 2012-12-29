@@ -53,7 +53,7 @@ namespace Final_Bomber
         };
 
         public static bool isThereAIPlayer = true;
-        public static bool[] AIPlayers = new bool[] { true, true, true, true, true };
+        public static bool[] AIPlayers = new bool[] { false, true, true, true, true };
 
         // Joueur
         public static Color[] PlayersColor = new Color[] { Color.White, Color.White, Color.White, Color.White };
@@ -79,7 +79,7 @@ namespace Final_Bomber
         public static bool PlayerCanLaunch = false;
 
         public static bool DisplayName = true;
-        public static string[] PlayersName = new string[] { "Rena Ryuuguu", "Mion Sonozaki", "Satoko Houjou", "Rika Fukude", "Keiichi Maebara" };
+        public static string[] PlayersName = new string[] { "Martial", "Noxalus", "Litarium", "Klorius", "Oxilium" };
 
         public static int WallNumber = 100; // This is a percentage => from 0% to 100%
         public static int ItemNumber = 50; // This is a percentage => from 0% to 100%

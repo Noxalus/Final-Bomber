@@ -1236,7 +1236,7 @@ namespace Final_Bomber.Screens
         {
             try
             {
-                StreamReader streamReader = new StreamReader(file);
+                StreamReader streamReader = new StreamReader("Content/Maps/" + file);
                 string line = streamReader.ReadLine();
                 string[] lineSplit = line.Split(' ');
                 int[] Mapsize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
