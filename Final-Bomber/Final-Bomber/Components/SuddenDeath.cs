@@ -55,6 +55,7 @@ namespace Final_Bomber.Components
             moveTime = TimeSpan.FromSeconds(Config.SuddenDeathWallSpeed);
             lookDirection = LookDirection.Right;
 
+            // TODO Affecter mapSize membre !
             Point mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;
 
             visited = new bool[mapSize.X, mapSize.Y];

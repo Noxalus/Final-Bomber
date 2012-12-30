@@ -17,7 +17,7 @@ namespace Final_Bomber
     static class Config
     {
         // Debug
-        public static bool Debug = false;
+        public static bool Debug = true;
 
         // Taille
         public static Point MapSize = new Point(17, 17);
@@ -97,7 +97,7 @@ namespace Final_Bomber
         { LookDirection.Down, LookDirection.Left, LookDirection.Right, LookDirection.Up };
 
         // Invincibility
-        public static bool Invincible = false;
+        public static bool Invincible = true;
         public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
         public static float InvincibleBlinkFrequency = 0.5f;
 
