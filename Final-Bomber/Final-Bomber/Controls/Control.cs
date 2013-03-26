@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Controls
 {
@@ -13,18 +8,18 @@ namespace Final_Bomber.Controls
     {
         #region Field Region
 
-        protected string name;
-        protected string text;
-        protected Vector2 size;
-        protected Vector2 position;
-        protected object value;
-        protected bool hasFocus;
-        protected bool enabled;
-        protected bool visible;
-        protected bool tabStop;
-        protected SpriteFont spriteFont;
         protected Color color;
+        protected bool enabled;
+        protected bool hasFocus;
+        protected string name;
+        protected Vector2 position;
+        protected Vector2 size;
+        protected SpriteFont spriteFont;
+        protected bool tabStop;
+        protected string text;
         protected string type;
+        protected object value;
+        protected bool visible;
 
         #endregion
 
@@ -60,7 +55,7 @@ namespace Final_Bomber.Controls
             set
             {
                 position = value;
-                position.Y = (int)position.Y;
+                position.Y = (int) position.Y;
             }
         }
 
@@ -116,7 +111,7 @@ namespace Final_Bomber.Controls
 
         #region Constructor Region
 
-        public Control()
+        protected Control()
         {
             Color = Color.White;
             Enabled = true;

@@ -17,6 +17,8 @@ namespace Final_Bomber.Components
     public class Bomb : MapItem
     {
         #region Field Region
+        private enum ExplosionDirection { DOWN, LEFT, RIGHT, UP, MIDDLE, HORIZONTAL, VERTICAL };
+
         private FinalBomber gameRef;
 
         private int id;
@@ -30,7 +32,7 @@ namespace Final_Bomber.Components
         private List<Point> actionField;
 
         private Animation[] explosionAnimations;
-        private Dictionary<Point, int> explosionAnimationsPosition;
+        private Dictionary<Point, ExplosionDirection> explosionAnimationsDirection;
         private Texture2D explosionSpriteTexture;
         private SoundEffect explosionSound;
         private bool willExplode;
@@ -100,7 +102,7 @@ namespace Final_Bomber.Components
                 new Animation(4, 32, 32, 0, 160, explosionAnimationsFramesPerSecond),
                 new Animation(4, 32, 32, 0, 192, explosionAnimationsFramesPerSecond)
             };
-            explosionAnimationsPosition = new Dictionary<Point, int>();
+            explosionAnimationsDirection = new Dictionary<Point, ExplosionDirection>();
 
             // Sound Effect
             this.explosionSound = gameRef.GamePlayScreen.BombExplosionSound;
@@ -322,25 +324,24 @@ namespace Final_Bomber.Components
             {
                 Level level = gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel];
 
-                if (explosionAnimationsPosition.Count == 0)
+                if (explosionAnimationsDirection.Count == 0)
                 {
                     foreach (Point p in actionField)
                     {
                         // Is this a wall ? => we don't like wall !
                         if (!level.CollisionLayer[p.X, p.Y] || p == this.Sprite.CellPosition)
                         {
-                            explosionAnimationsPosition[p] = explosionSpritePosition(p, level);
-                            /*gameRef.SpriteBatch.Draw(explosionSpriteTexture, new Vector2(p.X * Engine.TileWidth, p.Y * Engine.TileHeight),
-                                explosionAnimations[explosionPosition(p, level)].CurrentFrameRect, Color.White);*/
+                            // We choose the sprite of explosion for each cell
+                            explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p, level);
                         }
                     }
                 }
                 else
                 {
-                    foreach (Point p in explosionAnimationsPosition.Keys)
+                    foreach (Point p in explosionAnimationsDirection.Keys)
                     {
                         gameRef.SpriteBatch.Draw(explosionSpriteTexture, new Vector2(Engine.Origin.X + p.X * Engine.TileWidth, Engine.Origin.Y + p.Y * Engine.TileHeight),
-                            explosionAnimations[explosionAnimationsPosition[p]].CurrentFrameRect, Color.White);
+                            explosionAnimations[(int) explosionAnimationsDirection[p]].CurrentFrameRect, Color.White);
                     }
                 }
             }
@@ -500,44 +501,43 @@ namespace Final_Bomber.Components
         }
 
         // 0 => Down, 1 => Left, 2 => Right, 3 => Up, 4 => Middle, 5 => Horizontal, 6 => Vertical 
-        private int explosionSpritePosition(Point cell, Level level)
+        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, Level level)
         {
-            int down = 0, left = 1, right = 2, up = 3, middle = 4, horizontal = 5, vertical = 6;
             int downCell = cell.Y + 1, leftCell = cell.X - 1, rightCell = cell.X + 1, upCell = cell.Y - 1;
 
             // ~ The middle ~ //
             if (cell.X == this.Sprite.CellPosition.X && cell.Y == this.Sprite.CellPosition.Y)
-                return middle;
+                return ExplosionDirection.MIDDLE;
  
             // ~ Vertical axis ~ //
 
             // Top extremity
             if (level.HazardMap[cell.X, upCell] == 0 &&
                 (this.actionField.Find(c => c.X == cell.X && c.Y == downCell) != Point.Zero))
-                return up;
+                return ExplosionDirection.UP;
             // Vertical
             else if ((this.actionField.Find(c => c.X == cell.X && c.Y == downCell) != Point.Zero) &&
                 (this.actionField.Find(c => c.X == cell.X && c.Y == upCell) != Point.Zero))
-                return vertical;
+                return ExplosionDirection.VERTICAL;
             // Bottom extremity
             else if (level.HazardMap[cell.X, downCell] == 0 &&
                 (this.actionField.Find(c => c.X == cell.X && c.Y == upCell) != Point.Zero))
-                return down;
+                return ExplosionDirection.DOWN;
 
             // ~ Horizontal axis ~ //
 
             // Left extremity
             else if (level.HazardMap[leftCell, cell.Y] == 0 &&
                 (this.actionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero))
-                return left;
+                return ExplosionDirection.LEFT;
             // Left - Right
             else if ((this.actionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero) &&
                 (this.actionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero))
-                return horizontal;
+                return ExplosionDirection.HORIZONTAL;
             // Right extremity
             else if (level.HazardMap[rightCell, cell.Y] == 0 &&
                 (this.actionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero))
-                return right;
+                return ExplosionDirection.RIGHT;
 
             // ~ Corners ~ //
 
@@ -546,20 +546,20 @@ namespace Final_Bomber.Components
             {
                 // Left extremity
                 if (this.actionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero)
-                    return left;
+                    return ExplosionDirection.LEFT;
                 // Top extremity
                 else
-                    return up;
+                    return ExplosionDirection.UP;
             }
             // Corner Bottom - Left
             else if (cell.Y == level.Size.Y - 2 && cell.X == 1)
             {
                 // Left extremity
                 if (this.actionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero)
-                    return left;
+                    return ExplosionDirection.LEFT;
                 // Bottom extremity
                 else
-                    return down;
+                    return ExplosionDirection.DOWN;
             }
 
             // Corner Top - Right
@@ -567,24 +567,24 @@ namespace Final_Bomber.Components
             {
                 // Right extremity
                 if (this.actionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero)
-                    return right;
+                    return ExplosionDirection.RIGHT;
                 // Top extremity
                 else
-                    return up;
+                    return ExplosionDirection.UP;
             }
             // Corner Bottom - Right
             else if (cell.Y == level.Size.Y - 2 && cell.X == level.Size.X - 2)
             {
                 // Right extremity
                 if (this.actionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero)
-                    return right;
+                    return ExplosionDirection.RIGHT;
                 // Bottom extremity
                 else
-                    return down;
+                    return ExplosionDirection.DOWN;
             }
             // Error case
             else
-                return middle;
+                return ExplosionDirection.MIDDLE;
 
         }
 

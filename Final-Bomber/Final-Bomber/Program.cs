@@ -1,5 +1,3 @@
-using System;
-
 namespace Final_Bomber
 {
 #if WINDOWS || XBOX
@@ -10,7 +8,7 @@ namespace Final_Bomber
         /// </summary>
         static void Main(string[] args)
         {
-            using (FinalBomber game = new FinalBomber())
+            using (var game = new FinalBomber())
             {
                 game.Run();
             }
