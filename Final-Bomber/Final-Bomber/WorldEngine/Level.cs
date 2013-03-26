@@ -75,6 +75,21 @@ namespace Final_Bomber.WorldEngine
             tileMap.Draw(spriteBatch, camera, collisionLayer);
         }
 
+        public List<Point> FindEmptyCells()
+        {
+            var emptyCells = new List<Point>();
+            for (int x = 0; x < Size.X; x++)
+            {
+                for (int y = 0; y < Size.Y; y++)
+                {
+                    if (!CollisionLayer[x, y])
+                        emptyCells.Add(new Point(x, y));
+                }
+            }
+
+            return emptyCells;
+        }
+
         #endregion
     }
 }

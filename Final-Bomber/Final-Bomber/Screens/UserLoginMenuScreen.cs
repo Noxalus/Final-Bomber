@@ -59,7 +59,7 @@ namespace Final_Bomber.Screens
         public override void Initialize()
         {
             menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, Config.Resolutions[Config.IndexResolution, 1] / 3);
-            GameRef.server.LoggedIn += new MainServer.LoggedInEventHandler(ServerLoggedIn);
+            GameRef.Server.LoggedIn += new MainServer.LoggedInEventHandler(ServerLoggedIn);
             base.Initialize();
         }
 
@@ -128,7 +128,7 @@ namespace Final_Bomber.Screens
                         break;
                     case 2:
                         //StateManager.ChangeState(GameRef.NetworkMenuScreen);
-                        GameRef.server.SendLogin(login[0], login[1]);
+                        GameRef.Server.SendLogin(login[0], login[1]);
                         break;
                     case 3:
                         Exit();
@@ -150,7 +150,7 @@ namespace Final_Bomber.Screens
 
             base.Update(gameTime);
 
-            GameRef.server.RunMainConnection();
+            GameRef.Server.RunMainConnection();
         }
 
         public override void Draw(GameTime gameTime)
@@ -215,7 +215,7 @@ namespace Final_Bomber.Screens
             switch (status)
             {
                 case 0:
-                    GameRef.hasLoggedIn = true;
+                    GameRef.HasLoggedIn = true;
                     this.statusMsg = "Bien connecté !";
                     break;
                 case 1:
@@ -232,7 +232,7 @@ namespace Final_Bomber.Screens
 
         private void Exit()
         {
-            GameRef.server.LoggedIn -= new MainServer.LoggedInEventHandler(ServerLoggedIn);
+            GameRef.Server.LoggedIn -= new MainServer.LoggedInEventHandler(ServerLoggedIn);
             StateManager.ChangeState(GameRef.UserMenuScreen);
         }
         #endregion

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Final_Bomber.WorldEngine;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Components.ArtificialIntelligence
 {
     public static class AI
     {
-
         public static int[,] CostMatrix(Point origin, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
             int[,] costMatrix = new int[mapSize.X, mapSize.Y];
@@ -19,10 +15,10 @@ namespace Final_Bomber.Components
                 for (int y = 0; y < mapSize.Y; y++)
                     costMatrix[x, y] = mapSize.X * mapSize.Y;
 
-            Point pos = new Point();
+            var pos = new Point();
             int counter = 0;
             int id = 0;
-            Queue<Point> queue = new Queue<Point>();
+            var queue = new Queue<Point>();
 
             costMatrix[origin.X, origin.Y] = id;
             queue.Enqueue(origin);
@@ -90,10 +86,10 @@ namespace Final_Bomber.Components
             }
             else
             {
-                List<Point> way = new List<Point>();
+                var way = new List<Point>();
                 way.Add(goal);
                 int min = mapSize.X * mapSize.Y;
-                LookDirection lookDirection = LookDirection.Idle;
+                var lookDirection = LookDirection.Idle;
                 while (origin != goal && way.Count < 100)
                 {
                     min = mapSize.X * mapSize.Y;
@@ -164,7 +160,7 @@ namespace Final_Bomber.Components
             return NearestSafeCell(position, collisionLayer, hazardMap, 0, mapSize);
         }
 
-        public static Point SetNewOffenseGoal(Point position, MapItem[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        private static Point SetNewOffenseGoal(Point position, MapItem[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
             /*
             int[,] costMatrix = CostMatrix(position, collisionLayer, hazardMap);
@@ -191,13 +187,13 @@ namespace Final_Bomber.Components
             return BestCellInterest(position, map, collisionLayer, hazardMap, mapSize);
         }
 
-        public static Point NearestSafeCell(Point position, bool[,] collisionLayer, int[,] hazardMap, int hazardLevel, Point mapSize)
+        private static Point NearestSafeCell(Point position, bool[,] collisionLayer, int[,] hazardMap, int hazardLevel, Point mapSize)
         {
-            Point pos = new Point();
+            var pos = new Point();
             int counter = 0;
-            Queue<Point> queue = new Queue<Point>();
+            var queue = new Queue<Point>();
             queue.Enqueue(position);
-            Point cell = Point.Zero;
+            var cell = Point.Zero;
 
             int limit = 0;
             while (queue.Count > 0 && limit < 3)
@@ -248,7 +244,7 @@ namespace Final_Bomber.Components
             return new Point(-1, -1);
         }
 
-        public static bool EntityNear(Point position, int power, MapItem[,] map, int[,] hazardMap, Point mapSize)
+        private static bool EntityNear(Point position, int power, MapItem[,] map, int[,] hazardMap, Point mapSize)
         {
             power = 1; // We have to compute the bomb action field !
             // Up
@@ -267,7 +263,7 @@ namespace Final_Bomber.Components
             return false;
         }
 
-        public static int ProximityItemNumber(Point position, int power, MapItem[,] map, int[,] hazardMap, Point mapSize)
+        private static int ProximityItemNumber(Point position, int power, MapItem[,] map, int[,] hazardMap, Point mapSize)
         {
             power = 1; // We have to compute the bomb action field !
             int number = 0;
@@ -443,14 +439,14 @@ namespace Final_Bomber.Components
 
         public static int[,] MakeInterestMatrix(Point position, MapItem[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
-            int[,] interestMatrix = new int[mapSize.X, mapSize.Y];
+            var interestMatrix = new int[mapSize.X, mapSize.Y];
             interestMatrix[position.X, position.Y] = -1;
-            Point pos = new Point();
+            var pos = new Point();
             int counter = 0;
             int id = 0;
-            Queue<Point> queue = new Queue<Point>();
+            var queue = new Queue<Point>();
             queue.Enqueue(position);
-            Point cell = Point.Zero;
+            var cell = Point.Zero;
 
             while (queue.Count > 0)
             {
@@ -504,7 +500,7 @@ namespace Final_Bomber.Components
             return interestMatrix;
         }
 
-        public static int CellInterest(Point position, int id, MapItem[,] map, int[,] hazardMap, Point mapSize)
+        private static int CellInterest(Point position, int id, MapItem[,] map, int[,] hazardMap, Point mapSize)
         {
             int interest = 0;
             if (map[position.X, position.Y] == null)
@@ -529,7 +525,7 @@ namespace Final_Bomber.Components
             return interest;
         }
 
-        public static int ProximityWallNumber(Point position, MapItem[,] map)
+        private static int ProximityWallNumber(Point position, MapItem[,] map)
         {
             int wallNumber = 0;
             // Up
@@ -547,10 +543,10 @@ namespace Final_Bomber.Components
             return wallNumber;
         }
 
-        public static Point BestCellInterest(Point position, MapItem[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        private static Point BestCellInterest(Point position, MapItem[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
             int[,] interestMatrix = MakeInterestMatrix(position, map, collisionLayer, hazardMap, mapSize);
-            Point cell = new Point(-1, -1);
+            var cell = new Point(-1, -1);
             int max = 0;
             for (int x = 0; x < interestMatrix.GetLength(0); x++)
             {

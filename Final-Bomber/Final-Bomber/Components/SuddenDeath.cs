@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Final_Bomber.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.TileEngine;
@@ -242,8 +241,8 @@ namespace Final_Bomber.Components
 
         private Vector2 NextMapPosition()
         {
-            return new Vector2(gameRef.GamePlayScreen.Random.Next(gameRef.GraphicsDevice.Viewport.Width - (mapSize.X * Engine.TileWidth)),
-                gameRef.GamePlayScreen.Random.Next(gameRef.GraphicsDevice.Viewport.Height - (mapSize.Y * Engine.TileHeight))); 
+            return new Vector2(GamePlayScreen.Random.Next(gameRef.GraphicsDevice.Viewport.Width - (mapSize.X * Engine.TileWidth)),
+                GamePlayScreen.Random.Next(gameRef.GraphicsDevice.Viewport.Height - (mapSize.Y * Engine.TileHeight))); 
         }
         #endregion
 

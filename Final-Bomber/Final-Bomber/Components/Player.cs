@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Final_Bomber.Components.ArtificialIntelligence;
+using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -17,146 +17,87 @@ namespace Final_Bomber.Components
     public class Player : MapItem
     {
         #region Field Region
-        private int id;
 
-        public override AnimatedSprite Sprite { get; protected set; }
+        public override sealed AnimatedSprite Sprite { get; protected set; }
 
-        private AnimatedSprite playerDeathAnimation;
+        private readonly AnimatedSprite _playerDeathAnimation;
 
-        private bool isAlive;
-        private bool inDestruction;
-        private bool isMoving;
-        private bool onEdge;
-        private bool isInvincible;
+        private bool _isMoving;
 
-        private TimeSpan invincibleTimer;
-        private TimeSpan invincibleBlinkTimer;
-        private float invincibleBlinkFrequency;
+        private TimeSpan _invincibleTimer;
+        private TimeSpan _invincibleBlinkTimer;
+        private float _invincibleBlinkFrequency;
         
-        private Point previousCellPosition;
-        private bool cellChanging;
-        private bool cellTeleporting;
+        private Point _previousCellPosition;
+        private bool _cellChanging;
+        private bool _cellTeleporting;
 
-        private Keys[] keys;
-        private TimeSpan bombTimer;
+        private Keys[] _keys;
 
-        private LookDirection lookDirection;
+        private LookDirection _lookDirection;
 
-        private Camera camera;
-
-        private FinalBomber gameRef;
-        private Point mapSize;
+        private readonly FinalBomber _gameRef;
+        private Point _mapSize;
 
         // Characteristics
-        private int power;
-        private int totalBombNumber;
-        private int currentBombNumber;
 
         // Bad item
-        private bool hasBadItemEffect;
-        private TimeSpan badItemTimer;
-        private TimeSpan badItemTimerLenght;
-        private BadItemEffect badItemEffect;
-        private TimeSpan bombTimerSaved;
-        private float speedSaved;
-        private Keys[] keysSaved;
+        private TimeSpan _bombTimerSaved;
+        private float _speedSaved;
+        private Keys[] _keysSaved;
 
         // Artificial Intelligence
-        Vector2 aiNextPosition;
-        public List<Point> aiWay;
+        Vector2 _aiNextPosition;
+        public List<Point> AIPath;
 
         #endregion
 
         #region Property Region
 
-        public int Id
-        {
-            get { return id; }
-        }
+        public int Id { get; private set; }
 
-        public Camera Camera
-        {
-            get { return camera; }
-        }
+        public Camera Camera { get; private set; }
 
-        public bool IsAlive
-        {
-            get { return isAlive; }
-        }
+        public bool IsAlive { get; private set; }
 
-        public bool InDestruction
-        {
-            get { return inDestruction; }
-        }
+        public bool InDestruction { get; private set; }
 
-        public bool IsInvincible
-        {
-            get { return isInvincible; }
-        }
+        public bool IsInvincible { get; private set; }
 
-        public int Power
-        {
-            get { return power; }
-        }
+        public int Power { get; private set; }
 
-        public int CurrentBombNumber
-        {
-            get { return currentBombNumber; }
-            set { currentBombNumber = value; }
-        }
+        public int CurrentBombNumber { get; set; }
 
-        public int TotalBombNumber
-        {
-            get { return totalBombNumber; }
-        }
+        public int TotalBombNumber { get; private set; }
 
-        public bool OnEdge
-        {
-            get { return onEdge; }
-            set { onEdge = value; }
-        }
+        public bool OnEdge { get; set; }
 
-        public bool HasBadItemEffect
-        {
-            get { return hasBadItemEffect; }
-        }
+        public bool HasBadItemEffect { get; private set; }
 
-        public BadItemEffect BadItemEffect
-        {
-            get { return badItemEffect; }
-        }
+        public BadItemEffect BadItemEffect { get; private set; }
 
-        public TimeSpan BadItemTimer
-        {
-            get { return badItemTimer; }
-        }
+        public TimeSpan BadItemTimer { get; private set; }
 
-        public TimeSpan BadItemTimerLenght
-        {
-            get { return badItemTimerLenght; }
-        }
+        public TimeSpan BadItemTimerLenght { get; private set; }
 
-        public TimeSpan BombTimer
-        {
-            get { return bombTimer; }
-        }
+        public TimeSpan BombTimer { get; private set; }
 
         #endregion
 
         #region Constructor Region
         public Player(int id, FinalBomber game, Vector2 position)
         {
-            this.id = id;
-            this.gameRef = game;
+            this.Id = id;
+            this._gameRef = game;
 
-            this.mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;
+            this._mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;
 
-            this.camera = new Camera(gameRef.ScreenRectangle);
+            this.Camera = new Camera(_gameRef.ScreenRectangle);
 
-            int animationFramesPerSecond = 10;
-            Dictionary<AnimationKey, Animation> animations = new Dictionary<AnimationKey, Animation>();
+            const int animationFramesPerSecond = 10;
+            var animations = new Dictionary<AnimationKey, Animation>();
 
-            Animation animation = new Animation(4, 23, 23, 0, 0, animationFramesPerSecond);
+            var animation = new Animation(4, 23, 23, 0, 0, animationFramesPerSecond);
             animations.Add(AnimationKey.Down, animation);
 
             animation = new Animation(4, 23, 23, 0, 23, animationFramesPerSecond);
@@ -168,73 +109,74 @@ namespace Final_Bomber.Components
             animation = new Animation(4, 23, 23, 0, 69, animationFramesPerSecond);
             animations.Add(AnimationKey.Up, animation);
 
-            Texture2D spriteTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/player1");
+            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/player1");
             
-
             this.Sprite = new AnimatedSprite(spriteTexture, animations, position);
             this.Sprite.ChangeFramesPerSecond(10);
             this.Sprite.Speed = Config.BasePlayerSpeed;
 
-            this.previousCellPosition = this.Sprite.CellPosition; 
+            this._previousCellPosition = this.Sprite.CellPosition; 
 
-            Texture2D playerDeathTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/player1Death");
+            var playerDeathTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
-            playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation, Sprite.Position);
-            playerDeathAnimation.IsAnimating = false;
+            _playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation, Sprite.Position)
+                {
+                    IsAnimating = false
+                };
 
-            this.isMoving = false;
-            this.isAlive = true;
-            this.inDestruction = false;
-            this.onEdge = false;
-            this.isInvincible = true;
+            this._isMoving = false;
+            this.IsAlive = true;
+            this.InDestruction = false;
+            this.OnEdge = false;
+            this.IsInvincible = true;
 
-            this.invincibleTimer = Config.PlayerInvincibleTimer;
-            this.invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
-            this.invincibleBlinkTimer = TimeSpan.FromSeconds(this.invincibleBlinkFrequency);
+            this._invincibleTimer = Config.PlayerInvincibleTimer;
+            this._invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
+            this._invincibleBlinkTimer = TimeSpan.FromSeconds(this._invincibleBlinkFrequency);
 
-            power = Config.BasePlayerBombPower;
-            totalBombNumber = Config.BasePlayerBombNumber;
-            currentBombNumber = totalBombNumber;
+            Power = Config.BasePlayerBombPower;
+            TotalBombNumber = Config.BasePlayerBombNumber;
+            CurrentBombNumber = TotalBombNumber;
 
-            keys = Config.PlayersKeys[id - 1];
-            bombTimer = Config.BombTimer;
+            _keys = Config.PlayersKeys[id - 1];
+            BombTimer = Config.BombTimer;
 
-            lookDirection = LookDirection.Down;
+            _lookDirection = LookDirection.Down;
 
             // Bad item
-            hasBadItemEffect = false;
-            badItemTimer = TimeSpan.Zero;
-            badItemTimerLenght = TimeSpan.Zero;
+            HasBadItemEffect = false;
+            BadItemTimer = TimeSpan.Zero;
+            BadItemTimerLenght = TimeSpan.Zero;
 
             // AI
-            aiNextPosition = new Vector2(-1, -1);
-            aiWay = new List<Point>();
+            _aiNextPosition = new Vector2(-1, -1);
+            AIPath = new List<Point>();
         }
         #endregion
 
         #region XNA Method Region
         public override void Update(GameTime gameTime)
         {
-            if (isAlive && !inDestruction)
+            if (IsAlive && !InDestruction)
             {
                 Sprite.Update(gameTime);
 
                 #region Invincibility
 
-                if (!Config.Invincible && isInvincible)
+                if (!Config.Invincible && IsInvincible)
                 {
-                    if (invincibleTimer >= TimeSpan.Zero)
+                    if (_invincibleTimer >= TimeSpan.Zero)
                     {
-                        invincibleTimer -= gameTime.ElapsedGameTime;
-                        if (invincibleBlinkTimer >= TimeSpan.Zero)
-                            invincibleBlinkTimer -= gameTime.ElapsedGameTime;
+                        _invincibleTimer -= gameTime.ElapsedGameTime;
+                        if (_invincibleBlinkTimer >= TimeSpan.Zero)
+                            _invincibleBlinkTimer -= gameTime.ElapsedGameTime;
                         else
-                            invincibleBlinkTimer = TimeSpan.FromSeconds(invincibleBlinkFrequency);
+                            _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
                     }
                     else
                     {
-                        invincibleTimer = Config.PlayerInvincibleTimer;
-                        isInvincible = false;
+                        _invincibleTimer = Config.PlayerInvincibleTimer;
+                        IsInvincible = false;
                     }
                 }
 
@@ -242,54 +184,51 @@ namespace Final_Bomber.Components
 
                 #region Movement
 
-                if (previousCellPosition != Sprite.CellPosition)
-                    cellChanging = true;
-                else
-                    cellChanging = false;
+                _cellChanging = _previousCellPosition != Sprite.CellPosition;
 
                 #region Human's player part
-                Vector2 motion = new Vector2();
-                if (!Config.AIPlayers[id - 1])
+                var motion = new Vector2();
+                if (!Config.AIPlayers[Id - 1])
                 {
                     // Up
-                    if (InputHandler.KeyDown(keys[0]))
+                    if (InputHandler.KeyDown(_keys[0]))
                     {
                         Sprite.CurrentAnimation = AnimationKey.Up;
-                        lookDirection = LookDirection.Up;
+                        _lookDirection = LookDirection.Up;
                         motion.Y = -1;
                     }
                     // Down
-                    else if (InputHandler.KeyDown(keys[1]))
+                    else if (InputHandler.KeyDown(_keys[1]))
                     {
                         Sprite.CurrentAnimation = AnimationKey.Down;
-                        lookDirection = LookDirection.Down;
+                        _lookDirection = LookDirection.Down;
                         motion.Y = 1;
                     }
                     // Left
-                    else if (InputHandler.KeyDown(keys[2]))
+                    else if (InputHandler.KeyDown(_keys[2]))
                     {
                         Sprite.CurrentAnimation = AnimationKey.Left;
-                        lookDirection = LookDirection.Left;
+                        _lookDirection = LookDirection.Left;
                         motion.X = -1;
                     }
                     // Right
-                    else if (InputHandler.KeyDown(keys[3]))
+                    else if (InputHandler.KeyDown(_keys[3]))
                     {
                         Sprite.CurrentAnimation = AnimationKey.Right;
-                        lookDirection = LookDirection.Right;
+                        _lookDirection = LookDirection.Right;
                         motion.X = 1;
                     }
                     else
-                        lookDirection = LookDirection.Idle;
+                        _lookDirection = LookDirection.Idle;
                 }
                 #endregion
 
-                if (motion != Vector2.Zero || Config.AIPlayers[id - 1])
+                if (motion != Vector2.Zero || Config.AIPlayers[Id - 1])
                 {
-                    if (!Config.AIPlayers[id - 1])
+                    if (!Config.AIPlayers[Id - 1])
                     {
                         #region Human's player part
-                        this.isMoving = true;
+                        this._isMoving = true;
                         Sprite.IsAnimating = true;
                         motion.Normalize();
 
@@ -435,55 +374,55 @@ namespace Final_Bomber.Components
 
                         #region Walk
                         // If he hasn't reach his goal => we walk to this goal
-                        if ((aiNextPosition.X != -1 && aiNextPosition.Y != -1) && !AI.HasReachNextPosition(Sprite.Position, Sprite.Speed, aiNextPosition))
+                        if ((_aiNextPosition.X != -1 && _aiNextPosition.Y != -1) && !AI.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
                         {
-                            this.isMoving = true;
+                            this._isMoving = true;
                             Sprite.IsAnimating = true;
 
                             // If the AI is blocked
-                            Level level = gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel];
-                            if (level.CollisionLayer[Engine.VectorToCell(aiNextPosition).X, Engine.VectorToCell(aiNextPosition).Y] ||
-                                level.HazardMap[Engine.VectorToCell(aiNextPosition).X, Engine.VectorToCell(aiNextPosition).Y] >= 2)
+                            Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
+                            if (level.CollisionLayer[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] ||
+                                level.HazardMap[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] >= 2)
                             {
                                 Sprite.IsAnimating = false;
-                                this.isMoving = false;
+                                this._isMoving = false;
                                 // We define a new goal
                                 bool[,] collisionLayer = level.CollisionLayer;
                                 int[,] hazardMap = level.HazardMap;
                                 MapItem[,] map = level.Map;
-                                aiWay = AI.MakeAWay(
+                                AIPath = AI.MakeAWay(
                                     Sprite.CellPosition,
-                                    AI.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, mapSize),
-                                    collisionLayer, hazardMap, mapSize);
+                                    AI.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, _mapSize),
+                                    collisionLayer, hazardMap, _mapSize);
                             }
                             
                             // Up
-                            if (Sprite.Position.Y > aiNextPosition.Y)
+                            if (Sprite.Position.Y > _aiNextPosition.Y)
                             {
                                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
                                 Sprite.CurrentAnimation = AnimationKey.Up;
-                                lookDirection = LookDirection.Up;
+                                _lookDirection = LookDirection.Up;
                             }
                             // Down
-                            else if (Sprite.Position.Y < aiNextPosition.Y)
+                            else if (Sprite.Position.Y < _aiNextPosition.Y)
                             {
                                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
                                 Sprite.CurrentAnimation = AnimationKey.Down;
-                                lookDirection = LookDirection.Down;
+                                _lookDirection = LookDirection.Down;
                             }
                             // Right
-                            else if (Sprite.Position.X < aiNextPosition.X)
+                            else if (Sprite.Position.X < _aiNextPosition.X)
                             {
                                 Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                                 Sprite.CurrentAnimation = AnimationKey.Right;
-                                lookDirection = LookDirection.Right;
+                                _lookDirection = LookDirection.Right;
                             }
                             // Left
-                            else if (Sprite.Position.X > aiNextPosition.X)
+                            else if (Sprite.Position.X > _aiNextPosition.X)
                             {
                                 Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                                 Sprite.CurrentAnimation = AnimationKey.Left;
-                                lookDirection = LookDirection.Left;
+                                _lookDirection = LookDirection.Left;
                             }
                         }
                         #endregion
@@ -495,81 +434,81 @@ namespace Final_Bomber.Components
                             // We place the player at the center of its cell
                             Sprite.Position = Engine.CellToVector(Sprite.CellPosition);
 
-                            Level level = gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel];
+                            Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
 
                             #region Bomb => AI
                             // Try to put a bomb
                                 // Put a bomb
-                            if (!hasBadItemEffect || (hasBadItemEffect && badItemEffect != BadItemEffect.NoBomb))
+                            if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                             {
-                                if (AI.TryToPutBomb(Sprite.CellPosition, power, level.Map, level.CollisionLayer, level.HazardMap, mapSize))
+                                if (AI.TryToPutBomb(Sprite.CellPosition, Power, level.Map, level.CollisionLayer, level.HazardMap, _mapSize))
                                 {
-                                    if (this.currentBombNumber > 0)
+                                    if (this.CurrentBombNumber > 0)
                                     {
-                                        Bomb bo = gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                                        Bomb bo = _gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                                         if (bo == null)
                                         {
-                                            this.currentBombNumber--;
-                                            Bomb bomb = new Bomb(gameRef, this.id, Sprite.CellPosition, this.power, this.bombTimer, this.Sprite.Speed);
+                                            this.CurrentBombNumber--;
+                                            Bomb bomb = new Bomb(_gameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
-                                            if (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                                            if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                                 Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Player)
                                             {
-                                                gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                                                _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = bomb;
-                                                gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                                                _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                                 CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
 
                                                 // We define a new way (to escape the bomb)
-                                                aiWay = AI.MakeAWay(
+                                                AIPath = AI.MakeAWay(
                                                     Sprite.CellPosition,
-                                                    AI.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, mapSize),
-                                                    level.CollisionLayer, level.HazardMap, mapSize);
+                                                    AI.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, _mapSize),
+                                                    level.CollisionLayer, level.HazardMap, _mapSize);
                                             }
-                                            gameRef.GamePlayScreen.BombList.Add(bomb);
+                                            _gameRef.GamePlayScreen.BombList.Add(bomb);
                                         }
                                     }
                                 }
                             }
                             #endregion
 
-                            if (aiWay == null || aiWay.Count == 0)
+                            if (AIPath == null || AIPath.Count == 0)
                             {
                                 Sprite.IsAnimating = false;
-                                this.isMoving = false;
+                                this._isMoving = false;
                                 // We define a new goal
-                                aiWay = AI.MakeAWay(
+                                AIPath = AI.MakeAWay(
                                     Sprite.CellPosition,
-                                    AI.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, mapSize),
-                                    level.CollisionLayer, level.HazardMap, mapSize);
+                                    AI.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, _mapSize),
+                                    level.CollisionLayer, level.HazardMap, _mapSize);
 
-                                if (aiWay != null)
+                                if (AIPath != null)
                                 {
-                                    aiNextPosition = Engine.CellToVector(aiWay[aiWay.Count - 1]);
-                                    aiWay.Remove(aiWay[aiWay.Count - 1]);
+                                    _aiNextPosition = Engine.CellToVector(AIPath[AIPath.Count - 1]);
+                                    AIPath.Remove(AIPath[AIPath.Count - 1]);
 
                                     // If the AI is blocked
-                                    if (level.CollisionLayer[Engine.VectorToCell(aiNextPosition).X, Engine.VectorToCell(aiNextPosition).Y] ||
-                                        level.HazardMap[Engine.VectorToCell(aiNextPosition).X, Engine.VectorToCell(aiNextPosition).Y] >= 2)
+                                    if (level.CollisionLayer[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] ||
+                                        level.HazardMap[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] >= 2)
                                     {
                                         Sprite.IsAnimating = false;
-                                        this.isMoving = false;
+                                        this._isMoving = false;
                                         // We define a new goal
                                         bool[,] collisionLayer = level.CollisionLayer;
                                         int[,] hazardMap = level.HazardMap;
                                         MapItem[,] map = level.Map;
-                                        aiWay = AI.MakeAWay(
+                                        AIPath = AI.MakeAWay(
                                             Sprite.CellPosition,
-                                            AI.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, mapSize),
-                                            collisionLayer, hazardMap, mapSize);
+                                            AI.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, _mapSize),
+                                            collisionLayer, hazardMap, _mapSize);
                                     }
                                 }
                             }
                             else
                             {
                                 // We finish the current way
-                                aiNextPosition = Engine.CellToVector(aiWay[aiWay.Count - 1]);
-                                aiWay.Remove(aiWay[aiWay.Count - 1]);
+                                _aiNextPosition = Engine.CellToVector(AIPath[AIPath.Count - 1]);
+                                AIPath.Remove(AIPath[AIPath.Count - 1]);
                                 /*
                                 // Update the way of the AI each time it changes of cell => usefull to battle against players (little bug here)
                                 aiWay = AI.MakeAWay(
@@ -595,14 +534,14 @@ namespace Final_Bomber.Components
                         if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1)))
                         {
                             // Top collision and Bottom collision
-                            if ((lookDirection == LookDirection.Up && MoreTopSide()) || (lookDirection == LookDirection.Down && MoreBottomSide()))
+                            if ((_lookDirection == LookDirection.Up && MoreTopSide()) || (_lookDirection == LookDirection.Down && MoreBottomSide()))
                                 this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
                         }
                         // No wall at the bottom
                         else
                         {
                             // Top collision
-                            if (lookDirection == LookDirection.Up && MoreTopSide())
+                            if (_lookDirection == LookDirection.Up && MoreTopSide())
                                 this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
                         }
                     }
@@ -610,10 +549,10 @@ namespace Final_Bomber.Components
                     else if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1)))
                     {
                         // Bottom collision
-                        if (lookDirection == LookDirection.Down && MoreBottomSide())
+                        if (_lookDirection == LookDirection.Down && MoreBottomSide())
                             this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
                         // To lag him
-                        else if (lookDirection == LookDirection.Down)
+                        else if (_lookDirection == LookDirection.Down)
                         {
                             if(MoreLeftSide())
                                 this.Sprite.PositionX += this.Sprite.Speed;
@@ -630,14 +569,14 @@ namespace Final_Bomber.Components
                         if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
                         {
                             // Left and right collisions
-                            if ((this.lookDirection == LookDirection.Left && MoreLeftSide()) || (this.lookDirection == LookDirection.Right && MoreRightSide()))
+                            if ((this._lookDirection == LookDirection.Left && MoreLeftSide()) || (this._lookDirection == LookDirection.Right && MoreRightSide()))
                                 this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
                         }
                         // Wall only at the left
                         else
                         {
                             // Left collision
-                            if (this.lookDirection == LookDirection.Left && MoreLeftSide())
+                            if (this._lookDirection == LookDirection.Left && MoreLeftSide())
                                 this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
                         }
                     }
@@ -645,45 +584,45 @@ namespace Final_Bomber.Components
                     else if (WallAt(new Point(this.Sprite.CellPosition.X + 1, this.Sprite.CellPosition.Y)))
                     {
                         // Right collision
-                        if (this.lookDirection == LookDirection.Right && MoreRightSide())
+                        if (this._lookDirection == LookDirection.Right && MoreRightSide())
                             this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
                     }
 
                     
                     // The player must stay in the map
                     this.Sprite.PositionX = MathHelper.Clamp(this.Sprite.Position.X, Engine.TileWidth,
-                        (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
+                        (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
                     this.Sprite.PositionY = MathHelper.Clamp(this.Sprite.Position.Y, Engine.TileHeight,
-                        (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
+                        (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
                     
                     #endregion
                     
                 }
                 else
                 {
-                    this.isMoving = false;
+                    this._isMoving = false;
                     Sprite.IsAnimating = false;
                 }
 
                 #region Mise à jour de la position du joueur
-                if (cellChanging)
+                if (_cellChanging)
                 {
-                    if (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                       Map[previousCellPosition.X, previousCellPosition.Y] == this)
+                    if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                       Map[_previousCellPosition.X, _previousCellPosition.Y] == this)
                     {
-                        gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                            Map[previousCellPosition.X, previousCellPosition.Y] = null;
+                        _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                            Map[_previousCellPosition.X, _previousCellPosition.Y] = null;
                     }
 
-                    if (cellTeleporting)
-                        cellTeleporting = false;
+                    if (_cellTeleporting)
+                        _cellTeleporting = false;
                 }
                 else
                 {
-                    if (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                    if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
                     {
-                        gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                        _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                             Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
                     }
                 }
@@ -694,29 +633,29 @@ namespace Final_Bomber.Components
                 #region Bomb
 
                 #region Human player's part
-                if (!Config.AIPlayers[id - 1])
+                if (!Config.AIPlayers[Id - 1])
                 {
-                    if ((hasBadItemEffect && badItemEffect == BadItemEffect.BombDrop) || (InputHandler.KeyPressed(keys[4]) &&
-                        (!hasBadItemEffect || (hasBadItemEffect && badItemEffect != BadItemEffect.NoBomb))))
+                    if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) || (InputHandler.KeyPressed(_keys[4]) &&
+                        (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
                     {
-                        if (this.currentBombNumber > 0)
+                        if (this.CurrentBombNumber > 0)
                         {
-                            Bomb bo = gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                            var bo = _gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                             if (bo == null)
                             {
-                                this.currentBombNumber--;
-                                Bomb bomb = new Bomb(gameRef, this.id, Sprite.CellPosition, this.power, this.bombTimer, this.Sprite.Speed);
+                                this.CurrentBombNumber--;
+                                var bomb = new Bomb(_gameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
-                                if (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                                if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Player)
                                 {
-                                    gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                                    _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = bomb;
-                                    gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                                    _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                     CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
                                 }
 
-                                gameRef.GamePlayScreen.BombList.Add(bomb);
+                                _gameRef.GamePlayScreen.BombList.Add(bomb);
                             }
                         }
                     }
@@ -724,74 +663,79 @@ namespace Final_Bomber.Components
                 #endregion
 
                 #region Push a bomb
-                if (lookDirection != LookDirection.Idle)
+
+                if (Config.PlayerCanPush)
                 {
-                    Point direction = Point.Zero;
-                    switch (lookDirection)
+                    if (_lookDirection != LookDirection.Idle)
                     {
-                        case LookDirection.Up:
-                            direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
-                            break;
-                        case LookDirection.Down:
-                            direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1);
-                            break;
-                        case LookDirection.Left:
-                            direction = new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y);
-                            break;
-                        case LookDirection.Right:
-                            direction = new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y);
-                            break;
+                        Point direction = Point.Zero;
+                        switch (_lookDirection)
+                        {
+                            case LookDirection.Up:
+                                direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
+                                break;
+                            case LookDirection.Down:
+                                direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1);
+                                break;
+                            case LookDirection.Left:
+                                direction = new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y);
+                                break;
+                            case LookDirection.Right:
+                                direction = new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y);
+                                break;
+                        }
+                        Bomb bomb = BombAt(direction);
+                        if (bomb != null)
+                            bomb.ChangeDirection(_lookDirection, this.Id);
                     }
-                    Bomb bomb = BombAt(direction);
-                    if (bomb != null)
-                        bomb.ChangeDirection(lookDirection, this.id);
                 }
+
                 #endregion
 
                 #endregion
 
                 #region Item
 
-                if (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Item)
                 {
-                    Item item = (Item)(gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                    Item item = (Item)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
                     if (!item.InDestruction)
                     {
-                        if (!hasBadItemEffect || (hasBadItemEffect && item.Type != ItemType.BadItem))
+                        if (!HasBadItemEffect || (HasBadItemEffect && item.Type != ItemType.BadItem))
                         {
                             item.ApplyItem(this);
-                            gameRef.GamePlayScreen.ItemPickUpSound.Play();
+                            _gameRef.GamePlayScreen.ItemPickUpSound.Play();
                             item.Remove();
                         }
                     }
                 }
 
                 // Have caught a bad item
-                if (hasBadItemEffect)
+                if (HasBadItemEffect)
                 {
-                    badItemTimer += gameTime.ElapsedGameTime;
-                    if (badItemTimer >= badItemTimerLenght)
+                    BadItemTimer += gameTime.ElapsedGameTime;
+                    if (BadItemTimer >= BadItemTimerLenght)
                     {
-                        switch (badItemEffect)
+                        switch (BadItemEffect)
                         {
                             case BadItemEffect.TooSlow:
-                                Sprite.Speed = speedSaved;
+                                Sprite.Speed = _speedSaved;
                                 break;
                             case BadItemEffect.TooSpeed:
-                                Sprite.Speed = speedSaved;
+                                Sprite.Speed = _speedSaved;
                                 break;
                             case BadItemEffect.KeysInversion:
-                                keys = keysSaved;
+                                _keys = _keysSaved;
                                 break;
                             case BadItemEffect.BombTimerChanged:
-                                bombTimer = bombTimerSaved;
+                                BombTimer = _bombTimerSaved;
                                 break;
                         }
-                        hasBadItemEffect = false;
-                        badItemTimer = TimeSpan.Zero;
-                        badItemTimerLenght = TimeSpan.Zero;
+                        HasBadItemEffect = false;
+                        BadItemTimer = TimeSpan.Zero;
+                        BadItemTimerLenght = TimeSpan.Zero;
                     }
                 }
 
@@ -799,96 +743,96 @@ namespace Final_Bomber.Components
 
                 #region Teleporter
 
-                if (!cellTeleporting && gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                if (!_cellTeleporting && _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
                 {
-                    Teleporter teleporter = (Teleporter)(gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+                    Teleporter teleporter = (Teleporter)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
 
                     teleporter.ChangePosition(this);
-                    cellTeleporting = true;
+                    _cellTeleporting = true;
                 }
 
                 #endregion
             }
             #region Death
-            else if(playerDeathAnimation.IsAnimating)
+            else if(_playerDeathAnimation.IsAnimating)
             {
-                playerDeathAnimation.Update(gameTime);
+                _playerDeathAnimation.Update(gameTime);
 
-                if (playerDeathAnimation.Animation.CurrentFrame == playerDeathAnimation.Animation.FrameCount - 1)
+                if (_playerDeathAnimation.Animation.CurrentFrame == _playerDeathAnimation.Animation.FrameCount - 1)
                     Remove();
             }
             #endregion
             #region Edge wall gameplay
-            else if (onEdge && (!Config.ActiveSuddenDeath || (Config.ActiveSuddenDeath && !gameRef.GamePlayScreen.SuddenDeath.HasStarted)))
+            else if (OnEdge && (!Config.ActiveSuddenDeath || (Config.ActiveSuddenDeath && !_gameRef.GamePlayScreen.SuddenDeath.HasStarted)))
             {
                 Sprite.Update(gameTime);
 
                 // The player is either at the top either at the bottom
                 // => he can only move on the right or on the left
-                if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (mapSize.Y - 1) * Engine.TileHeight)
+                if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (_mapSize.Y - 1) * Engine.TileHeight)
                 {
                     // If he wants to go to the left
-                    if (Sprite.Position.X > 0 && InputHandler.KeyDown(keys[2]))
+                    if (Sprite.Position.X > 0 && InputHandler.KeyDown(_keys[2]))
                         Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                     // If he wants to go to the right
-                    else if (Sprite.Position.X < (mapSize.X * Engine.TileWidth) - Engine.TileWidth &&
-                        InputHandler.KeyDown(keys[3]))
+                    else if (Sprite.Position.X < (_mapSize.X * Engine.TileWidth) - Engine.TileWidth &&
+                        InputHandler.KeyDown(_keys[3]))
                         Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                 }
                 // The player is either on the left either on the right
-                if (Sprite.Position.X <= 0 || Sprite.Position.X >= (mapSize.X - 1) * Engine.TileWidth)
+                if (Sprite.Position.X <= 0 || Sprite.Position.X >= (_mapSize.X - 1) * Engine.TileWidth)
                 {
                     // If he wants to go to the top
-                    if (Sprite.Position.Y > 0 && InputHandler.KeyDown(keys[0]))
+                    if (Sprite.Position.Y > 0 && InputHandler.KeyDown(_keys[0]))
                         Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
                     // If he wants to go to the bottom
-                    else if (Sprite.Position.Y < (mapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
-                        InputHandler.KeyDown(keys[1]))
+                    else if (Sprite.Position.Y < (_mapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
+                        InputHandler.KeyDown(_keys[1]))
                         Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
                 }
 
                 if (Sprite.Position.Y <= 0)
                     Sprite.CurrentAnimation = AnimationKey.Down;
-                else if (Sprite.Position.Y >= (mapSize.Y - 1) * Engine.TileHeight)
+                else if (Sprite.Position.Y >= (_mapSize.Y - 1) * Engine.TileHeight)
                     Sprite.CurrentAnimation = AnimationKey.Up;
                 else if (Sprite.Position.X <= 0)
                         Sprite.CurrentAnimation = AnimationKey.Right;
-                else if (Sprite.Position.X >= (mapSize.X - 1) * Engine.TileWidth)
+                else if (Sprite.Position.X >= (_mapSize.X - 1) * Engine.TileWidth)
                         Sprite.CurrentAnimation = AnimationKey.Left;
 
                 #region Bombs => Edge gameplay
 
-                if (InputHandler.KeyDown(keys[4]) && this.currentBombNumber > 0)
+                if (InputHandler.KeyDown(_keys[4]) && this.CurrentBombNumber > 0)
                 {
                     // He can't put a bomb when he is on a corner
-                    if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == mapSize.X - 1)) ||
-                        (Sprite.CellPosition.Y == mapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == mapSize.X - 1)))))
+                    if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == _mapSize.X - 1)) ||
+                        (Sprite.CellPosition.Y == _mapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == _mapSize.X - 1)))))
                     {
-                        Level level = gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel];
+                        Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
                         int lag = 0;
                         Point bombPosition = Sprite.CellPosition;
                         // Up
                         if (Sprite.CellPosition.Y == 0)
                         {
-                            while (Sprite.CellPosition.Y + lag + 3 < mapSize.Y &&
+                            while (Sprite.CellPosition.Y + lag + 3 < _mapSize.Y &&
                                     level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
                             {
                                 lag++;
                             }
                             bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
-                            if (bombPosition.Y < mapSize.Y)
+                            if (bombPosition.Y < _mapSize.Y)
                             {
-                                Bomb bomb = new Bomb(gameRef, id, bombPosition, power, bombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                gameRef.GamePlayScreen.BombList.Add(bomb);
+                                _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.currentBombNumber--;
+                                this.CurrentBombNumber--;
                             }
                         }
                         // Down
-                        if (Sprite.CellPosition.Y == mapSize.Y - 1)
+                        if (Sprite.CellPosition.Y == _mapSize.Y - 1)
                         {
                             while (Sprite.CellPosition.Y - lag - 3 >= 0 &&
                                     level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
@@ -898,33 +842,33 @@ namespace Final_Bomber.Components
                             bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
                             if (bombPosition.Y >= 0)
                             {
-                                Bomb bomb = new Bomb(gameRef, id, bombPosition, power, bombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                gameRef.GamePlayScreen.BombList.Add(bomb);
+                                _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.currentBombNumber--;
+                                this.CurrentBombNumber--;
                             }
                         }
                         // Left
                         if (Sprite.CellPosition.X == 0)
                         {
-                            while (Sprite.CellPosition.X + lag + 3 < mapSize.X &&
+                            while (Sprite.CellPosition.X + lag + 3 < _mapSize.X &&
                                     level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
                             {
                                 lag++;
                             }
                             bombPosition.X = Sprite.CellPosition.X + lag + 3;
-                            if (bombPosition.X < mapSize.X)
+                            if (bombPosition.X < _mapSize.X)
                             {
-                                Bomb bomb = new Bomb(gameRef, id, bombPosition, power, bombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                gameRef.GamePlayScreen.BombList.Add(bomb);
+                                _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.currentBombNumber--;
+                                this.CurrentBombNumber--;
                             }
                         }
                         // Right
-                        if (Sprite.CellPosition.X == mapSize.X - 1)
+                        if (Sprite.CellPosition.X == _mapSize.X - 1)
                         {
                             while (Sprite.CellPosition.X - lag - 3 >= 0 &&
                                     level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
@@ -934,11 +878,11 @@ namespace Final_Bomber.Components
                             bombPosition.X = Sprite.CellPosition.X - lag - 3;
                             if (bombPosition.X >= 0)
                             {
-                                Bomb bomb = new Bomb(gameRef, id, bombPosition, power, bombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                gameRef.GamePlayScreen.BombList.Add(bomb);
+                                _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.currentBombNumber--;
+                                this.CurrentBombNumber--;
                             }
                         }
                     }
@@ -949,79 +893,79 @@ namespace Final_Bomber.Components
             #endregion
 
             #region Camera
-            camera.Update(gameTime);
+            Camera.Update(gameTime);
 
             if (Config.Debug)
             {
                 if (InputHandler.KeyDown(Keys.PageUp) ||
                     InputHandler.ButtonReleased(Buttons.LeftShoulder, PlayerIndex.One))
                 {
-                    camera.ZoomIn();
-                    if (camera.CameraMode == CameraMode.Follow)
-                        camera.LockToSprite(Sprite);
+                    Camera.ZoomIn();
+                    if (Camera.CameraMode == CameraMode.Follow)
+                        Camera.LockToSprite(Sprite);
                 }
                 else if (InputHandler.KeyDown(Keys.PageDown))
                 {
-                    camera.ZoomOut();
-                    if (camera.CameraMode == CameraMode.Follow)
-                        camera.LockToSprite(Sprite);
+                    Camera.ZoomOut();
+                    if (Camera.CameraMode == CameraMode.Follow)
+                        Camera.LockToSprite(Sprite);
                 }
                 else if (InputHandler.KeyDown(Keys.End))
                 {
-                    camera.ZoomReset();
+                    Camera.ZoomReset();
                 }
 
                 if (InputHandler.KeyReleased(Keys.F))
                 {
-                    camera.ToggleCameraMode();
-                    if (camera.CameraMode == CameraMode.Follow)
-                        camera.LockToSprite(Sprite);
+                    Camera.ToggleCameraMode();
+                    if (Camera.CameraMode == CameraMode.Follow)
+                        Camera.LockToSprite(Sprite);
                 }
 
-                if (camera.CameraMode != CameraMode.Follow)
+                if (Camera.CameraMode != CameraMode.Follow)
                 {
                     if (InputHandler.KeyReleased(Keys.L))
                     {
-                        camera.LockToSprite(Sprite);
+                        Camera.LockToSprite(Sprite);
                     }
                 }
             }
 
-            if (isMoving && camera.CameraMode == CameraMode.Follow)
-                camera.LockToSprite(Sprite);
+            if (_isMoving && Camera.CameraMode == CameraMode.Follow)
+                Camera.LockToSprite(Sprite);
             #endregion
 
-            previousCellPosition = Sprite.CellPosition;
+            _previousCellPosition = Sprite.CellPosition;
         }
 
         public override void Draw(GameTime gameTime)
         {
             Vector2 playerNamePosition = new Vector2(
                 Sprite.Position.X + Engine.Origin.X + Sprite.Width/2 - 
-                ControlManager.SpriteFont.MeasureString(Config.PlayersName[id - 1]).X / 2 + 5,
+                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id - 1]).X / 2 + 5,
                 Sprite.Position.Y + Engine.Origin.Y - 25 - 
-                ControlManager.SpriteFont.MeasureString(Config.PlayersName[id - 1]).Y / 2);
+                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id - 1]).Y / 2);
 
-            if ((isAlive && !inDestruction) || onEdge)
+            if ((IsAlive && !InDestruction) || OnEdge)
             {
-                if (isInvincible)
+                if (IsInvincible)
                 {
-                    if (invincibleBlinkTimer > TimeSpan.FromSeconds(invincibleBlinkFrequency * 0.5f))
+                    if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency * 0.5f))
                     {
-                        Sprite.Draw(gameTime, gameRef.SpriteBatch);
-                        gameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[id - 1], playerNamePosition, Color.Black);
+                        Sprite.Draw(gameTime, _gameRef.SpriteBatch);
+                        _gameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
                     }
                 }
                 else
                 {
-                    Sprite.Draw(gameTime, gameRef.SpriteBatch);
-                    gameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[id - 1], playerNamePosition, Color.Black);
+                    Sprite.Draw(gameTime, _gameRef.SpriteBatch);
+                    _gameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
                 }
             }
             else
             {
-                playerDeathAnimation.Draw(gameTime, gameRef.SpriteBatch);
-                gameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[id - 1], playerNamePosition, Color.Black);
+                _playerDeathAnimation.Draw(gameTime, _gameRef.SpriteBatch);
+                _gameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
             }
         }
         #endregion
@@ -1032,10 +976,10 @@ namespace Final_Bomber.Components
 
         private Bomb BombAt(Point cell)
         {
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Size.X &&
-                cell.Y < gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Size.Y)
+            if (cell.X >= 0 && cell.Y >= 0 && cell.X < _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Size.X &&
+                cell.Y < _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Size.Y)
             {
-                Bomb bomb = gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == cell);
+                Bomb bomb = _gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == cell);
                 return (bomb);
             }
             else
@@ -1044,9 +988,9 @@ namespace Final_Bomber.Components
 
         private bool WallAt(Point cell)
         {
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Size.X &&
-                cell.Y < gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Size.Y)
-                return (this.gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[cell.X, cell.Y]);
+            if (cell.X >= 0 && cell.Y >= 0 && cell.X < _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Size.X &&
+                cell.Y < _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Size.Y)
+                return (this._gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[cell.X, cell.Y]);
             else
                 return false;
         }
@@ -1073,10 +1017,10 @@ namespace Final_Bomber.Components
 
         private void Invincibility()
         {
-            this.isInvincible = true;
-            this.invincibleTimer = Config.PlayerInvincibleTimer;
-            this.invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
-            this.invincibleBlinkTimer = TimeSpan.FromSeconds(this.invincibleBlinkFrequency);
+            this.IsInvincible = true;
+            this._invincibleTimer = Config.PlayerInvincibleTimer;
+            this._invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
+            this._invincibleBlinkTimer = TimeSpan.FromSeconds(this._invincibleBlinkFrequency);
         }
 
         #endregion
@@ -1085,31 +1029,31 @@ namespace Final_Bomber.Components
 
         public void IncreaseTotalBombNumber(int incr)
         {
-            if (this.totalBombNumber + incr > Config.MaxBombNumber)
+            if (this.TotalBombNumber + incr > Config.MaxBombNumber)
             {
-                this.totalBombNumber = Config.MaxBombNumber;
-                this.currentBombNumber = totalBombNumber;
+                this.TotalBombNumber = Config.MaxBombNumber;
+                this.CurrentBombNumber = TotalBombNumber;
             }
-            else if (this.totalBombNumber + incr < Config.MinBombNumber)
+            else if (this.TotalBombNumber + incr < Config.MinBombNumber)
             {
-                this.totalBombNumber = Config.MinBombNumber;
-                this.currentBombNumber = totalBombNumber;
+                this.TotalBombNumber = Config.MinBombNumber;
+                this.CurrentBombNumber = TotalBombNumber;
             }
             else
             {
-                this.totalBombNumber += incr;
-                this.currentBombNumber += incr;
+                this.TotalBombNumber += incr;
+                this.CurrentBombNumber += incr;
             }
         }
 
         public void IncreasePower(int incr)
         {
-            if (this.power + incr > Config.MaxBombPower)
-                this.power = Config.MaxBombPower;
-            else if (this.power + incr < Config.MinBombPower)
-                this.power = Config.MinBombPower;
+            if (this.Power + incr > Config.MaxBombPower)
+                this.Power = Config.MaxBombPower;
+            else if (this.Power + incr < Config.MinBombPower)
+                this.Power = Config.MinBombPower;
             else
-                this.power += incr;
+                this.Power += incr;
         }
 
         public void IncreaseSpeed(float incr)
@@ -1119,41 +1063,41 @@ namespace Final_Bomber.Components
 
         public void ApplyBadItem(BadItemEffect effect)
         {
-            this.hasBadItemEffect = true;
-            this.badItemEffect = effect;
-            this.badItemTimerLenght = TimeSpan.FromSeconds(gameRef.GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
+            this.HasBadItemEffect = true;
+            this.BadItemEffect = effect;
+            this.BadItemTimerLenght = TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
             switch (effect)
             {
                 case BadItemEffect.TooSlow:
-                    this.speedSaved = this.Sprite.Speed;
+                    this._speedSaved = this.Sprite.Speed;
                     this.Sprite.Speed = Config.MinSpeed;
                     break;
                 case BadItemEffect.TooSpeed:
-                    speedSaved = this.Sprite.Speed;
+                    _speedSaved = this.Sprite.Speed;
                     this.Sprite.Speed = Config.MaxSpeed;
                     break;
                 case BadItemEffect.KeysInversion:
-                    this.keysSaved = (Keys[])this.keys.Clone();
+                    this._keysSaved = (Keys[])this._keys.Clone();
                     int[] inversedKeysArray = new int[] { 1, 0, 3, 2 };
                     for (int i = 0; i < inversedKeysArray.Length; i++)
-                        this.keys[i] = this.keysSaved[inversedKeysArray[i]];
+                        this._keys[i] = this._keysSaved[inversedKeysArray[i]];
                     break;
                 case BadItemEffect.BombTimerChanged:
-                    this.bombTimerSaved = this.bombTimer;
-                    int randomBombTimer = gameRef.GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
-                    this.bombTimer = TimeSpan.FromSeconds(randomBombTimer);
+                    this._bombTimerSaved = this.BombTimer;
+                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
+                    this.BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;
             }
         }
 
         public void Rebirth(Vector2 position)
         {
-            this.isAlive = true;
+            this.IsAlive = true;
             this.Sprite.IsAnimating = true;
-            this.inDestruction = false;
+            this.InDestruction = false;
             this.Sprite.Position = position;
             this.Sprite.CurrentAnimation = AnimationKey.Down;
-            this.playerDeathAnimation.IsAnimating = false;
+            this._playerDeathAnimation.IsAnimating = false;
             
             Invincibility();
         }
@@ -1164,28 +1108,28 @@ namespace Final_Bomber.Components
 
         public override void Destroy()
         {
-            if (!this.inDestruction)
+            if (!this.InDestruction)
             {
                 this.Sprite.IsAnimating = false;
-                this.inDestruction = true;
-                gameRef.GamePlayScreen.PlayerDeathSound.Play();
-                this.playerDeathAnimation.Position = this.Sprite.Position;
-                this.playerDeathAnimation.IsAnimating = true;
+                this.InDestruction = true;
+                _gameRef.GamePlayScreen.PlayerDeathSound.Play();
+                this._playerDeathAnimation.Position = this.Sprite.Position;
+                this._playerDeathAnimation.IsAnimating = true;
             }
         }
 
         public override void Remove()
         {
-            this.playerDeathAnimation.IsAnimating = false;
-            this.inDestruction = false;
-            this.isAlive = false;
+            this._playerDeathAnimation.IsAnimating = false;
+            this.InDestruction = false;
+            this.IsAlive = false;
 
             // Replacing for the gameplay on the edges
             // Right side
-            if (mapSize.X - this.Sprite.CellPosition.X < mapSize.X / 2)
+            if (_mapSize.X - this.Sprite.CellPosition.X < _mapSize.X / 2)
             {
                 this.Sprite.CurrentAnimation = AnimationKey.Left;
-                this.Sprite.Position = new Vector2((mapSize.X * Engine.TileWidth) - Engine.TileWidth, this.Sprite.Position.Y);
+                this.Sprite.Position = new Vector2((_mapSize.X * Engine.TileWidth) - Engine.TileWidth, this.Sprite.Position.Y);
             }
             // Left side
             else

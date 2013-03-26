@@ -22,7 +22,7 @@ namespace Final_Bomber
         // Taille
         public static Point MapSize = new Point(17, 17);
         public static Point MinimumMapSize = new Point(9, 9);
-        public static Point[] MaximumMapSize = new Point[]
+        public static readonly Point[] MaximumMapSize = new Point[]
         {
             new Point(17, 17),
             new Point(23, 23),
@@ -43,7 +43,7 @@ namespace Final_Bomber
             new Point((int)Math.Ceiling((double)(MapSize.X - 2)/(double)2), (int)Math.Ceiling((double)(MapSize.Y - 2)/(double)2))
         };
 
-        public static Keys[][] PlayersKeys = new Keys[][]
+        public static readonly Keys[][] PlayersKeys = new Keys[][]
         {
              new Keys[]{ Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl }, 
              new Keys[]{ Keys.Z, Keys.S, Keys.Q, Keys.D, Keys.LeftControl }, 
@@ -52,72 +52,72 @@ namespace Final_Bomber
              new Keys[]{ Keys.T, Keys.G, Keys.F, Keys.H, Keys.Y }
         };
 
-        public static bool isThereAIPlayer = true;
-        public static bool[] AIPlayers = new bool[] { false, true, true, true, true };
+        public const bool isThereAIPlayer = true;
+        public static readonly bool[] AIPlayers = new bool[] { true, true, true, true, true };
 
         // Joueur
         public static Color[] PlayersColor = new Color[] { Color.White, Color.White, Color.White, Color.White };
 
         // Base characteristics
-        public static int BasePlayerBombPower = 1;
-        public static float BasePlayerSpeed = 2.5f;
-        public static float BaseBombSpeed = 3f;
-        public static int BasePlayerBombNumber = 10;
+        public const int BasePlayerBombPower = 1;
+        public const float BasePlayerSpeed = 2.5f;
+        public const float BaseBombSpeed = 3f;
+        public const int BasePlayerBombNumber = 10;
 
         // Characteristics minimum and maximum
-        public static float MaxSpeed = 30f;
-        public static float MinSpeed = 1f;
-        public static int MaxBombPower = (MapSize.X + MapSize.Y) / 2;
-        public static int MinBombPower = 1;
-        public static int MaxBombNumber = (MapSize.X * MapSize.Y) / 2;
-        public static int MinBombNumber = 1;
+        public const float MaxSpeed = 30f;
+        public const float MinSpeed = 1f;
+        public static readonly int MaxBombPower = (MapSize.X + MapSize.Y) / 2;
+        public const int MinBombPower = 1;
+        public static readonly int MaxBombNumber = (MapSize.X * MapSize.Y) / 2;
+        public const int MinBombNumber = 1;
 
-        public static float PlayerSpeedIncrementeur = 0.25f;
-        public static float BombSpeedIncrementeur = 1f;
+        public const float PlayerSpeedIncrementeur = 0.25f;
+        public const float BombSpeedIncrementeur = 1f;
 
         public static bool PlayerCanPush = false;
         public static bool PlayerCanLaunch = false;
 
         public static bool DisplayName = true;
-        public static string[] PlayersName = new string[] { "Martial", "Noxalus", "Litarium", "Klorius", "Oxilium" };
+        public static readonly string[] PlayersName = new string[] { "Martial", "Noxalus", "Litarium", "Klorius", "Oxilium" };
 
         public static int WallNumber = 100; // This is a percentage => from 0% to 100%
         public static int ItemNumber = 50; // This is a percentage => from 0% to 100%
         public static int ItemTypeNumber = 5;
-        public static int TeleporterNumber = 0;
-        public static int ArrowNumber = 0;
+        public const int TeleporterNumber = 0;
+        public const int ArrowNumber = 0;
 
         public static bool ActiveTeleporters = false;
-        public static TeleporterPositionTypeEnum TeleporterPositionType = TeleporterPositionTypeEnum.PlusForm;
+        public const TeleporterPositionTypeEnum TeleporterPositionType = TeleporterPositionTypeEnum.PlusForm;
 
         public static bool ActiveArrows = false;
         public static ArrowPositionTypeEnum ArrowPositionType = ArrowPositionTypeEnum.SquareForm;
         
-        public static LookDirection[] ArrowLookDirection = new LookDirection[] 
+        public static readonly LookDirection[] ArrowLookDirection = new LookDirection[] 
         { LookDirection.Down, LookDirection.Left, LookDirection.Right, LookDirection.Up };
 
         // Invincibility
-        public static bool Invincible = true;
+        public const bool Invincible = false;
         public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
-        public static float InvincibleBlinkFrequency = 0.5f;
+        public const float InvincibleBlinkFrequency = 0.5f;
 
         // Bombs
         public static bool BombCollision = true;
         public static bool ExplosionThroughWall = true;
-        public static int BombLatency = 10; // Bomb's animation's frames par second
+        public const int BombLatency = 10; // Bomb's animation's frames par second
         // Initially => 2
         public static TimeSpan BombTimer = TimeSpan.FromSeconds(2);
 
         // Item
-        public static List<ItemType> ItemTypeAvaible = new List<ItemType>() 
+        public static readonly List<ItemType> ItemTypeAvaible = new List<ItemType>() 
         { 
             ItemType.Power,
             ItemType.Bomb,
             ItemType.Speed,
-            /*ItemType.BadItem,*/
+            //ItemType.BadItem,
             ItemType.Point 
         };
-        public static ItemType[] ItemTypeArray = new ItemType[]
+        public static readonly ItemType[] ItemTypeArray = new ItemType[]
         {
             ItemType.Power,
             ItemType.Bomb,
@@ -126,7 +126,7 @@ namespace Final_Bomber
             ItemType.Point
         };
         // 0 => Power, 1 => Bomb, 2 => Speed, 3 => Bad item, 4 => Point
-        public static Dictionary<ItemType, int> ItemTypeIndex = new Dictionary<ItemType, int>
+        public static readonly Dictionary<ItemType, int> ItemTypeIndex = new Dictionary<ItemType, int>
         {
             {ItemType.Power, 0},
             {ItemType.Bomb, 1},
@@ -139,10 +139,10 @@ namespace Final_Bomber
         public static float Volume = 0.0f;
 
         // IA
-        public static bool InactiveIA = false;
+        public static bool InactiveAI = false;
 
         // Resolution
-        public static int[,] Resolutions = new int[,] { { 800, 600 }, { 1024, 768 }, { 1280, 1024 }, { 1920, 1080 } };
+        public static readonly int[,] Resolutions = new int[,] { { 800, 600 }, { 1024, 768 }, { 1280, 1024 }, { 1920, 1080 } };
         public static int IndexResolution = 0;
 
         public static int BonusTypeNumber = 5;
@@ -155,15 +155,16 @@ namespace Final_Bomber
         public static float SuddenDeathCounterBombs = 0.3f;
         public static float SuddenDeathCounterWalls = 0.3f;
         public static float SuddenDeathWallSpeed = (float)Math.Round(0.25f, 2);
-        public static float SuddenDeathMaxWallSpeed = 1f;
-        public static Dictionary<SuddenDeathTypeEnum, string> SuddenDeathTypeText = new Dictionary<SuddenDeathTypeEnum, string>
+        public const float SuddenDeathMaxWallSpeed = 1f;
+
+        public static readonly Dictionary<SuddenDeathTypeEnum, string> SuddenDeathTypeText = new Dictionary<SuddenDeathTypeEnum, string>
         {
             { SuddenDeathTypeEnum.BombAndWall, "Bombes et murs" },
             { SuddenDeathTypeEnum.OnlyBomb, "Bombes" },
             { SuddenDeathTypeEnum.OnlyWall, "Murs" },
             { SuddenDeathTypeEnum.Whole, "Trous" }
         };
-        public static SuddenDeathTypeEnum[] SuddenDeathTypeArray = new SuddenDeathTypeEnum[]
+        public static readonly SuddenDeathTypeEnum[] SuddenDeathTypeArray = new SuddenDeathTypeEnum[]
         {
             SuddenDeathTypeEnum.BombAndWall,
             SuddenDeathTypeEnum.OnlyBomb,
@@ -172,17 +173,18 @@ namespace Final_Bomber
         };
 
         // Scores
-        public static int[] PlayersScores = new int[5];
+        public static readonly int[] PlayersScores = new int[5];
 
         // Map moving scale
-        public static float MapMovingScale = 10f;
+        public const float MapMovingScale = 10f;
 
         // Bad Item
-        public static int BadItemTimerMin = 10; // Seconds
-        public static int BadItemTimerMax = 30; // Seconds
-        public static int BadItemTimerChangedMin = 3; // Seconds
-        public static int BadItemTimerChangedMax = 8; // Seconds
-        public static List<BadItemEffect> BadItemEffectList = new List<BadItemEffect>()
+        public const int BadItemTimerMin = 10; // Seconds
+        public const int BadItemTimerMax = 30; // Seconds
+        public const int BadItemTimerChangedMin = 3; // Seconds
+        public const int BadItemTimerChangedMax = 8; // Seconds
+
+        public static readonly List<BadItemEffect> BadItemEffectList = new List<BadItemEffect>()
         {
             BadItemEffect.BombDrop,
             BadItemEffect.BombTimerChanged,
@@ -193,9 +195,9 @@ namespace Final_Bomber
         };
 
         // HUD
-        public static int HUDPlayerInfoSpace = 105;
+        public const int HUDPlayerInfoSpace = 105;
 
         // Keyboarding
-        public static float TextCursorBlinkFrequency = 0.5f;
+        public const float TextCursorBlinkFrequency = 0.5f;
     }
 }

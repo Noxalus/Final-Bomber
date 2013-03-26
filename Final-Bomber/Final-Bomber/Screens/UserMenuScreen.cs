@@ -46,17 +46,17 @@ namespace Final_Bomber.Screens
             base.Initialize();
 
             // Net
-            if (GameRef.server == null || !GameRef.server.HasStarted)
+            if (GameRef.Server == null || !GameRef.Server.HasStarted)
             {
                 hasLoggedIn = false;
                 hasConnected = false;
                 tick = TimeSpan.FromSeconds(5);
 
-                GameRef.server = new MainServer();
+                GameRef.Server = new MainServer();
 
                 try
                 {
-                    GameRef.server.StartMainConnection();
+                    GameRef.Server.StartMainConnection();
                 }
                 catch (TypeInitializationException)
                 {
@@ -77,8 +77,8 @@ namespace Final_Bomber.Screens
             // Net
             if(!hasConnected)
             {
-                GameRef.server.RunMainConnection();
-                if (GameRef.server.Connected)
+                GameRef.Server.RunMainConnection();
+                if (GameRef.Server.Connected)
                     hasConnected = true;
                 else
                 {
@@ -153,8 +153,8 @@ namespace Final_Bomber.Screens
         private void Exit()
         {
             StateManager.ChangeState(GameRef.GameModeMenuScreen);
-            if (GameRef.server.HasStarted)
-                GameRef.server.EndMainConnection("Bye");
+            if (GameRef.Server.HasStarted)
+                GameRef.Server.EndMainConnection("Bye");
         }
 
         #endregion

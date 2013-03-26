@@ -12,19 +12,19 @@ namespace Final_Bomber.Sprites
     {
         #region Field Region
 
-        Dictionary<AnimationKey, Animation> animations;
-        AnimationKey currentAnimation;
-        bool isAnimating;
+        readonly Dictionary<AnimationKey, Animation> _animations;
+        AnimationKey _currentAnimation;
+        bool _isAnimating;
 
-        Texture2D texture;
-        Vector2 position;
-        private Point cellPosition;
-        Vector2 velocity;
-        float speed = 2.5f;
+        readonly Texture2D _texture;
+        Vector2 _position;
+        private Point _cellPosition;
+        Vector2 _velocity;
+        float _speed = 2.5f;
 
-        Animation animation;
+        readonly Animation _animation;
 
-        bool controlable;
+        readonly bool _controlable;
 
         #endregion
 
@@ -32,17 +32,17 @@ namespace Final_Bomber.Sprites
 
         public AnimationKey CurrentAnimation
         {
-            get { return currentAnimation; }
-            set { currentAnimation = value; }
+            get { return _currentAnimation; }
+            set { _currentAnimation = value; }
         }
 
         public Animation[] Animations
         {
             get 
             {
-                Animation[] anim = new Animation[animations.Count]; 
+                Animation[] anim = new Animation[_animations.Count]; 
                 int i = 0;
-                foreach (Animation a in animations.Values)
+                foreach (Animation a in _animations.Values)
                 {
                     anim[i] = a;
                     i++;
@@ -53,23 +53,23 @@ namespace Final_Bomber.Sprites
 
         public Animation Animation
         {
-            get { return animation; }
+            get { return _animation; }
         }
 
         public bool IsAnimating
         {
-            get { return isAnimating; }
-            set { isAnimating = value; }
+            get { return _isAnimating; }
+            set { _isAnimating = value; }
         }
 
         public int Width
         {
             get 
             {
-                if (controlable)
-                    return animations[currentAnimation].FrameWidth;
+                if (_controlable)
+                    return _animations[_currentAnimation].FrameWidth;
                 else
-                    return animation.FrameWidth;
+                    return _animation.FrameWidth;
             }
         }
 
@@ -77,10 +77,10 @@ namespace Final_Bomber.Sprites
         {
             get 
             {
-                if (controlable)
-                    return animations[currentAnimation].FrameHeight;
+                if (_controlable)
+                    return _animations[_currentAnimation].FrameHeight;
                 else
-                    return animation.FrameHeight;
+                    return _animation.FrameHeight;
             }
         }
 
@@ -91,52 +91,52 @@ namespace Final_Bomber.Sprites
 
         public float Speed
         {
-            get { return speed; }
-            set { speed = MathHelper.Clamp(value, Config.PlayerSpeedIncrementeur, Config.MaxSpeed); }
+            get { return _speed; }
+            set { _speed = MathHelper.Clamp(value, Config.PlayerSpeedIncrementeur, Config.MaxSpeed); }
         }
 
         public Vector2 Position
         {
-            get { return position; }
+            get { return _position; }
             set
-            { position = value; }
+            { _position = value; }
         }
 
         public float PositionX
         {
-            set {  position.X = value; }
-            get { return position.X; }
+            set {  _position.X = value; }
+            get { return _position.X; }
         }
 
         public float PositionY
         {
-            set { position.Y = value; }
-            get { return position.Y; }
+            set { _position.Y = value; }
+            get { return _position.Y; }
         }
 
         public int CellPositionX
         {
-            set { cellPosition.X = value; }
+            set { _cellPosition.X = value; }
         }
 
         public int CellPositionY
         {
-            set { cellPosition.Y = value; }
+            set { _cellPosition.Y = value; }
         }
 
         public Point CellPosition
         {
-            get { return cellPosition; }
+            get { return _cellPosition; }
         }
 
         public Vector2 Velocity
         {
-            get { return velocity; }
+            get { return _velocity; }
             set
             {
-                velocity = value;
-                if (velocity != Vector2.Zero)
-                    velocity.Normalize();
+                _velocity = value;
+                if (_velocity != Vector2.Zero)
+                    _velocity.Normalize();
             }
         }
 
@@ -146,24 +146,24 @@ namespace Final_Bomber.Sprites
 
         public AnimatedSprite(Texture2D sprite, Dictionary<AnimationKey, Animation> animation, Vector2 position)
         {
-            texture = sprite;
-            animations = new Dictionary<AnimationKey, Animation>();
+            _texture = sprite;
+            _animations = new Dictionary<AnimationKey, Animation>();
 
             foreach (AnimationKey key in animation.Keys)
-                animations.Add(key, (Animation)animation[key].Clone());
+                _animations.Add(key, (Animation)animation[key].Clone());
 
-            controlable = true;
-            this.position = position;
-            cellPosition = Engine.VectorToCell(position, Dimension);
+            _controlable = true;
+            this._position = position;
+            _cellPosition = Engine.VectorToCell(position, Dimension);
         }
 
         public AnimatedSprite(Texture2D sprite, Animation animation, Vector2 position)
         {
-            texture = sprite;
-            this.animation = animation;
-            controlable = false;
-            this.position = position;
-            cellPosition = Engine.VectorToCell(position, Dimension);
+            _texture = sprite;
+            this._animation = animation;
+            _controlable = false;
+            this._position = position;
+            _cellPosition = Engine.VectorToCell(position, Dimension);
         }
 
         #endregion
@@ -172,39 +172,35 @@ namespace Final_Bomber.Sprites
 
         public void Update(GameTime gameTime)
         {
-            if (controlable)
+            if (_controlable)
             {
-                if (isAnimating)
-                    animations[currentAnimation].Update(gameTime);
+                if (_isAnimating)
+                    _animations[_currentAnimation].Update(gameTime);
                 else
-                    animations[currentAnimation].Reset();
+                    _animations[_currentAnimation].Reset();
             }
             else
             {
-                if (isAnimating)
-                    animation.Update(gameTime);
+                if (_isAnimating)
+                    _animation.Update(gameTime);
                 else
-                    animation.Reset();
+                    _animation.Reset();
             }
 
-            cellPosition = Engine.VectorToCell(position, Dimension);
+            _cellPosition = Engine.VectorToCell(_position, Dimension);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Rectangle? sourceRectangle;
-            if(controlable)
-                sourceRectangle = animations[currentAnimation].CurrentFrameRect;
-            else
-                sourceRectangle = animation.CurrentFrameRect;
+            Rectangle? sourceRectangle = _controlable ? _animations[_currentAnimation].CurrentFrameRect : _animation.CurrentFrameRect;
 
             if (Width != Engine.TileWidth || Height != Engine.TileHeight)
             {
                 spriteBatch.Draw(
-                    texture,
+                    _texture,
                     new Rectangle(
-                        (int)(Engine.Origin.X + position.X - Engine.TileWidth / 4),
-                        (int)(Engine.Origin.Y + position.Y - Engine.TileHeight / 2),
+                        (int)(Engine.Origin.X + _position.X - Engine.TileWidth / 4),
+                        (int)(Engine.Origin.Y + _position.Y - Engine.TileHeight / 2),
                         Engine.TileWidth + Engine.TileWidth / 2,
                         Engine.TileHeight + Engine.TileHeight / 2),
                     sourceRectangle,
@@ -213,51 +209,52 @@ namespace Final_Bomber.Sprites
             else
             {
                 spriteBatch.Draw(
-                texture,
-                new Vector2(Engine.Origin.X + position.X, Engine.Origin.Y + position.Y),
+                _texture,
+                new Vector2(Engine.Origin.X + _position.X, Engine.Origin.Y + _position.Y),
                 sourceRectangle,
                 Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
             }
         }
+
         #endregion
 
         #region Method Regions
 
         public void LockToMap()
         {
-            position.X = MathHelper.Clamp(position.X, 0, TileMap.WidthInPixels - Width);
-            position.Y = MathHelper.Clamp(position.Y, 0, TileMap.HeightInPixels - Height);
+            _position.X = MathHelper.Clamp(_position.X, 0, TileMap.WidthInPixels - Width);
+            _position.Y = MathHelper.Clamp(_position.Y, 0, TileMap.HeightInPixels - Height);
         }
 
         public void ChangeFramesPerSecond(int newValue)
         {
-            if (controlable)
+            if (_controlable)
             {
-                foreach (Animation a in animations.Values)
+                foreach (Animation a in _animations.Values)
                     a.FramesPerSecond = newValue;
             }
             else
-                animation.FramesPerSecond = newValue;
+                _animation.FramesPerSecond = newValue;
         }
 
         public void ChangePosition(Point p)
         {
-            cellPosition = p;
-            position = Engine.CellToVector(cellPosition);
+            _cellPosition = p;
+            _position = Engine.CellToVector(_cellPosition);
         }
 
         public void ChangePosition(int x, int y)
         {
-            cellPosition.X = x;
-            cellPosition.Y = y;
-            position = Engine.CellToVector(cellPosition);
+            _cellPosition.X = x;
+            _cellPosition.Y = y;
+            _position = Engine.CellToVector(_cellPosition);
         }
 
         public void ChangePosition(float x, float y)
         {
-            position.X = x;
-            position.Y = y;
-            cellPosition = Engine.VectorToCell(position);
+            _position.X = x;
+            _position.Y = y;
+            _cellPosition = Engine.VectorToCell(_position);
         }
         #endregion
     }

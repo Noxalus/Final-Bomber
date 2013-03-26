@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-
 using Final_Bomber.Screens;
 using Final_Bomber.Controls;
 using Final_Bomber.Net.MainServer;
@@ -18,12 +11,12 @@ namespace Final_Bomber
     public class FinalBomber : Microsoft.Xna.Framework.Game
     {
         // Password
-        string password;
-        SoundEffect debugModeEnabled;
+        string _password;
+        SoundEffect _debugModeEnabled;
 
         // Net
-        public MainServer server;
-        public bool hasLoggedIn = false;
+        public MainServer Server;
+        public bool HasLoggedIn = false;
 
         #region XNA Field Region
 
@@ -104,7 +97,7 @@ namespace Final_Bomber
 
             stateManager.ChangeState(TitleScreen);
 
-            password = "";
+            _password = "";
         }
 
         protected override void Initialize()
@@ -116,46 +109,46 @@ namespace Final_Bomber
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            debugModeEnabled = Content.Load<SoundEffect>("Audio/Sounds/boom");
+            _debugModeEnabled = Content.Load<SoundEffect>("Audio/Sounds/boom");
         }
 
         protected override void UnloadContent()
         {
-            if (server != null)
-                server.client.Disconnect("Bye");
+            if (Server != null)
+                Server.client.Disconnect("Bye");
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (InputHandler.KeyPressed(Keys.F) && password == "")
-                password += "F";
-            else if (InputHandler.KeyPressed(Keys.I) && password == "F")
-                password += "i";
-            else if (InputHandler.KeyPressed(Keys.N) && password == "Fi")
-                password += "n";
-            else if (InputHandler.KeyPressed(Keys.A) && password == "Fin")
-                password += "a";
-            else if (InputHandler.KeyPressed(Keys.L) && password == "Fina")
-                password += "l";
-            else if (InputHandler.KeyPressed(Keys.D6) && password == "Final")
-                password += "-";
-            else if (InputHandler.KeyPressed(Keys.B) && password == "Final-")
-                password += "B";
-            else if (InputHandler.KeyPressed(Keys.O) && password == "Final-B")
-                password += "o";
-            else if (InputHandler.KeyPressed(Keys.M) && password == "Final-Bo")
-                password += "m";
-            else if (InputHandler.KeyPressed(Keys.B) && password == "Final-Bom")
-                password += "b";
-            else if (InputHandler.KeyPressed(Keys.E) && password == "Final-Bomb")
-                password += "e";
-            else if (InputHandler.KeyPressed(Keys.R) && password == "Final-Bombe")
-                password += "r";
-            else if (password == "Final-Bomber")
+            if (InputHandler.KeyPressed(Keys.F) && _password == "")
+                _password += "F";
+            else if (InputHandler.KeyPressed(Keys.I) && _password == "F")
+                _password += "i";
+            else if (InputHandler.KeyPressed(Keys.N) && _password == "Fi")
+                _password += "n";
+            else if (InputHandler.KeyPressed(Keys.A) && _password == "Fin")
+                _password += "a";
+            else if (InputHandler.KeyPressed(Keys.L) && _password == "Fina")
+                _password += "l";
+            else if (InputHandler.KeyPressed(Keys.D6) && _password == "Final")
+                _password += "-";
+            else if (InputHandler.KeyPressed(Keys.B) && _password == "Final-")
+                _password += "B";
+            else if (InputHandler.KeyPressed(Keys.O) && _password == "Final-B")
+                _password += "o";
+            else if (InputHandler.KeyPressed(Keys.M) && _password == "Final-Bo")
+                _password += "m";
+            else if (InputHandler.KeyPressed(Keys.B) && _password == "Final-Bom")
+                _password += "b";
+            else if (InputHandler.KeyPressed(Keys.E) && _password == "Final-Bomb")
+                _password += "e";
+            else if (InputHandler.KeyPressed(Keys.R) && _password == "Final-Bombe")
+                _password += "r";
+            else if (_password == "Final-Bomber")
             {
-                debugModeEnabled.Play();
+                _debugModeEnabled.Play();
                 Config.Debug = !Config.Debug;
-                password = "";
+                _password = "";
             }
             base.Update(gameTime);
         }

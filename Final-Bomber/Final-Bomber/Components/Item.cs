@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
+using Final_Bomber.Screens;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.TileEngine;
 
 namespace Final_Bomber.Components
 {
@@ -51,7 +47,7 @@ namespace Final_Bomber.Components
         {
             gameRef = game;
 
-            type = Config.ItemTypeAvaible[gameRef.GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
+            type = Config.ItemTypeAvaible[GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
 
             Dictionary<AnimationKey, Animation> animations = new Dictionary<AnimationKey, Animation>();
             Animation animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[type] * 32, 5);
@@ -111,7 +107,7 @@ namespace Final_Bomber.Components
                     break;
                 // Skeleton ! => Bad items
                 case ItemType.BadItem:
-                    int randomBadEffect = gameRef.GamePlayScreen.Random.Next(Config.BadItemEffectList.Count);
+                    int randomBadEffect = GamePlayScreen.Random.Next(Config.BadItemEffectList.Count);
                     p.ApplyBadItem(Config.BadItemEffectList[randomBadEffect]);
                     break;
                 // More points

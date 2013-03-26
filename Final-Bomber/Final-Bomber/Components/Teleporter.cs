@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Final_Bomber.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Sprites;
@@ -73,7 +70,7 @@ namespace Final_Bomber.Components
                 while (position == Sprite.CellPosition)
                 {
                     position = gameRef.GamePlayScreen.TeleporterList[
-                    gameRef.GamePlayScreen.Random.Next(gameRef.GamePlayScreen.TeleporterList.Count)].
+                    GamePlayScreen.Random.Next(gameRef.GamePlayScreen.TeleporterList.Count)].
                     Sprite.CellPosition;
                 }
 

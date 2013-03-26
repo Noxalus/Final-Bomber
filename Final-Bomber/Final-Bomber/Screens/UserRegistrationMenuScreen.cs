@@ -52,7 +52,7 @@ namespace Final_Bomber.Screens
         public override void Initialize()
         {
             menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, Config.Resolutions[Config.IndexResolution, 1] / 4);
-            GameRef.server.CreatedAccount += new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
+            GameRef.Server.CreatedAccount += new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
 
             prevPressedKeys = new Keys[50];
             pressedKeys = new Keys[50];
@@ -140,7 +140,7 @@ namespace Final_Bomber.Screens
                             {
                                 if (login[0].Length < 20)
                                 {
-                                    GameRef.server.SendCreateAccount(login[0], login[1]);
+                                    GameRef.Server.SendCreateAccount(login[0], login[1]);
                                 }
                                 else
                                 {
@@ -176,7 +176,7 @@ namespace Final_Bomber.Screens
                 IndexMenuGoDown();
             }
 
-            GameRef.server.RunMainConnection();
+            GameRef.Server.RunMainConnection();
 
             base.Update(gameTime);
         }
@@ -308,7 +308,7 @@ namespace Final_Bomber.Screens
 
         private void Exit()
         {
-            GameRef.server.CreatedAccount -= new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
+            GameRef.Server.CreatedAccount -= new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
             StateManager.ChangeState(GameRef.UserMenuScreen);
         }
 
