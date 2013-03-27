@@ -8,18 +8,7 @@ namespace Final_Bomber.Controls
     {
         #region Field Region
 
-        protected Color color;
-        protected bool enabled;
-        protected bool hasFocus;
-        protected string name;
-        protected Vector2 position;
-        protected Vector2 size;
-        protected SpriteFont spriteFont;
-        protected bool tabStop;
-        protected string text;
-        protected string type;
-        protected object value;
-        protected bool visible;
+        private Vector2 _position;
 
         #endregion
 
@@ -31,88 +20,45 @@ namespace Final_Bomber.Controls
 
         #region Property Region
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        public string Name { get; set; }
 
-        public string Text
-        {
-            get { return text; }
-            set { text = value; }
-        }
+        public string Text { get; set; }
 
-        public Vector2 Size
-        {
-            get { return size; }
-            set { size = value; }
-        }
+        public Vector2 Size { get; set; }
 
         public Vector2 Position
         {
-            get { return position; }
+            get { return _position; }
             set
             {
-                position = value;
-                position.Y = (int) position.Y;
+                _position = value;
+                _position.Y = (int) _position.Y;
             }
         }
 
-        public object Value
-        {
-            get { return value; }
-            set { this.value = value; }
-        }
+        public object Value { get; set; }
 
-        public virtual bool HasFocus
-        {
-            get { return hasFocus; }
-            set { hasFocus = value; }
-        }
+        public virtual bool HasFocus { get; set; }
 
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
+        public bool Enabled { get; private set; }
 
-        public bool Visible
-        {
-            get { return visible; }
-            set { visible = value; }
-        }
+        public bool Visible { get; private set; }
 
-        public bool TabStop
-        {
-            get { return tabStop; }
-            set { tabStop = value; }
-        }
+        public bool TabStop { get; private set; }
 
-        public SpriteFont SpriteFont
-        {
-            get { return spriteFont; }
-            set { spriteFont = value; }
-        }
+        private SpriteFont SpriteFont { get; set; }
 
-        public Color Color
-        {
-            get { return color; }
-            set { color = value; }
-        }
+        private Color Color { get; set; }
 
-        public string Type
-        {
-            get { return type; }
-            set { type = value; }
-        }
+        public string Type { get; set; }
 
         #endregion
 
         #region Constructor Region
 
-        protected Control()
+        protected Control(bool tabStop)
         {
+            TabStop = tabStop;
             Color = Color.White;
             Enabled = true;
             Visible = true;

@@ -445,11 +445,11 @@ namespace Final_Bomber.Components
                                 {
                                     if (this.CurrentBombNumber > 0)
                                     {
-                                        Bomb bo = _gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                                        var bo = _gameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                                         if (bo == null)
                                         {
                                             this.CurrentBombNumber--;
-                                            Bomb bomb = new Bomb(_gameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                                            var bomb = new Bomb(_gameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
                                             if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                                 Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Player)
@@ -699,7 +699,7 @@ namespace Final_Bomber.Components
                 if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Item)
                 {
-                    Item item = (Item)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                    var item = (Item)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
                     if (!item.InDestruction)
                     {
@@ -746,7 +746,7 @@ namespace Final_Bomber.Components
                 if (!_cellTeleporting && _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
                 {
-                    Teleporter teleporter = (Teleporter)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                    var teleporter = (Teleporter)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
 
                     teleporter.ChangePosition(this);
@@ -824,7 +824,7 @@ namespace Final_Bomber.Components
                             bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
                             if (bombPosition.Y < _mapSize.Y)
                             {
-                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                var bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                                 _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
@@ -842,7 +842,7 @@ namespace Final_Bomber.Components
                             bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
                             if (bombPosition.Y >= 0)
                             {
-                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                var bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                                 _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
@@ -860,7 +860,7 @@ namespace Final_Bomber.Components
                             bombPosition.X = Sprite.CellPosition.X + lag + 3;
                             if (bombPosition.X < _mapSize.X)
                             {
-                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                var bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                                 _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
@@ -878,7 +878,7 @@ namespace Final_Bomber.Components
                             bombPosition.X = Sprite.CellPosition.X - lag - 3;
                             if (bombPosition.X >= 0)
                             {
-                                Bomb bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                                var bomb = new Bomb(_gameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                                 level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                                 _gameRef.GamePlayScreen.BombList.Add(bomb);
                                 level.Map[bombPosition.X, bombPosition.Y] = bomb;
@@ -940,7 +940,7 @@ namespace Final_Bomber.Components
 
         public override void Draw(GameTime gameTime)
         {
-            Vector2 playerNamePosition = new Vector2(
+            var playerNamePosition = new Vector2(
                 Sprite.Position.X + Engine.Origin.X + Sprite.Width/2 - 
                 ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id - 1]).X / 2 + 5,
                 Sprite.Position.Y + Engine.Origin.Y - 25 - 
@@ -1078,7 +1078,7 @@ namespace Final_Bomber.Components
                     break;
                 case BadItemEffect.KeysInversion:
                     this._keysSaved = (Keys[])this._keys.Clone();
-                    int[] inversedKeysArray = new int[] { 1, 0, 3, 2 };
+                    var inversedKeysArray = new int[] { 1, 0, 3, 2 };
                     for (int i = 0; i < inversedKeysArray.Length; i++)
                         this._keys[i] = this._keysSaved[inversedKeysArray[i]];
                     break;

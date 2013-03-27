@@ -11,106 +11,106 @@ namespace Final_Bomber.Components
     public class SuddenDeath
     {
         #region Field Region
-        private FinalBomber gameRef;
-        private Point mapSize;
-        private bool hasStarted;
-        private Texture2D suddenDeathShadow;
-        private Texture2D suddenDeathWall;
-        private Point currentPosition;
-        private Point previousPosition;
-        private TimeSpan timer;
-        private TimeSpan moveTime;
-        private LookDirection lookDirection;
-        private bool[,] visited;
+        private readonly FinalBomber _gameRef;
+        private Point _mapSize;
+        private bool _hasStarted;
+        private readonly Texture2D _suddenDeathShadow;
+        private readonly Texture2D _suddenDeathWall;
+        private Point _currentPosition;
+        private Point _previousPosition;
+        private TimeSpan _timer;
+        private TimeSpan _moveTime;
+        private LookDirection _lookDirection;
+        private readonly bool[,] _visited;
 
         // Map moving
-        private Vector2 nextMapPosition;
+        private Vector2 _nextMapPosition;
         #endregion
 
         #region Propery Region
 
         public bool HasStarted
         {
-            get { return hasStarted; }
+            get { return _hasStarted; }
         }
 
         public bool[,] Visited
         {
-            get { return visited; }
+            get { return _visited; }
         }
         #endregion
 
         #region Constructor Region
         public SuddenDeath(FinalBomber game, Point pos)
         {
-            gameRef = game;
-            hasStarted = false;
-            suddenDeathShadow = gameRef.Content.Load<Texture2D>("Graphics/Characters/suddenDeathShadow");
-            suddenDeathWall = gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            currentPosition = pos;
-            previousPosition = Point.Zero;
+            _gameRef = game;
+            _hasStarted = false;
+            _suddenDeathShadow = _gameRef.Content.Load<Texture2D>("Graphics/Characters/suddenDeathShadow");
+            _suddenDeathWall = _gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _currentPosition = pos;
+            _previousPosition = Point.Zero;
 
-            timer = TimeSpan.Zero;
-            moveTime = TimeSpan.FromSeconds(Config.SuddenDeathWallSpeed);
-            lookDirection = LookDirection.Right;
+            _timer = TimeSpan.Zero;
+            _moveTime = TimeSpan.FromSeconds(Config.SuddenDeathWallSpeed);
+            _lookDirection = LookDirection.Right;
 
-            mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;            
+            _mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;            
 
-            visited = new bool[mapSize.X, mapSize.Y];
-            for (int i = 0; i < mapSize.X; i++)
+            _visited = new bool[_mapSize.X, _mapSize.Y];
+            for (int i = 0; i < _mapSize.X; i++)
             {
-                visited[i, 0] = true;
-                visited[i, mapSize.Y - 1] = true;
+                _visited[i, 0] = true;
+                _visited[i, _mapSize.Y - 1] = true;
             }
-            for (int i = 0; i < mapSize.Y; i++)
+            for (int i = 0; i < _mapSize.Y; i++)
             {
-                visited[0, i] = true;
-                visited[mapSize.X - 1, i] = true;
+                _visited[0, i] = true;
+                _visited[_mapSize.X - 1, i] = true;
             }
 
             // Map moving
-            nextMapPosition = Vector2.Zero;
+            _nextMapPosition = Vector2.Zero;
         }
         #endregion
 
         #region XNA Method Region
         public void Update(GameTime gameTime)
         {
-            timer += gameTime.ElapsedGameTime;
+            _timer += gameTime.ElapsedGameTime;
 
-            if (!hasStarted && timer >= Config.SuddenDeathTimer)
+            if (!_hasStarted && _timer >= Config.SuddenDeathTimer)
             {
-                MediaPlayer.Play(gameRef.GamePlayScreen.MapSongHurry);
-                hasStarted = true;
-                timer = TimeSpan.Zero;
+                MediaPlayer.Play(_gameRef.GamePlayScreen.MapSongHurry);
+                _hasStarted = true;
+                _timer = TimeSpan.Zero;
             }
 
-            if (hasStarted)
+            if (_hasStarted)
             {
                 #region Walls
                 // We change sudden death's wall position
-                if (timer >= moveTime)
+                if (_timer >= _moveTime)
                 {
                     if (!AllVisited())
                     {
-                        visited[currentPosition.X, currentPosition.Y] = true;
-                        MapItem mapItem = gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                            Map[currentPosition.X, currentPosition.Y];
+                        _visited[_currentPosition.X, _currentPosition.Y] = true;
+                        MapItem mapItem = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                            Map[_currentPosition.X, _currentPosition.Y];
                         if (mapItem != null)
                         {
                             if (mapItem is Player)
                             {
                                 mapItem.Destroy();
-                                List<Player> pl = gameRef.GamePlayScreen.PlayerList.FindAll(p => p.Sprite.CellPosition == currentPosition);
+                                List<Player> pl = _gameRef.GamePlayScreen.PlayerList.FindAll(p => p.Sprite.CellPosition == _currentPosition);
                                 foreach (Player p in pl)
                                     p.Destroy();
                             }
                             else if (mapItem is Teleporter || mapItem is Arrow || mapItem is Bomb)
                             {
-                                List<Player> pl = gameRef.GamePlayScreen.PlayerList.FindAll(p => p.Sprite.CellPosition == currentPosition);
+                                List<Player> pl = _gameRef.GamePlayScreen.PlayerList.FindAll(p => p.Sprite.CellPosition == _currentPosition);
                                 foreach(Player p in pl)
                                     p.Destroy();
-                                List<Bomb> bl = gameRef.GamePlayScreen.BombList.FindAll(b => b.Sprite.CellPosition == currentPosition);
+                                List<Bomb> bl = _gameRef.GamePlayScreen.BombList.FindAll(b => b.Sprite.CellPosition == _currentPosition);
                                 foreach(Bomb b in bl)
                                     b.Remove();
                                 mapItem.Remove();
@@ -119,74 +119,66 @@ namespace Final_Bomber.Components
                                 mapItem.Remove();
                         }
 
-                        gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[currentPosition.X, currentPosition.Y] = true;
-                        UnbreakableWall u = new UnbreakableWall(gameRef, Engine.CellToVector(currentPosition));
-                        gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].Map[currentPosition.X, currentPosition.Y] = u;
-                        gameRef.GamePlayScreen.UnbreakableWallList.Add(u);
-                        timer = TimeSpan.Zero;
-                        previousPosition = currentPosition;
+                        _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[_currentPosition.X, _currentPosition.Y] = true;
+                        var u = new UnbreakableWall(_gameRef, Engine.CellToVector(_currentPosition));
+                        _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Map[_currentPosition.X, _currentPosition.Y] = u;
+                        _gameRef.GamePlayScreen.UnbreakableWallList.Add(u);
+                        _timer = TimeSpan.Zero;
+                        _previousPosition = _currentPosition;
 
-                        switch (lookDirection)
+                        switch (_lookDirection)
                         {
                             case LookDirection.Up:
-                                currentPosition.Y--;
-                                if (!visited[currentPosition.X, currentPosition.Y] &&
-                                    gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[currentPosition.X, currentPosition.Y] is UnbreakableWall)
+                                _currentPosition.Y--;
+                                if (!_visited[_currentPosition.X, _currentPosition.Y])
                                 {
-                                    visited[currentPosition.X, currentPosition.Y] = true;
-                                    if (visited[currentPosition.X, currentPosition.Y - 1])
-                                        lookDirection = LookDirection.Right;
+                                    _visited[_currentPosition.X, _currentPosition.Y] = true;
+                                    if (_visited[_currentPosition.X, _currentPosition.Y - 1])
+                                        _lookDirection = LookDirection.Right;
                                     else
-                                        currentPosition.Y--;
+                                        _currentPosition.Y--;
                                 }
-                                if (visited[currentPosition.X, currentPosition.Y - 1])
-                                    lookDirection = LookDirection.Right;
+                                if (_visited[_currentPosition.X, _currentPosition.Y - 1])
+                                    _lookDirection = LookDirection.Right;
                                 break;
                             case LookDirection.Down:
-                                currentPosition.Y++;
-                                if (!visited[currentPosition.X, currentPosition.Y] &&
-                                    gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[currentPosition.X, currentPosition.Y] is UnbreakableWall)
+                                _currentPosition.Y++;
+                                if (!_visited[_currentPosition.X, _currentPosition.Y])
                                 {
-                                    visited[currentPosition.X, currentPosition.Y] = true;
-                                    if (visited[currentPosition.X, currentPosition.Y + 1])
-                                        lookDirection = LookDirection.Left;
+                                    _visited[_currentPosition.X, _currentPosition.Y] = true;
+                                    if (_visited[_currentPosition.X, _currentPosition.Y + 1])
+                                        _lookDirection = LookDirection.Left;
                                     else
-                                        currentPosition.Y++;
+                                        _currentPosition.Y++;
                                 }
-                                if (visited[currentPosition.X, currentPosition.Y + 1])
-                                    lookDirection = LookDirection.Left;
+                                if (_visited[_currentPosition.X, _currentPosition.Y + 1])
+                                    _lookDirection = LookDirection.Left;
                                 break;
                             case LookDirection.Left:
-                                currentPosition.X--;
-                                if (!visited[currentPosition.X, currentPosition.Y] &&
-                                    gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[currentPosition.X, currentPosition.Y] is UnbreakableWall)
+                                _currentPosition.X--;
+                                if (!_visited[_currentPosition.X, _currentPosition.Y])
                                 {
-                                    visited[currentPosition.X, currentPosition.Y] = true;
-                                    if (visited[currentPosition.X - 1, currentPosition.Y])
-                                        lookDirection = LookDirection.Up;
+                                    _visited[_currentPosition.X, _currentPosition.Y] = true;
+                                    if (_visited[_currentPosition.X - 1, _currentPosition.Y])
+                                        _lookDirection = LookDirection.Up;
                                     else
-                                        currentPosition.X--;
+                                        _currentPosition.X--;
                                 }
-                                if (visited[currentPosition.X - 1, currentPosition.Y])
-                                    lookDirection = LookDirection.Up;
+                                if (_visited[_currentPosition.X - 1, _currentPosition.Y])
+                                    _lookDirection = LookDirection.Up;
                                 break;
                             case LookDirection.Right:
-                                currentPosition.X++;
-                                if (!visited[currentPosition.X, currentPosition.Y] &&
-                                    gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[currentPosition.X, currentPosition.Y] is UnbreakableWall)
+                                _currentPosition.X++;
+                                if (!_visited[_currentPosition.X, _currentPosition.Y])
                                 {
-                                    visited[currentPosition.X, currentPosition.Y] = true;
-                                    if (visited[currentPosition.X + 1, currentPosition.Y])
-                                        lookDirection = LookDirection.Down;
+                                    _visited[_currentPosition.X, _currentPosition.Y] = true;
+                                    if (_visited[_currentPosition.X + 1, _currentPosition.Y])
+                                        _lookDirection = LookDirection.Down;
                                     else
-                                        currentPosition.X++;
+                                        _currentPosition.X++;
                                 }
-                                if (visited[currentPosition.X + 1, currentPosition.Y])
-                                    lookDirection = LookDirection.Down;
+                                if (_visited[_currentPosition.X + 1, _currentPosition.Y])
+                                    _lookDirection = LookDirection.Down;
                                 break;
                         }
                     }
@@ -200,28 +192,28 @@ namespace Final_Bomber.Components
 
         public void Draw(GameTime gameTime)
         {
-            if (hasStarted && !AllVisited())
+            if (_hasStarted && !AllVisited())
             {
                 // Shadow
-                if (gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[currentPosition.X, currentPosition.Y] == null)
+                if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                    Map[_currentPosition.X, _currentPosition.Y] == null)
                 {
-                    gameRef.SpriteBatch.Draw(suddenDeathShadow,
-                        new Rectangle(currentPosition.X * Engine.TileWidth + (int)Engine.Origin.X, currentPosition.Y * Engine.TileHeight + (int)Engine.Origin.Y,
+                    _gameRef.SpriteBatch.Draw(_suddenDeathShadow,
+                        new Rectangle(_currentPosition.X * Engine.TileWidth + (int)Engine.Origin.X, _currentPosition.Y * Engine.TileHeight + (int)Engine.Origin.Y,
                             Engine.TileWidth, Engine.TileHeight),
                         new Rectangle(0, 0, Engine.TileWidth, Engine.TileHeight), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
                 }
 
                 // Previous wall
-                gameRef.SpriteBatch.Draw(suddenDeathWall,
-                    new Vector2(previousPosition.X * Engine.TileWidth + Engine.Origin.X,
-                        previousPosition.Y * Engine.TileHeight + Engine.Origin.Y),
+                _gameRef.SpriteBatch.Draw(_suddenDeathWall,
+                    new Vector2(_previousPosition.X * Engine.TileWidth + Engine.Origin.X,
+                        _previousPosition.Y * Engine.TileHeight + Engine.Origin.Y),
                     Color.White);
 
                 // Wall
-                gameRef.SpriteBatch.Draw(suddenDeathWall,
-                    new Vector2(currentPosition.X * Engine.TileWidth + Engine.Origin.X, 
-                        (((float)timer.Milliseconds / (float)moveTime.Milliseconds) * (float)currentPosition.Y) * Engine.TileHeight + Engine.Origin.Y), 
+                _gameRef.SpriteBatch.Draw(_suddenDeathWall,
+                    new Vector2(_currentPosition.X * Engine.TileWidth + Engine.Origin.X, 
+                        (((float)_timer.Milliseconds / (float)_moveTime.Milliseconds) * (float)_currentPosition.Y) * Engine.TileHeight + Engine.Origin.Y), 
                     Color.White);
             }
         }
@@ -232,17 +224,17 @@ namespace Final_Bomber.Components
         #region Private Method Region
         private bool AllVisited()
         {
-            for (int x = 1; x < mapSize.X - 2; x++)
-                for (int y = 1; y < mapSize.Y - 2; y++)
-                    if (!visited[x, y])
+            for (int x = 1; x < _mapSize.X - 2; x++)
+                for (int y = 1; y < _mapSize.Y - 2; y++)
+                    if (!_visited[x, y])
                         return false;
             return true;
         }
 
         private Vector2 NextMapPosition()
         {
-            return new Vector2(GamePlayScreen.Random.Next(gameRef.GraphicsDevice.Viewport.Width - (mapSize.X * Engine.TileWidth)),
-                GamePlayScreen.Random.Next(gameRef.GraphicsDevice.Viewport.Height - (mapSize.Y * Engine.TileHeight))); 
+            return new Vector2(GamePlayScreen.Random.Next(_gameRef.GraphicsDevice.Viewport.Width - (_mapSize.X * Engine.TileWidth)),
+                GamePlayScreen.Random.Next(_gameRef.GraphicsDevice.Viewport.Height - (_mapSize.Y * Engine.TileHeight))); 
         }
         #endregion
 

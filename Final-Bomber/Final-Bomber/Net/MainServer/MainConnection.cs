@@ -44,7 +44,7 @@ namespace Final_Bomber.Net.MainServer
 
         public void StartMainConnection()
         {
-            NetPeerConfiguration config = new NetPeerConfiguration("Final-Bomber");
+            var config = new NetPeerConfiguration("Final-Bomber");
             client = new NetClient(config);
             client.Start();
             client.Connect(IP, PORT);

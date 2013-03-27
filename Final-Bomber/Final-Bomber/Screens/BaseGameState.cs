@@ -43,10 +43,10 @@ namespace Final_Bomber.Screens
 
         protected override void LoadContent()
         {
-            ContentManager Content = Game.Content;
+            ContentManager content = Game.Content;
 
-            SpriteFont menuFont = Content.Load<SpriteFont>(@"Graphics\Fonts\ControlFont");
-            BigFont = Content.Load<SpriteFont>(@"Graphics\Fonts\BigFont");
+            var menuFont = content.Load<SpriteFont>(@"Graphics\Fonts\ControlFont");
+            BigFont = content.Load<SpriteFont>(@"Graphics\Fonts\BigFont");
             ControlManager = new ControlManager(menuFont);
 
             base.LoadContent();

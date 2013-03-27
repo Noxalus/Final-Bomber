@@ -275,7 +275,7 @@ namespace Final_Bomber.Screens
                             World.Levels[World.CurrentLevel].CollisionLayer[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = false;
                             if (Random.Next(0, 100) < MathHelper.Clamp(Config.ItemNumber, 0, 100))
                             {
-                                Item item = new Item(GameRef, _wallList[i].Sprite.Position);
+                                var item = new Item(GameRef, _wallList[i].Sprite.Position);
                                 _itemList.Add(item);
                                 World.Levels[World.CurrentLevel].Map[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = item;
                             }
@@ -322,18 +322,11 @@ namespace Final_Bomber.Screens
                         foreach (Point p in BombList[i].ActionField)
                         {
                             bool sameCellThanAnOther = false;
-                            foreach (Bomb b in BombList)
+                            if (BombList.Where(b => !(b.Sprite.CellPosition.X == BombList[i].Sprite.CellPosition.X &&
+                                                      b.Sprite.CellPosition.Y == BombList[i].Sprite.CellPosition.Y)).Any(b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
                             {
-                                if (!(b.Sprite.CellPosition.X == BombList[i].Sprite.CellPosition.X &&
-                                    b.Sprite.CellPosition.Y == BombList[i].Sprite.CellPosition.Y))
-                                {
-                                    if (b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero)
-                                    {
-                                        this.World.Levels[this.World.CurrentLevel].HazardMap[p.X, p.Y] = 2;
-                                        sameCellThanAnOther = true;
-                                        break;
-                                    }
-                                }
+                                this.World.Levels[this.World.CurrentLevel].HazardMap[p.X, p.Y] = 2;
+                                sameCellThanAnOther = true;
                             }
                             if (!sameCellThanAnOther)
                                 this.World.Levels[this.World.CurrentLevel].HazardMap[p.X, p.Y] = 0;
@@ -376,13 +369,9 @@ namespace Final_Bomber.Screens
                         List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
                         foreach (Bomb b in bl)
                         {
-                            foreach (Point po in b.ActionField)
+                            if (b.ActionField.Any(po => po == PlayerList[i].Sprite.CellPosition))
                             {
-                                if (po == PlayerList[i].Sprite.CellPosition)
-                                {
-                                    bombId = b.Id;
-                                    break;
-                                }
+                                bombId = b.Id;
                             }
                         }
                         // Suicide
@@ -408,7 +397,7 @@ namespace Final_Bomber.Screens
                         {
                             if (World.Levels[World.CurrentLevel].Map[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y] is Player)
                             {
-                                Player p = (Player)World.Levels[World.CurrentLevel].Map[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y];
+                                var p = (Player)World.Levels[World.CurrentLevel].Map[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y];
                                 if (p.Id == PlayerList[i].Id)
                                     World.Levels[World.CurrentLevel].Map[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y] = null;
                             }
@@ -621,7 +610,7 @@ namespace Final_Bomber.Screens
                     }
                 }
             }
-            else if (Config.Debug && Config.isThereAIPlayer && InputHandler.KeyDown(Keys.L))
+            else if (Config.Debug && Config.IsThereAIPlayer && InputHandler.KeyDown(Keys.L))
             {
                 int[,] costMatrix = AI.CostMatrix(
                     PlayerList[PlayerList.Count - 1].Sprite.CellPosition, 
@@ -1026,7 +1015,7 @@ namespace Final_Bomber.Screens
                 }
                 else if (Config.TeleporterPositionType == TeleporterPositionTypeEnum.PlusForm)
                 {
-                    Point[] teleporterPositions = new Point[]
+                    var teleporterPositions = new Point[]
                     {
                         new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), 1),
                         new Point(1, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2)),
@@ -1051,11 +1040,10 @@ namespace Final_Bomber.Screens
             {
                 if (Config.ArrowPositionType == ArrowPositionTypeEnum.Randomly)
                 {
-                    LookDirection[] lookDirectionArray = new LookDirection[] { LookDirection.Up, LookDirection.Down, LookDirection.Left, LookDirection.Right };
-                    int randomVoid = 0;
+                    var lookDirectionArray = new LookDirection[] { LookDirection.Up, LookDirection.Down, LookDirection.Left, LookDirection.Right };
                     for (int i = 0; i < MathHelper.Clamp(Config.ArrowNumber, 0, voidPosition.Count - 1); i++)
                     {
-                        randomVoid = Random.Next(voidPosition.Count);
+                        int randomVoid = Random.Next(voidPosition.Count);
                         mapItem = new Arrow(GameRef, new Vector2(
                             voidPosition[randomVoid].X * Engine.TileWidth,
                             voidPosition[randomVoid].Y * Engine.TileHeight),
@@ -1068,11 +1056,11 @@ namespace Final_Bomber.Screens
                 else if (Config.ArrowPositionType == ArrowPositionTypeEnum.SquareForm)
                 {
                     int outsideArrowsLag = 0;
-                    int ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5);
+                    var ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5);
                     if (ratio % 2 == 0)
                         outsideArrowsLag = 1;
 
-                    Point[] arrowPositions = new Point[]
+                    var arrowPositions = new Point[]
                     {
                         // ~~ Inside ~~ //
                         // Top left
@@ -1200,54 +1188,54 @@ namespace Final_Bomber.Screens
                 var streamReader = new StreamReader("Content/Maps/" + file);
                 string line = streamReader.ReadLine();
                 string[] lineSplit = line.Split(' ');
-                var Mapsize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
+                var parsedMapSize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
 
-                Point mapSize = new Point(Mapsize[0], Mapsize[1]);
-                List<Tileset> tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
+                var mapSize = new Point(parsedMapSize[0], parsedMapSize[1]);
+                var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
 
-                bool[,] collisionLayer = new bool[mapSize.X, mapSize.Y];
-                int[,] mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                MapItem[,] map = new MapItem[mapSize.X, mapSize.Y];
-                MapLayer layer = new MapLayer(mapSize.X, mapSize.Y);
-                List<Point> voidPosition = new List<Point>();
-                Dictionary<int, Point> playerPositions = new Dictionary<int, Point>();
+                var collisionLayer = new bool[mapSize.X, mapSize.Y];
+                var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
+                var map = new MapItem[mapSize.X, mapSize.Y];
+                var layer = new MapLayer(mapSize.X, mapSize.Y);
+                var voidPosition = new List<Point>();
+                var playerPositions = new Dictionary<int, Point>();
 
                 int j = 0;
-                int id = 0;
                 while (!streamReader.EndOfStream)
                 {
                     line = streamReader.ReadLine();
+                    Debug.Assert(line != null, "line != null");
                     lineSplit = line.Split(' ');
                     for (int i = 0; i < lineSplit.Length; i++)
                     {
-                        id = int.Parse(lineSplit[i]);
+                        int id = int.Parse(lineSplit[i]);
                         switch(id)
                         {
                             case 1:
-                                UnbreakableWall unbreakableWall = new UnbreakableWall(GameRef, Engine.CellToVector(new Point(i, j)));
+                                var unbreakableWall = new UnbreakableWall(GameRef, Engine.CellToVector(new Point(i, j)));
                                 map[i, j] = unbreakableWall;
                                 UnbreakableWallList.Add(unbreakableWall);
                                 collisionLayer[i, j] = true;
                                 break;
                             case 2:
-                                EdgeWall edgeWall = new EdgeWall(GameRef, Engine.CellToVector(new Point(i, j)));
+                                var edgeWall = new EdgeWall(GameRef, Engine.CellToVector(new Point(i, j)));
                                 map[i, j] = edgeWall;
                                 _edgeWallList.Add(edgeWall);
                                 collisionLayer[i, j] = true;
                                 break;
                             case 3:
-                                Wall wall = new Wall(GameRef, Engine.CellToVector(new Point(i, j)));
+                                var wall = new Wall(GameRef, Engine.CellToVector(new Point(i, j)));
                                 _wallList.Add(wall);
                                 map[i, j] = wall;
                                 collisionLayer[i, j] = true;
                                 break;
                             case 6:
-                                Teleporter teleporter = new Teleporter(GameRef, Engine.CellToVector(new Point(i, j)));
+                                var teleporter = new Teleporter(GameRef, Engine.CellToVector(new Point(i, j)));
                                 map[i, j] = teleporter;
                                 TeleporterList.Add(teleporter);
                                 break;
                             case 7:
-                                Arrow arrow = new Arrow(GameRef, Engine.CellToVector(new Point(i, j)), LookDirection.Down);
+                                var arrow = new Arrow(GameRef, Engine.CellToVector(new Point(i, j)), LookDirection.Down);
                                 ArrowList.Add(arrow);
                                 map[i, j] = arrow;
                                 break;
@@ -1262,11 +1250,10 @@ namespace Final_Bomber.Screens
                     j++;
                 }
 
-                List<MapLayer> mapLayers = new List<MapLayer>();
-                mapLayers.Add(layer);
+                var mapLayers = new List<MapLayer> {layer};
 
-                TileMap tileMap = new TileMap(tilesets, mapLayers);
-                Level level = new Level(mapSize, tileMap, map, collisionLayer);
+                var tileMap = new TileMap(tilesets, mapLayers);
+                var level = new Level(mapSize, tileMap, map, collisionLayer);
 
                 World = new World(GameRef, GameRef.ScreenRectangle);
                 World.Levels.Add(level);
@@ -1274,7 +1261,7 @@ namespace Final_Bomber.Screens
 
                 foreach (int playerId in playerPositions.Keys)
                 {
-                    Player player = new Player(Math.Abs(playerId), GameRef, 
+                    var player = new Player(Math.Abs(playerId), GameRef, 
                         Engine.CellToVector(new Point(playerPositions[playerId].X, playerPositions[playerId].Y)));
                     PlayerList.Add(player);
                     map[playerPositions[playerId].X, playerPositions[playerId].Y] = player;

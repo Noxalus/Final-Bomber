@@ -157,10 +157,7 @@ namespace Final_Bomber.Screens
             {
                 for (int i = 0; i < menuString.Length; i++)
                 {
-                    if (i == indexMenu)
-                        textColor = Color.Green;
-                    else
-                        textColor = Color.Black;
+                    textColor = i == indexMenu ? Color.Green : Color.Black;
 
                     GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
                         new Vector2(menuPosition.X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), textColor);

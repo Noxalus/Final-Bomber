@@ -15,12 +15,12 @@ namespace Final_Bomber.Screens
     public class ItemMenuScreen : BaseGameState
     {
         #region Field Region
-        Texture2D itemsTexture;
-        int indexMenu;
+        Texture2D _itemsTexture;
+        int _indexMenu;
 
         // Pulsation
-        float pulsationSpeed;
-        float pulsationDecrease;
+        float _pulsationSpeed;
+        float _pulsationDecrease;
         #endregion
 
         #region Property Region
@@ -40,16 +40,16 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            indexMenu = 0;
-            pulsationSpeed = 0;
-            pulsationDecrease = 0;
+            _indexMenu = 0;
+            _pulsationSpeed = 0;
+            _pulsationDecrease = 0;
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            itemsTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/item");
+            _itemsTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/item");
             base.LoadContent();
         }
 
@@ -62,27 +62,27 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyPressed(Keys.Enter))
             {
-                if (Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[indexMenu]))
-                    Config.ItemTypeAvaible.Remove(Config.ItemTypeArray[indexMenu]);
+                if (Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[_indexMenu]))
+                    Config.ItemTypeAvaible.Remove(Config.ItemTypeArray[_indexMenu]);
                 else
-                    Config.ItemTypeAvaible.Add(Config.ItemTypeArray[indexMenu]);
+                    Config.ItemTypeAvaible.Add(Config.ItemTypeArray[_indexMenu]);
             }
 
             if (InputHandler.KeyPressed(Keys.Left))
             {
-                if (indexMenu <= 0)
-                    indexMenu = Config.ItemTypeArray.Length - 1;
+                if (_indexMenu <= 0)
+                    _indexMenu = Config.ItemTypeArray.Length - 1;
                 else
-                    indexMenu--;
+                    _indexMenu--;
             }
             else if (InputHandler.KeyPressed(Keys.Right))
             {
-                indexMenu = (indexMenu + 1) % Config.ItemTypeArray.Length;
+                _indexMenu = (_indexMenu + 1) % Config.ItemTypeArray.Length;
             }
 
             // Pulsation
             float pulsationSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
-            pulsationDecrease = Math.Min(pulsationDecrease + pulsationSpeed, 1);
+            _pulsationDecrease = Math.Min(_pulsationDecrease + pulsationSpeed, 1);
 
             base.Update(gameTime);
         }
@@ -95,35 +95,29 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(GameRef.SpriteBatch);
 
-            int totalWidth = 40 * Config.ItemTypeArray.Length; 
-            Color textColor = Color.White;
+            int totalWidth = 40 * Config.ItemTypeArray.Length;
             for (int i = 0; i < Config.ItemTypeArray.Length; i++)
             {
                 float scale = 1f;
-                if (i == indexMenu)
+                Color textColor;
+                if (i == _indexMenu)
                 {
                     textColor = Color.Green;
                     // Pulsation
                     double time = gameTime.TotalGameTime.TotalSeconds;
                     float pulsation = (float)Math.Sin(time * 6) + 1;
-                    scale += pulsation * 0.05f * pulsationDecrease;
+                    scale += pulsation * 0.05f * _pulsationDecrease;
                 }
                 else
                     textColor = Color.White;
 
-                
-                if(Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[i]))
-                    GameRef.SpriteBatch.Draw(itemsTexture,
-                        new Vector2(40 * i + GameRef.ScreenRectangle.Width / 2 - totalWidth / 2, 
-                            GameRef.ScreenRectangle.Height / 2 - 32 / 2), 
-                        new Rectangle(0, i * 32, 32, 32), 
-                        textColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                else
-                    GameRef.SpriteBatch.Draw(itemsTexture,
-                        new Vector2(40 * i + GameRef.ScreenRectangle.Width / 2 - totalWidth / 2, 
-                            GameRef.ScreenRectangle.Height / 2 - 32 / 2), 
-                        new Rectangle(32, i * 32, 32, 32),
-                        textColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                GameRef.SpriteBatch.Draw(_itemsTexture,
+                                         new Vector2(40*i + GameRef.ScreenRectangle.Width/2 - totalWidth/2,
+                                                     GameRef.ScreenRectangle.Height/2 - 32/2),
+                                         Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[i])
+                                             ? new Rectangle(0, i*32, 32, 32)
+                                             : new Rectangle(32, i*32, 32, 32),
+                                         textColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             }
 
             GameRef.SpriteBatch.End();

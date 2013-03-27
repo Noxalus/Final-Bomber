@@ -16,12 +16,12 @@ namespace Final_Bomber.Components
     {
         #region Field Region
 
-        public override AnimatedSprite Sprite { get; protected set; }
+        public override sealed AnimatedSprite Sprite { get; protected set; }
 
-        private FinalBomber gameRef;
+        private readonly FinalBomber _gameRef;
 
-        private bool inDestruction;
-        private bool isAlive;
+        private bool _inDestruction;
+        private bool _isAlive;
 
         #endregion
 
@@ -29,12 +29,12 @@ namespace Final_Bomber.Components
 
         public bool IsAlive
         {
-            get { return isAlive; }
+            get { return _isAlive; }
         }
 
         public bool InDestruction
         {
-            get { return inDestruction; }
+            get { return _inDestruction; }
         }
 
         #endregion
@@ -42,16 +42,16 @@ namespace Final_Bomber.Components
         #region Constructor Region
         public Wall(FinalBomber game, Vector2 position)
         {
-            this.gameRef = game;
+            this._gameRef = game;
 
-            Dictionary<AnimationKey, Animation> animations = new Dictionary<AnimationKey, Animation>();
+            var animations = new Dictionary<AnimationKey, Animation>();
 
-            Texture2D spriteTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/wall");
-            Animation animation = new Animation(6, 32, 32, 0, 0, 20);
+            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/wall");
+            var animation = new Animation(6, 32, 32, 0, 0, 20);
 
             this.Sprite = new AnimatedSprite(spriteTexture, animation, position);
-            this.inDestruction = false;
-            this.isAlive = true;            
+            this._inDestruction = false;
+            this._isAlive = true;            
         }
         #endregion
 
@@ -63,13 +63,13 @@ namespace Final_Bomber.Components
             if (Sprite.Animation.CurrentFrame == Sprite.Animation.FrameCount - 1)
                 Remove();
 
-            if (inDestruction)
+            if (_inDestruction)
                 this.Sprite.IsAnimating = true;
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
         }
         #endregion
 
@@ -77,14 +77,14 @@ namespace Final_Bomber.Components
 
         public override void Destroy()
         {
-            if(!this.inDestruction)
-                this.inDestruction = true;
+            if(!this._inDestruction)
+                this._inDestruction = true;
         }
 
         public override void Remove()
         {
-            this.isAlive = false;
-            this.inDestruction = false;
+            this._isAlive = false;
+            this._inDestruction = false;
         }
 
         #endregion

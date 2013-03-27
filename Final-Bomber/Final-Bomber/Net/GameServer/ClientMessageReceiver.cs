@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Net
+namespace Final_Bomber.Net.GameServer
 {
     public partial class GameServer
     {
@@ -24,12 +20,12 @@ namespace Final_Bomber.Net
         }
         #endregion
 
-        public void RecieveLoggedIn(byte status)
+        private void RecieveLoggedIn(byte status)
         {
             OnLoggedIn(status);
         }
 
-        public string RecieveCreatedAccount(int status)
+        private string RecieveCreatedAccount(int status)
         {
             switch (status)
             {
@@ -51,7 +47,8 @@ namespace Final_Bomber.Net
                 HostedGames(ip, name, map, ping, maxplayers, players);
         }
         #endregion
-        public void RecieveHostedGames(string game)
+
+        private void RecieveHostedGames(string game)
         {
             if (game != "END")
             {
@@ -59,7 +56,7 @@ namespace Final_Bomber.Net
             }
         }
 
-        public bool RecieveCurrentVersion(string version)
+        private bool RecieveCurrentVersion(string version)
         {
             /*
             string VERSION = Program.VERSION;
@@ -82,19 +79,22 @@ namespace Final_Bomber.Net
                 Stats(args);
         }
         #endregion
-        public void RecieveStats()
+
+        private void RecieveStats()
         {
-            PlayerStatsEventArgs args = new PlayerStatsEventArgs();
-            args.Burns = msgIn.ReadInt32();
-            args.Defeats = msgIn.ReadInt32();
-            args.ExplodeHits = msgIn.ReadInt32();
-            args.Kills = msgIn.ReadInt32();
-            args.PowerupsPicked = msgIn.ReadInt32();
-            args.SelfExplodeHits = msgIn.ReadInt32();
-            args.SelfKills = msgIn.ReadInt32();
-            args.TilesBlowned = msgIn.ReadInt32();
-            args.TileWalkDistance = msgIn.ReadInt32();
-            args.Wins = msgIn.ReadInt32();
+            var args = new PlayerStatsEventArgs
+                {
+                    Burns = msgIn.ReadInt32(),
+                    Defeats = msgIn.ReadInt32(),
+                    ExplodeHits = msgIn.ReadInt32(),
+                    Kills = msgIn.ReadInt32(),
+                    PowerupsPicked = msgIn.ReadInt32(),
+                    SelfExplodeHits = msgIn.ReadInt32(),
+                    SelfKills = msgIn.ReadInt32(),
+                    TilesBlowned = msgIn.ReadInt32(),
+                    TileWalkDistance = msgIn.ReadInt32(),
+                    Wins = msgIn.ReadInt32()
+                };
             OnStats(args);
         }
 
@@ -107,7 +107,8 @@ namespace Final_Bomber.Net
                 Ranking(ranknr, username, elo, clearRank);
         }
         #endregion
-        public void RecieveRanking()
+
+        private void RecieveRanking()
         {
             OnRanking(0, "", 0, true);
             int ranknr = 1;
@@ -140,15 +141,15 @@ namespace Final_Bomber.Net
         }
         #endregion
 
-        public void RecieveStartGame(bool gameInProgress)
+        private void RecieveStartGame(bool gameInProgress)
         {
             if (!gameInProgress)
             {
-                OnStartGame(gameInProgress, msgIn.ReadInt32(), msgIn.ReadFloat(), msgIn.ReadInt32());
+                OnStartGame(false, msgIn.ReadInt32(), msgIn.ReadFloat(), msgIn.ReadInt32());
             }
             else
             {
-                OnStartGame(gameInProgress, 0, 0, 0);
+                OnStartGame(true, 0, 0, 0);
             }
         }
 
@@ -162,7 +163,7 @@ namespace Final_Bomber.Net
         }
         #endregion
 
-        public void RecievePlayerInfo(int playerID, float moveSpeed, string username)
+        private void RecievePlayerInfo(int playerID, float moveSpeed, string username)
         {
             OnNewPlayer(playerID, moveSpeed, username);
         }
@@ -177,7 +178,7 @@ namespace Final_Bomber.Net
         }
         #endregion
 
-        public void RecieveRemovePlayer(int playerID)
+        private void RecieveRemovePlayer(int playerID)
         {
             OnRemovePlayer(playerID);
         }
@@ -192,13 +193,9 @@ namespace Final_Bomber.Net
         }
         #endregion
 
-        public void RecievePositionAndSpeed(float posx, float posy, byte action, int playerID)
+        private void RecievePositionAndSpeed(float posx, float posy, byte action, int playerID)
         {
-            MovePlayerArgs arg = new MovePlayerArgs();
-            arg.pos.X = posx;
-            arg.pos.Y = posy;
-            arg.action = action;
-            arg.playerID = playerID;
+            var arg = new MovePlayerArgs {Pos = {X = posx, Y = posy}, Action = action, PlayerID = playerID};
             OnMovePlayerAction(arg);
         }
 
@@ -212,16 +209,16 @@ namespace Final_Bomber.Net
         }
         #endregion
 
-        public void RecievePlacingBomb(int playerId, float xPos, float yPos)
+        private void RecievePlacingBomb(int playerID, float xPos, float yPos)
         {
-            OnPlantingBomb(playerId, xPos, yPos);
+            OnPlantingBomb(playerID, xPos, yPos);
         }
     }
 
     public class MovePlayerArgs
     {
-        public Vector2 pos = new Vector2();
-        public byte action = 0;
-        public int playerID = 0;
+        public Vector2 Pos = new Vector2();
+        public byte Action = 0;
+        public int PlayerID = 0;
     }
 }

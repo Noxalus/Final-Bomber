@@ -76,16 +76,15 @@ namespace Final_Bomber.TileEngine
                     (camera.Position.X + camera.ViewportRectangle.Width) * (1 / camera.Zoom),
                     (camera.Position.Y + camera.ViewportRectangle.Height) * (1 / camera.Zoom)));
 
-            Point min = new Point();
-            Point max = new Point();
+            var min = new Point();
+            var max = new Point();
 
             min.X = Math.Max(0, cameraPoint.X - 1);
             min.Y = Math.Max(0, cameraPoint.Y - 1);
             max.X = Math.Min(viewPoint.X + 1, Width);
             max.Y = Math.Min(viewPoint.Y + 1, Height);
 
-            Rectangle destination = new Rectangle(0, 0, Engine.TileWidth, Engine.TileHeight);
-            Tile tile;
+            var destination = new Rectangle(0, 0, Engine.TileWidth, Engine.TileHeight);
 
             for (int y = min.Y; y < max.Y; y++)
             {
@@ -93,7 +92,7 @@ namespace Final_Bomber.TileEngine
 
                 for (int x = min.X; x < max.X; x++)
                 {
-                    tile = GetTile(x, y);
+                    Tile tile = GetTile(x, y);
 
                     if (tile.TileIndex == -1 || tile.Tileset == -1)
                         continue;

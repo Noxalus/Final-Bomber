@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Final_Bomber.Net
+﻿namespace Final_Bomber.Net.GameServer
 {
     public partial class GameServer
     {

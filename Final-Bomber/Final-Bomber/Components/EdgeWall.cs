@@ -11,16 +11,16 @@ namespace Final_Bomber.Components
     public class EdgeWall : MapItem
     {
         #region Field Region
-        public override Sprites.AnimatedSprite Sprite { get; protected set; }
-        FinalBomber gameRef;
+        public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
+        readonly FinalBomber _gameRef;
         #endregion
 
         #region Constructor Region
         public EdgeWall(FinalBomber game, Vector2 position)
         {
-            this.gameRef = game;
-            Texture2D spriteTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            Animation animation = new Animation(0, 32, 32, 0, 0, 0);
+            this._gameRef = game;
+            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            var animation = new Animation(0, 32, 32, 0, 0, 0);
             Sprite = new Sprites.AnimatedSprite(spriteTexture, animation, position);
         }
         #endregion
@@ -34,7 +34,7 @@ namespace Final_Bomber.Components
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
         }
 
         #endregion

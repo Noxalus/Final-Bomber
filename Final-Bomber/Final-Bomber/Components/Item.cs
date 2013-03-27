@@ -13,31 +13,31 @@ namespace Final_Bomber.Components
     {
         #region Field Region
 
-        public override AnimatedSprite Sprite { get; protected set; }
+        public override sealed AnimatedSprite Sprite { get; protected set; }
 
-        private FinalBomber gameRef;
-        private ItemType type;
-        private bool inDestruction;
-        private bool isAlive;
+        private readonly FinalBomber _gameRef;
+        private readonly ItemType _type;
+        private bool _inDestruction;
+        private bool _isAlive;
 
-        AnimatedSprite itemDestroyAnimation;
+        readonly AnimatedSprite _itemDestroyAnimation;
         #endregion
 
         #region Property Region
 
         public bool IsAlive
         {
-            get { return isAlive; }
+            get { return _isAlive; }
         }
 
         public bool InDestruction
         {
-            get { return inDestruction; }
+            get { return _inDestruction; }
         }
 
         public ItemType Type
         {
-            get { return type; }
+            get { return _type; }
         }
 
         #endregion
@@ -45,24 +45,25 @@ namespace Final_Bomber.Components
         #region Constructor Region
         public Item(FinalBomber game, Vector2 position)
         {
-            gameRef = game;
+            _gameRef = game;
 
-            type = Config.ItemTypeAvaible[GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
+            _type = Config.ItemTypeAvaible[GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
 
-            Dictionary<AnimationKey, Animation> animations = new Dictionary<AnimationKey, Animation>();
-            Animation animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[type] * 32, 5);
+            var animations = new Dictionary<AnimationKey, Animation>();
+            var animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[_type] * 32, 5);
 
-            Texture2D spriteTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/item");
-            Sprite = new AnimatedSprite(spriteTexture, animation, position);
-            Sprite.IsAnimating = true;
+            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/item");
+            Sprite = new AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
 
-            Texture2D itemDestroyTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
+            var itemDestroyTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
             animation = new Animation(7, 31, 28, 0, 0, 8);
-            itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation, this.Sprite.Position);
-            itemDestroyAnimation.IsAnimating = false;
+            _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation, this.Sprite.Position)
+                {
+                    IsAnimating = false
+                };
 
-            inDestruction = false;
-            isAlive = true;
+            _inDestruction = false;
+            _isAlive = true;
         }
         #endregion
 
@@ -71,27 +72,27 @@ namespace Final_Bomber.Components
         {
             Sprite.Update(gameTime);
 
-            if (inDestruction)
+            if (_inDestruction)
             {
-                itemDestroyAnimation.Update(gameTime);
-                if (itemDestroyAnimation.Animation.CurrentFrame == itemDestroyAnimation.Animation.FrameCount - 1)
+                _itemDestroyAnimation.Update(gameTime);
+                if (_itemDestroyAnimation.Animation.CurrentFrame == _itemDestroyAnimation.Animation.FrameCount - 1)
                     Remove();
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
 
-            if (itemDestroyAnimation.IsAnimating)
-                itemDestroyAnimation.Draw(gameTime, gameRef.SpriteBatch);
+            if (_itemDestroyAnimation.IsAnimating)
+                _itemDestroyAnimation.Draw(gameTime, _gameRef.SpriteBatch);
         }
         #endregion
 
         #region Method Region
         public void ApplyItem(Player p)
         {
-            switch (type)
+            switch (_type)
             {
                 // More power
                 case ItemType.Power:
@@ -119,16 +120,16 @@ namespace Final_Bomber.Components
 
         public override void Destroy()
         {
-            if (!this.itemDestroyAnimation.IsAnimating)
+            if (!this._itemDestroyAnimation.IsAnimating)
             {
-                this.inDestruction = true;
-                this.itemDestroyAnimation.IsAnimating = true;
+                this._inDestruction = true;
+                this._itemDestroyAnimation.IsAnimating = true;
             }
         }
 
         public override void Remove()
         {
-            this.isAlive = false;
+            this._isAlive = false;
         }
         #endregion
     }

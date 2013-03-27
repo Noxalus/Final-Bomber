@@ -52,7 +52,7 @@ namespace Final_Bomber
              new Keys[]{ Keys.T, Keys.G, Keys.F, Keys.H, Keys.Y }
         };
 
-        public const bool isThereAIPlayer = true;
+        public const bool IsThereAIPlayer = true;
         public static readonly bool[] AIPlayers = new bool[] { true, true, true, true, true };
 
         // Joueur

@@ -51,11 +51,9 @@ namespace Final_Bomber.TileEngine
 
         public TileMap(Tileset tileset, MapLayer layer)
         {
-            tilesets = new List<Tileset>();
-            tilesets.Add(tileset);
+            tilesets = new List<Tileset> {tileset};
 
-            mapLayers = new List<MapLayer>();
-            mapLayers.Add(layer);
+            mapLayers = new List<MapLayer> {layer};
 
             mapWidth = mapLayers[0].Width;
             mapHeight = mapLayers[0].Height;

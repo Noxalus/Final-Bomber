@@ -9,24 +9,13 @@ namespace Final_Bomber.TileEngine
     {
         #region Field Region
 
-        int tileIndex;
-        int tileset;
-
         #endregion
 
         #region Property Region
 
-        public int TileIndex
-        {
-            get { return tileIndex; }
-            private set { tileIndex = value; }
-        }
+        public int TileIndex { get; private set; }
 
-        public int Tileset
-        {
-            get { return tileset; }
-            private set { tileset = value; }
-        }
+        public int Tileset { get; private set; }
 
         #endregion
 

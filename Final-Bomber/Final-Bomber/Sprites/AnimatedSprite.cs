@@ -40,7 +40,7 @@ namespace Final_Bomber.Sprites
         {
             get 
             {
-                Animation[] anim = new Animation[_animations.Count]; 
+                var anim = new Animation[_animations.Count]; 
                 int i = 0;
                 foreach (Animation a in _animations.Values)
                 {

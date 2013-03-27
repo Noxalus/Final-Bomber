@@ -11,46 +11,21 @@ namespace Final_Bomber.TileEngine
     {
         #region Fields and Properties
 
-        Texture2D image;
-        int tileWidthInPixels;
-        int tileHeightInPixels;
-        int tilesWide;
-        int tilesHigh;
         Rectangle[] sourceRectangles;
 
         #endregion
 
         #region Property Region
 
-        public Texture2D Texture
-        {
-            get { return image; }
-            private set { image = value; }
-        }
+        public Texture2D Texture { get; private set; }
 
-        public int TileWidth
-        {
-            get { return tileWidthInPixels; }
-            private set { tileWidthInPixels = value; }
-        }
+        public int TileWidth { get; private set; }
 
-        public int TileHeight
-        {
-            get { return tileHeightInPixels; }
-            private set { tileHeightInPixels = value; }
-        }
+        public int TileHeight { get; private set; }
 
-        public int TilesWide
-        {
-            get { return tilesWide; }
-            private set { tilesWide = value; }
-        }
+        public int TilesWide { get; private set; }
 
-        public int TilesHigh
-        {
-            get { return tilesHigh; }
-            private set { tilesHigh = value; }
-        }
+        public int TilesHigh { get; private set; }
 
         public Rectangle[] SourceRectangles
         {

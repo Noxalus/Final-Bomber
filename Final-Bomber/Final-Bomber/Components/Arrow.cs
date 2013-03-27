@@ -11,17 +11,17 @@ namespace Final_Bomber.Components
     public class Arrow : MapItem
     {
         #region Field Region
-        public override Sprites.AnimatedSprite Sprite { get; protected set; }
-        private FinalBomber gameRef;
-        private bool isAlive;
-        private LookDirection lookDirection;
+        public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
+        private readonly FinalBomber _gameRef;
+        private bool _isAlive;
+        private readonly LookDirection _lookDirection;
         #endregion
 
         #region Property Region
 
         public bool IsAlive
         {
-            get { return isAlive; }
+            get { return _isAlive; }
         }
 
         #endregion
@@ -29,12 +29,12 @@ namespace Final_Bomber.Components
         #region Constructor Region
         public Arrow(FinalBomber game, Vector2 position, LookDirection initialLookDirection)
         {
-            this.gameRef = game;
+            this._gameRef = game;
 
-            int animationFramesPerSecond = 10;
-            Dictionary<AnimationKey, Animation> animations = new Dictionary<AnimationKey, Animation>();
+            const int animationFramesPerSecond = 10;
+            var animations = new Dictionary<AnimationKey, Animation>();
 
-            Animation animation = new Animation(1, 32, 32, 0, 0, animationFramesPerSecond);
+            var animation = new Animation(1, 32, 32, 0, 0, animationFramesPerSecond);
             animations.Add(AnimationKey.Down, animation);
 
             animation = new Animation(1, 32, 32, 0, 32, animationFramesPerSecond);
@@ -46,14 +46,13 @@ namespace Final_Bomber.Components
             animation = new Animation(1, 32, 32, 0, 96, animationFramesPerSecond);
             animations.Add(AnimationKey.Up, animation);
 
-            Texture2D spriteTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/arrow");
-            Sprite = new Sprites.AnimatedSprite(spriteTexture, animations, position);
-            Sprite.IsAnimating = true;
+            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/arrow");
+            Sprite = new Sprites.AnimatedSprite(spriteTexture, animations, position) {IsAnimating = true};
 
-            lookDirection = initialLookDirection;
-            Sprite.CurrentAnimation = LookDirectionToAnimationKey(lookDirection);
+            _lookDirection = initialLookDirection;
+            Sprite.CurrentAnimation = LookDirectionToAnimationKey(_lookDirection);
 
-            isAlive = true;
+            _isAlive = true;
         }
         #endregion
 
@@ -66,7 +65,7 @@ namespace Final_Bomber.Components
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
         }
 
         #endregion
@@ -75,7 +74,7 @@ namespace Final_Bomber.Components
 
         private AnimationKey LookDirectionToAnimationKey(LookDirection lookDirection)
         {
-            AnimationKey animationKey = AnimationKey.Up;
+            var animationKey = AnimationKey.Up;
             switch (lookDirection)
             {
                 case LookDirection.Up:
@@ -101,7 +100,7 @@ namespace Final_Bomber.Components
         public void ChangeDirection(Bomb bomb)
         {
             Point nextPosition = bomb.Sprite.CellPosition;
-            switch (lookDirection)
+            switch (_lookDirection)
             {
                 case LookDirection.Up:
                     nextPosition.Y--;
@@ -117,10 +116,10 @@ namespace Final_Bomber.Components
                     break;
             }
 
-            if (!gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel].
+            if (!_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                 CollisionLayer[nextPosition.X, nextPosition.Y])
             {
-                bomb.ChangeDirection(lookDirection, -1);
+                bomb.ChangeDirection(_lookDirection, -1);
                 //bomb.ChangeSpeed(bomb.Sprite.Speed + Config.BombSpeedIncrementeur);
                 bomb.ResetTimer();
             }
@@ -135,7 +134,7 @@ namespace Final_Bomber.Components
 
         public override  void Remove()
         {
-            this.isAlive = false;
+            this._isAlive = false;
         }
         #endregion
     }

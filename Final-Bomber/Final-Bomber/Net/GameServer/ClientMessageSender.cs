@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Lidgren.Network;
+﻿using Lidgren.Network;
 
-namespace Final_Bomber.Net
+namespace Final_Bomber.Net.GameServer
 {
     public partial class GameServer
     {

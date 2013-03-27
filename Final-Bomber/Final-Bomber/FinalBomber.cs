@@ -60,10 +60,11 @@ namespace Final_Bomber
 
         public FinalBomber()
         {
-            graphics = new GraphicsDeviceManager(this);
-
-            graphics.PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0];
-            graphics.PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1];
+            graphics = new GraphicsDeviceManager(this)
+                {
+                    PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0],
+                    PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1]
+                };
 
             ScreenRectangle = new Rectangle(0, 0, Config.Resolutions[Config.IndexResolution, 0], Config.Resolutions[Config.IndexResolution, 1]);
 

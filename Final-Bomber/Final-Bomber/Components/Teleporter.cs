@@ -9,16 +9,16 @@ namespace Final_Bomber.Components
     public class Teleporter : MapItem
     {
         #region Field Region
-        public override Sprites.AnimatedSprite Sprite { get; protected set; }
-        private FinalBomber gameRef;
-        private bool isAlive;
+        public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
+        private readonly FinalBomber _gameRef;
+        private bool _isAlive;
         #endregion
 
         #region Property Region
 
         public bool IsAlive
         {
-            get { return isAlive; }
+            get { return _isAlive; }
         }
 
         #endregion
@@ -26,13 +26,12 @@ namespace Final_Bomber.Components
         #region Constructor Region
         public Teleporter(FinalBomber game, Vector2 position)
         {
-            this.gameRef = game;
-            Texture2D spriteTexture = gameRef.Content.Load<Texture2D>("Graphics/Characters/teleporter");
-            Animation animation = new Animation(2, 32, 32, 0, 0, 2);
-            Sprite = new Sprites.AnimatedSprite(spriteTexture, animation, position);
-            Sprite.IsAnimating = true;
+            this._gameRef = game;
+            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/teleporter");
+            var animation = new Animation(2, 32, 32, 0, 0, 2);
+            Sprite = new Sprites.AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
 
-            isAlive = true;
+            _isAlive = true;
         }
         #endregion
 
@@ -45,7 +44,7 @@ namespace Final_Bomber.Components
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
         }
 
         #endregion
@@ -55,31 +54,30 @@ namespace Final_Bomber.Components
         public void ChangePosition(MapItem mapItem)
         {
             bool allTeleporterCellTaken = true;
-            Point position = Point.Zero;
-            Level level = gameRef.GamePlayScreen.World.Levels[gameRef.GamePlayScreen.World.CurrentLevel];
-            for (int i = 0; i < gameRef.GamePlayScreen.TeleporterList.Count; i++)
+            Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
+            foreach (Teleporter t in _gameRef.GamePlayScreen.TeleporterList)
             {
-                position = gameRef.GamePlayScreen.TeleporterList[i].Sprite.CellPosition;
+                Point position = t.Sprite.CellPosition;
                 if (position != this.Sprite.CellPosition && level.Map[position.X, position.Y] is Teleporter)
                     allTeleporterCellTaken = false;
             }
 
             if (!allTeleporterCellTaken)
             {
-                position = Sprite.CellPosition;
+                Point position = Sprite.CellPosition;
                 while (position == Sprite.CellPosition)
                 {
-                    position = gameRef.GamePlayScreen.TeleporterList[
-                    GamePlayScreen.Random.Next(gameRef.GamePlayScreen.TeleporterList.Count)].
+                    position = _gameRef.GamePlayScreen.TeleporterList[
+                    GamePlayScreen.Random.Next(_gameRef.GamePlayScreen.TeleporterList.Count)].
                     Sprite.CellPosition;
                 }
 
-                if (mapItem is Bomb)
+                var bomb = mapItem as Bomb;
+                if (bomb != null)
                 {
-                    Bomb b = (Bomb)mapItem;
-                    b.ChangeSpeed(mapItem.Sprite.Speed + Config.BombSpeedIncrementeur);
-                    b.ResetTimer();
-                    b.Sprite.ChangePosition(position);
+                    bomb.ChangeSpeed(mapItem.Sprite.Speed + Config.BombSpeedIncrementeur);
+                    bomb.ResetTimer();
+                    bomb.Sprite.ChangePosition(position);
                 }
                 else
                     mapItem.Sprite.ChangePosition(position);
@@ -95,7 +93,7 @@ namespace Final_Bomber.Components
 
         public override  void Remove()
         {
-            this.isAlive = false;
+            this._isAlive = false;
         }
         #endregion
     }

@@ -31,7 +31,7 @@ namespace Final_Bomber.DataBase
             char[] delimiters = { '&' };
             string[] postPairs = postString.Split(delimiters);
 
-            Dictionary<string, string> postVariables = new Dictionary<string, string>();
+            var postVariables = new Dictionary<string, string>();
             foreach (string pair in postPairs)
             {
                 char[] keyDelimiters = { '=' };
@@ -54,7 +54,7 @@ namespace Final_Bomber.DataBase
                 string postString = dictionaryToPostString(postVariables);
                 byte[] postBytes = Encoding.ASCII.GetBytes(postString);
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                var webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = "POST";
                 webRequest.ContentType = "application/x-www-form-urlencoded";
                 webRequest.ContentLength = postBytes.Length;
@@ -63,13 +63,13 @@ namespace Final_Bomber.DataBase
                 postStream.Write(postBytes, 0, postBytes.Length);
                 postStream.Close();
 
-                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
 
                 Console.WriteLine(webResponse.StatusCode);
                 Console.WriteLine(webResponse.Server);
 
                 Stream responseStream = webResponse.GetResponseStream();
-                StreamReader responseStreamReader = new StreamReader(responseStream);
+                var responseStreamReader = new StreamReader(responseStream);
                 result = responseStreamReader.ReadToEnd();
             }
             catch (Exception ex)

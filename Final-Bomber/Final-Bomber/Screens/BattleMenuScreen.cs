@@ -257,7 +257,6 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(GameRef.SpriteBatch);
 
-            string text;
             int xLag = 0;
             int yLag = 0;
             for (int i = 0; i < menuString.Length; i++)
@@ -266,10 +265,7 @@ namespace Final_Bomber.Screens
                     yLag = i;
                 else if (i >= 2 && i <= 3)
                 {
-                    if (Config.MapSize.X >= 10)
-                        xLag = 70;
-                    else
-                        xLag = 60;
+                    xLag = Config.MapSize.X >= 10 ? 70 : 60;
                     if (i == 3)
                     {
                         if (Config.MapSize.Y >= 10)
@@ -301,7 +297,7 @@ namespace Final_Bomber.Screens
                 else if (i == 0)
                     xLag -= 30;
 
-                text = menuString[i];
+                string text = menuString[i];
 
                 Color textColor = Color.Black;
                 if (i == indexMenu)

@@ -76,19 +76,22 @@ namespace Final_Bomber.Net.MainServer
                 Stats(args);
         }
         #endregion
-        public void RecieveStats()
+
+        private void RecieveStats()
         {
-            PlayerStatsEventArgs args = new PlayerStatsEventArgs();
-            args.Burns = msgIn.ReadInt32();
-            args.Defeats = msgIn.ReadInt32();
-            args.ExplodeHits = msgIn.ReadInt32();
-            args.Kills = msgIn.ReadInt32();
-            args.PowerupsPicked = msgIn.ReadInt32();
-            args.SelfExplodeHits = msgIn.ReadInt32();
-            args.SelfKills = msgIn.ReadInt32();
-            args.TilesBlowned = msgIn.ReadInt32();
-            args.TileWalkDistance = msgIn.ReadInt32();
-            args.Wins = msgIn.ReadInt32();
+            var args = new PlayerStatsEventArgs
+                {
+                    Burns = msgIn.ReadInt32(),
+                    Defeats = msgIn.ReadInt32(),
+                    ExplodeHits = msgIn.ReadInt32(),
+                    Kills = msgIn.ReadInt32(),
+                    PowerupsPicked = msgIn.ReadInt32(),
+                    SelfExplodeHits = msgIn.ReadInt32(),
+                    SelfKills = msgIn.ReadInt32(),
+                    TilesBlowned = msgIn.ReadInt32(),
+                    TileWalkDistance = msgIn.ReadInt32(),
+                    Wins = msgIn.ReadInt32()
+                };
             OnStats(args);
         }
 
@@ -101,7 +104,8 @@ namespace Final_Bomber.Net.MainServer
                 Ranking(ranknr, username, elo, clearRank);
         }
         #endregion
-        public void RecieveRanking()
+
+        private void RecieveRanking()
         {
             OnRanking(0, "", 0, true);
             int ranknr = 1;

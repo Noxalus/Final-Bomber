@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Components.ArtificialIntelligence
@@ -8,7 +9,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
     {
         public static int[,] CostMatrix(Point origin, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
-            int[,] costMatrix = new int[mapSize.X, mapSize.Y];
+            var costMatrix = new int[mapSize.X, mapSize.Y];
 
             // We put all cells at the infinity
             for (int x = 0; x < mapSize.X; x++)
@@ -16,7 +17,6 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     costMatrix[x, y] = mapSize.X * mapSize.Y;
 
             var pos = new Point();
-            int counter = 0;
             int id = 0;
             var queue = new Queue<Point>();
 
@@ -26,7 +26,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
             while (queue.Count > 0)
             {
                 id++;
-                counter = queue.Count;
+                int counter = queue.Count;
                 for (int i = 0; i < counter; i++)
                 {
                     pos = queue.Dequeue();
@@ -86,11 +86,10 @@ namespace Final_Bomber.Components.ArtificialIntelligence
             }
             else
             {
-                var way = new List<Point>();
-                way.Add(goal);
+                var path = new List<Point> {goal};
                 int min = mapSize.X * mapSize.Y;
                 var lookDirection = LookDirection.Idle;
-                while (origin != goal && way.Count < 100)
+                while (origin != goal && path.Count < 100)
                 {
                     min = mapSize.X * mapSize.Y;
                     // Up
@@ -135,9 +134,9 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     }
 
                     if(goal != origin)
-                        way.Add(goal);
+                        path.Add(goal);
                 }
-                return way;
+                return path;
             }
         }
 
@@ -190,7 +189,6 @@ namespace Final_Bomber.Components.ArtificialIntelligence
         private static Point NearestSafeCell(Point position, bool[,] collisionLayer, int[,] hazardMap, int hazardLevel, Point mapSize)
         {
             var pos = new Point();
-            int counter = 0;
             var queue = new Queue<Point>();
             queue.Enqueue(position);
             var cell = Point.Zero;
@@ -198,7 +196,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
             int limit = 0;
             while (queue.Count > 0 && limit < 3)
             {
-                counter = queue.Count;
+                int counter = queue.Count;
                 for (int i = 0; i < counter; i++)
                 {
                     pos = queue.Dequeue();
@@ -274,7 +272,8 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     number++;
                 else if (map[position.X, position.Y - power] is Wall)
                 {
-                    Wall w = map[position.X, position.Y - power] as Wall;
+                    var w = map[position.X, position.Y - power] as Wall;
+                    Debug.Assert(w != null, "w != null");
                     if (hazardMap[position.X, position.Y - power] > 0 || w.InDestruction)
                         number++;
                 }
@@ -286,7 +285,8 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     number++;
                 else if (map[position.X, position.Y + power] is Wall)
                 {
-                    Wall w = map[position.X, position.Y + power] as Wall;
+                    var w = map[position.X, position.Y + power] as Wall;
+                    Debug.Assert(w != null, "w != null");
                     if (hazardMap[position.X, position.Y + power] > 0 || w.InDestruction)
                         number++;
                 }
@@ -298,7 +298,8 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     number++;
                 else if (map[position.X + power, position.Y] is Wall)
                 {
-                    Wall w = map[position.X + power, position.Y] as Wall;
+                    var w = map[position.X + power, position.Y] as Wall;
+                    Debug.Assert(w != null, "w != null");
                     if (hazardMap[position.X + power, position.Y] > 0 || w.InDestruction)
                         number++;
                 }
@@ -310,7 +311,8 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     number++;
                 else if (map[position.X - power, position.Y] is Wall)
                 {
-                    Wall w = map[position.X - power, position.Y] as Wall;
+                    var w = map[position.X - power, position.Y] as Wall;
+                    Debug.Assert(w != null, "w != null");
                     if (hazardMap[position.X - power, position.Y] > 0 || w.InDestruction)
                         number++;
                 }
@@ -326,13 +328,12 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                 if (EntityNear(position, power, map, hM, mapSize))
                 {
                     #region Compute the bomb's action field
-                    int dangerType = 1;
-                    List<Point> actionField = new List<Point>();
+                    const int dangerType = 1;
 
                     // We put the bomb in its action field
-                    actionField.Add(new Point(position.X, position.Y));
+                    var actionField = new List<Point> {new Point(position.X, position.Y)};
 
-                    int[,] hazardMap = new int[mapSize.X, mapSize.Y];
+                    var hazardMap = new int[mapSize.X, mapSize.Y];
 
                     for (int x = 0; x < mapSize.X; x++)
                         for (int y = 0; y < mapSize.Y; y++)
@@ -342,7 +343,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                         hazardMap[position.X, position.Y] = dangerType;
 
                     // 0 => Top, 1 => Bottom, 2 => Left, 3 => Right
-                    Dictionary<String, bool> obstacles = new Dictionary<String, bool> 
+                    var obstacles = new Dictionary<String, bool> 
                     { 
                         {"up", false}, 
                         {"down", false}, 
@@ -351,7 +352,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     };
 
                     int tempPower = power - 1;
-                    Point addPosition = Point.Zero;
+                    Point addPosition;
                     while (tempPower >= 0)
                     {
                         // Directions
@@ -441,20 +442,18 @@ namespace Final_Bomber.Components.ArtificialIntelligence
         {
             var interestMatrix = new int[mapSize.X, mapSize.Y];
             interestMatrix[position.X, position.Y] = -1;
-            var pos = new Point();
-            int counter = 0;
             int id = 0;
             var queue = new Queue<Point>();
             queue.Enqueue(position);
-            var cell = Point.Zero;
 
             while (queue.Count > 0)
             {
-                counter = queue.Count;
+                int counter = queue.Count;
                 for (int i = 0; i < counter; i++)
                 {
-                    pos = queue.Dequeue();
+                    Point pos = queue.Dequeue();
                     // Up
+                    Point cell;
                     if (pos.Y - 1 >= 0 && !collisionLayer[pos.X, pos.Y - 1] && interestMatrix[pos.X, pos.Y - 1] == 0)
                     {
                         cell = new Point(pos.X, pos.Y - 1);
