@@ -188,10 +188,8 @@ namespace Final_Bomber.Components.ArtificialIntelligence
 
         private static Point NearestSafeCell(Point position, bool[,] collisionLayer, int[,] hazardMap, int hazardLevel, Point mapSize)
         {
-            var pos = new Point();
             var queue = new Queue<Point>();
             queue.Enqueue(position);
-            var cell = Point.Zero;
 
             int limit = 0;
             while (queue.Count > 0 && limit < 3)
@@ -199,7 +197,9 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                 int counter = queue.Count;
                 for (int i = 0; i < counter; i++)
                 {
-                    pos = queue.Dequeue();
+                    Point pos = queue.Dequeue();
+                    Point cell;
+
                     // Up
                     if (pos.Y - 1 >= 0 && !collisionLayer[pos.X, pos.Y - 1])
                     {

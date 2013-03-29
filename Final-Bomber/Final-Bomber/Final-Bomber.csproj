@@ -243,7 +243,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Final-Bomber_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup />

@@ -120,8 +120,6 @@ namespace Final_Bomber.Screens
         public override void Initialize()
         {
             Random = new Random();
-            //PostHTTPRequest.postSynchronous("http://finalbomber.free.fr/scores/scores.php", 
-            //new Dictionary<string, string>() { { "score", random.Next(100).ToString() } });
 
             // FPS
             _elapseTime = 0f;
@@ -885,13 +883,21 @@ namespace Final_Bomber.Screens
                     Color.Blue);
             }
 
-            if (PlayerList[PlayerList.Count - 1].AIPath != null && PlayerList[PlayerList.Count - 1].AIPath.Count != 0)
+            // We draw a the path of each AI players
+            foreach (Player player in PlayerList)
             {
-                foreach (Point p in PlayerList[PlayerList.Count - 1].AIPath)
+                var aiPlayer = player as AIPlayer;
+                if (aiPlayer != null)
                 {
-                    GameRef.SpriteBatch.Draw(_cross, new Rectangle((int)(Engine.CellToVector(p).X + Engine.Origin.X), 
-                        (int)(Engine.CellToVector(p).Y + Engine.Origin.Y), 32, 32), 
-                        new Rectangle(0, 0, _cross.Width, _cross.Height), Color.White);
+                    if (aiPlayer.Path != null && aiPlayer.Path.Count > 0)
+                    {
+                        foreach (Point p in aiPlayer.Path)
+                        {
+                            GameRef.SpriteBatch.Draw(_cross, new Rectangle((int)(Engine.CellToVector(p).X + Engine.Origin.X),
+                                (int)(Engine.CellToVector(p).Y + Engine.Origin.Y), 32, 32),
+                                new Rectangle(0, 0, _cross.Width, _cross.Height), Color.White);
+                        }
+                    }
                 }
             }
 
@@ -1171,13 +1177,22 @@ namespace Final_Bomber.Screens
             World.Levels.Add(level);
             World.CurrentLevel = 0;
 
-            foreach (int playerId in playerPositions.Keys)
+            foreach (int playerID in playerPositions.Keys)
             {
-                var player = new Player(Math.Abs(playerId), GameRef,
-                    Engine.CellToVector(new Point(playerPositions[playerId].X, playerPositions[playerId].Y)));
-                PlayerList.Add(player);
-                map[playerPositions[playerId].X, playerPositions[playerId].Y] = player;
-
+                if (Config.AIPlayers[playerID])
+                {
+                    var player = new AIPlayer(Math.Abs(playerID), GameRef,
+                        Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
+                    PlayerList.Add(player);
+                    map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;    
+                }
+                else
+                {
+                    var player = new HumanPlayer(Math.Abs(playerID), GameRef,
+                    Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
+                    PlayerList.Add(player);
+                    map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
+                }
             }
         }
 
@@ -1259,13 +1274,24 @@ namespace Final_Bomber.Screens
                 World.Levels.Add(level);
                 World.CurrentLevel = 0;
 
-                foreach (int playerId in playerPositions.Keys)
+                foreach (int playerID in playerPositions.Keys)
                 {
-                    var player = new Player(Math.Abs(playerId), GameRef, 
-                        Engine.CellToVector(new Point(playerPositions[playerId].X, playerPositions[playerId].Y)));
-                    PlayerList.Add(player);
-                    map[playerPositions[playerId].X, playerPositions[playerId].Y] = player;
-
+                    if (Config.AIPlayers[playerID])
+                    {
+                        var player = new AIPlayer(Math.Abs(playerID), GameRef,
+                                                Engine.CellToVector(new Point(playerPositions[playerID].X,
+                                                                              playerPositions[playerID].Y)));
+                        PlayerList.Add(player);
+                        map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
+                    }
+                    else
+                    {
+                        var player = new HumanPlayer(Math.Abs(playerID), GameRef,
+                                                Engine.CellToVector(new Point(playerPositions[playerID].X,
+                                                                              playerPositions[playerID].Y)));
+                        PlayerList.Add(player);
+                        map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
+                    }
                 }
             }
             catch (Exception ex)

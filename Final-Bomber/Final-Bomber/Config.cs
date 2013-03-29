@@ -75,7 +75,7 @@ namespace Final_Bomber
         public const float PlayerSpeedIncrementeur = 0.25f;
         public const float BombSpeedIncrementeur = 1f;
 
-        public static bool PlayerCanPush = false;
+        public const bool PlayerCanPush = false;
         public static bool PlayerCanLaunch = false;
 
         public static bool DisplayName = true;
