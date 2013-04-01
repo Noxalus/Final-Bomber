@@ -14,6 +14,13 @@ namespace Final_Bomber.Components
 
         public override void Update(GameTime gameTime)
         {
+            
+
+            base.Update(gameTime);
+        }
+
+        protected override void Move()
+        {
             #region Moving input
             var motion = new Vector2();
             if (!Config.AIPlayers[Id - 1])
@@ -60,13 +67,13 @@ namespace Final_Bomber.Components
                 Sprite.IsAnimating = true;
                 motion.Normalize();
 
-                Vector2 nextPosition = Sprite.Position + motion*Sprite.Speed;
+                Vector2 nextPosition = Sprite.Position + motion * Sprite.Speed;
                 Point nextPositionCell = Engine.VectorToCell(nextPosition, Sprite.Dimension);
 
                 #region Moving of the player
 
                 // We move the player
-                Sprite.Position += motion*Sprite.Speed;
+                Sprite.Position += motion * Sprite.Speed;
 
                 // If the player want to go to top...
                 if (motion.Y == -1)
@@ -87,7 +94,7 @@ namespace Final_Bomber.Components
                                 Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                         }
                     }
-                        // ... and that there is no wall
+                    // ... and that there is no wall
                     else
                     {
                         // If he is more on the left side
@@ -95,14 +102,14 @@ namespace Final_Bomber.Components
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                         }
-                            // If he is more on the right side
+                        // If he is more on the right side
                         else if (IsMoreRightSide())
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                         }
                     }
                 }
-                    // If the player want to go to bottom and that there is a wall
+                // If the player want to go to bottom and that there is a wall
                 else if (motion.Y == 1)
                 {
                     // Wall at the bottom ?
@@ -128,14 +135,14 @@ namespace Final_Bomber.Components
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                         }
-                            // If he is more on the right side
+                        // If he is more on the right side
                         else if (IsMoreRightSide())
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                         }
                     }
                 }
-                    // If the player want to go to left and that there is a wall
+                // If the player want to go to left and that there is a wall
                 else if (motion.X == -1)
                 {
                     if (WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y)))
@@ -166,7 +173,7 @@ namespace Final_Bomber.Components
                         }
                     }
                 }
-                    // If the player want to go to right and that there is a wall
+                // If the player want to go to right and that there is a wall
                 else if (motion.X == 1)
                 {
                     if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
@@ -208,7 +215,7 @@ namespace Final_Bomber.Components
                 Sprite.IsAnimating = false;
             }
 
-            #endregion
+            UpdatePlayerPosition();
 
             #region Bomb
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) || (InputHandler.KeyPressed(Keys[4]) &&
@@ -237,7 +244,7 @@ namespace Final_Bomber.Components
             }
             #endregion
 
-            base.Update(gameTime);
+            #endregion
         }
     }
 }

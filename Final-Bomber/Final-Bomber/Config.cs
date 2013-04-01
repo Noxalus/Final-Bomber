@@ -53,7 +53,7 @@ namespace Final_Bomber
         };
 
         public const bool IsThereAIPlayer = true;
-        public static readonly bool[] AIPlayers = new bool[] { true, true, true, true, true };
+        public static readonly bool[] AIPlayers = new bool[] { false, true, true, true, true };
 
         // Joueur
         public static Color[] PlayersColor = new Color[] { Color.White, Color.White, Color.White, Color.White };
@@ -62,7 +62,7 @@ namespace Final_Bomber
         public const int BasePlayerBombPower = 1;
         public const float BasePlayerSpeed = 2.5f;
         public const float BaseBombSpeed = 3f;
-        public const int BasePlayerBombNumber = 10;
+        public const int BasePlayerBombNumber = 1;
 
         // Characteristics minimum and maximum
         public const float MaxSpeed = 30f;
@@ -150,7 +150,7 @@ namespace Final_Bomber
 
         // Sudden Death
         public static bool ActiveSuddenDeath = true;
-        public static TimeSpan SuddenDeathTimer = TimeSpan.FromSeconds(80);
+        public static TimeSpan SuddenDeathTimer = TimeSpan.FromSeconds(5);
         public static SuddenDeathTypeEnum SuddenDeathType = SuddenDeathTypeEnum.OnlyWall;
         public static float SuddenDeathCounterBombs = 0.3f;
         public static float SuddenDeathCounterWalls = 0.3f;

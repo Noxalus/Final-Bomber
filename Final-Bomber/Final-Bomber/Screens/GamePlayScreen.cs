@@ -1179,7 +1179,7 @@ namespace Final_Bomber.Screens
 
             foreach (int playerID in playerPositions.Keys)
             {
-                if (Config.AIPlayers[playerID])
+                if (Config.AIPlayers[playerID - 1])
                 {
                     var player = new AIPlayer(Math.Abs(playerID), GameRef,
                         Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));

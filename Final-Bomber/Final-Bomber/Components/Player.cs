@@ -178,40 +178,12 @@ namespace Final_Bomber.Components
                 #region Moving
 
                 _cellChanging = _previousCellPosition != Sprite.CellPosition;
-                
-                // # HUMAN PART # //
 
-                // # AI PART # //
-
-                #region Update player's position
-                if (_cellChanging)
-                {
-                    if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                       Map[_previousCellPosition.X, _previousCellPosition.Y] == this)
-                    {
-                        GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                            Map[_previousCellPosition.X, _previousCellPosition.Y] = null;
-                    }
-
-                    if (_cellTeleporting)
-                        _cellTeleporting = false;
-                }
-                else
-                {
-                    if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                        Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
-                    {
-                        GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                            Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
-                    }
-                }
-                #endregion
+                Move();
 
                 #endregion
 
                 #region Bomb
-
-                // # HUMAN PART # //
 
                 #region Push a bomb
 
@@ -579,6 +551,11 @@ namespace Final_Bomber.Components
             return this.Sprite.Position.X > ((this.Sprite.CellPosition.X * Engine.TileWidth) + (this.Sprite.Speed / 2));
         }
 
+
+        protected virtual void Move() 
+        { 
+        }
+
         protected void ComputeWallCollision()
         {
             #region Wall collisions
@@ -655,6 +632,34 @@ namespace Final_Bomber.Components
 
             #endregion
         }
+
+        protected void UpdatePlayerPosition()
+        {
+            #region Update player's position
+            if (_cellChanging)
+            {
+                if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                   Map[_previousCellPosition.X, _previousCellPosition.Y] == this)
+                {
+                    GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                        Map[_previousCellPosition.X, _previousCellPosition.Y] = null;
+                }
+
+                if (_cellTeleporting)
+                    _cellTeleporting = false;
+            }
+            else
+            {
+                if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
+                {
+                    GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                        Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
+                }
+            }
+            #endregion
+        }
+
         #endregion
 
         #region Public Method Region

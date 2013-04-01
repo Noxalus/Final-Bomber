@@ -19,7 +19,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
             Path = new List<Point>();
         }
 
-        public override void Update(GameTime gameTime)
+        protected override void Move()
         {
             Level level = GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel];
 
@@ -32,7 +32,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
 
                 CheckIsBlocked(level);
 
-                Move();
+                Walk();
 
                 ComputeWallCollision();
             }
@@ -115,10 +115,10 @@ namespace Final_Bomber.Components.ArtificialIntelligence
             }
             #endregion
 
-            base.Update(gameTime);
+            UpdatePlayerPosition();
         }
 
-        private void Move()
+        private void Walk()
         {
             // Up
             if (Sprite.Position.Y > _aiNextPosition.Y)
