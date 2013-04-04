@@ -1,10 +1,10 @@
 Final-Bomber
 ============
 
+![Final-Bomber](http://finalbomber.free.fr/img/final-bomber_image4.jpg)
+
 Description
 ===========
-
-![Final-Bomber](http://finalbomber.free.fr/img/final-bomber_image4.jpg)
 
 Final-Bomber is a Dynablaster (Bomberman) remake developed in C# with XNA 4.0.
 For now, it's only possible to play offline with a total of 5 players.
@@ -31,6 +31,7 @@ Features
 * The sudden death's speed can be changed
 * The sudden death's beginning can be changed
 * Players can choose wich bonuses will be included in the game
+* Players can push the bomb
 
 TODO List
 =========
@@ -39,3 +40,12 @@ TODO List
 * Redesign menus
 * Improve the AI behavior
 * Add a level editor
+
+Videos
+======
+I've uploaded some videos to show the AI progress:
+http://www.youtube.com/watch?v=j8d18H-NKrU
+http://www.youtube.com/watch?v=WCqIGvNPqBE
+http://www.youtube.com/watch?v=tWfutYKStsU
+http://www.youtube.com/watch?v=LH1Lfwke_pg
+http://www.youtube.com/watch?v=F6pJpJsZ7GI
