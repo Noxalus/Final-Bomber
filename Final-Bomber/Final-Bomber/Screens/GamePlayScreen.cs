@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Final_Bomber.Components.ArtificialIntelligence;
+using Final_Bomber.Components.AI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -12,10 +11,8 @@ using Microsoft.Xna.Framework.Input;
 using Final_Bomber.Controls;
 using Final_Bomber.Components;
 using Final_Bomber.TileEngine;
-using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Audio;
-using Final_Bomber.DataBase;
 using System.IO;
 
 namespace Final_Bomber.Screens
@@ -610,7 +607,7 @@ namespace Final_Bomber.Screens
             }
             else if (Config.Debug && Config.IsThereAIPlayer && InputHandler.KeyDown(Keys.L))
             {
-                int[,] costMatrix = AI.CostMatrix(
+                int[,] costMatrix = AIFunction.CostMatrix(
                     PlayerList[PlayerList.Count - 1].Sprite.CellPosition, 
                     World.Levels[World.CurrentLevel].CollisionLayer,
                     World.Levels[World.CurrentLevel].HazardMap, Config.MapSize);
@@ -635,7 +632,7 @@ namespace Final_Bomber.Screens
             }
             else if (Config.Debug && InputHandler.KeyDown(Keys.T))
             {
-                int[,] interestMatrix = AI.MakeInterestMatrix(
+                int[,] interestMatrix = AIFunction.MakeInterestMatrix(
                     PlayerList[PlayerList.Count - 1].Sprite.CellPosition, 
                     World.Levels[World.CurrentLevel].Map, 
                     World.Levels[World.CurrentLevel].CollisionLayer,

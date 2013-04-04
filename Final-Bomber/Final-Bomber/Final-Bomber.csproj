@@ -135,15 +135,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ArtificialIntelligence\AIPlayer.cs" />
-    <Compile Include="Components\ArtificialIntelligence\DifficultlAIStrategy.cs" />
-    <Compile Include="Components\ArtificialIntelligence\NormalAIStrategy.cs" />
-    <Compile Include="Components\ArtificialIntelligence\IAIStrategy.cs" />
+    <Compile Include="Components\AI\AIPlayer.cs" />
+    <Compile Include="Components\AI\DifficultlAIStrategy.cs" />
+    <Compile Include="Components\AI\NormalAIStrategy.cs" />
+    <Compile Include="Components\AI\IAIStrategy.cs" />
     <Compile Include="Components\Arrow.cs" />
     <Compile Include="Components\Bomb.cs" />
-    <Compile Include="Components\ArtificialIntelligence\EasyAIStrategy.cs" />
+    <Compile Include="Components\AI\EasyAIStrategy.cs" />
     <Compile Include="Components\EdgeWall.cs" />
-    <Compile Include="Components\ArtificialIntelligence\AI.cs" />
+    <Compile Include="Components\AI\AIFunction.cs" />
     <Compile Include="Components\HumanPlayer.cs" />
     <Compile Include="Components\Item.cs" />
     <Compile Include="Components\MapItem.cs" />

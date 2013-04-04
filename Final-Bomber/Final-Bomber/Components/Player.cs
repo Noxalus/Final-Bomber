@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Final_Bomber.Components.ArtificialIntelligence;
+using Final_Bomber.Components.AI;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;

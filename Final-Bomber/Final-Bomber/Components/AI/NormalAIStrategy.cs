@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Final_Bomber.Components.ArtificialIntelligence
+namespace Final_Bomber.Components.AI
 {
-    class EasyAIStrategy : IAIStrategy
+    class NormalAIStrategy : IAIStrategy
     {
         public void Execute()
         {

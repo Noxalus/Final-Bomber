@@ -4,7 +4,7 @@ using Final_Bomber.TileEngine;
 using Microsoft.Xna.Framework;
 using Final_Bomber.WorldEngine;
 
-namespace Final_Bomber.Components.ArtificialIntelligence
+namespace Final_Bomber.Components.AI
 {
     class AIPlayer : Player
     {
@@ -25,7 +25,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
 
             #region Walk
             // If he hasn't reach his goal => we walk to this goal
-            if (_aiNextPosition != new Vector2(-1, -1) && !AI.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
+            if (_aiNextPosition != new Vector2(-1, -1) && !AIFunction.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
             {
                 this.IsMoving = true;
                 Sprite.IsAnimating = true;
@@ -50,7 +50,7 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AI.TryToPutBomb(Sprite.CellPosition, Power, level.Map, level.CollisionLayer, level.HazardMap, MapSize))
+                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, level.Map, level.CollisionLayer, level.HazardMap, MapSize))
                     {
                         if (this.CurrentBombNumber > 0)
                         {
@@ -69,9 +69,9 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                                     CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
 
                                     // We define a new way (to escape the bomb)
-                                    Path = AI.MakeAWay(
+                                    Path = AIFunction.MakeAWay(
                                         Sprite.CellPosition,
-                                        AI.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, MapSize),
+                                        AIFunction.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, MapSize),
                                         level.CollisionLayer, level.HazardMap, MapSize);
                                 }
                                 GameRef.GamePlayScreen.BombList.Add(bomb);
@@ -86,9 +86,9 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                     Sprite.IsAnimating = false;
                     this.IsMoving = false;
                     // We define a new goal
-                    Path = AI.MakeAWay(
+                    Path = AIFunction.MakeAWay(
                         Sprite.CellPosition,
-                        AI.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, MapSize),
+                        AIFunction.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, MapSize),
                         level.CollisionLayer, level.HazardMap, MapSize);
 
                     if (Path != null)
@@ -162,9 +162,9 @@ namespace Final_Bomber.Components.ArtificialIntelligence
                 bool[,] collisionLayer = level.CollisionLayer;
                 int[,] hazardMap = level.HazardMap;
                 MapItem[,] map = level.Map;
-                Path = AI.MakeAWay(
+                Path = AIFunction.MakeAWay(
                     Sprite.CellPosition,
-                    AI.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, MapSize),
+                    AIFunction.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, MapSize),
                     collisionLayer, hazardMap, MapSize);
             }
         }

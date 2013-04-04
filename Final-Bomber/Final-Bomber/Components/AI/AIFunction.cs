@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Components.ArtificialIntelligence
+namespace Final_Bomber.Components.AI
 {
-    public static class AI
+    public static class AIFunction
     {
         public static int[,] CostMatrix(Point origin, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
