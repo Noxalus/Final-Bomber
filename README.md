@@ -44,8 +44,8 @@ TODO List
 Videos
 ======
 I've uploaded some videos to show the AI progress:
-http://www.youtube.com/watch?v=j8d18H-NKrU
-http://www.youtube.com/watch?v=WCqIGvNPqBE
-http://www.youtube.com/watch?v=tWfutYKStsU
-http://www.youtube.com/watch?v=LH1Lfwke_pg
-http://www.youtube.com/watch?v=F6pJpJsZ7GI
+* http://www.youtube.com/watch?v=j8d18H-NKrU
+* http://www.youtube.com/watch?v=WCqIGvNPqBE
+* http://www.youtube.com/watch?v=tWfutYKStsU
+* http://www.youtube.com/watch?v=LH1Lfwke_pg
+* http://www.youtube.com/watch?v=F6pJpJsZ7GI
