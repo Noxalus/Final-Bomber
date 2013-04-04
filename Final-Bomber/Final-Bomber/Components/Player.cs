@@ -32,8 +32,6 @@ namespace Final_Bomber.Components
         private bool _cellChanging;
         private bool _cellTeleporting;
 
-        protected Keys[] Keys;
-
         protected LookDirection LookDirection;
 
         protected readonly FinalBomber GameRef;
@@ -42,9 +40,8 @@ namespace Final_Bomber.Components
         // Characteristics
 
         // Bad item
-        private TimeSpan _bombTimerSaved;
-        private float _speedSaved;
-        private Keys[] _keysSaved;
+        protected TimeSpan BombTimerSaved;
+        protected float SpeedSaved;
 
         #endregion
 
@@ -76,7 +73,7 @@ namespace Final_Bomber.Components
 
         public TimeSpan BadItemTimerLenght { get; private set; }
 
-        public TimeSpan BombTimer { get; private set; }
+        public TimeSpan BombTimer { get; protected set; }
 
         #endregion
 
@@ -135,7 +132,6 @@ namespace Final_Bomber.Components
             TotalBombNumber = Config.BasePlayerBombNumber;
             CurrentBombNumber = TotalBombNumber;
 
-            Keys = Config.PlayersKeys[id - 1];
             BombTimer = Config.BombTimer;
 
             LookDirection = LookDirection.Down;
@@ -241,24 +237,7 @@ namespace Final_Bomber.Components
                     BadItemTimer += gameTime.ElapsedGameTime;
                     if (BadItemTimer >= BadItemTimerLenght)
                     {
-                        switch (BadItemEffect)
-                        {
-                            case BadItemEffect.TooSlow:
-                                Sprite.Speed = _speedSaved;
-                                break;
-                            case BadItemEffect.TooSpeed:
-                                Sprite.Speed = _speedSaved;
-                                break;
-                            case BadItemEffect.KeysInversion:
-                                Keys = _keysSaved;
-                                break;
-                            case BadItemEffect.BombTimerChanged:
-                                BombTimer = _bombTimerSaved;
-                                break;
-                        }
-                        HasBadItemEffect = false;
-                        BadItemTimer = TimeSpan.Zero;
-                        BadItemTimerLenght = TimeSpan.Zero;
+                        RemoveBadItem();
                     }
                 }
 
@@ -294,126 +273,7 @@ namespace Final_Bomber.Components
             {
                 Sprite.Update(gameTime);
 
-                // The player is either at the top either at the bottom
-                // => he can only move on the right or on the left
-                if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (MapSize.Y - 1) * Engine.TileHeight)
-                {
-                    // If he wants to go to the left
-                    if (Sprite.Position.X > 0 && InputHandler.KeyDown(Keys[2]))
-                        Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
-                    // If he wants to go to the right
-                    else if (Sprite.Position.X < (MapSize.X * Engine.TileWidth) - Engine.TileWidth &&
-                        InputHandler.KeyDown(Keys[3]))
-                        Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
-                }
-                // The player is either on the left either on the right
-                if (Sprite.Position.X <= 0 || Sprite.Position.X >= (MapSize.X - 1) * Engine.TileWidth)
-                {
-                    // If he wants to go to the top
-                    if (Sprite.Position.Y > 0 && InputHandler.KeyDown(Keys[0]))
-                        Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
-                    // If he wants to go to the bottom
-                    else if (Sprite.Position.Y < (MapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
-                        InputHandler.KeyDown(Keys[1]))
-                        Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
-                }
-
-                if (Sprite.Position.Y <= 0)
-                    Sprite.CurrentAnimation = AnimationKey.Down;
-                else if (Sprite.Position.Y >= (MapSize.Y - 1) * Engine.TileHeight)
-                    Sprite.CurrentAnimation = AnimationKey.Up;
-                else if (Sprite.Position.X <= 0)
-                        Sprite.CurrentAnimation = AnimationKey.Right;
-                else if (Sprite.Position.X >= (MapSize.X - 1) * Engine.TileWidth)
-                        Sprite.CurrentAnimation = AnimationKey.Left;
-
-                #region Bombs => Edge gameplay
-
-                if (InputHandler.KeyDown(Keys[4]) && this.CurrentBombNumber > 0)
-                {
-                    // He can't put a bomb when he is on a corner
-                    if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == MapSize.X - 1)) ||
-                        (Sprite.CellPosition.Y == MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == MapSize.X - 1)))))
-                    {
-                        Level level = GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel];
-                        int lag = 0;
-                        Point bombPosition = Sprite.CellPosition;
-                        // Up
-                        if (Sprite.CellPosition.Y == 0)
-                        {
-                            while (Sprite.CellPosition.Y + lag + 3 < MapSize.Y &&
-                                    level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
-                            {
-                                lag++;
-                            }
-                            bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
-                            if (bombPosition.Y < MapSize.Y)
-                            {
-                                var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                                level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                GameRef.GamePlayScreen.BombList.Add(bomb);
-                                level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.CurrentBombNumber--;
-                            }
-                        }
-                        // Down
-                        if (Sprite.CellPosition.Y == MapSize.Y - 1)
-                        {
-                            while (Sprite.CellPosition.Y - lag - 3 >= 0 &&
-                                    level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
-                            {
-                                lag++;
-                            }
-                            bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
-                            if (bombPosition.Y >= 0)
-                            {
-                                var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                                level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                GameRef.GamePlayScreen.BombList.Add(bomb);
-                                level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.CurrentBombNumber--;
-                            }
-                        }
-                        // Left
-                        if (Sprite.CellPosition.X == 0)
-                        {
-                            while (Sprite.CellPosition.X + lag + 3 < MapSize.X &&
-                                    level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
-                            {
-                                lag++;
-                            }
-                            bombPosition.X = Sprite.CellPosition.X + lag + 3;
-                            if (bombPosition.X < MapSize.X)
-                            {
-                                var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                                level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                GameRef.GamePlayScreen.BombList.Add(bomb);
-                                level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.CurrentBombNumber--;
-                            }
-                        }
-                        // Right
-                        if (Sprite.CellPosition.X == MapSize.X - 1)
-                        {
-                            while (Sprite.CellPosition.X - lag - 3 >= 0 &&
-                                    level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
-                            {
-                                lag++;
-                            }
-                            bombPosition.X = Sprite.CellPosition.X - lag - 3;
-                            if (bombPosition.X >= 0)
-                            {
-                                var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                                level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                                GameRef.GamePlayScreen.BombList.Add(bomb);
-                                level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                                this.CurrentBombNumber--;
-                            }
-                        }
-                    }
-                }
-
-                #endregion
+                MoveFromEdgeWall();
             }
             #endregion
 
@@ -698,33 +558,18 @@ namespace Final_Bomber.Components
             this.Sprite.Speed += incr;
         }
 
-        public void ApplyBadItem(BadItemEffect effect)
+        public virtual void ApplyBadItem(BadItemEffect effect)
         {
             this.HasBadItemEffect = true;
             this.BadItemEffect = effect;
             this.BadItemTimerLenght = TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
-            switch (effect)
-            {
-                case BadItemEffect.TooSlow:
-                    this._speedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MinSpeed;
-                    break;
-                case BadItemEffect.TooSpeed:
-                    _speedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MaxSpeed;
-                    break;
-                case BadItemEffect.KeysInversion:
-                    this._keysSaved = (Keys[])this.Keys.Clone();
-                    var inversedKeysArray = new int[] { 1, 0, 3, 2 };
-                    for (int i = 0; i < inversedKeysArray.Length; i++)
-                        this.Keys[i] = this._keysSaved[inversedKeysArray[i]];
-                    break;
-                case BadItemEffect.BombTimerChanged:
-                    this._bombTimerSaved = this.BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
-                    this.BombTimer = TimeSpan.FromSeconds(randomBombTimer);
-                    break;
-            }
+        }
+
+        protected virtual void RemoveBadItem()
+        {
+            HasBadItemEffect = false;
+            BadItemTimer = TimeSpan.Zero;
+            BadItemTimerLenght = TimeSpan.Zero;
         }
 
         public void Rebirth(Vector2 position)
@@ -774,6 +619,11 @@ namespace Final_Bomber.Components
                 this.Sprite.CurrentAnimation = AnimationKey.Right;
                 this.Sprite.Position = new Vector2(0, this.Sprite.Position.Y);
             }
+        }
+
+        protected virtual void MoveFromEdgeWall()
+        {
+            
         }
 
         #endregion

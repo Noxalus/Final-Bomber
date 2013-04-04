@@ -89,6 +89,7 @@ namespace Final_Bomber.Screens
                 }
 
                 // Séléction des touches
+                /*
                 if (counter <= keysNames.Length - 1 && InputHandler.HavePressedKey() && InputHandler.GetPressedKeys().Length > 0)
                 {
                     Config.PlayersKeys[indexPlayer][counter] = InputHandler.GetPressedKeys()[0];
@@ -101,6 +102,14 @@ namespace Final_Bomber.Screens
                         counter = 0;
                         indexPlayer = -1;
                     }
+                }
+                */
+
+                // Controller inputs
+                if (InputHandler.HavePressedButton(PlayerIndex.One) && InputHandler.GetPressedButton(PlayerIndex.One).Length > 0)
+                {
+                    Buttons buttons = InputHandler.GetPressedButton(PlayerIndex.One)[0];
+                    counter++;
                 }
             }
             else

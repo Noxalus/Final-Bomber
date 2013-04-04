@@ -52,6 +52,17 @@ namespace Final_Bomber
              new Keys[]{ Keys.T, Keys.G, Keys.F, Keys.H, Keys.Y }
         };
 
+        public static readonly bool[] PlayersUsingController = new bool[] { true, false, false, false, false };
+
+        public static readonly Buttons[][] PlayersButtons = new Buttons[][]
+        {
+             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }
+        };
+
         public const bool IsThereAIPlayer = true;
         public static readonly bool[] AIPlayers = new bool[] { false, true, true, true, true };
 

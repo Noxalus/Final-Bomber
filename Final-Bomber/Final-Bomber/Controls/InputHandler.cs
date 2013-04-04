@@ -151,6 +151,16 @@ namespace Final_Bomber.Controls
             return gamePadStates[(int)index].IsButtonDown(button);
         }
 
+        public static bool HavePressedButton(PlayerIndex index)
+        {
+            return gamePadStates[(int)index] != lastGamePadStates[(int)index];
+        }
+
+        public static Buttons[] GetPressedButton(PlayerIndex index)
+        {
+            return Enum.GetValues(typeof (Buttons)).Cast<Buttons>().Where(button => ButtonPressed(button, index)).ToArray();
+        }
+
         #endregion
     }
 }

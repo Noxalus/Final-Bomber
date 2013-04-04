@@ -168,5 +168,10 @@ namespace Final_Bomber.Components.AI
                     collisionLayer, hazardMap, MapSize);
             }
         }
+
+        protected override void MoveFromEdgeWall()
+        {
+
+        }
     }
 }
