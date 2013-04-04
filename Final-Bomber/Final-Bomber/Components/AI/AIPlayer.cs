@@ -173,5 +173,45 @@ namespace Final_Bomber.Components.AI
         {
 
         }
+
+        public override void ApplyBadItem(BadItemEffect effect)
+        {
+            base.ApplyBadItem(effect);
+
+            switch (effect)
+            {
+                case BadItemEffect.TooSlow:
+                    this.SpeedSaved = this.Sprite.Speed;
+                    this.Sprite.Speed = Config.MinSpeed;
+                    break;
+                case BadItemEffect.TooSpeed:
+                    SpeedSaved = this.Sprite.Speed;
+                    this.Sprite.Speed = Config.MaxSpeed;
+                    break;
+                case BadItemEffect.BombTimerChanged:
+                    this.BombTimerSaved = this.BombTimer;
+                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
+                    this.BombTimer = TimeSpan.FromSeconds(randomBombTimer);
+                    break;
+            }
+        }
+
+        protected override void RemoveBadItem()
+        {
+            base.RemoveBadItem();
+
+            switch (BadItemEffect)
+            {
+                case BadItemEffect.TooSlow:
+                    Sprite.Speed = SpeedSaved;
+                    break;
+                case BadItemEffect.TooSpeed:
+                    Sprite.Speed = SpeedSaved;
+                    break;
+                case BadItemEffect.BombTimerChanged:
+                    BombTimer = BombTimerSaved;
+                    break;
+            }
+        }
     }
 }
