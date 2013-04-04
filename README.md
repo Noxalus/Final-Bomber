@@ -4,8 +4,19 @@ Final-Bomber
 Description
 ===========
 
+![Final-Bomber](http://finalbomber.free.fr/img/final-bomber_image4.jpg)
+
 Final-Bomber is a Dynablaster (Bomberman) remake developed in C# with XNA 4.0.
 For now, it's only possible to play offline with a total of 5 players.
+
+How to compile it ?
+===================
+I've just tested it on Windows 7, so I don't know if it will works on another platform. 
+If you are on a unix-based OS or on Mac OS, look for Mono XNA.
+If you are on Windows 7 or greater, you need to install **Microsoft XNA Game Studio 4.0** (http://www.microsoft.com/en-us/download/details.aspx?id=23714).
+You have to get a version of Microsoft Visual Studio 2010 (Express version is enough => http://www.microsoft.com/visualstudio/eng/downloads#d-2010-express).
+If you use Microsoft Visual Studio 2012, you can't directly use XNA and you still need to install VS2010. 
+To use XNA 4.0 in VS2012, an explanation is available in the wiki here: https://github.com/Noxalus/Final-Bomber/wiki/How-to-install-XNA-4.0-on-VS2012
 
 Features
 ========
