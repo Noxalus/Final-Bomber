@@ -130,7 +130,9 @@ namespace Final_Bomber.Components
                         {
                             case LookDirection.Up:
                                 _currentPosition.Y--;
-                                if (!_visited[_currentPosition.X, _currentPosition.Y])
+                                if (!_visited[_currentPosition.X, _currentPosition.Y] &&
+                                    _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X, _currentPosition.Y - 1])
@@ -143,7 +145,9 @@ namespace Final_Bomber.Components
                                 break;
                             case LookDirection.Down:
                                 _currentPosition.Y++;
-                                if (!_visited[_currentPosition.X, _currentPosition.Y])
+                                if (!_visited[_currentPosition.X, _currentPosition.Y] &&
+                                    _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X, _currentPosition.Y + 1])
@@ -156,7 +160,9 @@ namespace Final_Bomber.Components
                                 break;
                             case LookDirection.Left:
                                 _currentPosition.X--;
-                                if (!_visited[_currentPosition.X, _currentPosition.Y])
+                                if (!_visited[_currentPosition.X, _currentPosition.Y] &&
+                                    _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X - 1, _currentPosition.Y])
@@ -169,7 +175,9 @@ namespace Final_Bomber.Components
                                 break;
                             case LookDirection.Right:
                                 _currentPosition.X++;
-                                if (!_visited[_currentPosition.X, _currentPosition.Y])
+                                if (!_visited[_currentPosition.X, _currentPosition.Y] &&
+                                    _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X + 1, _currentPosition.Y])

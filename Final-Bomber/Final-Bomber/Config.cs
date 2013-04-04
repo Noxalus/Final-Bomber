@@ -14,6 +14,8 @@ namespace Final_Bomber
     public enum SuddenDeathTypeEnum { OnlyWall, OnlyBomb, BombAndWall, Whole };
     public enum TeleporterPositionTypeEnum { Randomly, PlusForm };
     public enum ArrowPositionTypeEnum { Randomly, SquareForm };
+    
+    [Serializable]
     static class Config
     {
         // Debug
