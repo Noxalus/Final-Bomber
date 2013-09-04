@@ -18,8 +18,8 @@ You have to get a version of Microsoft Visual Studio 2010 (Express version is en
 If you use Microsoft Visual Studio 2012, you can't directly use XNA and you still need to install VS2010. 
 To use XNA 4.0 in VS2012, an explanation is available in the wiki here: https://github.com/Noxalus/Final-Bomber/wiki/How-to-install-XNA-4.0-on-VS2012
 
-Features
-========
+Current features
+================
 * The game can be played in fullscreen or windowed
 * Resolution can be changed
 * All players can reassign their inputs
@@ -40,6 +40,12 @@ TODO List
 * Redesign menus
 * Improve the AI behavior
 * Add a level editor
+* Add a CTF (capture the flag) mode with classes (engineer that can build wall, etc...)
+* Multiplatform (Monogame)
+* Replay to save (to see again a finished game)
+* Boss script
+* Resources extension
+* Split screen for local multiplayer ?
 
 Videos
 ======
