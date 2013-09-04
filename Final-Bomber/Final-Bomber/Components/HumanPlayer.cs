@@ -237,16 +237,7 @@ namespace Final_Bomber.Components
                         this.CurrentBombNumber--;
                         var bomb = new Bomb(GameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
-                        if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                            Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Player)
-                        {
-                            GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                                Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = bomb;
-                            GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                            CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
-                        }
-
-                        GameRef.GamePlayScreen.BombList.Add(bomb);
+                        GameRef.GamePlayScreen.AddBomb(bomb);
                     }
                 }
             }

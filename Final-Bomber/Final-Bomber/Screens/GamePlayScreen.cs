@@ -21,7 +21,7 @@ namespace Final_Bomber.Screens
     {
         #region Field Region
         private bool _pause;
-        
+
         Engine _engine;
 
         // Map
@@ -48,7 +48,7 @@ namespace Final_Bomber.Screens
         int _hudMarginLeft;
         Texture2D _cross;
         Texture2D _badItemTimerBar;
-        
+
         // Window box
         Texture2D _windowSkin;
         WindowBox _scoresWindowBox;
@@ -129,7 +129,7 @@ namespace Final_Bomber.Screens
 
             base.Initialize();
             Reset();
-            _scoresWindowBox = new WindowBox(_windowSkin, new Vector2(_hudOrigin.X, _hudOrigin.Y), 
+            _scoresWindowBox = new WindowBox(_windowSkin, new Vector2(_hudOrigin.X, _hudOrigin.Y),
                 new Point(GraphicsDevice.Viewport.Width - (_hudOrigin.X),
                     _hudTopSpace + Config.PlayersNumber * Config.HUDPlayerInfoSpace + 15));
 
@@ -264,7 +264,7 @@ namespace Final_Bomber.Screens
                     // We clean the obsolete elements
                     if (!_wallList[i].IsAlive)
                     {
-                        if (!Config.ActiveSuddenDeath || 
+                        if (!Config.ActiveSuddenDeath ||
                             (Config.ActiveSuddenDeath && !SuddenDeath.Visited[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y]))
                         {
                             World.Levels[World.CurrentLevel].CollisionLayer[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = false;
@@ -300,7 +300,7 @@ namespace Final_Bomber.Screens
                     // We clean the obsolete elements
                     if (!BombList[i].IsAlive)
                     {
-                        if( World.Levels[World.CurrentLevel].Map[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] is Bomb)
+                        if (World.Levels[World.CurrentLevel].Map[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] is Bomb)
                             World.Levels[World.CurrentLevel].Map[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] = null;
                         World.Levels[World.CurrentLevel].CollisionLayer[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] = false;
 
@@ -344,7 +344,7 @@ namespace Final_Bomber.Screens
                     // We clean the obsolete elements
                     if (!_itemList[i].IsAlive)
                     {
-                        if(World.Levels[World.CurrentLevel].Map[_itemList[i].Sprite.CellPosition.X, _itemList[i].Sprite.CellPosition.Y] is Item)
+                        if (World.Levels[World.CurrentLevel].Map[_itemList[i].Sprite.CellPosition.X, _itemList[i].Sprite.CellPosition.Y] is Item)
                             World.Levels[World.CurrentLevel].Map[_itemList[i].Sprite.CellPosition.X, _itemList[i].Sprite.CellPosition.Y] = null;
                         _itemList.Remove(_itemList[i]);
                     }
@@ -576,7 +576,7 @@ namespace Final_Bomber.Screens
                         }
                         else
                             itemMapType = ".";
-                        
+
                         GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, itemMapType,
                             new Vector2(x * 20, 80 + 20 * y), colorMapItem);
                     }
@@ -608,7 +608,7 @@ namespace Final_Bomber.Screens
             else if (Config.Debug && Config.IsThereAIPlayer && InputHandler.KeyDown(Keys.L))
             {
                 int[,] costMatrix = AIFunction.CostMatrix(
-                    PlayerList[PlayerList.Count - 1].Sprite.CellPosition, 
+                    PlayerList[PlayerList.Count - 1].Sprite.CellPosition,
                     World.Levels[World.CurrentLevel].CollisionLayer,
                     World.Levels[World.CurrentLevel].HazardMap, Config.MapSize);
 
@@ -633,8 +633,8 @@ namespace Final_Bomber.Screens
             else if (Config.Debug && InputHandler.KeyDown(Keys.T))
             {
                 int[,] interestMatrix = AIFunction.MakeInterestMatrix(
-                    PlayerList[PlayerList.Count - 1].Sprite.CellPosition, 
-                    World.Levels[World.CurrentLevel].Map, 
+                    PlayerList[PlayerList.Count - 1].Sprite.CellPosition,
+                    World.Levels[World.CurrentLevel].Map,
                     World.Levels[World.CurrentLevel].CollisionLayer,
                     World.Levels[World.CurrentLevel].HazardMap, _mapSize);
 
@@ -861,7 +861,7 @@ namespace Final_Bomber.Screens
                     SuddenDeath.Draw(gameTime);
                 }
             }
-            
+
             // FPS
             GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, "FPS: " + _fps.ToString(), Vector2.Zero, Color.Black);
             // Bomb number
@@ -937,13 +937,12 @@ namespace Final_Bomber.Screens
 
             Engine.Origin = origin;
 
-            if(Config.ActiveSuddenDeath)
-                SuddenDeath = new SuddenDeath(GameRef, Config.PlayersPositions[0]);
+            SuddenDeath = new SuddenDeath(GameRef, Config.PlayersPositions[0]);
         }
 
         private void CreateWorld()
         {
-            var tilesets = new List<Tileset>(){new Tileset(_mapTexture, 64, 32, 32, 32)};
+            var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
 
             var collisionLayer = new bool[Config.MapSize.X, Config.MapSize.Y];
             var mapPlayersPosition = new int[Config.MapSize.X, Config.MapSize.Y];
@@ -962,7 +961,7 @@ namespace Final_Bomber.Screens
             {
                 Point playerPosition = Config.PlayersPositions[i];
                 playerPositions[i + 1] = playerPosition;
-                
+
                 mapPlayersPosition[playerPosition.X, playerPosition.Y] = 2;
                 mapPlayersPosition[playerPosition.X + 1, playerPosition.Y] = 1;
                 mapPlayersPosition[playerPosition.X, playerPosition.Y + 1] = 1;
@@ -993,7 +992,7 @@ namespace Final_Bomber.Screens
             {
                 for (int y = 0; y < Config.MapSize.Y; y++)
                 {
-                    if(!(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
+                    if (!(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
                         (x % 2 == 0 && y % 2 == 0)) && (mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2))
                         voidPosition.Add(new Point(x, y));
                 }
@@ -1059,7 +1058,7 @@ namespace Final_Bomber.Screens
                 else if (Config.ArrowPositionType == ArrowPositionTypeEnum.SquareForm)
                 {
                     int outsideArrowsLag = 0;
-                    var ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5);
+                    var ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2)) / (double)5);
                     if (ratio % 2 == 0)
                         outsideArrowsLag = 1;
 
@@ -1165,7 +1164,7 @@ namespace Final_Bomber.Screens
                 }
             }
 
-            var mapLayers = new List<MapLayer> {layer};
+            var mapLayers = new List<MapLayer> { layer };
 
             var tileMap = new TileMap(tilesets, mapLayers);
             var level = new Level(Config.MapSize, tileMap, map, collisionLayer);
@@ -1181,7 +1180,7 @@ namespace Final_Bomber.Screens
                     var player = new AIPlayer(Math.Abs(playerID), GameRef,
                         Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
                     PlayerList.Add(player);
-                    map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;    
+                    map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                 }
                 else
                 {
@@ -1221,7 +1220,7 @@ namespace Final_Bomber.Screens
                     for (int i = 0; i < lineSplit.Length; i++)
                     {
                         int id = int.Parse(lineSplit[i]);
-                        switch(id)
+                        switch (id)
                         {
                             case 1:
                                 var unbreakableWall = new UnbreakableWall(GameRef, Engine.CellToVector(new Point(i, j)));
@@ -1262,7 +1261,7 @@ namespace Final_Bomber.Screens
                     j++;
                 }
 
-                var mapLayers = new List<MapLayer> {layer};
+                var mapLayers = new List<MapLayer> { layer };
 
                 var tileMap = new TileMap(tilesets, mapLayers);
                 var level = new Level(mapSize, tileMap, map, collisionLayer);
@@ -1298,6 +1297,20 @@ namespace Final_Bomber.Screens
         }
 
         #endregion
+
+        public void AddBomb(Bomb bomb)
+        {
+            if (World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                            Map[bomb.Sprite.CellPositionX, bomb.Sprite.CellPositionY] is Player)
+            {
+                World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                    Map[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = bomb;
+                World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
+            }
+
+            BombList.Add(bomb);
+        }
 
         #endregion
     }

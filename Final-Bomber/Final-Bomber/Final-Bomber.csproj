@@ -86,11 +86,13 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="db_FileIO">
-      <HintPath>..\DLL\db_FileIO.dll</HintPath>
+    <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DLL\Lidgren.Network.dll</HintPath>
     </Reference>
-    <Reference Include="Lidgren.Network">
-      <HintPath>..\DLL\Lidgren.Network.dll</HintPath>
+    <Reference Include="Lidgren.Network.Xna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DLL\Lidgren.Network.Xna.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -146,6 +148,7 @@
     <Compile Include="Components\Arrow.cs" />
     <Compile Include="Components\Bomb.cs" />
     <Compile Include="Components\AI\EasyAIStrategy.cs" />
+    <Compile Include="Components\OnlinePlayer.cs" />
     <Compile Include="Components\EdgeWall.cs" />
     <Compile Include="Components\AI\AIFunction.cs" />
     <Compile Include="Components\HumanPlayer.cs" />
@@ -164,19 +167,7 @@
     <Compile Include="Controls\GameStateManager.cs" />
     <Compile Include="Controls\Keyboarding.cs" />
     <Compile Include="Controls\WindowBox.cs" />
-    <Compile Include="DataBase\PostHTTPRequest.cs" />
     <Compile Include="Functions.cs" />
-    <Compile Include="GameSettings.cs" />
-    <Compile Include="Net\GameServer\ClientConnection.cs" />
-    <Compile Include="Net\GameServer\ClientMessageReceiver.cs" />
-    <Compile Include="Net\GameServer\ClientMessageSender.cs" />
-    <Compile Include="Net\GameServer\ClientMessageType.cs" />
-    <Compile Include="Net\GameServer\DataProcessing.cs" />
-    <Compile Include="Net\MainServer\DataProcessing.cs" />
-    <Compile Include="Net\MainServer\MainConnection.cs" />
-    <Compile Include="Net\MainServer\MainMessageReceiver.cs" />
-    <Compile Include="Net\MainServer\MainMessageSender.cs" />
-    <Compile Include="Net\MainServer\MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="FinalBomber.cs" />
@@ -212,6 +203,10 @@
     <Content Include="Final-Bomber.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Final-BomberNetwork\Final-BomberNetwork.csproj">
+      <Project>{261864e0-e888-4799-a6e4-6f4cadc02241}</Project>
+      <Name>Final-BomberNetwork</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Final-BomberContent\Final-BomberContent.contentproj">
       <Name>Final-BomberContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>

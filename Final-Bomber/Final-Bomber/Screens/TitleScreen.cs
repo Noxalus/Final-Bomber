@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Input;
 
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Media;
-using Final_Bomber.DataBase;
 namespace Final_Bomber.Screens
 {
     public class TitleScreen : BaseGameState
@@ -26,7 +25,7 @@ namespace Final_Bomber.Screens
         public TitleScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            menuString = new string[] {"Jouer", "Options", "Crédits", "Quitter"};
+            menuString = new string[] {"Solo", "Multiplayer", "Options", "Crédits", "Quitter"};
             indexMenu = 0;
             enableMenu = false;
         }
@@ -36,7 +35,7 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, 3 * Config.Resolutions[Config.IndexResolution, 1] / 4 - 40);
+            menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, 3 * Config.Resolutions[Config.IndexResolution, 1] / 4 - 80);
             base.Initialize();
         }
 
@@ -65,8 +64,10 @@ namespace Final_Bomber.Screens
                 {
                     switch (menuString[indexMenu])
                     {
-                        case "Jouer":
+                        case "Solo":
                             StateManager.ChangeState(GameRef.GameModeMenuScreen);
+                            break;
+                        case "Multiplayer":
                             break;
                         case "Options":
                             StateManager.ChangeState(GameRef.OptionMenuScreen);

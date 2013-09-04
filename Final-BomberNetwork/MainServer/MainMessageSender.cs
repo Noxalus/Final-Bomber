@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Lidgren.Network;
 
-namespace Final_Bomber.Net.MainServer
+namespace Final_BomberNetwork.MainServer
 {
     partial class MainServer
     {

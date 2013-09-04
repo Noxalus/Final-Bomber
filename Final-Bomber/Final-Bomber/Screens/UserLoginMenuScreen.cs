@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
-using Final_Bomber.Net.MainServer;
+using Final_BomberNetwork.MainServer;
 
 namespace Final_Bomber.Screens
 {

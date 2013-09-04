@@ -116,11 +116,13 @@ namespace Final_Bomber.Sprites
 
         public int CellPositionX
         {
+            get { return _cellPosition.X; }
             set { _cellPosition.X = value; }
         }
 
         public int CellPositionY
         {
+            get { return _cellPosition.Y; }
             set { _cellPosition.Y = value; }
         }
 

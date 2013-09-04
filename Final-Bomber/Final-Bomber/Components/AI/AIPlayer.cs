@@ -14,7 +14,8 @@ namespace Final_Bomber.Components.AI
 
         public List<Point> Path { get; private set; }
 
-        public AIPlayer(int id, FinalBomber game, Vector2 position) : base(id, game, position)
+        public AIPlayer(int id, FinalBomber game, Vector2 position)
+            : base(id, game, position)
         {
             // AI
             _aiNextPosition = new Vector2(-1, -1);
@@ -39,7 +40,7 @@ namespace Final_Bomber.Components.AI
                 ComputeWallCollision();
             }
             #endregion
-            
+
             #region Search a goal
             // Otherwise => we find another goal
             else
@@ -62,21 +63,13 @@ namespace Final_Bomber.Components.AI
                                 this.CurrentBombNumber--;
                                 var bomb = new Bomb(GameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
-                                if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Player)
-                                {
-                                    GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                                        Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = bomb;
-                                    GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                                    CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
+                                // We define a new way (to escape the bomb)
+                                Path = AIFunction.MakeAWay(
+                                    Sprite.CellPosition,
+                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, MapSize),
+                                    level.CollisionLayer, level.HazardMap, MapSize);
 
-                                    // We define a new way (to escape the bomb)
-                                    Path = AIFunction.MakeAWay(
-                                        Sprite.CellPosition,
-                                        AIFunction.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, MapSize),
-                                        level.CollisionLayer, level.HazardMap, MapSize);
-                                }
-                                GameRef.GamePlayScreen.BombList.Add(bomb);
+                                GameRef.GamePlayScreen.AddBomb(bomb);
                             }
                         }
                     }

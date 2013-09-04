@@ -4,7 +4,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 
-namespace Final_Bomber.DataBase
+namespace Final_BomberNetwork.DataBase
 {
     class PostHTTPRequest
     {

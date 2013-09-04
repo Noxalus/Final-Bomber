@@ -81,8 +81,8 @@ namespace Final_Bomber.Components.AI
             // We can't reach the goal
             if (costMatrix[goal.X, goal.Y] == mapSize.X * mapSize.Y)
             {
-                return null;
                 //throw new Exception("Cette case ne peut pas être atteinte !");
+                return null;
             }
             else
             {

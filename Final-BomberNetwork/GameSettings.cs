@@ -1,4 +1,4 @@
-﻿namespace Final_Bomber
+﻿namespace Final_BomberNetwork
 {
     static class GameSettings
     {

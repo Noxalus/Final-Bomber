@@ -1,4 +1,4 @@
-﻿namespace Final_Bomber.Net.GameServer
+﻿namespace Final_BomberNetwork.GameServer
 {
     public partial class GameServer
     {

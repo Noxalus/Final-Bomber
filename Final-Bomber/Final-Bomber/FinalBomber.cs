@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Final_Bomber.Screens;
 using Final_Bomber.Controls;
-using Final_Bomber.Net.MainServer;
+using Final_BomberNetwork.MainServer;
 
 namespace Final_Bomber
 {

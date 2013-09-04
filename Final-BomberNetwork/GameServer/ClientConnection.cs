@@ -1,28 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Lidgren.Network;
+﻿using Lidgren.Network;
 
-namespace Final_Bomber.Net.MainServer
+namespace Final_BomberNetwork.GameServer
 {
-    public partial class MainServer
+    partial class GameServer
     {
         #region Field Region
-        const int PORT = 6789;
-        const string HOSTNAME = "final-bomber.game-server.com";
+        private bool hasStarted;
+        private bool connected;
+        private bool disconnected;
 
-        //static string IP = Dns.GetHostAddresses(HOSTNAME)[0].ToString(); // Internet
-        static string IP = "127.0.0.1"; // Local
-        //static string IP = "192.160.0.32"; // Lan
+        private NetClient client;
+        private NetIncomingMessage msgIn;
+        private NetOutgoingMessage msgOut;
 
-        bool hasStarted;
-        bool connected;
-        bool disconnected;
-
-        public NetClient client;
-        NetIncomingMessage msgIn;
-        NetOutgoingMessage msgOut;
+        public int Ping = 10;
         #endregion
 
         #region Property Region
@@ -30,24 +21,22 @@ namespace Final_Bomber.Net.MainServer
         {
             get { return hasStarted; }
         }
-
         public bool Connected
         {
             get { return connected; }
         }
-
         public bool Disconnected
         {
             get { return disconnected; }
         }
         #endregion
 
-        public void StartMainConnection()
+        public void StartClientConnection(string Ip, string Port)
         {
             var config = new NetPeerConfiguration("Final-Bomber");
             client = new NetClient(config);
-            client.Start();
-            client.Connect(IP, PORT);
+
+            client.Connect(Ip, int.Parse(Port));
 
             msgOut = client.CreateMessage();
 
@@ -56,7 +45,7 @@ namespace Final_Bomber.Net.MainServer
             disconnected = false;
         }
 
-        public void RunMainConnection()
+        public void RunClientConnection()
         {
             if (!connected && client.ConnectionStatus == NetConnectionStatus.Connected)
             {
@@ -66,10 +55,7 @@ namespace Final_Bomber.Net.MainServer
             if (connected && client.ConnectionStatus == NetConnectionStatus.Disconnected)
             {
                 connected = false;
-                /*
-                MessageBox.Show("Main Server has closed");
-                Environment.Exit(0);
-                */
+                disconnected = true;
             }
 
             while ((msgIn = client.ReadMessage()) != null)
@@ -77,16 +63,13 @@ namespace Final_Bomber.Net.MainServer
                 switch (msgIn.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        if (msgIn.LengthBytes > 1)
-                        {
-                            DataProcessing(msgIn.ReadByte());
-                        }
+                        DataProcessing(msgIn.ReadByte());
                         break;
                 }
             }
         }
 
-        public void EndMainConnection(string reason)
+        public void EndClientConnection(string reason)
         {
             client.Disconnect(reason);
             hasStarted = false;
