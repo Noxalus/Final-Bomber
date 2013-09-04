@@ -14,14 +14,6 @@ namespace Final_Bomber.Screens
 {
     public class CreditMenuScreen : BaseGameState
     {
-        #region Field Region
-
-        #endregion
-
-        #region Property Region
-
-        #endregion
-
         #region Constructor Region
 
         public CreditMenuScreen(Game game, GameStateManager manager)
@@ -61,7 +53,7 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(GameRef.SpriteBatch);
 
-            string s = "Jeu créé par Noxalus";
+            string s = "Game created Noxalus";
             GameRef.SpriteBatch.DrawString(BigFont, s,
                 new Vector2(GameRef.GraphicsDevice.Viewport.Width / 2 - BigFont.MeasureString(s).X / 2,
                     GameRef.GraphicsDevice.Viewport.Height / 2 - BigFont.MeasureString(s).Y / 2), Color.Black);
@@ -69,12 +61,6 @@ namespace Final_Bomber.Screens
             GameRef.SpriteBatch.End();
         }
 
-        #endregion
-
-        #region Abstract Method Region
-        #endregion
-
-        #region Method Region
         #endregion
     }
 }

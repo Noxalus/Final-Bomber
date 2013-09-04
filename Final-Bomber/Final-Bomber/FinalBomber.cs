@@ -36,13 +36,16 @@ namespace Final_Bomber
         public KeysMenuScreen KeysMenuScreen;
         public CreditMenuScreen CreditMenuScreen;
 
+        public SinglePlayerGameModeMenuScreen SinglePlayerGameModeMenuScreen;        
+
         // Local
         public BattleMenuScreen BattleMenuScreen;
         public SuddenDeathMenuScreen SuddenDeathMenuScreen;
         public ItemMenuScreen ItemMenuScreen;
 
         // Network
-        public GameModeMenuScreen GameModeMenuScreen;
+        public OnlineGameMenuScreen OnlineGameMenuScreen;
+        public MultiplayerGameModeMenuScreen MultiplayerGameModeMenuScreen;
         public UserMenuScreen UserMenuScreen;
         public UserLoginMenuScreen UserLoginMenuScreen;
         public UserRegistrationMenuScreen UserRegistrationMenuScreen;
@@ -88,7 +91,9 @@ namespace Final_Bomber
             KeysMenuScreen = new KeysMenuScreen(this, stateManager);
             CreditMenuScreen = new CreditMenuScreen(this, stateManager);
 
-            GameModeMenuScreen = new GameModeMenuScreen(this, stateManager);
+            SinglePlayerGameModeMenuScreen = new SinglePlayerGameModeMenuScreen(this, stateManager);
+            OnlineGameMenuScreen = new OnlineGameMenuScreen(this, stateManager);
+            MultiplayerGameModeMenuScreen = new MultiplayerGameModeMenuScreen(this, stateManager);
             UserMenuScreen = new UserMenuScreen(this, stateManager);
             UserLoginMenuScreen = new UserLoginMenuScreen(this, stateManager);
             UserRegistrationMenuScreen = new UserRegistrationMenuScreen(this, stateManager);
@@ -110,7 +115,7 @@ namespace Final_Bomber
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _debugModeEnabled = Content.Load<SoundEffect>("Audio/Sounds/boom");
+            _debugModeEnabled = Content.Load<SoundEffect>("Audio/Sounds/debug");
         }
 
         protected override void UnloadContent()

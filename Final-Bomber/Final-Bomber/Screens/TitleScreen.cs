@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
+using System.Threading;
 namespace Final_Bomber.Screens
 {
     public class TitleScreen : BaseGameState
@@ -19,13 +21,15 @@ namespace Final_Bomber.Screens
         int indexMenu;
         Vector2 menuPosition;
         bool enableMenu;
+
+        private SoundEffect _title;
         #endregion
 
         #region Constructor region
         public TitleScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            menuString = new string[] {"Solo", "Multiplayer", "Options", "Crédits", "Quitter"};
+            menuString = new string[] { "Single player", "Multiplayer", "Options", "Credits", "Quit" };
             indexMenu = 0;
             enableMenu = false;
         }
@@ -37,6 +41,8 @@ namespace Final_Bomber.Screens
         {
             menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, 3 * Config.Resolutions[Config.IndexResolution, 1] / 4 - 80);
             base.Initialize();
+            MediaPlayer.Play(GameRef.Content.Load<Song>("Audio/Musics/Title"));
+            _title.Play();
         }
 
         protected override void LoadContent()
@@ -47,7 +53,7 @@ namespace Final_Bomber.Screens
 
             // Music
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(GameRef.Content.Load<Song>("Audio/Musics/Title"));
+            _title = Content.Load<SoundEffect>("Audio/Sounds/title");
 
             base.LoadContent();
         }
@@ -64,18 +70,19 @@ namespace Final_Bomber.Screens
                 {
                     switch (menuString[indexMenu])
                     {
-                        case "Solo":
-                            StateManager.ChangeState(GameRef.GameModeMenuScreen);
+                        case "Single player":
+                            StateManager.ChangeState(GameRef.SinglePlayerGameModeMenuScreen);
                             break;
                         case "Multiplayer":
+                            StateManager.ChangeState(GameRef.MultiplayerGameModeMenuScreen);
                             break;
                         case "Options":
                             StateManager.ChangeState(GameRef.OptionMenuScreen);
                             break;
-                        case "Crédits":
+                        case "Credits":
                             StateManager.ChangeState(GameRef.CreditMenuScreen);
                             break;
-                        case "Quitter":
+                        case "Quit":
                             GameRef.Exit();
                             break;
                     }

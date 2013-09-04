@@ -151,7 +151,7 @@ namespace Final_Bomber.Screens
 
         private void Exit()
         {
-            StateManager.ChangeState(GameRef.GameModeMenuScreen);
+            StateManager.ChangeState(GameRef.MultiplayerGameModeMenuScreen);
             if (GameRef.Server.HasStarted)
                 GameRef.Server.EndMainConnection("Bye");
         }

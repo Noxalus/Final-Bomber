@@ -173,8 +173,10 @@
     <Compile Include="FinalBomber.cs" />
     <Compile Include="Screens\BaseGameState.cs" />
     <Compile Include="Screens\BattleMenuScreen.cs" />
+    <Compile Include="Screens\OnlineGameMenuScreen.cs" />
+    <Compile Include="Screens\SinglePlayerGameModeMenuScreen.cs" />
     <Compile Include="Screens\CreateServerMenuScreen.cs" />
-    <Compile Include="Screens\GameModeMenuScreen.cs" />
+    <Compile Include="Screens\MultiplayerGameModeMenuScreen.cs" />
     <Compile Include="Screens\JoinServerMenuScreen.cs" />
     <Compile Include="Screens\KeysMenuScreen.cs" />
     <Compile Include="Screens\ItemMenuScreen.cs" />
