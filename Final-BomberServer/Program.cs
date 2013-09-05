@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Final_BomberServer.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace Final_BomberServer
     {
         static void Main(string[] args)
         {
+            GameServerHandler server = new GameServerHandler();
+
             Console.WriteLine("COUCOU");
             Console.ReadKey();
         }
