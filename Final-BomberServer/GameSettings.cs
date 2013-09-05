@@ -36,7 +36,10 @@ namespace Final_BomberServer
 
         public static Map GetCurrentMap()
         {
-            return GameSettings.mapPlayList[GameSettings.currentMap];
+            if (GameSettings.mapPlayList.Count > 0)
+                return GameSettings.mapPlayList[GameSettings.currentMap];
+            else
+                return null;
         }
 
         public static GameServer gameServer;
@@ -50,7 +53,7 @@ namespace Final_BomberServer
 
     public class GameValues
     {
-        public bool RecievedValues = false;
+        public bool RecievedValues = true;
         public PowerupValues Powerup = new PowerupValues();
         public PowerupDrops PowerupDrop = new PowerupDrops();
 

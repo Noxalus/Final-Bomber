@@ -19,8 +19,8 @@ namespace Final_BomberServer.Host
                 {
                     NetOutgoingMessage send = server.CreateMessage();
                     send.Write((byte)SMT.GameStartInfo);
-                    send.Write(GameSettings.GetCurrentMap().id);
-                    Console.WriteLine("\nSended game info map id " + GameSettings.GetCurrentMap().id.ToString());
+                    //send.Write(GameSettings.GetCurrentMap().id);
+                    Console.WriteLine("\nSended game info map id "/* + GameSettings.GetCurrentMap().id.ToString()*/);
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 }
             }
@@ -36,12 +36,15 @@ namespace Final_BomberServer.Host
             {
                 NetOutgoingMessage send = server.CreateMessage();
                 send.Write((byte)SMT.Map);
+                /*
                 send.Write(GameSettings.GetCurrentMap().mapName);
                 send.Write(GameSettings.GetCurrentMap().mapData.Count);
+                
                 foreach (byte bt in GameSettings.GetCurrentMap().mapData)
                 {
                     send.Write(bt);
                 }
+                */
                 server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
             }
         }
@@ -55,7 +58,7 @@ namespace Final_BomberServer.Host
             {
                 send.Write(client.Player.PlayerId);
                 send.Write(client.Player.MoveSpeed);
-                send.Write(GameSettings.GetCurrentMap().suddenDeathTime);
+                //send.Write(GameSettings.GetCurrentMap().suddenDeathTime);
             }
             server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
         }

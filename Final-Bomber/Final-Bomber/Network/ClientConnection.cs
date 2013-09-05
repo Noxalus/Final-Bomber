@@ -37,7 +37,7 @@ namespace Final_Bomber.Network
             client = new NetClient(config);
 
             client.Start();
-            client.Connect(Ip, int.Parse(Port));
+            NetConnection test = client.Connect(Ip, int.Parse(Port));
 
             //buffer = client.CreateBuffer();
 
@@ -59,20 +59,16 @@ namespace Final_Bomber.Network
                 disconnected = true;
             }
 
-            //NetMessageType type;
-            NetIncomingMessage type = client.ReadMessage();
-            int test = 42;
-            /*
-            while ((type = client.ReadMessage()).LengthBits > 0)
+            NetIncomingMessage incMsg = client.ReadMessage();
+            while ((incMsg = client.ReadMessage()) != null)
             {
-                switch (type.MessageType)
+                switch (incMsg.MessageType)
                 {
                     case NetIncomingMessageType.Data:
                         DataProcessing(buffer.ReadByte());
                         break;
                 }
             }
-            */
         }
 
         public void EndClientConnection(string reason)

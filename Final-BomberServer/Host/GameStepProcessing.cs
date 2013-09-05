@@ -12,7 +12,7 @@ namespace Final_BomberServer.Host
         List<Player> alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.gameServer.clients.Count == GameSettings.GetCurrentMap().playerAmount
+            if (GameSettings.gameServer.clients.Count == 1 // TO CHANGE
                 && !StartedMatch && GameSettings.gameServer.clients.IsClientsReady())
             //Om rätt antal spelare har joinat, matchen har inte startat och alla spelare är färdiga att starta 
             {

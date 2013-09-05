@@ -14,7 +14,7 @@ namespace Final_Bomber.Screens
     public class NetworkTestScreen : BaseGameState
     {
         #region Field region
-
+        private bool hasConnected;
         #endregion
 
         #region Constructor region
@@ -28,6 +28,8 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
+            hasConnected = false;
+
             base.Initialize();
         }
 
@@ -40,15 +42,16 @@ namespace Final_Bomber.Screens
         {
             ControlManager.Update(gameTime, PlayerIndex.One);
 
+            if (!hasConnected)
+            {
                 GameSettings.GameServer.StartClientConnection("127.0.0.1", "2643");
 
-                bool hasConnected = false;
                 Timer connectedTmr = new Timer();
                 connectedTmr.Start();
                 while (!hasConnected)
                 {
                     GameSettings.GameServer.RunClientConnection();
-                    if (GameSettings.GameServer.Connected == true)
+                    if (GameSettings.GameServer.Connected)
                     {
                         hasConnected = true;
                     }
@@ -61,25 +64,26 @@ namespace Final_Bomber.Screens
                         }
                     }
                 }
+            }
 
-                /*
-                var config = new NetPeerConfiguration("Final-Bomber");
+            /*
+            var config = new NetPeerConfiguration("Final-Bomber");
 
-                NetClient client;
-                client = new NetClient(config);
+            NetClient client;
+            client = new NetClient(config);
 
-                client.Connect("127.0.0.1", 2643);
+            client.Connect("127.0.0.1", 2643);
 
-                //client.Connect(Ip, int.Parse(2643));
+            //client.Connect(Ip, int.Parse(2643));
 
-                //msgOut = client.CreateMessage();
-                /*
-                NetOutgoingMessage sendMsg = server.CreateMessage();
-                sendMsg.Write("Hello");
-                sendMsg.Write(42);
+            //msgOut = client.CreateMessage();
+            /*
+            NetOutgoingMessage sendMsg = server.CreateMessage();
+            sendMsg.Write("Hello");
+            sendMsg.Write(42);
 
-                server.SendMessage(sendMsg, recipient, NetDeliveryMethod.ReliableOrdered);
-                */
+            server.SendMessage(sendMsg, recipient, NetDeliveryMethod.ReliableOrdered);
+            */
 
             base.Update(gameTime);
         }
@@ -95,9 +99,9 @@ namespace Final_Bomber.Screens
             string str = "Networking Tests";
             GameRef.SpriteBatch.DrawString(this.BigFont, str,
                     new Vector2(
-                        Config.Resolutions[Config.IndexResolution, 0] / 2 - 
-                        this.BigFont.MeasureString(str).X / 2, 
-                        20), 
+                        Config.Resolutions[Config.IndexResolution, 0] / 2 -
+                        this.BigFont.MeasureString(str).X / 2,
+                        20),
             Color.Black);
 
             GameRef.SpriteBatch.End();

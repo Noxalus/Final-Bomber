@@ -13,6 +13,19 @@ namespace Final_BomberServer
         {
             GameServerHandler server = new GameServerHandler();
 
+            if (!server.Running)
+            {
+                GameSettings.GameName = "Final-Server";
+
+                server = new GameServerHandler();
+                server.Initialize();
+
+                while(server.Running)
+                {
+                    server.Update();
+                }
+            }
+
             Console.WriteLine("COUCOU");
             Console.ReadKey();
         }

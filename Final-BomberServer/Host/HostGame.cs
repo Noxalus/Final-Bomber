@@ -74,10 +74,10 @@ namespace Final_BomberServer.Host
             gameHasBegun = false;
             //tmr_BeginGame = new H.U.D.Timer(true);
             bombs = new List<Bomb>();
-            GameSettings.GetCurrentMap().CreateMap();
-            CurrentMap = GameSettings.GetCurrentMap();
+            //GameSettings.GetCurrentMap().CreateMap();
+            //CurrentMap = GameSettings.GetCurrentMap();
             suddenDeath = false;
-            suddenDeathTPE = 1000 / ((CurrentMap.mapWidth * CurrentMap.mapHeight) / 30); //Räknar ut tiden mellan varje explosion (i ms)
+            //suddenDeathTPE = 1000 / ((CurrentMap.mapWidth * CurrentMap.mapHeight) / 30); //Räknar ut tiden mellan varje explosion (i ms)
             //tmr_UntilSuddenDeath = new H.U.D.Timer(false);
             GameSettings.gameServer.clients.Sort(new ClientRandomSorter());
             GameSettings.PlayingClients = new ClientCollection();
@@ -282,7 +282,7 @@ namespace Final_BomberServer.Host
         #region ServerEvents
         private void gameServer_ConnectedClient(Client sender, EventArgs e)
         {
-            if (GameSettings.gameServer.clients.Count <= GameSettings.GetCurrentMap().playerAmount)
+            if (true /*GameSettings.gameServer.clients.Count <= GameSettings.GetCurrentMap().playerAmount*/)
             {
                 sender.Player = new Player(playerId);
                 GameSettings.gameServer.SendGameInfo(sender);
