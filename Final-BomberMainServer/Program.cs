@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Final_BomberNetwork.GameServer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,10 @@ namespace Final_BomberMainServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Main server launched !");
+            Server server = new Server();
+            server.StartServer();
+            server.RunServer();
+
             Console.ReadLine();
         }
     }

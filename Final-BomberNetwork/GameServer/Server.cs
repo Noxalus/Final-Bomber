@@ -42,7 +42,7 @@ namespace Final_BomberNetwork.GameServer
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Final-Bomber");
             config.MaximumConnections = MAXCONNECTION;
-            config.Port = 6789;
+            config.Port = 2643;
             config.PingInterval = 1f;
 
             server = new NetServer(config);
@@ -56,7 +56,7 @@ namespace Final_BomberNetwork.GameServer
             ranker.Sort(db);
 
             hasStarted = true;
-            WriteOutput("[START]Server has started at " + System.DateTime.Now.ToString());
+            WriteOutput("[START]Server has started at " + System.DateTime.Now.ToString() + " on port " + config.Port);
 
         }
 

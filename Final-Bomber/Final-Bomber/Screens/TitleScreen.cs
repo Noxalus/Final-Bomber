@@ -89,6 +89,11 @@ namespace Final_Bomber.Screens
                 }
             }
 
+            if (InputHandler.KeyPressed(Keys.F1))
+            {
+                StateManager.ChangeState(GameRef.NetworkTestScreen);
+            }
+
             if (InputHandler.KeyPressed(Keys.Up))
             {
                 if (indexMenu <= 0)
@@ -98,7 +103,7 @@ namespace Final_Bomber.Screens
             }
             else if (InputHandler.KeyPressed(Keys.Down))
             {
-                indexMenu = (indexMenu + 1) % menuString.Length; 
+                indexMenu = (indexMenu + 1) % menuString.Length;
             }
 
             base.Update(gameTime);
@@ -133,7 +138,7 @@ namespace Final_Bomber.Screens
         #endregion
 
         #region Title Screen Methods
-        
+
         #endregion
     }
 }

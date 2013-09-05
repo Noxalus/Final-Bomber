@@ -52,6 +52,8 @@ namespace Final_Bomber
         public NetworkMenuScreen NetworkMenuScreen;
         public CreateServerMenuScreen CreateServerMenuScreen;
         public JoinServerMenuScreen JoinServerMenuScreen;
+
+        public NetworkTestScreen NetworkTestScreen;
         
 
         // ~~ Game ~~ //
@@ -100,6 +102,8 @@ namespace Final_Bomber
             NetworkMenuScreen = new NetworkMenuScreen(this, stateManager);
             CreateServerMenuScreen = new CreateServerMenuScreen(this, stateManager);
             JoinServerMenuScreen = new JoinServerMenuScreen(this, stateManager);
+
+            NetworkTestScreen = new NetworkTestScreen(this, stateManager);
 
             stateManager.ChangeState(TitleScreen);
 

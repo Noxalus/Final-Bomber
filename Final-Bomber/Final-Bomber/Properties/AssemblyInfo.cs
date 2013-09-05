@@ -9,8 +9,8 @@ using System.Resources;
 [assembly: AssemblyTitle("Final-Bomber")]
 [assembly: AssemblyProduct("Final-Bomber")]
 [assembly: AssemblyDescription("Final-Bomber est une reprise de Dynablaster axée sur le multijoueur")]
-[assembly: AssemblyCompany("Final-RPG")]
-[assembly: AssemblyCopyright("Copyright © Final-RPG 2011")]
+[assembly: AssemblyCompany("Final-Bomber")]
+[assembly: AssemblyCopyright("Copyright © Final-Bomber 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,4 @@ using System.Resources;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("fr")]
+[assembly: AssemblyVersion("0.1.0.0")]

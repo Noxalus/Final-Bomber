@@ -96,9 +96,5 @@ namespace Final_Bomber.Screens
         }
 
         #endregion
-
-        #region Title Screen Methods
-
-        #endregion
     }
 }
