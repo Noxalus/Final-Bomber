@@ -1,46 +1,53 @@
 ﻿namespace Final_BomberNetwork.GameServer
 {
-    public partial class GameServer
+    partial class Server
     {
-        public void DataProcessing(byte data)
+        private void DataProcessing(byte data, ref Client client)
         {
             switch (data)
             {
-                // Login
-                case (byte)RMT.LoggedIn:
-                    RecieveLoggedIn(msgIn.ReadByte());
-                    break;
-                case (byte)RMT.CreatedAccount:
-                    RecieveCreatedAccount(msgIn.ReadInt32());
-                    break;
-                case (byte)RMT.SendHostedGames:
-                    RecieveHostedGames(msgIn.ReadString());
-                    break;
-                case (byte)RMT.CurrentVersion:
-                    RecieveCurrentVersion(msgIn.ReadString());
-                    break;
-                case (byte)RMT.SendStats:
-                    RecieveStats();
-                    break;
-                case (byte)RMT.SendRanking:
-                    RecieveRanking();
+                case (byte)RMTClient.CreateAccount:
+                    RecieveCreateAccount(client, msg.ReadString(), msg.ReadString());
                     break;
 
-                // Game
-                case (byte)RMT.StartGame:
-                    RecieveStartGame(msgIn.ReadBoolean());
+                case (byte)RMTClient.LogIn:
+                    RecieveLogin(client, msg.ReadString(), msg.ReadString());
                     break;
-                case (byte)RMT.PlayerPosAndSpeed:
-                    RecievePositionAndSpeed(msgIn.ReadFloat(), msgIn.ReadFloat(), msgIn.ReadByte(), msgIn.ReadInt32());
+
+                case (byte)RMTServer.IsHosting:
+                    RecieveHosting(ref client, msg.ReadString(), msg.ReadString(), msg.ReadInt32());
                     break;
-                case (byte)RMT.PlayerInfo:
-                    RecievePlayerInfo(msgIn.ReadInt32(), msgIn.ReadFloat(), msgIn.ReadString());
+
+                case (byte)RMTClient.GetHostedGames:
+                    RecieveGetHostedGames(client);
                     break;
-                case (byte)RMT.RemovePlayer:
-                    RecieveRemovePlayer(msgIn.ReadInt32());
+
+                case (byte)RMTServer.GetCurrentPlayerAmount:
+                    RecieveGetCurrentPlayerAmount(client, msg.ReadInt32());
                     break;
-                case (byte)RMT.PlayerPlantingBomb:
-                    RecievePlacingBomb(msgIn.ReadInt32(), msgIn.ReadFloat(), msgIn.ReadFloat());
+
+                case (byte)RMTServer.GetServerPort:
+                    RecieveGetServerPort(client, msg.ReadInt32());
+                    break;
+
+                case (byte)RMTServer.GetCheckIfOnline:
+                    RecieveCheckIfOnline(client, msg.ReadString(), msg.ReadString());
+                    break;
+
+                case (byte)RMTServer.NextMap:
+                    RecieveNextMap(client, msg.ReadString());
+                    break;
+
+                case (byte)RMTServer.SendStats:
+                    RecievePlayerStats();
+                    break;
+
+                case (byte)RMTClient.GetStats:
+                    SendStats(client);
+                    break;
+
+                case (byte)RMTClient.GetRanking:
+                    SendRanking(client);
                     break;
             }
         }

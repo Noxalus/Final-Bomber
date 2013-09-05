@@ -79,7 +79,7 @@ namespace Final_BomberNetwork.MainServer
                     case NetIncomingMessageType.Data:
                         if (msgIn.LengthBytes > 1)
                         {
-                            DataProcessing(msgIn.ReadByte());
+                            //DataProcessing(msgIn.ReadByte());
                         }
                         break;
                 }

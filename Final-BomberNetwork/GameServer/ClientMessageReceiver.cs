@@ -2,7 +2,7 @@
 
 namespace Final_BomberNetwork.GameServer
 {
-    public partial class GameServer
+    public partial class Server
     {
         // Login
         public class PlayerStatsEventArgs

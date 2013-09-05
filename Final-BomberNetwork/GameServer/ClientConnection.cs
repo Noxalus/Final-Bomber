@@ -2,7 +2,7 @@
 
 namespace Final_BomberNetwork.GameServer
 {
-    partial class GameServer
+    partial class Server
     {
         #region Field Region
         private bool hasStarted;
@@ -63,7 +63,7 @@ namespace Final_BomberNetwork.GameServer
                 switch (msgIn.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        DataProcessing(msgIn.ReadByte());
+                        //DataProcessing(msgIn.ReadByte());
                         break;
                 }
             }
