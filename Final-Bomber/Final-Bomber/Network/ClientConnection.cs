@@ -36,6 +36,7 @@ namespace Final_Bomber.Network
             NetPeerConfiguration config = new NetPeerConfiguration("Final-Bomber");
             client = new NetClient(config);
 
+            client.Start();
             client.Connect(Ip, int.Parse(Port));
 
             //buffer = client.CreateBuffer();
@@ -59,7 +60,9 @@ namespace Final_Bomber.Network
             }
 
             //NetMessageType type;
-            NetIncomingMessage type;
+            NetIncomingMessage type = client.ReadMessage();
+            int test = 42;
+            /*
             while ((type = client.ReadMessage()).LengthBits > 0)
             {
                 switch (type.MessageType)
@@ -69,6 +72,7 @@ namespace Final_Bomber.Network
                         break;
                 }
             }
+            */
         }
 
         public void EndClientConnection(string reason)

@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 using Lidgren.Network;
+using Final_Bomber.Network;
+using System.Diagnostics;
 
 namespace Final_Bomber.Screens
 {
@@ -38,8 +40,29 @@ namespace Final_Bomber.Screens
         {
             ControlManager.Update(gameTime, PlayerIndex.One);
 
-            if (InputHandler.KeyPressed(Keys.A))
-            {
+                GameSettings.GameServer.StartClientConnection("127.0.0.1", "2643");
+
+                bool hasConnected = false;
+                Timer connectedTmr = new Timer();
+                connectedTmr.Start();
+                while (!hasConnected)
+                {
+                    GameSettings.GameServer.RunClientConnection();
+                    if (GameSettings.GameServer.Connected == true)
+                    {
+                        hasConnected = true;
+                    }
+                    else
+                    {
+                        if (connectedTmr.Each(5000))
+                        {
+                            Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
+                            GameRef.Exit();
+                        }
+                    }
+                }
+
+                /*
                 var config = new NetPeerConfiguration("Final-Bomber");
 
                 NetClient client;
@@ -57,7 +80,6 @@ namespace Final_Bomber.Screens
 
                 server.SendMessage(sendMsg, recipient, NetDeliveryMethod.ReliableOrdered);
                 */
-            }
 
             base.Update(gameTime);
         }

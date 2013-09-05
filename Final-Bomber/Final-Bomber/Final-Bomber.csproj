@@ -177,6 +177,7 @@
     <Compile Include="Network\ClientMessageType.cs" />
     <Compile Include="Network\DataProcessing.cs" />
     <Compile Include="Network\GameSettings.cs" />
+    <Compile Include="Network\Timer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="FinalBomber.cs" />
