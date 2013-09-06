@@ -14,6 +14,7 @@ namespace Final_Bomber.Screens
     public class NetworkTestScreen : BaseGameState
     {
         #region Field region
+        Process server;
         private bool hasConnected;
         #endregion
 
@@ -28,6 +29,12 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
+            // Launch the dedicated server as host
+            server = new Process();
+            server.StartInfo.FileName = "Server.exe";
+            server.StartInfo.Arguments = "COUCOU";
+            //server.Start();
+
             hasConnected = false;
 
             base.Initialize();
@@ -41,6 +48,10 @@ namespace Final_Bomber.Screens
         protected override void UnloadContent()
         {
             GameSettings.GameServer.EndClientConnection("Quit the game !");
+            /*
+            server.Close();
+            server.Kill();
+            */
 
             base.UnloadContent();
         }
@@ -70,6 +81,13 @@ namespace Final_Bomber.Screens
                             GameRef.Exit();
                         }
                     }
+                }
+            }
+            else
+            {
+                if (InputHandler.KeyPressed(Keys.Up))
+                {
+                    GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
                 }
             }
 

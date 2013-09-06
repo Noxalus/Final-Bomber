@@ -11,6 +11,15 @@ namespace Final_BomberServer
     {
         static void Main(string[] args)
         {
+            if (args.Length > 0)
+            {
+                Console.WriteLine("Arguments:");
+                foreach (string s in args)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+
             GameServerHandler server = new GameServerHandler();
 
             if (!server.Running)

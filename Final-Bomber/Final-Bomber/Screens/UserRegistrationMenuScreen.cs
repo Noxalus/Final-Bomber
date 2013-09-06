@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 using System.Threading;
-using Final_BomberNetwork.MainServer;
 
 namespace Final_Bomber.Screens
 {

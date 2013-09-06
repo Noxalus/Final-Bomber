@@ -120,9 +120,13 @@ namespace Final_BomberServer.Host
                                     //string reason = "";
                                     //incMsg.ReadString(out reason);
 
-                                    Console.WriteLine(incMsg.ReadString());
+                                    //Console.WriteLine(incMsg.ReadString());
                                     //Console.WriteLine(reason);
-                                    WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected ()");
+                                    //WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected ()");
+
+                                    var test = incMsg.ReadByte();
+                                    WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected (" + incMsg.ReadString() + ")");
+
                                     clients.RemoveClient(t_client);
                                     OnDisconnectedClient(t_client, new EventArgs());
                                 }
@@ -132,11 +136,11 @@ namespace Final_BomberServer.Host
                     #endregion
 
                     case NetIncomingMessageType.Data:
-                        if (buffer.LengthBytes > 0)
+                        if (incMsg.LengthBytes > 0)
                         {
                             try
                             {
-                                DataProcessing(buffer.ReadByte(), ref t_client);
+                                DataProcessing(incMsg.ReadByte(), ref t_client);
                             }
                             catch (Exception e)
                             {

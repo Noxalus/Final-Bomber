@@ -60,7 +60,8 @@ namespace Final_BomberServer.Core
             {
                 nextTile = GameSettings.GetCurrentMap().GetTileByPlayerDirection(this, direction);
             }
-            if (nextTile != null)
+
+            if (true /*nextTile != null*/)
             {
                 if (finishMoving)
                 {
@@ -190,7 +191,7 @@ namespace Final_BomberServer.Core
         public Vector2 GetCenteredTilePos(MapTile tile)
         {
             Vector2 rtn = new Vector2(0);
-            Vector2 pos = tile.GetMapPos();
+            Vector2 pos = Vector2.Zero; //tile.GetMapPos();
             pos += new Vector2(MapTile.SIZE / 2);
             rtn.X = pos.X - (SizeOffset.X + Size.X / 2);
             rtn.Y = pos.Y - (SizeOffset.Y + Size.Y / 2);
