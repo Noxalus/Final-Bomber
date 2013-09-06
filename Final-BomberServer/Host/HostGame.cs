@@ -70,7 +70,6 @@ namespace Final_BomberServer.Host
 
         private void GameInitialize()
         {
-
             gameHasBegun = false;
             //tmr_BeginGame = new H.U.D.Timer(true);
             bombs = new List<Bomb>();
@@ -88,7 +87,7 @@ namespace Final_BomberServer.Host
             }
             for (int i = 0; i < GameSettings.gameServer.clients.Count; i++)
             {
-                GameSettings.gameServer.clients[i].Player.PositionOnTile(CurrentMap.startPositions[i]);//Placerar spelarna på start positioner...
+                //GameSettings.gameServer.clients[i].Player.PositionOnTile(CurrentMap.startPositions[i]);//Placerar spelarna på start positioner...
                 //GameSettings.gameServer.clients[i].Player.invurnable.Start();//... och ser till att alla är invurnable i början av spelet
                 GameSettings.gameServer.clients[i].NewClient = false; //Spelaren är inte nyconnectad längre
                 GameSettings.gameServer.clients[i].Spectating = false;
@@ -170,6 +169,7 @@ namespace Final_BomberServer.Host
             MapTile tile;
             foreach (Client client in GameSettings.gameServer.clients)
             {
+                /*
                 pos = client.Player.GetCenterPosition();
                 tile = GameSettings.GetCurrentMap().GetTileByPosition(pos.X, pos.Y);
                 if (tile != null) //Om spelaren är död så kommer tilen att vara null
@@ -181,6 +181,7 @@ namespace Final_BomberServer.Host
                         tile.Poweruped = null;
                     }
                 }
+                */
             }
         }
 
@@ -221,7 +222,7 @@ namespace Final_BomberServer.Host
             #region BeforeSuddenDeath
             if (!suddenDeath)
             {
-                if (true /*tmr_UntilSuddenDeath.Each(CurrentMap.suddenDeathTime)*/)
+                if (false /*tmr_UntilSuddenDeath.Each(CurrentMap.suddenDeathTime)*/)
                 {
                     suddenDeath = true;
                     //tmr_UntilSuddenDeath.Stop();

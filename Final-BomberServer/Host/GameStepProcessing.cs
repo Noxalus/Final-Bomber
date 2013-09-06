@@ -13,7 +13,7 @@ namespace Final_BomberServer.Host
         private void GameStepProccesing()
         {
             if (GameSettings.gameServer.clients.Count == 1 // TO CHANGE
-                && !StartedMatch && GameSettings.gameServer.clients.IsClientsReady())
+                && !StartedMatch /*&& GameSettings.gameServer.clients.IsClientsReady()*/)
             //Om rätt antal spelare har joinat, matchen har inte startat och alla spelare är färdiga att starta 
             {
                 GameInitialize();
@@ -29,19 +29,23 @@ namespace Final_BomberServer.Host
                 }
             }
 
-            alivePlayers = GameSettings.gameServer.clients.GetAlivePlayers();
-            if (StartedMatch && alivePlayers.Count < 2)
+            // End of game
+            if (false)
             {
-                //MainServer.SendPlayerStats();
-                GameSettings.CurrentMap++;
-                //MainServer.SendNextMap();
-                EndGame();
-                foreach (Client client in GameSettings.gameServer.clients)
+                alivePlayers = GameSettings.gameServer.clients.GetAlivePlayers();
+                if (StartedMatch && alivePlayers.Count < 2)
                 {
-                    client.isReady = false;
-                    GameSettings.gameServer.SendEnd(client);
-                    client.Player = new Player(client.Player.PlayerId); //Återställer dens orginal värden
-                    GameSettings.gameServer.SendGameInfo(client);
+                    //MainServer.SendPlayerStats();
+                    GameSettings.CurrentMap++;
+                    //MainServer.SendNextMap();
+                    EndGame();
+                    foreach (Client client in GameSettings.gameServer.clients)
+                    {
+                        client.isReady = false;
+                        GameSettings.gameServer.SendEnd(client);
+                        client.Player = new Player(client.Player.PlayerId); //Återställer dens orginal värden
+                        GameSettings.gameServer.SendGameInfo(client);
+                    }
                 }
             }
         }

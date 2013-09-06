@@ -117,7 +117,12 @@ namespace Final_BomberServer.Host
                             {
                                 if (t_client != null)
                                 {
-                                    WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected");
+                                    //string reason = "";
+                                    //incMsg.ReadString(out reason);
+
+                                    Console.WriteLine(incMsg.ReadString());
+                                    //Console.WriteLine(reason);
+                                    WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected ()");
                                     clients.RemoveClient(t_client);
                                     OnDisconnectedClient(t_client, new EventArgs());
                                 }

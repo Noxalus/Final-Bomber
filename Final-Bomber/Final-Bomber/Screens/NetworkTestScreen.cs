@@ -38,6 +38,13 @@ namespace Final_Bomber.Screens
             base.LoadContent();
         }
 
+        protected override void UnloadContent()
+        {
+            GameSettings.GameServer.EndClientConnection("Quit the game !");
+
+            base.UnloadContent();
+        }
+
         public override void Update(GameTime gameTime)
         {
             ControlManager.Update(gameTime, PlayerIndex.One);
