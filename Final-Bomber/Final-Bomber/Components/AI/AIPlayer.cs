@@ -14,8 +14,8 @@ namespace Final_Bomber.Components.AI
 
         public List<Point> Path { get; private set; }
 
-        public AIPlayer(int id, FinalBomber game, Vector2 position)
-            : base(id, game, position)
+        public AIPlayer(int id)
+            : base(id)
         {
             // AI
             _aiNextPosition = new Vector2(-1, -1);
@@ -24,7 +24,7 @@ namespace Final_Bomber.Components.AI
 
         protected override void Move()
         {
-            Level level = GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel];
+            Level level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
 
             #region Walk
             // If he hasn't reach his goal => we walk to this goal
@@ -53,23 +53,23 @@ namespace Final_Bomber.Components.AI
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, level.Map, level.CollisionLayer, level.HazardMap, MapSize))
+                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, level.Map, level.CollisionLayer, level.HazardMap, Config.MapSize))
                     {
                         if (this.CurrentBombNumber > 0)
                         {
-                            var bo = GameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                            var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                             if (bo == null)
                             {
                                 this.CurrentBombNumber--;
-                                var bomb = new Bomb(GameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                                var bomb = new Bomb(FinalBomber.Instance, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
                                 // We define a new way (to escape the bomb)
                                 Path = AIFunction.MakeAWay(
                                     Sprite.CellPosition,
-                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, MapSize),
-                                    level.CollisionLayer, level.HazardMap, MapSize);
+                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, Config.MapSize),
+                                    level.CollisionLayer, level.HazardMap, Config.MapSize);
 
-                                GameRef.GamePlayScreen.AddBomb(bomb);
+                                FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                             }
                         }
                     }
@@ -83,8 +83,8 @@ namespace Final_Bomber.Components.AI
                     // We define a new goal
                     Path = AIFunction.MakeAWay(
                         Sprite.CellPosition,
-                        AIFunction.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, MapSize),
-                        level.CollisionLayer, level.HazardMap, MapSize);
+                        AIFunction.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, Config.MapSize),
+                        level.CollisionLayer, level.HazardMap, Config.MapSize);
 
                     if (Path != null)
                     {
@@ -159,8 +159,8 @@ namespace Final_Bomber.Components.AI
                 Entity[,] map = level.Map;
                 Path = AIFunction.MakeAWay(
                     Sprite.CellPosition,
-                    AIFunction.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, MapSize),
-                    collisionLayer, hazardMap, MapSize);
+                    AIFunction.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, Config.MapSize),
+                    collisionLayer, hazardMap, Config.MapSize);
             }
         }
 

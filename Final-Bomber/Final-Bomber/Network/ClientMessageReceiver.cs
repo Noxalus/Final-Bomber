@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lidgren.Network;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +62,16 @@ namespace Final_Bomber.Network
                 StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime);
         }
         #endregion
-        public void RecieveStartGame(bool gameInProgress)
+        public void RecieveStartGame(NetIncomingMessage message)
         {
+            bool gameInProgress = message.ReadBoolean();
             if (!gameInProgress)
             {
-                //OnStartGame(gameInProgress, buffer.ReadInt32(), buffer.ReadFloat(), buffer.ReadInt32());
+                int playerId = message.ReadInt32();
+                float moveSpeed = message.ReadFloat();
+                int suddenDeathTime = message.ReadInt32();
+
+                OnStartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime);
             }
             else
             {

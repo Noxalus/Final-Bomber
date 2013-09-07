@@ -56,21 +56,23 @@ namespace Final_BomberServer.Core
         public void SetMovement(ActionEnum direction, bool finishMoving)
         {
             MapTile nextTile = null;
-            if (NextTile != null) //Fick ett error som detta fixar
+            if (NextTile != null) // Got an error that this fixes
             {
                 nextTile = GameSettings.GetCurrentMap().GetTileByPlayerDirection(this, direction);
             }
 
             if (true /*nextTile != null*/)
             {
+                /*
                 if (finishMoving)
                 {
                     if (direction != ActionEnum.Standing)
                         Stats.TileWalkDistance++;
                     NextTile = nextTile;
                 }
+                */
                 nextDirection = direction;
-                if (Direction == ActionEnum.Standing && !finishMoving && direction != ActionEnum.Standing)
+                if (true /*Direction == ActionEnum.Standing && !finishMoving && direction != ActionEnum.Standing*/)
                 {
                     Direction = direction;
                     SendPosition();

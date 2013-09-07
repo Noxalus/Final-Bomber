@@ -19,6 +19,8 @@ namespace Final_Bomber.Components
     {
         #region Field Region
 
+        private string _name;
+
         public override sealed AnimatedSprite Sprite { get; protected set; }
 
         private readonly AnimatedSprite _playerDeathAnimation;
@@ -35,11 +37,6 @@ namespace Final_Bomber.Components
 
         protected LookDirection LookDirection;
 
-        protected readonly FinalBomber GameRef;
-        protected Point MapSize;
-
-        // Characteristics
-
         // Bad item
         protected TimeSpan BombTimerSaved;
         protected float SpeedSaved;
@@ -49,6 +46,12 @@ namespace Final_Bomber.Components
         #region Property Region
 
         public int Id { get; private set; }
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         public Camera Camera { get; private set; }
 
@@ -80,15 +83,10 @@ namespace Final_Bomber.Components
 
         #region Constructor Region
 
-        protected Player(int id, FinalBomber game, Vector2 position)
+        protected Player(int id)
         {
             this.Id = id;
-            this.GameRef = game;
-
-            this.MapSize = Config.MapSize;
-            //this.MapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;
-
-            this.Camera = new Camera(GameRef.ScreenRectangle);
+            _name = Config.PlayersName[Id - 1];
 
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
@@ -105,15 +103,15 @@ namespace Final_Bomber.Components
             animation = new Animation(4, 23, 23, 0, 69, animationFramesPerSecond);
             animations.Add(AnimationKey.Up, animation);
 
-            var spriteTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/player1");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1");
             
-            this.Sprite = new AnimatedSprite(spriteTexture, animations, position);
+            this.Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
             this.Sprite.ChangeFramesPerSecond(10);
             this.Sprite.Speed = Config.BasePlayerSpeed;
 
-            this._previousCellPosition = this.Sprite.CellPosition; 
+            this._previousCellPosition = this.Sprite.CellPosition;
 
-            var playerDeathTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/player1Death");
+            var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
             _playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation, Sprite.Position)
                 {
@@ -218,17 +216,17 @@ namespace Final_Bomber.Components
                 #region Item
 
                 /*
-                if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Item)
                 {
-                    var item = (Item)(GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                    var item = (Item)(FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
                     if (!item.InDestruction)
                     {
                         if (!HasBadItemEffect || (HasBadItemEffect && item.Type != ItemType.BadItem))
                         {
                             item.ApplyItem(this);
-                            GameRef.GamePlayScreen.ItemPickUpSound.Play();
+                            FinalBomber.Instance.GamePlayScreen.ItemPickUpSound.Play();
                             item.Remove();
                         }
                     }
@@ -249,10 +247,10 @@ namespace Final_Bomber.Components
                 #region Teleporter
 
                 /*
-                if (!_cellTeleporting && GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                if (!_cellTeleporting && FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
                 {
-                    var teleporter = (Teleporter)(GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                    var teleporter = (Teleporter)(FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
 
                     teleporter.ChangePosition(this);
@@ -273,7 +271,7 @@ namespace Final_Bomber.Components
             #endregion
 
             #region Edge wall gameplay
-            else if (OnEdge && (!Config.ActiveSuddenDeath || (Config.ActiveSuddenDeath && !GameRef.GamePlayScreen.SuddenDeath.HasStarted)))
+            else if (OnEdge && (!Config.ActiveSuddenDeath || (Config.ActiveSuddenDeath && !FinalBomber.Instance.GamePlayScreen.SuddenDeath.HasStarted)))
             {
                 Sprite.Update(gameTime);
 
@@ -282,6 +280,7 @@ namespace Final_Bomber.Components
             #endregion
 
             #region Camera
+            /*
             Camera.Update(gameTime);
 
             if (Config.Debug)
@@ -322,6 +321,7 @@ namespace Final_Bomber.Components
 
             if (IsMoving && Camera.CameraMode == CameraMode.Follow)
                 Camera.LockToSprite(Sprite);
+            */
             #endregion
 
             _previousCellPosition = Sprite.CellPosition;
@@ -341,20 +341,20 @@ namespace Final_Bomber.Components
                 {
                     if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency * 0.5f))
                     {
-                        Sprite.Draw(gameTime, GameRef.SpriteBatch);
-                        GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
+                        Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition, Color.Black);
                     }
                 }
                 else
                 {
-                    Sprite.Draw(gameTime, GameRef.SpriteBatch);
-                    GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
+                    Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition, Color.Black);
                 }
             }
             else
             {
-                _playerDeathAnimation.Draw(gameTime, GameRef.SpriteBatch);
-                GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
+                _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
             }
         }
         #endregion
@@ -365,10 +365,10 @@ namespace Final_Bomber.Components
 
         private Bomb BombAt(Point cell)
         {
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].Size.X &&
-                cell.Y < GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].Size.Y)
+            if (cell.X >= 0 && cell.Y >= 0 && cell.X < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.X &&
+                cell.Y < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.Y)
             {
-                Bomb bomb = GameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == cell);
+                Bomb bomb = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == cell);
                 return (bomb);
             }
             else
@@ -388,11 +388,14 @@ namespace Final_Bomber.Components
         #region Protected Method Region
         protected bool WallAt(Point cell)
         {
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].Size.X &&
-                cell.Y < GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].Size.Y)
-                return (this.GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[cell.X, cell.Y]);
+            return false;
+            /*
+            if (cell.X >= 0 && cell.Y >= 0 && cell.X < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.X &&
+                cell.Y < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.Y)
+                return (this.FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].CollisionLayer[cell.X, cell.Y]);
             else
                 return false;
+            */
         }
 
         protected bool IsMoreTopSide()
@@ -490,9 +493,9 @@ namespace Final_Bomber.Components
 
             // The player must stay in the map
             this.Sprite.PositionX = MathHelper.Clamp(this.Sprite.Position.X, Engine.TileWidth,
-                (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
+                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
             this.Sprite.PositionY = MathHelper.Clamp(this.Sprite.Position.Y, Engine.TileHeight,
-                (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
+                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
 
             #endregion
         }
@@ -502,10 +505,10 @@ namespace Final_Bomber.Components
             #region Update player's position
             if (_cellChanging)
             {
-                if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                    Map[_previousCellPosition.X, _previousCellPosition.Y] == this)
                 {
-                    GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                    FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                         Map[_previousCellPosition.X, _previousCellPosition.Y] = null;
                 }
 
@@ -514,10 +517,10 @@ namespace Final_Bomber.Components
             }
             else
             {
-                if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
                 {
-                    GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
+                    FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                         Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
                 }
             }
@@ -598,7 +601,7 @@ namespace Final_Bomber.Components
             {
                 this.Sprite.IsAnimating = false;
                 this.InDestruction = true;
-                GameRef.GamePlayScreen.PlayerDeathSound.Play();
+                FinalBomber.Instance.GamePlayScreen.PlayerDeathSound.Play();
                 this._playerDeathAnimation.Position = this.Sprite.Position;
                 this._playerDeathAnimation.IsAnimating = true;
             }
@@ -612,10 +615,10 @@ namespace Final_Bomber.Components
 
             // Replacing for the gameplay on the edges
             // Right side
-            if (MapSize.X - this.Sprite.CellPosition.X < MapSize.X / 2)
+            if (Config.MapSize.X - this.Sprite.CellPosition.X < Config.MapSize.X / 2)
             {
                 this.Sprite.CurrentAnimation = AnimationKey.Left;
-                this.Sprite.Position = new Vector2((MapSize.X * Engine.TileWidth) - Engine.TileWidth, this.Sprite.Position.Y);
+                this.Sprite.Position = new Vector2((Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth, this.Sprite.Position.Y);
             }
             // Left side
             else

@@ -10,6 +10,9 @@ namespace Final_Bomber
 {
     public class FinalBomber : Microsoft.Xna.Framework.Game
     {
+        // Static instance
+        public static FinalBomber Instance;
+
         // Password
         string _password;
         SoundEffect _debugModeEnabled;
@@ -65,6 +68,7 @@ namespace Final_Bomber
 
         public FinalBomber()
         {
+            Instance = this;
             graphics = new GraphicsDeviceManager(this)
                 {
                     PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0],

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Final_Bomber.Components;
 using Final_Bomber.Controls;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
@@ -6,20 +6,28 @@ using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Network.Core
 {
-    class HumanPlayer : Player
+    class OnlinePlayer : Player
     {
+
+        private LookDirection _oldLookDirection;
+
         public Keys[] Keys { get; set; }
         public Buttons[] Buttons { get; set; }
         private Keys[] _keysSaved;
 
-        public HumanPlayer(int id)
+        public OnlinePlayer(int id)
             : base(id)
         {
             Keys = Config.PlayersKeys[id - 1];
             Buttons = Config.PlayersButtons[id - 1];
+            _oldLookDirection = LookDirection.Idle;
         }
 
         public override void Update(GameTime gameTime)
@@ -30,43 +38,43 @@ namespace Final_Bomber.Components
         protected override void Move()
         {
             #region Moving input
-            var motion = new Vector2();
+
+            _oldLookDirection = LookDirection;
 
             // Up
             if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 LookDirection = LookDirection.Up;
-                motion.Y = -1;
             }
             // Down
             else if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 LookDirection = LookDirection.Down;
-                motion.Y = 1;
             }
             // Left
             else if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 LookDirection = LookDirection.Left;
-                motion.X = -1;
             }
             // Right
             else if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 LookDirection = LookDirection.Right;
-                motion.X = 1;
             }
             else
+            {
                 LookDirection = LookDirection.Idle;
+            }
 
             #endregion
 
             #region Moving action
 
+            /*
             // If the human player wants to move
             if (motion != Vector2.Zero)
             {
@@ -211,20 +219,22 @@ namespace Final_Bomber.Components
                         }
                     }
                 }
-
                 #endregion
 
-                ComputeWallCollision();
+                //ComputeWallCollision();
             }
             else
             {
                 this.IsMoving = false;
                 Sprite.IsAnimating = false;
             }
+            */
 
-            UpdatePlayerPosition();
+            SendMovement();
+            //UpdatePlayerPosition();
 
             #region Bomb
+            /*
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
                 ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
@@ -241,6 +251,7 @@ namespace Final_Bomber.Components
                     }
                 }
             }
+            */
             #endregion
 
             #endregion
@@ -336,7 +347,7 @@ namespace Final_Bomber.Components
 
             if (InputHandler.KeyDown(Keys[4]) && this.CurrentBombNumber > 0)
             {
-                // He can't put a bomb when he is on a corner
+                // He can't put a bomb when he is on edges
                 if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
                     (Sprite.CellPosition.Y == Config.MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
                 {
@@ -419,6 +430,31 @@ namespace Final_Bomber.Components
             }
 
             #endregion
+        }
+
+        private void SendMovement()
+        {
+            if (_oldLookDirection != LookDirection)
+            {
+                switch (LookDirection)
+                {
+                    case LookDirection.Down:
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveDown);
+                        break;
+                    case LookDirection.Left:
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveLeft);
+                        break;
+                    case LookDirection.Right:
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveRight);
+                        break;
+                    case LookDirection.Up:
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
+                        break;
+                    default:
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.Standing);
+                        break;
+                }
+            }
         }
     }
 }

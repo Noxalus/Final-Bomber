@@ -9,21 +9,26 @@ namespace Final_Bomber.Network
 {
     partial class GameServer
     {
+        int counter = 0;
         public void DataProcessing(byte type, NetIncomingMessage incMsg)
         {
+            counter++;
+            Debug.Print("[" + counter + "]Message received from server !");
             switch (type)
             {
                 case (byte)RMT.GameStartInfo:
-                    //RecieveGameInfo(buffer.ReadInt64());
+                    Debug.Print("A message type 'GameStartInfo' have been received from server !");
+                    //RecieveGameInfo(incMsg.ReadInt64());
                     break;
                 case (byte)RMT.Map:
                     //RecieveMap(); //Mkt info, läser från buffern i funktionen
                     break;
                 case (byte)RMT.StartGame:
-                    //RecieveStartGame(buffer.ReadBoolean());
+                    Debug.Print("A message type 'StartGame' have been received from server !");
+                    RecieveStartGame(incMsg);
                     break;
                 case (byte)RMT.PlayerPosAndSpeed:
-                    Debug.Print("COUCOU");
+                    Debug.Print("A message type 'PlayerPosAndSpeed' have been received from server !");
                     RecievePositionAndSpeed(incMsg.ReadFloat(), incMsg.ReadFloat(), incMsg.ReadByte(), incMsg.ReadInt32());
                     break;
                 case (byte)RMT.PlayerInfo:

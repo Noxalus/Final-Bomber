@@ -58,7 +58,7 @@ namespace Final_BomberServer.Host
             {
                 send.Write(client.Player.PlayerId);
                 send.Write(client.Player.MoveSpeed);
-                //send.Write(GameSettings.GetCurrentMap().suddenDeathTime);
+                send.Write(999/*GameSettings.GetCurrentMap().suddenDeathTime*/);
             }
             server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
         }
@@ -106,7 +106,8 @@ namespace Final_BomberServer.Host
         }
         #endregion
 
-        public void SendPlayerPosition(Player player, bool notDir)//Skicka spelarens rörelse till alla andra spelare
+        // Send the player's movement to all other players
+        public void SendPlayerPosition(Player player, bool notDir)
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.PlayerPosAndSpeed);
@@ -120,9 +121,10 @@ namespace Final_BomberServer.Host
             {
                 send.Write((byte)255);
             }
-            send.Write(player.PlayerId);
+            send.Write(player.PlayerId + 1);
+            
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            //GameSettings.rtxt_debug.Text += "\nSend Position - Player id; " + player.PlayerId.ToString();
+            Console.WriteLine("\nSend Position - Player id: " + player.PlayerId.ToString());
         }
 
         public void SendPlayerPlacingBomb(Player player, float xPos, float yPos)//Skickar till alla spelare att denna spelare har placerat en bomb

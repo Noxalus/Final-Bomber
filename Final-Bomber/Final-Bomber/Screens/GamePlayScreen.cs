@@ -1177,15 +1177,13 @@ namespace Final_Bomber.Screens
             {
                 if (Config.AIPlayers[playerID - 1])
                 {
-                    var player = new AIPlayer(Math.Abs(playerID), GameRef,
-                        Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
+                    var player = new AIPlayer(Math.Abs(playerID));
                     PlayerList.Add(player);
                     map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                 }
                 else
                 {
-                    var player = new HumanPlayer(Math.Abs(playerID), GameRef,
-                    Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
+                    var player = new HumanPlayer(Math.Abs(playerID));
                     PlayerList.Add(player);
                     map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                 }
@@ -1274,17 +1272,13 @@ namespace Final_Bomber.Screens
                 {
                     if (Config.AIPlayers[playerID])
                     {
-                        var player = new AIPlayer(Math.Abs(playerID), GameRef,
-                                                Engine.CellToVector(new Point(playerPositions[playerID].X,
-                                                                              playerPositions[playerID].Y)));
+                        var player = new AIPlayer(Math.Abs(playerID));
                         PlayerList.Add(player);
                         map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                     }
                     else
                     {
-                        var player = new HumanPlayer(Math.Abs(playerID), GameRef,
-                                                Engine.CellToVector(new Point(playerPositions[playerID].X,
-                                                                              playerPositions[playerID].Y)));
+                        var player = new HumanPlayer(Math.Abs(playerID));
                         PlayerList.Add(player);
                         map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                     }

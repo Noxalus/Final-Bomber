@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -22,8 +23,8 @@ namespace Final_Bomber.Network.Core
         public Buttons[] Buttons { get; set; }
         private Keys[] _keysSaved;
 
-        public OnlineHumanPlayer(int id, FinalBomber game, Vector2 position)
-            : base(id, game, position)
+        public OnlineHumanPlayer(int id)
+            : base(id)
         {
             Keys = Config.PlayersKeys[id - 1];
             Buttons = Config.PlayersButtons[id - 1];
@@ -241,13 +242,13 @@ namespace Final_Bomber.Network.Core
             {
                 if (this.CurrentBombNumber > 0)
                 {
-                    var bo = GameRef.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                     if (bo == null)
                     {
                         this.CurrentBombNumber--;
-                        var bomb = new Bomb(GameRef, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                        var bomb = new Bomb(FinalBomber.Instance, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
-                        GameRef.GamePlayScreen.AddBomb(bomb);
+                        FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                     }
                 }
             }
@@ -312,35 +313,35 @@ namespace Final_Bomber.Network.Core
 
             // The player is either at the top either at the bottom
             // => he can only move on the right or on the left
-            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (MapSize.Y - 1) * Engine.TileHeight)
+            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
             {
                 // If he wants to go to the left
                 if (Sprite.Position.X > 0 && InputHandler.KeyDown(Keys[2]))
                     Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                 // If he wants to go to the right
-                else if (Sprite.Position.X < (MapSize.X * Engine.TileWidth) - Engine.TileWidth &&
+                else if (Sprite.Position.X < (Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth &&
                     InputHandler.KeyDown(Keys[3]))
                     Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
             }
             // The player is either on the left either on the right
-            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (MapSize.X - 1) * Engine.TileWidth)
+            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
             {
                 // If he wants to go to the top
                 if (Sprite.Position.Y > 0 && InputHandler.KeyDown(Keys[0]))
                     Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
                 // If he wants to go to the bottom
-                else if (Sprite.Position.Y < (MapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
+                else if (Sprite.Position.Y < (Config.MapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
                     InputHandler.KeyDown(Keys[1]))
                     Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
             }
 
             if (Sprite.Position.Y <= 0)
                 Sprite.CurrentAnimation = AnimationKey.Down;
-            else if (Sprite.Position.Y >= (MapSize.Y - 1) * Engine.TileHeight)
+            else if (Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
                 Sprite.CurrentAnimation = AnimationKey.Up;
             else if (Sprite.Position.X <= 0)
                 Sprite.CurrentAnimation = AnimationKey.Right;
-            else if (Sprite.Position.X >= (MapSize.X - 1) * Engine.TileWidth)
+            else if (Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
                 Sprite.CurrentAnimation = AnimationKey.Left;
 
             #region Bombs => Edge gameplay
@@ -348,32 +349,32 @@ namespace Final_Bomber.Network.Core
             if (InputHandler.KeyDown(Keys[4]) && this.CurrentBombNumber > 0)
             {
                 // He can't put a bomb when he is on edges
-                if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == MapSize.X - 1)) ||
-                    (Sprite.CellPosition.Y == MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == MapSize.X - 1)))))
+                if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
+                    (Sprite.CellPosition.Y == Config.MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
                 {
-                    Level level = GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel];
+                    Level level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
                     int lag = 0;
                     Point bombPosition = Sprite.CellPosition;
                     // Up
                     if (Sprite.CellPosition.Y == 0)
                     {
-                        while (Sprite.CellPosition.Y + lag + 3 < MapSize.Y &&
+                        while (Sprite.CellPosition.Y + lag + 3 < Config.MapSize.Y &&
                                 level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
                         {
                             lag++;
                         }
                         bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
-                        if (bombPosition.Y < MapSize.Y)
+                        if (bombPosition.Y < Config.MapSize.Y)
                         {
-                            var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            GameRef.GamePlayScreen.BombList.Add(bomb);
+                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Map[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
                     }
                     // Down
-                    if (Sprite.CellPosition.Y == MapSize.Y - 1)
+                    if (Sprite.CellPosition.Y == Config.MapSize.Y - 1)
                     {
                         while (Sprite.CellPosition.Y - lag - 3 >= 0 &&
                                 level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
@@ -383,9 +384,9 @@ namespace Final_Bomber.Network.Core
                         bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
                         if (bombPosition.Y >= 0)
                         {
-                            var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            GameRef.GamePlayScreen.BombList.Add(bomb);
+                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Map[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
@@ -393,23 +394,23 @@ namespace Final_Bomber.Network.Core
                     // Left
                     if (Sprite.CellPosition.X == 0)
                     {
-                        while (Sprite.CellPosition.X + lag + 3 < MapSize.X &&
+                        while (Sprite.CellPosition.X + lag + 3 < Config.MapSize.X &&
                                 level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
                         {
                             lag++;
                         }
                         bombPosition.X = Sprite.CellPosition.X + lag + 3;
-                        if (bombPosition.X < MapSize.X)
+                        if (bombPosition.X < Config.MapSize.X)
                         {
-                            var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            GameRef.GamePlayScreen.BombList.Add(bomb);
+                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Map[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
                     }
                     // Right
-                    if (Sprite.CellPosition.X == MapSize.X - 1)
+                    if (Sprite.CellPosition.X == Config.MapSize.X - 1)
                     {
                         while (Sprite.CellPosition.X - lag - 3 >= 0 &&
                                 level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
@@ -419,9 +420,9 @@ namespace Final_Bomber.Network.Core
                         bombPosition.X = Sprite.CellPosition.X - lag - 3;
                         if (bombPosition.X >= 0)
                         {
-                            var bomb = new Bomb(GameRef, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            GameRef.GamePlayScreen.BombList.Add(bomb);
+                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Map[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
@@ -436,6 +437,7 @@ namespace Final_Bomber.Network.Core
         {
             if (_oldLookDirection != LookDirection)
             {
+                Debug.Print("Send new movement !");
                 switch (LookDirection)
                 {
                     case LookDirection.Down:

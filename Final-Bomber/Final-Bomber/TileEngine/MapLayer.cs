@@ -70,6 +70,7 @@ namespace Final_Bomber.TileEngine
 
         public void Draw(SpriteBatch spriteBatch, Camera camera, List<Tileset> tilesets, bool[,] collisionLayer)
         {
+            camera = new Camera(FinalBomber.Instance.ScreenRectangle);
             Point cameraPoint = Engine.VectorToCell(camera.Position * (1 / camera.Zoom));
             Point viewPoint = Engine.VectorToCell(
                 new Vector2(

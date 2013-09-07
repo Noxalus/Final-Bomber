@@ -13,6 +13,9 @@ using Final_Bomber.Components;
 using Final_Bomber.TileEngine;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.WorldEngine;
+using System.Net;
+using System.Net.Sockets;
+using System.IO;
 
 namespace Final_Bomber.Screens
 {
@@ -21,6 +24,7 @@ namespace Final_Bomber.Screens
         #region Field region
         Process server;
         PlayerCollection players;
+        private string _publicIp;
         private bool hasConnected;
 
         // Game logic
@@ -71,6 +75,7 @@ namespace Final_Bomber.Screens
         public NetworkTestScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
+            _publicIp = "?";
         }
         #endregion
 
@@ -92,6 +97,7 @@ namespace Final_Bomber.Screens
             hasConnected = false;
 
             // Events
+            GameSettings.GameServer.NewPlayer += new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
             GameSettings.GameServer.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
 
             base.Initialize();
@@ -115,6 +121,9 @@ namespace Final_Bomber.Screens
             server.Kill();
             */
 
+            GameSettings.GameServer.NewPlayer -= new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
+            GameSettings.GameServer.MovePlayer -= new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
+
             base.UnloadContent();
         }
 
@@ -134,6 +143,7 @@ namespace Final_Bomber.Screens
                     if (GameSettings.GameServer.Connected)
                     {
                         hasConnected = true;
+                        _publicIp = GetPublicIP();
                     }
                     else
                     {
@@ -186,14 +196,6 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(GameRef.SpriteBatch);
 
-            string str = "Networking Tests";
-            GameRef.SpriteBatch.DrawString(this.BigFont, str,
-                    new Vector2(
-                        Config.Resolutions[Config.IndexResolution, 0] / 2 -
-                        this.BigFont.MeasureString(str).X / 2,
-                        20),
-            Color.Black);
-
             if (hasConnected)
             {
                 // Background
@@ -245,6 +247,20 @@ namespace Final_Bomber.Screens
 
                 #endregion
             }
+
+            string str = "Networking Tests";
+            GameRef.SpriteBatch.DrawString(this.BigFont, str,
+                    new Vector2(
+                        Config.Resolutions[Config.IndexResolution, 0] / 2 -
+                        this.BigFont.MeasureString(str).X / 2,
+                        0),
+            Color.Black);
+
+            // Draw IP adress
+            GameRef.SpriteBatch.DrawString(this.BigFont, _publicIp, new Vector2(530, 60), Color.Black);
+
+            // Draw ping
+            GameRef.SpriteBatch.DrawString(this.BigFont, GameSettings.GameServer.Ping.ToString(), new Vector2(740, 100), Color.Black);
 
             GameRef.SpriteBatch.End();
         }
@@ -513,8 +529,7 @@ namespace Final_Bomber.Screens
             World.CurrentLevel = 0;
 
             int playerID = 1;
-            var me = new OnlineHumanPlayer(Math.Abs(playerID), GameRef,
-            Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
+            var me = new OnlineHumanPlayer(Math.Abs(playerID));
             players.Add(me);
             map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
 
@@ -522,12 +537,25 @@ namespace Final_Bomber.Screens
 
         #region Game Server events
 
+        private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
+        {
+            if (players.GetPlayerByID(playerID) == null)
+            {
+                OnlinePlayer player = new OnlinePlayer(playerID);
+                //player.MoveSpeed = moveSpeed;
+                player.Name = username;
+                //Entities.Add(player);
+                players.Add(player);
+            }
+        }
+
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
             Player player = players.GetPlayerByID(arg.playerID);
             if (player != null)
             {
                 // TODO => Move players on the map
+                player.Sprite.Position = arg.pos;
                 /*
                 player.MapPosition = arg.pos;
                 if (arg.action != 255)
@@ -538,5 +566,39 @@ namespace Final_Bomber.Screens
         }
 
         #endregion
+
+        private string GetMyIpAddress()
+        {
+            IPHostEntry host;
+            string localIP = "?";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.ToString();
+                }
+            }
+            return localIP;
+        }
+
+        private string GetPublicIP()
+        {
+            String direction = "";
+            WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+            using (WebResponse response = request.GetResponse())
+            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+            {
+                direction = stream.ReadToEnd();
+            }
+
+            //Search for the ip in the html
+            int first = direction.IndexOf("Address: ") + 9;
+            int last = direction.LastIndexOf("</body>");
+            direction = direction.Substring(first, last - first);
+
+            return direction;
+        }
     }
+
 }

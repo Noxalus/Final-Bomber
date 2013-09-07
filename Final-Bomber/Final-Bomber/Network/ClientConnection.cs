@@ -1,6 +1,7 @@
 ﻿using Lidgren.Network;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -60,6 +61,7 @@ namespace Final_Bomber.Network
             NetIncomingMessage incMsg = client.ReadMessage();
             while ((incMsg = client.ReadMessage()) != null)
             {
+                Debug.Print("Packet received from server !");
                 switch (incMsg.MessageType)
                 {
                     case NetIncomingMessageType.Data:
