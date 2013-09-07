@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Components
 {
-    public abstract class MapItem
+    public abstract class Entity
     {
         public abstract AnimatedSprite Sprite { get; protected set; }
 

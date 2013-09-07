@@ -9,7 +9,7 @@ namespace Final_Bomber.Components
     public enum ItemType { Power, Bomb, Speed, Point, BadItem }
     public enum BadItemEffect { NoBomb, BombDrop, BombTimerChanged, TooSpeed, TooSlow, KeysInversion }
 
-    public class Item : MapItem
+    public class Item : Entity
     {
         #region Field Region
 

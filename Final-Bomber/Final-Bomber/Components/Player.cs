@@ -9,12 +9,13 @@ using Final_Bomber.Controls;
 using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Input;
+using Final_Bomber.Components;
 
 namespace Final_Bomber.Components
 {
     public enum LookDirection { Down, Left, Right, Up, Idle }
 
-    public abstract class Player : MapItem
+    public abstract class Player : Entity
     {
         #region Field Region
 
@@ -84,7 +85,8 @@ namespace Final_Bomber.Components
             this.Id = id;
             this.GameRef = game;
 
-            this.MapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;
+            this.MapSize = Config.MapSize;
+            //this.MapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;
 
             this.Camera = new Camera(GameRef.ScreenRectangle);
 
@@ -215,6 +217,7 @@ namespace Final_Bomber.Components
 
                 #region Item
 
+                /*
                 if (GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Item)
                 {
@@ -230,7 +233,7 @@ namespace Final_Bomber.Components
                         }
                     }
                 }
-
+                */
                 // Have caught a bad item
                 if (HasBadItemEffect)
                 {
@@ -245,6 +248,7 @@ namespace Final_Bomber.Components
 
                 #region Teleporter
 
+                /*
                 if (!_cellTeleporting && GameRef.GamePlayScreen.World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
                     Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
                 {
@@ -254,7 +258,7 @@ namespace Final_Bomber.Components
                     teleporter.ChangePosition(this);
                     _cellTeleporting = true;
                 }
-
+                */
                 #endregion
             }
 
@@ -629,5 +633,18 @@ namespace Final_Bomber.Components
         #endregion
 
         #endregion
+    }
+}
+
+class PlayerCollection : List<Player>
+{
+    public Player GetPlayerByID(int playerID)
+    {
+        foreach (Player player in this)
+        {
+            if (player.Id == playerID)
+                return player;
+        }
+        return null;
     }
 }

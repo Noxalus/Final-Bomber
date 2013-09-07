@@ -8,6 +8,11 @@ using Microsoft.Xna.Framework.Input;
 using Lidgren.Network;
 using Final_Bomber.Network;
 using System.Diagnostics;
+using Final_Bomber.Network.Core;
+using Final_Bomber.Components;
+using Final_Bomber.TileEngine;
+using Microsoft.Xna.Framework.Graphics;
+using Final_Bomber.WorldEngine;
 
 namespace Final_Bomber.Screens
 {
@@ -15,7 +20,51 @@ namespace Final_Bomber.Screens
     {
         #region Field region
         Process server;
+        PlayerCollection players;
         private bool hasConnected;
+
+        // Game logic
+        Engine _engine;
+
+        // Map
+        Point _mapSize;
+        Texture2D _mapTexture;
+
+        // HUD
+        Point _hudOrigin;
+
+        // List
+        private List<Wall> _wallList;
+        private List<Item> _itemList;
+        private List<EdgeWall> _edgeWallList;
+
+        Texture2D _wallTexture;
+
+        // Dead players number
+        int _deadPlayersNumber;
+
+        // Random
+        public static Random Random { get; private set; }
+
+        #endregion
+
+        #region Property region
+
+        public World World { get; set; }
+
+        public List<Player> PlayerList { get; private set; }
+
+        public List<Bomb> BombList { get; private set; }
+
+        public List<UnbreakableWall> UnbreakableWallList { get; private set; }
+
+        public List<Teleporter> TeleporterList { get; private set; }
+
+        private List<Arrow> ArrowList { get; set; }
+
+        // Sudden Death
+        public SuddenDeath SuddenDeath { get; private set; }
+
         #endregion
 
         #region Constructor region
@@ -29,11 +78,17 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
+            Random = new Random();
+            _hudOrigin = new Point(GameRef.GraphicsDevice.Viewport.Width - 234, 0);
+
             // Launch the dedicated server as host
             server = new Process();
             server.StartInfo.FileName = "Server.exe";
             server.StartInfo.Arguments = "COUCOU";
             //server.Start();
+
+            players = new PlayerCollection();
+            Reset();
 
             hasConnected = false;
 
@@ -85,9 +140,9 @@ namespace Final_Bomber.Screens
             }
             else
             {
-                if (InputHandler.KeyPressed(Keys.Up))
+                foreach (Player p in players)
                 {
-                    GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
+                    p.Update(gameTime);
                 }
             }
 
@@ -129,9 +184,286 @@ namespace Final_Bomber.Screens
                         20),
             Color.Black);
 
+            if (hasConnected)
+            {
+                foreach (Player p in players)
+                {
+                    p.Draw(gameTime);
+                }
+            }
+
             GameRef.SpriteBatch.End();
         }
 
         #endregion
+
+        private void Reset()
+        {
+            //_timer = TimeSpan.Zero;
+
+            _engine = new Engine(32, 32, Vector2.Zero);
+
+            // Lists
+            _wallList = new List<Wall>();
+            _itemList = new List<Item>();
+            BombList = new List<Bomb>();
+            PlayerList = new List<Player>();
+            UnbreakableWallList = new List<UnbreakableWall>();
+            _edgeWallList = new List<EdgeWall>();
+            TeleporterList = new List<Teleporter>();
+            ArrowList = new List<Arrow>();
+
+            _deadPlayersNumber = 0;
+
+            CreateWorld();
+
+            var origin = new Vector2(_hudOrigin.X / 2 - ((32 * World.Levels[World.CurrentLevel].Size.X) / 2),
+                GameRef.GraphicsDevice.Viewport.Height / 2 - ((32 * World.Levels[World.CurrentLevel].Size.Y) / 2));
+
+            Engine.Origin = origin;
+
+            SuddenDeath = new SuddenDeath(GameRef, Config.PlayersPositions[0]);
+        }
+
+        private void CreateWorld()
+        {
+            var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
+
+            var collisionLayer = new bool[Config.MapSize.X, Config.MapSize.Y];
+            var mapPlayersPosition = new int[Config.MapSize.X, Config.MapSize.Y];
+            var map = new Entity[Config.MapSize.X, Config.MapSize.Y];
+            var layer = new MapLayer(Config.MapSize.X, Config.MapSize.Y);
+            var voidPosition = new List<Point>();
+
+            // Item Map
+            Entity mapItem;
+
+            // List of player position
+            var playerPositions = new Dictionary<int, Point>();
+
+            // We don't put wall around the players
+            for (int i = 0; i < Config.PlayersNumber; i++)
+            {
+                Point playerPosition = Config.PlayersPositions[i];
+                playerPositions[i + 1] = playerPosition;
+
+                mapPlayersPosition[playerPosition.X, playerPosition.Y] = 2;
+                mapPlayersPosition[playerPosition.X + 1, playerPosition.Y] = 1;
+                mapPlayersPosition[playerPosition.X, playerPosition.Y + 1] = 1;
+                mapPlayersPosition[playerPosition.X, playerPosition.Y - 1] = 1;
+                mapPlayersPosition[playerPosition.X - 1, playerPosition.Y] = 1;
+
+                mapPlayersPosition[playerPosition.X - 1, playerPosition.Y - 1] = 1;
+                mapPlayersPosition[playerPosition.X - 1, playerPosition.Y + 1] = 1;
+                mapPlayersPosition[playerPosition.X + 1, playerPosition.Y - 1] = 1;
+                mapPlayersPosition[playerPosition.X + 1, playerPosition.Y + 1] = 1;
+            }
+
+            /*
+            mapItem = new Teleporter(GameRef, new Vector2(
+                        5 * Engine.TileWidth,
+                        1 * Engine.TileHeight));
+            teleporterList.Add((Teleporter)mapItem);
+            map[5,1] = mapItem;
+
+            mapItem = new Teleporter(GameRef, new Vector2(
+                        10 * Engine.TileWidth,
+                        1 * Engine.TileHeight));
+            teleporterList.Add((Teleporter)mapItem);
+            map[10, 1] = mapItem;
+            */
+
+            for (int x = 0; x < Config.MapSize.X; x++)
+            {
+                for (int y = 0; y < Config.MapSize.Y; y++)
+                {
+                    if (!(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
+                        (x % 2 == 0 && y % 2 == 0)) && (mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2))
+                        voidPosition.Add(new Point(x, y));
+                }
+            }
+
+            #region Teleporter
+            if (Config.ActiveTeleporters)
+            {
+                if (Config.TeleporterPositionType == TeleporterPositionTypeEnum.Randomly)
+                {
+                    int randomVoid = 0;
+                    for (int i = 0; i < MathHelper.Clamp(Config.TeleporterNumber, 0, voidPosition.Count - 1); i++)
+                    {
+                        randomVoid = Random.Next(voidPosition.Count);
+                        mapItem = new Teleporter(GameRef, new Vector2(
+                            voidPosition[randomVoid].X * Engine.TileWidth,
+                            voidPosition[randomVoid].Y * Engine.TileHeight));
+                        TeleporterList.Add((Teleporter)mapItem);
+                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = mapItem;
+                        voidPosition.Remove(voidPosition[randomVoid]);
+                    }
+                }
+                else if (Config.TeleporterPositionType == TeleporterPositionTypeEnum.PlusForm)
+                {
+                    var teleporterPositions = new Point[]
+                    {
+                        new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), 1),
+                        new Point(1, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2)),
+                        new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), Config.MapSize.Y - 2),
+                        new Point(Config.MapSize.X - 2, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2))
+                    };
+
+                    for (int i = 0; i < teleporterPositions.Length; i++)
+                    {
+                        mapItem = new Teleporter(GameRef, new Vector2(
+                            teleporterPositions[i].X * Engine.TileWidth,
+                            teleporterPositions[i].Y * Engine.TileHeight));
+                        TeleporterList.Add((Teleporter)mapItem);
+                        map[teleporterPositions[i].X, teleporterPositions[i].Y] = mapItem;
+                    }
+                }
+            }
+            #endregion
+
+            #region Arrow
+            if (Config.ActiveArrows)
+            {
+                if (Config.ArrowPositionType == ArrowPositionTypeEnum.Randomly)
+                {
+                    var lookDirectionArray = new LookDirection[] { LookDirection.Up, LookDirection.Down, LookDirection.Left, LookDirection.Right };
+                    for (int i = 0; i < MathHelper.Clamp(Config.ArrowNumber, 0, voidPosition.Count - 1); i++)
+                    {
+                        int randomVoid = Random.Next(voidPosition.Count);
+                        mapItem = new Arrow(GameRef, new Vector2(
+                            voidPosition[randomVoid].X * Engine.TileWidth,
+                            voidPosition[randomVoid].Y * Engine.TileHeight),
+                            lookDirectionArray[Random.Next(lookDirectionArray.Length)]);
+                        ArrowList.Add((Arrow)mapItem);
+                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = mapItem;
+                        voidPosition.Remove(voidPosition[randomVoid]);
+                    }
+                }
+                else if (Config.ArrowPositionType == ArrowPositionTypeEnum.SquareForm)
+                {
+                    int outsideArrowsLag = 0;
+                    var ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2)) / (double)5);
+                    if (ratio % 2 == 0)
+                        outsideArrowsLag = 1;
+
+                    var arrowPositions = new Point[]
+                    {
+                        // ~~ Inside ~~ //
+                        // Top left
+                        new Point(
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)4) + 1, 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)4) + 1),
+
+                        // Top right
+                        new Point(
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.X - 2))/(double)4) - 1, 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)4) + 1),
+
+                        // Bottom left
+                        new Point(
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)4) + 1, 
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.Y - 2))/(double)4) - 1),
+
+                        // Bottom right
+                        new Point(
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.X - 2))/(double)4) - 1, 
+                            (int)Math.Ceiling((double)(3 * (Config.MapSize.Y - 2))/(double)4) - 1),
+
+                        // ~~ Outside ~~ //
+                        // Top left
+                        new Point(
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)5), 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)5)),
+
+                        // Top right
+                        new Point(
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5) + outsideArrowsLag, 
+                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)5)),
+
+                        // Bottom left
+                        new Point(
+                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)5), 
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.Y - 2))/(double)5) + outsideArrowsLag),
+
+                        // Bottom right
+                        new Point(
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5 + outsideArrowsLag), 
+                            (int)Math.Ceiling((double)(4 * (Config.MapSize.Y - 2))/(double)5) + outsideArrowsLag)
+                    };
+
+                    for (int i = 0; i < arrowPositions.Length; i++)
+                    {
+                        mapItem = new Arrow(GameRef, new Vector2(
+                            arrowPositions[i].X * Engine.TileWidth,
+                            arrowPositions[i].Y * Engine.TileHeight),
+                            Config.ArrowLookDirection[i % 4]);
+                        ArrowList.Add((Arrow)mapItem);
+                        map[arrowPositions[i].X, arrowPositions[i].Y] = mapItem;
+                    }
+                }
+            }
+            #endregion
+
+            int counter = 0;
+            for (int x = 0; x < Config.MapSize.X; x++)
+            {
+                for (int y = 0; y < Config.MapSize.Y; y++)
+                {
+                    var tile = new Tile(0, 0);
+                    if (x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
+                        (x % 2 == 0 && y % 2 == 0))
+                    {
+                        // Inside wallList
+                        if ((x % 2 == 0 && y % 2 == 0 && !(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1))) && mapPlayersPosition[x, y] != 2)
+                        {
+                            mapItem = new UnbreakableWall(GameRef, new Vector2(x * Engine.TileHeight, y * Engine.TileWidth));
+                            this.UnbreakableWallList.Add((UnbreakableWall)mapItem);
+                            map[x, y] = mapItem;
+                            collisionLayer[x, y] = true;
+                        }
+                        // Outside wallList
+                        else if (mapPlayersPosition[x, y] != 2)
+                        {
+                            mapItem = new EdgeWall(GameRef, new Vector2(x * Engine.TileHeight, y * Engine.TileWidth));
+                            this._edgeWallList.Add((EdgeWall)mapItem);
+                            counter++;
+                            map[x, y] = mapItem;
+                            collisionLayer[x, y] = true;
+                        }
+                    }
+                    else
+                    {
+                        // Wall
+                        if ((mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2) && map[x, y] == null &&
+                            Random.Next(0, 100) < MathHelper.Clamp(Config.WallNumber, 0, 100))
+                        {
+                            collisionLayer[x, y] = true;
+                            mapItem = new Wall(GameRef, new Vector2(x * Engine.TileWidth, y * Engine.TileHeight));
+                            _wallList.Add((Wall)mapItem);
+                            map[x, y] = mapItem;
+                        }
+                        //tile = new Tile(0, 0);
+                    }
+                    layer.SetTile(x, y, tile);
+                }
+            }
+
+            var mapLayers = new List<MapLayer> { layer };
+
+            var tileMap = new TileMap(tilesets, mapLayers);
+            var level = new Level(Config.MapSize, tileMap, map, collisionLayer);
+
+            World = new World(GameRef, GameRef.ScreenRectangle);
+            World.Levels.Add(level);
+            World.CurrentLevel = 0;
+
+            int playerID = 1;
+            var me = new OnlineHumanPlayer(Math.Abs(playerID), GameRef,
+            Engine.CellToVector(new Point(playerPositions[playerID].X, playerPositions[playerID].Y)));
+            players.Add(me);
+            map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
+
+        }
     }
 }

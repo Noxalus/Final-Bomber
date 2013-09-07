@@ -54,7 +54,8 @@ namespace Final_Bomber.Components
             _moveTime = TimeSpan.FromSeconds(Config.SuddenDeathWallSpeed);
             _lookDirection = LookDirection.Right;
 
-            _mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;            
+            _mapSize = Config.MapSize;
+            //_mapSize = game.GamePlayScreen.World.Levels[game.GamePlayScreen.World.CurrentLevel].Size;            
 
             _visited = new bool[_mapSize.X, _mapSize.Y];
             for (int i = 0; i < _mapSize.X; i++)
@@ -94,7 +95,7 @@ namespace Final_Bomber.Components
                     if (!AllVisited())
                     {
                         _visited[_currentPosition.X, _currentPosition.Y] = true;
-                        MapItem mapItem = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                        Entity mapItem = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                             Map[_currentPosition.X, _currentPosition.Y];
                         if (mapItem != null)
                         {

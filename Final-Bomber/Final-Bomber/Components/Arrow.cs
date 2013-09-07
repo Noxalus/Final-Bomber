@@ -5,7 +5,7 @@ using Final_Bomber.Sprites;
 
 namespace Final_Bomber.Components
 {
-    public class Arrow : MapItem
+    public class Arrow : Entity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }

@@ -946,12 +946,12 @@ namespace Final_Bomber.Screens
 
             var collisionLayer = new bool[Config.MapSize.X, Config.MapSize.Y];
             var mapPlayersPosition = new int[Config.MapSize.X, Config.MapSize.Y];
-            var map = new MapItem[Config.MapSize.X, Config.MapSize.Y];
+            var map = new Entity[Config.MapSize.X, Config.MapSize.Y];
             var layer = new MapLayer(Config.MapSize.X, Config.MapSize.Y);
             var voidPosition = new List<Point>();
 
             // Item Map
-            MapItem mapItem;
+            Entity mapItem;
 
             // List of player position
             var playerPositions = new Dictionary<int, Point>();
@@ -1206,7 +1206,7 @@ namespace Final_Bomber.Screens
 
                 var collisionLayer = new bool[mapSize.X, mapSize.Y];
                 var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                var map = new MapItem[mapSize.X, mapSize.Y];
+                var map = new Entity[mapSize.X, mapSize.Y];
                 var layer = new MapLayer(mapSize.X, mapSize.Y);
                 var voidPosition = new List<Point>();
                 var playerPositions = new Dictionary<int, Point>();

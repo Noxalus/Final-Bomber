@@ -16,7 +16,7 @@ namespace Final_Bomber.WorldEngine
         readonly TileMap tileMap;
 
         private Point size;
-        private MapItem[,] map;
+        private Entity[,] map;
         private bool[,] collisionLayer;
         private int[,] hazardMap;
 
@@ -34,7 +34,7 @@ namespace Final_Bomber.WorldEngine
             get { return size; }
         }
 
-        public MapItem[,] Map
+        public Entity[,] Map
         {
             get { return map; }
         }
@@ -53,7 +53,7 @@ namespace Final_Bomber.WorldEngine
 
         #region Constructor Region
 
-        public Level(Point mSize, TileMap tMap, MapItem[,] m, bool[,] cLayer)
+        public Level(Point mSize, TileMap tMap, Entity[,] m, bool[,] cLayer)
         {
             size = mSize;
             this.map = m;

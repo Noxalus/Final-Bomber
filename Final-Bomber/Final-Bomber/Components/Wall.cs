@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Components
 {
-    public class Wall : MapItem
+    public class Wall : Entity
     {
         #region Field Region
 

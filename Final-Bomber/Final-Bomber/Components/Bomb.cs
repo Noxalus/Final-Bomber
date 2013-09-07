@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Components
 {
-    public class Bomb : MapItem
+    public class Bomb : Entity
     {
         #region Field Region
         private enum ExplosionDirection { Down, Left, Right, Up, Middle, Horizontal, Vertical };
