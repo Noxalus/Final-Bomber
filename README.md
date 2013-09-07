@@ -46,6 +46,7 @@ TODO List
 * Boss scripts
 * Resources extension
 * Split screen for local multiplayer ?
+* Add logging for networking part (Log4Net => http://logging.apache.org/log4net/index.html)
 
 Videos
 ======
