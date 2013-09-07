@@ -127,7 +127,8 @@ namespace Final_BomberServer.Host
         {
             foreach (Client client in GameSettings.gameServer.clients)
             {
-                client.Player.MovePlayer(); //Flyttar spelaren till nästa position
+                // Move the player to the next position
+                client.Player.MovePlayer(); 
             }
         }
 

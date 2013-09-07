@@ -29,6 +29,7 @@ namespace Final_Bomber.Screens
         // Map
         Point _mapSize;
         Texture2D _mapTexture;
+        Texture2D _wallTexture;
 
         // HUD
         Point _hudOrigin;
@@ -38,7 +39,6 @@ namespace Final_Bomber.Screens
         private List<Item> _itemList;
         private List<EdgeWall> _edgeWallList;
 
-        Texture2D _wallTexture;
 
         // Dead players number
         int _deadPlayersNumber;
@@ -88,15 +88,22 @@ namespace Final_Bomber.Screens
             //server.Start();
 
             players = new PlayerCollection();
-            Reset();
 
             hasConnected = false;
 
+            // Events
+            GameSettings.GameServer.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
+
             base.Initialize();
+
+            Reset();
         }
 
         protected override void LoadContent()
         {
+            _wallTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _mapTexture = GameRef.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
+
             base.LoadContent();
         }
 
@@ -140,6 +147,9 @@ namespace Final_Bomber.Screens
             }
             else
             {
+                if (GameSettings.GameServer.HasStarted)
+                    GameSettings.GameServer.RunClientConnection();
+
                 foreach (Player p in players)
                 {
                     p.Update(gameTime);
@@ -186,10 +196,54 @@ namespace Final_Bomber.Screens
 
             if (hasConnected)
             {
-                foreach (Player p in players)
+                // Background
+                var position = new Vector2(
+                    Engine.Origin.X - (int)(Engine.Origin.X / Engine.TileWidth) * Engine.TileWidth - Engine.TileWidth,
+                    Engine.Origin.Y - (int)(Engine.Origin.Y / Engine.TileHeight) * Engine.TileHeight - Engine.TileHeight);
+
+                for (int i = 0; i < (GraphicsDevice.Viewport.Width / Engine.TileWidth) + 2; i++)
                 {
-                    p.Draw(gameTime);
+                    for (int j = 0; j < (GraphicsDevice.Viewport.Height / Engine.TileHeight) + 2; j++)
+                    {
+                        if (!((position.X + i * Engine.TileWidth > Engine.Origin.X &&
+                            position.X + i * Engine.TileWidth < Engine.Origin.X + _mapSize.X * Engine.TileWidth - Engine.TileWidth) &&
+                            (position.Y + j * Engine.TileHeight > Engine.Origin.Y &&
+                            position.Y + j * Engine.TileHeight < Engine.Origin.Y + _mapSize.Y * Engine.TileHeight - Engine.TileHeight)))
+                        {
+                            GameRef.SpriteBatch.Draw(_wallTexture, new Vector2(position.X + (i * Engine.TileWidth), position.Y + (j * Engine.TileHeight)), Color.White);
+                        }
+                    }
                 }
+
+                World.DrawLevel(gameTime, GameRef.SpriteBatch, players[0].Camera);
+
+                #region Draw each elements
+
+                foreach (EdgeWall e in _edgeWallList)
+                    e.Draw(gameTime);
+
+                foreach (UnbreakableWall u in UnbreakableWallList)
+                    u.Draw(gameTime);
+
+                foreach (Wall w in _wallList)
+                    w.Draw(gameTime);
+
+                foreach (Item i in _itemList)
+                    i.Draw(gameTime);
+
+                foreach (Teleporter t in TeleporterList)
+                    t.Draw(gameTime);
+
+                foreach (Arrow a in ArrowList)
+                    a.Draw(gameTime);
+
+                foreach (Bomb b in BombList)
+                    b.Draw(gameTime);
+
+                foreach (Player p in players)
+                    p.Draw(gameTime);
+
+                #endregion
             }
 
             GameRef.SpriteBatch.End();
@@ -465,5 +519,24 @@ namespace Final_Bomber.Screens
             map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
 
         }
+
+        #region Game Server events
+
+        private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
+        {
+            Player player = players.GetPlayerByID(arg.playerID);
+            if (player != null)
+            {
+                // TODO => Move players on the map
+                /*
+                player.MapPosition = arg.pos;
+                if (arg.action != 255)
+                    player.movementAction = (Player.ActionEnum)arg.action;
+                player.UpdateAnimation();
+                */
+            }
+        }
+
+        #endregion
     }
 }

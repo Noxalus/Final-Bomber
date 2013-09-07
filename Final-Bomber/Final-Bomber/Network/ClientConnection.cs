@@ -14,8 +14,6 @@ namespace Final_Bomber.Network
 
         private NetClient client;
 
-        private NetBuffer buffer = new NetBuffer();
-
         public bool HasStarted
         {
             get { return hasStarted; }
@@ -65,7 +63,8 @@ namespace Final_Bomber.Network
                 switch (incMsg.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        DataProcessing(buffer.ReadByte());
+                        byte type = incMsg.ReadByte();
+                        DataProcessing(type, incMsg);
                         break;
                 }
             }

@@ -65,7 +65,7 @@ namespace Final_Bomber.Network
         {
             if (!gameInProgress)
             {
-                OnStartGame(gameInProgress, buffer.ReadInt32(), buffer.ReadFloat(), buffer.ReadInt32());
+                //OnStartGame(gameInProgress, buffer.ReadInt32(), buffer.ReadFloat(), buffer.ReadInt32());
             }
             else
             {

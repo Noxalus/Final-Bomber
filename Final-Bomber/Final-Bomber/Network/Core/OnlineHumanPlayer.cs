@@ -234,6 +234,7 @@ namespace Final_Bomber.Network.Core
             //UpdatePlayerPosition();
 
             #region Bomb
+            /*
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
                 ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
@@ -250,6 +251,7 @@ namespace Final_Bomber.Network.Core
                     }
                 }
             }
+            */
             #endregion
 
             #endregion
