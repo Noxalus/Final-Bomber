@@ -87,7 +87,6 @@ namespace Final_Bomber
 
             stateManager = new GameStateManager(this);
             Components.Add(stateManager);
-
             
             TitleScreen = new TitleScreen(this, stateManager);
             BattleMenuScreen = new BattleMenuScreen(this, stateManager);
@@ -111,7 +110,6 @@ namespace Final_Bomber
             NetworkTestScreen = new NetworkTestScreen(this, stateManager);
 
             stateManager.ChangeState(TitleScreen);
-
 
             // FPS
             Components.Add(new FrameRateCounter(this));

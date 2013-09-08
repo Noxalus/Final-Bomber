@@ -1,18 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Controls
 {
-    public class InputHandler : Microsoft.Xna.Framework.GameComponent
+    class InputHandler : Microsoft.Xna.Framework.GameComponent
     {
+        #region Mouse Field Region
+
+        static MouseState mouseState;
+        static MouseState lastMouseState;
+
+        #endregion
+
         #region Keyboard Field Region
 
         static KeyboardState keyboardState;
@@ -24,7 +25,21 @@ namespace Final_Bomber.Controls
 
         static GamePadState[] gamePadStates;
         static GamePadState[] lastGamePadStates;
-        
+
+        #endregion
+
+        #region Mouse Property Region
+
+        public static MouseState MouseState
+        {
+            get { return mouseState; }
+        }
+
+        public static MouseState LastMouseState
+        {
+            get { return lastMouseState; }
+        }
+
         #endregion
 
         #region Keyboard Property Region
@@ -60,6 +75,8 @@ namespace Final_Bomber.Controls
         public InputHandler(Game game)
             : base(game)
         {
+            mouseState = Mouse.GetState();
+
             keyboardState = Keyboard.GetState();
 
             gamePadStates = new GamePadState[Enum.GetValues(typeof(PlayerIndex)).Length];
@@ -74,12 +91,14 @@ namespace Final_Bomber.Controls
 
         public override void Initialize()
         {
-
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
+            lastMouseState = mouseState;
+            mouseState = Mouse.GetState();
+
             lastKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
 
@@ -96,7 +115,73 @@ namespace Final_Bomber.Controls
 
         public static void Flush()
         {
+            lastMouseState = mouseState;
             lastKeyboardState = keyboardState;
+        }
+
+        public static bool PressedUp()
+        {
+            return
+                (KeyPressed(Keys.Up) ||
+                ButtonPressed(Buttons.DPadUp, PlayerIndex.One) ||
+                ButtonPressed(Buttons.LeftThumbstickUp, PlayerIndex.One));
+        }
+
+        public static bool PressedDown()
+        {
+            return
+                (KeyPressed(Keys.Down) ||
+                ButtonPressed(Buttons.DPadDown, PlayerIndex.One) ||
+                ButtonPressed(Buttons.LeftThumbstickDown, PlayerIndex.One));
+        }
+
+        public static bool PressedLeft()
+        {
+            return
+                (KeyPressed(Keys.Left) ||
+                ButtonPressed(Buttons.DPadLeft, PlayerIndex.One) ||
+                ButtonPressed(Buttons.LeftThumbstickLeft, PlayerIndex.One));
+        }
+
+        public static bool PressedRight()
+        {
+            return
+                (KeyPressed(Keys.Right) ||
+                ButtonPressed(Buttons.DPadRight, PlayerIndex.One) ||
+                ButtonPressed(Buttons.LeftThumbstickRight, PlayerIndex.One));
+        }
+
+        public static bool PressedAction()
+        {
+            return
+                (KeyPressed(Keys.Enter) ||
+                ButtonPressed(Buttons.A, PlayerIndex.One));
+        }
+
+        public static bool PressedCancel()
+        {
+            return
+                (KeyPressed(Keys.Escape) ||
+                ButtonPressed(Buttons.B, PlayerIndex.One));
+        }
+
+        #endregion
+
+        #region Mouse Region
+
+        public static bool Scroll()
+        {
+            return mouseState.ScrollWheelValue == lastMouseState.ScrollWheelValue;
+        }
+
+        public static bool ScrollUp()
+        {
+            return mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue;
+        }
+
+        public static bool ScrollDown()
+        {
+            return mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue;
         }
 
         #endregion
@@ -104,7 +189,7 @@ namespace Final_Bomber.Controls
         #region Keyboard Region
 
         public static bool KeyReleased(Keys key)
-        {            
+        {
             return keyboardState.IsKeyUp(key) &&
                 lastKeyboardState.IsKeyDown(key);
         }
@@ -158,7 +243,7 @@ namespace Final_Bomber.Controls
 
         public static Buttons[] GetPressedButton(PlayerIndex index)
         {
-            return Enum.GetValues(typeof (Buttons)).Cast<Buttons>().Where(button => ButtonPressed(button, index)).ToArray();
+            return Enum.GetValues(typeof(Buttons)).Cast<Buttons>().Where(button => ButtonPressed(button, index)).ToArray();
         }
 
         #endregion
