@@ -113,7 +113,7 @@ namespace Final_Bomber.Components
                     break;
                 // More points
                 case ItemType.Point:
-                    Config.PlayersScores[p.Id - 1]++;
+                    Config.PlayersScores[p.Id]++;
                     break;
             }
         }

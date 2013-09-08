@@ -25,7 +25,7 @@ namespace Final_BomberServer.Host
         void ReceiveMovePlayer(Client client, Player.ActionEnum movement)
         {
             if (!client.Player.IsDead)
-                client.Player.SetMovement(movement, false);//Tar emot karatärens nuvarande riktning
+                client.Player.SetMovement(movement); // Receives the player's current direction
         }
 
         #region BombPlacing

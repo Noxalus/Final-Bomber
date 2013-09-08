@@ -22,13 +22,16 @@ namespace Final_BomberServer.Core
         public Vector2 SizeOffset = new Vector2(15, 30);
         public PlayerStats Stats = new PlayerStats();
 
+        public Timer tmrSendPos = new Timer(true);
+
+
         public int maxBombAmount;
         public int currentBombAmount;
         public float MoveSpeed;
         public int lifes;
         public bool IsDead;
         public int ExplodeRange;
-        public float BombTickPerSek; //Bombens ticks per sekund
+        public float BombTickPerSek; //Bomb ticks per second
 
         public Player(int playerId)
         {
@@ -53,7 +56,7 @@ namespace Final_BomberServer.Core
             WalkingLeft
         }
 
-        public void SetMovement(ActionEnum direction, bool finishMoving)
+        public void SetMovement(ActionEnum direction)
         {
             MapTile nextTile = null;
             if (NextTile != null) // Got an error that this fixes
@@ -63,16 +66,8 @@ namespace Final_BomberServer.Core
 
             if (true /*nextTile != null*/)
             {
-                /*
-                if (finishMoving)
-                {
-                    if (direction != ActionEnum.Standing)
-                        Stats.TileWalkDistance++;
-                    NextTile = nextTile;
-                }
-                */
                 nextDirection = direction;
-                if (true /*Direction == ActionEnum.Standing && !finishMoving && direction != ActionEnum.Standing*/)
+                if (Direction == ActionEnum.Standing && direction != ActionEnum.Standing)
                 {
                     Direction = direction;
                     SendPosition();
@@ -103,11 +98,11 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (true /*tmrSendPos.Each(200)*/)
+                                if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
                             CurrentTile = NextTile;
-                            SetMovement(Direction, true);
+                            SetMovement(Direction);
                         }
                         break;
                     case ActionEnum.WalkingUp:
@@ -122,11 +117,11 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (true /*tmrSendPos.Each(200)*/)
+                                if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
                             CurrentTile = NextTile;
-                            SetMovement(Direction, true);
+                            SetMovement(Direction);
                         }
                         break;
                     case ActionEnum.WalkingLeft:
@@ -141,18 +136,20 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (true /*tmrSendPos.Each(200)*/)
+                                if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
                             CurrentTile = NextTile;
-                            SetMovement(Direction, true);
+                            SetMovement(Direction);
                         }
                         break;
                     case ActionEnum.WalkingRight:
-                        Position += new Vector2(GetMovementSpeed(), 0);
-                        if (Position.X > GetCenteredTilePos(NextTile).X)
+                        float test = GetMovementSpeed();
+                        Position.X += 10f*GameSettings.speed;
+                        Console.WriteLine("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
+                        if (true /*Position.X > GetCenteredTilePos(NextTile).X*/)
                         {
-                            Position.X = GetCenteredTilePos(NextTile).X;
+                            //Position.X = GetCenteredTilePos(NextTile).X;
                             if (Direction != nextDirection)
                             {
                                 Direction = nextDirection;
@@ -160,14 +157,16 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (true /*tmrSendPos.Each(200)*/)
+                                if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
                             CurrentTile = NextTile;
-                            SetMovement(Direction, true);
+                            SetMovement(Direction);
                         }
                         break;
                 }
+
+                //Console.WriteLine("[Client #" + this.PlayerId + "]Position: + " + Position.ToString());
             }
         }
 

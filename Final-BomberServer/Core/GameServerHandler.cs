@@ -35,7 +35,7 @@ namespace Final_BomberServer.Core
 
         public void Update()
         {
-            GameSettings.speed = speedTmr.ElapsedMilliseconds; //Detta räknar ut fps, så att gubbens rörelse blir synkade med clienterna
+            GameSettings.speed = speedTmr.ElapsedMilliseconds; // This calculates fps, so that the old player's movement is synchronized with the client
             speedTmr.Reset();
             speedTmr.Start();
 

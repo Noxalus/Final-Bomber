@@ -26,8 +26,8 @@ namespace Final_Bomber.Network.Core
         public OnlineHumanPlayer(int id)
             : base(id)
         {
-            Keys = Config.PlayersKeys[id - 1];
-            Buttons = Config.PlayersButtons[id - 1];
+            Keys = Config.PlayersKeys[Id];
+            Buttons = Config.PlayersButtons[Id];
             _oldLookDirection = LookDirection.Idle;
         }
 
@@ -43,25 +43,25 @@ namespace Final_Bomber.Network.Core
             _oldLookDirection = LookDirection;
 
             // Up
-            if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
+            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 LookDirection = LookDirection.Up;
             }
             // Down
-            else if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 LookDirection = LookDirection.Down;
             }
             // Left
-            else if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 LookDirection = LookDirection.Left;
             }
             // Right
-            else if ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 LookDirection = LookDirection.Right;
@@ -237,7 +237,7 @@ namespace Final_Bomber.Network.Core
             #region Bomb
             /*
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
-                ((Config.PlayersUsingController[Id - 1] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
+                ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
             {
                 if (this.CurrentBombNumber > 0)

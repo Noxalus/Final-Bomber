@@ -9,19 +9,20 @@ namespace Final_Bomber.Network
 {
     partial class GameServer
     {
-        int counter = 0;
+        int _counter = 0;
         public void DataProcessing(byte type, NetIncomingMessage incMsg)
         {
-            counter++;
-            Debug.Print("[" + counter + "]Message received from server !");
+            _counter++;
+            Debug.Print("[" + _counter + "]Message received from server !");
             switch (type)
             {
                 case (byte)RMT.GameStartInfo:
                     Debug.Print("A message type 'GameStartInfo' have been received from server !");
-                    //RecieveGameInfo(incMsg.ReadInt64());
+                    RecieveGameInfo(incMsg.ReadInt64());
                     break;
                 case (byte)RMT.Map:
-                    //RecieveMap(); //Mkt info, läser från buffern i funktionen
+                    Debug.Print("A message type 'Map' have been received from server !");
+                    RecieveMap(); //Mkt info, read from the buffer in the function
                     break;
                 case (byte)RMT.StartGame:
                     Debug.Print("A message type 'StartGame' have been received from server !");
@@ -32,13 +33,16 @@ namespace Final_Bomber.Network
                     RecievePositionAndSpeed(incMsg.ReadFloat(), incMsg.ReadFloat(), incMsg.ReadByte(), incMsg.ReadInt32());
                     break;
                 case (byte)RMT.PlayerInfo:
-                    //RecievePlayerInfo(buffer.ReadInt32(), buffer.ReadFloat(), buffer.ReadString());
+                    Debug.Print("A message type 'PlayerInfo' have been received from server !");
+                    RecievePlayerInfo(incMsg.ReadInt32(), incMsg.ReadFloat(), incMsg.ReadString());
                     break;
                 case (byte)RMT.RemovePlayer:
-                    //RecieveRemovePlayer(buffer.ReadInt32());
+                    Debug.Print("A message type 'RemovePlayer' have been received from server !");
+                    RecieveRemovePlayer(incMsg.ReadInt32());
                     break;
                 case (byte)RMT.PlayerPlacingBomb:
-                    //RecievePlacingBomb(buffer.ReadInt32(), buffer.ReadFloat(), buffer.ReadFloat());
+                    Debug.Print("A message type 'PlayerPlacingBomb' have been received from server !");
+                    RecievePlacingBomb(incMsg.ReadInt32(), incMsg.ReadFloat(), incMsg.ReadFloat());
                     break;
                 case (byte)RMT.BombExploded:
                     //RecieveBombExploded(); //Mkt info, läser från buffern i funktionen
@@ -62,7 +66,8 @@ namespace Final_Bomber.Network
                     //RecieveSDExplosion(buffer.ReadInt32());
                     break;
                 case (byte)RMT.End:
-                    //RecieveEnd(buffer.ReadBoolean());
+                    Debug.Print("A message type 'End' have been received from server !");
+                    RecieveEnd(incMsg.ReadBoolean());
                     break;
             }
         }

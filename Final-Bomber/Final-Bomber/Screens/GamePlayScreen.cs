@@ -451,7 +451,7 @@ namespace Final_Bomber.Screens
                     foreach (Player p in PlayerList)
                     {
                         if (p.IsAlive)
-                            Config.PlayersScores[p.Id - 1] += 5;
+                            Config.PlayersScores[p.Id] += 5;
                     }
                     Reset();
                 }
@@ -735,14 +735,14 @@ namespace Final_Bomber.Screens
                     p.Draw(gameTime);
 
                     // HUD => Item Info
-                    GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[p.Id - 1] + ": "
-                         + Config.PlayersScores[p.Id - 1] + " pt(s)",
-                        new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace), Color.Black);
+                    GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[p.Id] + ": "
+                         + Config.PlayersScores[p.Id] + " pt(s)",
+                        new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
                     if (Config.Debug)
                     {
                         GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.Sprite.CellPosition).ToString(),
-                            new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * Config.PlayersNumber + 60 + 20 * (p.Id - 1)), Color.Black);
+                            new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * Config.PlayersNumber + 60 + 20 * (p.Id)), Color.Black);
                     }
 
                     // To space the red icons and the "normal color" icons
@@ -757,7 +757,7 @@ namespace Final_Bomber.Screens
                         for (int i = 0; i < counterRedFlames; i++)
                             GameRef.SpriteBatch.Draw(_itemInfoIcon,
                                 new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 30),
+                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 30),
                                 new Rectangle(14, 0, 14, 14), Color.White);
                     }
                     else
@@ -766,7 +766,7 @@ namespace Final_Bomber.Screens
                     for (int i = 0; i < counterYellowFlames; i++)
                         GameRef.SpriteBatch.Draw(_itemInfoIcon,
                             new Vector2(_hudOrigin.X + _hudMarginLeft + 14 * counterRedFlames + 7 * i + iconLag,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 30),
+                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 30),
                             new Rectangle(0, 0, 14, 14), Color.White);
 
                     // Player's bomb number
@@ -778,7 +778,7 @@ namespace Final_Bomber.Screens
                         for (int i = 0; i < counterRedBombs; i++)
                         {
                             GameRef.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 50),
+                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50),
                                 new Rectangle(42, 0, 14, 14), Color.White);
                         }
                     }
@@ -790,7 +790,7 @@ namespace Final_Bomber.Screens
                     {
                         GameRef.SpriteBatch.Draw(_itemInfoIcon,
                             new Vector2(_hudOrigin.X + 7 * counterRedBombs + _hudMarginLeft + 7 * i + iconLag, _hudOrigin.Y +
-                                _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 50),
+                                _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50),
                             new Rectangle(28, 0, 14, 14), Color.White);
                         finalCounter = i;
                     }
@@ -798,7 +798,7 @@ namespace Final_Bomber.Screens
                     if (p.HasBadItemEffect && p.BadItemEffect == BadItemEffect.NoBomb)
                     {
                         GameRef.SpriteBatch.Draw(_cross, new Rectangle(_hudOrigin.X + _hudMarginLeft,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 50,
+                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50,
                             7 * counterRedBombs + 7 * finalCounter + iconLag + 15, 15), Color.White);
                     }
 
@@ -810,7 +810,7 @@ namespace Final_Bomber.Screens
                         counterRedShoes = (int)(p.Sprite.Speed / Config.PlayerSpeedIncrementeur) / 10;
                         for (int i = 0; i < counterRedShoes; i++)
                             GameRef.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 70),
+                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
                                 new Rectangle(70, 0, 14, 14), Color.White);
                     }
                     else
@@ -820,14 +820,14 @@ namespace Final_Bomber.Screens
                     for (int i = 0; i < counterBlueShoes; i++)
                         GameRef.SpriteBatch.Draw(_itemInfoIcon,
                             new Vector2(_hudOrigin.X + _hudMarginLeft + counterRedShoes * 7 + 7 * i + iconLag,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 70),
+                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
                             new Rectangle(56, 0, 14, 14), Color.White);
 
                     // Player's bad item timer
                     if (p.HasBadItemEffect)
                     {
                         GameRef.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 90),
+                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
                                     new Rectangle(98, 0, 14, 14), Color.White);
 
                         int lenght = 200 - (int)((200 / p.BadItemTimerLenght.TotalSeconds) * p.BadItemTimer.TotalSeconds);
@@ -838,16 +838,16 @@ namespace Final_Bomber.Screens
                         {
                             GameRef.SpriteBatch.Draw(_badItemTimerBar,
                                 new Vector2(_hudOrigin.X + _hudMarginLeft + 20 + 1 * i,
-                                    _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 90), Color.White);
+                                    _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90), Color.White);
                         }
                         GameRef.SpriteBatch.DrawString(_smallFont, badItemTimer,
                             new Vector2(_hudOrigin.X + _hudMarginLeft + 20 + 1 * (lenght / 2) - _smallFont.MeasureString(badItemTimer).X / 2,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 90), Color.White);
+                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90), Color.White);
                     }
                     else
                     {
                         GameRef.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id - 1) * Config.HUDPlayerInfoSpace + 90),
+                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
                                     new Rectangle(84, 0, 14, 14), Color.White);
                     }
                 }

@@ -17,4 +17,8 @@ namespace Final_Bomber.Components
         public abstract void Destroy();
         public abstract void Remove();
     }
+
+    public class EntityCollection : List<Entity>
+    {
+    }
 }

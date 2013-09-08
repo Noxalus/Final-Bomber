@@ -76,7 +76,7 @@ namespace Final_BomberServer.Host
             }
         }
 
-        public void SendPlayerInfo(Client client) //Skicka denna spelare till alla andra som finns
+        public void SendPlayerInfo(Client client) // Send this player to all other available
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
@@ -121,10 +121,10 @@ namespace Final_BomberServer.Host
             {
                 send.Write((byte)255);
             }
-            send.Write(player.PlayerId + 1);
+            send.Write(player.PlayerId);
             
-            server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            Console.WriteLine("\nSend Position - Player id: " + player.PlayerId.ToString());
+            server.SendToAll(send, NetDeliveryMethod.Unreliable);
+            Console.WriteLine("\nSend Position - Player id: " + player.PlayerId);
         }
 
         public void SendPlayerPlacingBomb(Player player, float xPos, float yPos)//Skickar till alla spelare att denna spelare har placerat en bomb

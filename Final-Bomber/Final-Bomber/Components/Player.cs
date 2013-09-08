@@ -86,7 +86,7 @@ namespace Final_Bomber.Components
         protected Player(int id)
         {
             this.Id = id;
-            _name = Config.PlayersName[Id - 1];
+            _name = Config.PlayersName[Id];
 
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
@@ -331,9 +331,9 @@ namespace Final_Bomber.Components
         {
             var playerNamePosition = new Vector2(
                 Sprite.Position.X + Engine.Origin.X + (int)(Sprite.Width/2) - 
-                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id - 1]).X / 2 + 5,
+                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id]).X / 2 + 5,
                 Sprite.Position.Y + Engine.Origin.Y - 25 - 
-                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id - 1]).Y / 2);
+                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id]).Y / 2);
 
             if ((IsAlive && !InDestruction) || OnEdge)
             {
@@ -354,7 +354,7 @@ namespace Final_Bomber.Components
             else
             {
                 _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id - 1], playerNamePosition, Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id], playerNamePosition, Color.Black);
             }
         }
         #endregion
@@ -639,7 +639,7 @@ namespace Final_Bomber.Components
     }
 }
 
-class PlayerCollection : List<Player>
+public class PlayerCollection : List<Player>
 {
     public Player GetPlayerByID(int playerID)
     {

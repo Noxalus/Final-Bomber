@@ -18,9 +18,9 @@ namespace Final_Bomber.Network
                 StartInfo();
         }
         #endregion
-        /*
         public void RecieveGameInfo(Int64 mapId)
         {
+            /*
             GameSettings.currentMap = mapId;
             if (GameSettings.Maps.GetMapById(GameSettings.currentMap) != null) //kollar så att man har banan
             {
@@ -30,10 +30,12 @@ namespace Final_Bomber.Network
             {
                 SendNeedMap();
             }
+            */
         }
         
         public void RecieveMap()
         {
+            /*
             db_FileIO db = new db_FileIO();
             string mapName = buffer.ReadString();
             int mapBytes = buffer.ReadInt32();
@@ -50,8 +52,8 @@ namespace Final_Bomber.Network
             }
             #endregion
             RecieveGameInfo(GameSettings.currentMap);
+            */
         }
-        */
 
         #region StartGame
         public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime);

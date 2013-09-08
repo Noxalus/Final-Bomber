@@ -70,6 +70,22 @@ namespace Final_BomberServer.Host
 
         private void GameInitialize()
         {
+            // Config (added code)
+            /*
+            GameSettings.GameValues.Powerup.MovementSpeed = int.Parse(buffer.ReadString());
+            GameSettings.GameValues.Powerup.Tickrate = float.Parse(buffer.ReadString());
+            GameSettings.GameValues.Powerup.Lifes = int.Parse(buffer.ReadString());
+            GameSettings.GameValues.Powerup.BombRange = int.Parse(buffer.ReadString());
+            GameSettings.GameValues.Powerup.BombAmount = int.Parse(buffer.ReadString());
+
+            GameSettings.GameValues.PowerupDrop.Powerups = int.Parse(buffer.ReadString());
+            GameSettings.GameValues.PowerupDrop.SetValues(int.Parse(buffer.ReadString()), int.Parse(buffer.ReadString()),
+                int.Parse(buffer.ReadString()), int.Parse(buffer.ReadString()), int.Parse(buffer.ReadString()));
+
+            GameSettings.GameValues.RecievedValues = true;
+            */
+            GameSettings.GameValues.Powerup.MovementSpeed = 1;
+
             gameHasBegun = false;
             //tmr_BeginGame = new H.U.D.Timer(true);
             bombs = new List<Bomb>();
@@ -114,16 +130,18 @@ namespace Final_BomberServer.Host
         {
             if (gameHasBegun)
             {
-                MovePlayer();
+                MovePlayers();
+                /*
                 CheckBombTimer();
                 CheckPlayerGettingBurned();
                 CheckPlayerGettingPowerup();
                 CheckSuddenDeath();
+                */
             }
         }
 
         #region GameLogic
-        private void MovePlayer()
+        private void MovePlayers()
         {
             foreach (Client client in GameSettings.gameServer.clients)
             {

@@ -22,10 +22,9 @@ namespace Final_Bomber.Screens
     public class NetworkTestScreen : BaseGameState
     {
         #region Field region
-        Process server;
-        PlayerCollection players;
+        Process _serverProcess;
         private string _publicIp;
-        private bool hasConnected;
+        private bool _hasConnected;
 
         // Game logic
         Engine _engine;
@@ -38,13 +37,18 @@ namespace Final_Bomber.Screens
         // HUD
         Point _hudOrigin;
 
-        // List
+        // Entity collection
+        public EntityCollection Entities;
+        public PlayerCollection Players;
         private List<Wall> _wallList;
         private List<Item> _itemList;
         private List<EdgeWall> _edgeWallList;
+        public List<Bomb> BombList { get; private set; }
+        public List<UnbreakableWall> UnbreakableWallList { get; private set; }
+        public List<Teleporter> TeleporterList { get; private set; }
+        public List<Arrow> ArrowList { get; set; }
 
-
-        // Dead players number
+        // Dead Players number
         int _deadPlayersNumber;
 
         // Random
@@ -55,16 +59,6 @@ namespace Final_Bomber.Screens
         #region Property region
 
         public World World { get; set; }
-
-        public List<Player> PlayerList { get; private set; }
-
-        public List<Bomb> BombList { get; private set; }
-
-        public List<UnbreakableWall> UnbreakableWallList { get; private set; }
-
-        public List<Teleporter> TeleporterList { get; private set; }
-
-        private List<Arrow> ArrowList { get; set; }
 
         // Sudden Death
         public SuddenDeath SuddenDeath { get; private set; }
@@ -87,18 +81,18 @@ namespace Final_Bomber.Screens
             _hudOrigin = new Point(GameRef.GraphicsDevice.Viewport.Width - 234, 0);
 
             // Launch the dedicated server as host
-            server = new Process();
-            server.StartInfo.FileName = "Server.exe";
-            server.StartInfo.Arguments = "COUCOU";
+            _serverProcess = new Process {StartInfo = {FileName = "Server.exe", Arguments = "COUCOU"}};
             //server.Start();
 
-            players = new PlayerCollection();
+            Players = new PlayerCollection();
+            Entities = new EntityCollection();
 
-            hasConnected = false;
+            _hasConnected = false;
 
             // Events
             GameSettings.GameServer.NewPlayer += new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
             GameSettings.GameServer.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
+            GameSettings.GameServer.End += new GameServer.EndEventHandler(GameServer_End);
 
             base.Initialize();
 
@@ -123,6 +117,7 @@ namespace Final_Bomber.Screens
 
             GameSettings.GameServer.NewPlayer -= new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
             GameSettings.GameServer.MovePlayer -= new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
+            GameSettings.GameServer.End -= new GameServer.EndEventHandler(GameServer_End);
 
             base.UnloadContent();
         }
@@ -131,19 +126,19 @@ namespace Final_Bomber.Screens
         {
             ControlManager.Update(gameTime, PlayerIndex.One);
 
-            if (!hasConnected)
+            if (!_hasConnected)
             {
                 GameSettings.GameServer.StartClientConnection("127.0.0.1", "2643");
 
                 Timer connectedTmr = new Timer();
                 connectedTmr.Start();
-                while (!hasConnected)
+                while (!_hasConnected)
                 {
                     GameSettings.GameServer.RunClientConnection();
                     if (GameSettings.GameServer.Connected)
                     {
-                        hasConnected = true;
-                        _publicIp = GetPublicIP();
+                        _hasConnected = true;
+                        //_publicIp = GetPublicIP();
                     }
                     else
                     {
@@ -160,7 +155,7 @@ namespace Final_Bomber.Screens
                 if (GameSettings.GameServer.HasStarted)
                     GameSettings.GameServer.RunClientConnection();
 
-                foreach (Player p in players)
+                foreach (Player p in Players)
                 {
                     p.Update(gameTime);
                 }
@@ -196,7 +191,7 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(GameRef.SpriteBatch);
 
-            if (hasConnected)
+            if (_hasConnected)
             {
                 // Background
                 var position = new Vector2(
@@ -217,9 +212,9 @@ namespace Final_Bomber.Screens
                     }
                 }
 
-                World.DrawLevel(gameTime, GameRef.SpriteBatch, players[0].Camera);
+                World.DrawLevel(gameTime, GameRef.SpriteBatch, null);
 
-                #region Draw each elements
+                #region Draw each entities
 
                 foreach (EdgeWall e in _edgeWallList)
                     e.Draw(gameTime);
@@ -242,7 +237,7 @@ namespace Final_Bomber.Screens
                 foreach (Bomb b in BombList)
                     b.Draw(gameTime);
 
-                foreach (Player p in players)
+                foreach (Player p in Players)
                     p.Draw(gameTime);
 
                 #endregion
@@ -277,7 +272,6 @@ namespace Final_Bomber.Screens
             _wallList = new List<Wall>();
             _itemList = new List<Item>();
             BombList = new List<Bomb>();
-            PlayerList = new List<Player>();
             UnbreakableWallList = new List<UnbreakableWall>();
             _edgeWallList = new List<EdgeWall>();
             TeleporterList = new List<Teleporter>();
@@ -306,7 +300,6 @@ namespace Final_Bomber.Screens
             var voidPosition = new List<Point>();
 
             // Item Map
-            Entity mapItem;
 
             // List of player position
             var playerPositions = new Dictionary<int, Point>();
@@ -354,6 +347,7 @@ namespace Final_Bomber.Screens
             }
 
             #region Teleporter
+            /*
             if (Config.ActiveTeleporters)
             {
                 if (Config.TeleporterPositionType == TeleporterPositionTypeEnum.Randomly)
@@ -390,9 +384,11 @@ namespace Final_Bomber.Screens
                     }
                 }
             }
+            */
             #endregion
 
             #region Arrow
+            /*
             if (Config.ActiveArrows)
             {
                 if (Config.ArrowPositionType == ArrowPositionTypeEnum.Randomly)
@@ -473,11 +469,13 @@ namespace Final_Bomber.Screens
                     }
                 }
             }
+            */
             #endregion
 
             int counter = 0;
             for (int x = 0; x < Config.MapSize.X; x++)
             {
+                Entity mapItem;
                 for (int y = 0; y < Config.MapSize.Y; y++)
                 {
                     var tile = new Tile(0, 0);
@@ -496,7 +494,7 @@ namespace Final_Bomber.Screens
                         else if (mapPlayersPosition[x, y] != 2)
                         {
                             mapItem = new EdgeWall(GameRef, new Vector2(x * Engine.TileHeight, y * Engine.TileWidth));
-                            this._edgeWallList.Add((EdgeWall)mapItem);
+                            _edgeWallList.Add((EdgeWall)mapItem);
                             counter++;
                             map[x, y] = mapItem;
                             collisionLayer[x, y] = true;
@@ -528,10 +526,10 @@ namespace Final_Bomber.Screens
             World.Levels.Add(level);
             World.CurrentLevel = 0;
 
-            int playerID = 1;
+            int playerID = 0;
             var me = new OnlineHumanPlayer(Math.Abs(playerID));
-            players.Add(me);
-            map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
+            Players.Add(me);
+            //map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
 
         }
 
@@ -539,22 +537,22 @@ namespace Final_Bomber.Screens
 
         private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
         {
-            if (players.GetPlayerByID(playerID) == null)
+            if (Players.GetPlayerByID(playerID) == null)
             {
-                OnlinePlayer player = new OnlinePlayer(playerID);
+                var player = new OnlinePlayer(playerID) {Name = username};
                 //player.MoveSpeed = moveSpeed;
-                player.Name = username;
                 //Entities.Add(player);
-                players.Add(player);
+                Players.Add(player);
             }
         }
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
-            Player player = players.GetPlayerByID(arg.playerID);
+            Player player = Players.GetPlayerByID(arg.playerID);
             if (player != null)
             {
-                // TODO => Move players on the map
+                Debug.Print(arg.pos.ToString());
+                // TODO => Move Players on the map
                 player.Sprite.Position = arg.pos;
                 /*
                 player.MapPosition = arg.pos;
@@ -563,6 +561,18 @@ namespace Final_Bomber.Screens
                 player.UpdateAnimation();
                 */
             }
+        }
+
+        private void GameServer_End(bool won)
+        {
+            /*
+            endTmr.Start();
+            if (!Spectator)
+            {
+                shouldEnd = true;
+                haveWon = won;
+            }
+            */
         }
 
         #endregion
@@ -582,23 +592,23 @@ namespace Final_Bomber.Screens
             return localIP;
         }
 
-        private string GetPublicIP()
-        {
-            String direction = "";
-            WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
-            using (WebResponse response = request.GetResponse())
-            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-            {
-                direction = stream.ReadToEnd();
-            }
+private string GetPublicIP()
+{
+    String direction = "";
+    WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+    using (WebResponse response = request.GetResponse())
+    using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+    {
+        direction = stream.ReadToEnd();
+    }
 
-            //Search for the ip in the html
-            int first = direction.IndexOf("Address: ") + 9;
-            int last = direction.LastIndexOf("</body>");
-            direction = direction.Substring(first, last - first);
+    //Search for the ip in the html
+    int first = direction.IndexOf("Address: ") + 9;
+    int last = direction.LastIndexOf("</body>");
+    direction = direction.Substring(first, last - first);
 
-            return direction;
-        }
+    return direction;
+}
     }
 
 }

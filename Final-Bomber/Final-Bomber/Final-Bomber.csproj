@@ -151,7 +151,6 @@
     <Compile Include="Components\Arrow.cs" />
     <Compile Include="Components\Bomb.cs" />
     <Compile Include="Components\AI\EasyAIStrategy.cs" />
-    <Compile Include="Components\EntityCollection.cs" />
     <Compile Include="Components\EdgeWall.cs" />
     <Compile Include="Components\AI\AIFunction.cs" />
     <Compile Include="Components\HumanPlayer.cs" />
