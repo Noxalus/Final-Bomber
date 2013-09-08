@@ -144,23 +144,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\AI\AIPlayer.cs" />
-    <Compile Include="Components\AI\DifficultlAIStrategy.cs" />
-    <Compile Include="Components\AI\NormalAIStrategy.cs" />
-    <Compile Include="Components\AI\IAIStrategy.cs" />
-    <Compile Include="Components\Arrow.cs" />
-    <Compile Include="Components\Bomb.cs" />
-    <Compile Include="Components\AI\EasyAIStrategy.cs" />
-    <Compile Include="Components\EdgeWall.cs" />
-    <Compile Include="Components\AI\AIFunction.cs" />
-    <Compile Include="Components\HumanPlayer.cs" />
-    <Compile Include="Components\Item.cs" />
-    <Compile Include="Components\Entity.cs" />
-    <Compile Include="Components\Player.cs" />
-    <Compile Include="Components\SuddenDeath.cs" />
-    <Compile Include="Components\Teleporter.cs" />
-    <Compile Include="Components\UnbreakableWall.cs" />
-    <Compile Include="Components\Wall.cs" />
+    <Compile Include="Entities\AI\AIPlayer.cs" />
+    <Compile Include="Entities\AI\DifficultlAIStrategy.cs" />
+    <Compile Include="Entities\AI\NormalAIStrategy.cs" />
+    <Compile Include="Entities\AI\IAIStrategy.cs" />
+    <Compile Include="Entities\Arrow.cs" />
+    <Compile Include="Entities\Bomb.cs" />
+    <Compile Include="Entities\AI\EasyAIStrategy.cs" />
+    <Compile Include="Entities\EdgeWall.cs" />
+    <Compile Include="Entities\AI\AIFunction.cs" />
+    <Compile Include="Entities\HumanPlayer.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\SuddenDeath.cs" />
+    <Compile Include="Entities\Teleporter.cs" />
+    <Compile Include="Entities\UnbreakableWall.cs" />
+    <Compile Include="Entities\Wall.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\ControlManager.cs" />
@@ -215,6 +215,7 @@
     <Compile Include="TileEngine\Tile.cs" />
     <Compile Include="TileEngine\TileMap.cs" />
     <Compile Include="TileEngine\Tileset.cs" />
+    <Compile Include="Utils\FrameRateCounter.cs" />
     <Compile Include="WorldEngine\Level.cs" />
     <Compile Include="WorldEngine\World.cs" />
   </ItemGroup>

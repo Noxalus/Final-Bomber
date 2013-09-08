@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -5,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Final_Bomber.Screens;
 using Final_Bomber.Controls;
 using Final_BomberNetwork.MainServer;
+using Final_Bomber.Utils;
 
 namespace Final_Bomber
 {
@@ -57,7 +59,6 @@ namespace Final_Bomber
         public JoinServerMenuScreen JoinServerMenuScreen;
 
         public NetworkTestScreen NetworkTestScreen;
-        
 
         // ~~ Game ~~ //
         public GamePlayScreen GamePlayScreen;
@@ -110,6 +111,10 @@ namespace Final_Bomber
             NetworkTestScreen = new NetworkTestScreen(this, stateManager);
 
             stateManager.ChangeState(TitleScreen);
+
+
+            // FPS
+            Components.Add(new FrameRateCounter(this));
 
             _password = "";
         }

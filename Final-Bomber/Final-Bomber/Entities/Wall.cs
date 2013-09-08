@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public class Wall : Entity
     {

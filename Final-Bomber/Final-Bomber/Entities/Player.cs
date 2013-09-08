@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Final_Bomber.Components.AI;
+using Final_Bomber.Entities.AI;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,9 +9,9 @@ using Final_Bomber.Controls;
 using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Input;
-using Final_Bomber.Components;
+using Final_Bomber.Entities;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public enum LookDirection { Down, Left, Right, Up, Idle }
 

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public enum ItemType { Power, Bomb, Speed, Point, BadItem }
     public enum BadItemEffect { NoBomb, BombDrop, BombTimerChanged, TooSpeed, TooSlow, KeysInversion }

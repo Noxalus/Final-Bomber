@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Final_Bomber.Components;
+using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 

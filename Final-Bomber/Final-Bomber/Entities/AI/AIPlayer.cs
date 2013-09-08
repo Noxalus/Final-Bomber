@@ -6,7 +6,7 @@ using Final_Bomber.WorldEngine;
 using Final_Bomber.Screens;
 using System;
 
-namespace Final_Bomber.Components.AI
+namespace Final_Bomber.Entities.AI
 {
     class AIPlayer : Player
     {

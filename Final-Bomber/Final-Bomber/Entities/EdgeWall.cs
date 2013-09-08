@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Sprites;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
-    public class UnbreakableWall : Entity
+    public class EdgeWall : Entity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
@@ -16,7 +16,7 @@ namespace Final_Bomber.Components
         #endregion
 
         #region Constructor Region
-        public UnbreakableWall(FinalBomber game, Vector2 position)
+        public EdgeWall(FinalBomber game, Vector2 position)
         {
             this._gameRef = game;
             var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
@@ -38,7 +38,7 @@ namespace Final_Bomber.Components
         }
 
         #endregion
-
+            
         #region Override Method Region
         public override void Destroy()
         {

@@ -1,4 +1,4 @@
-﻿using Final_Bomber.Components;
+﻿using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Sprites;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public class Arrow : Entity
     {

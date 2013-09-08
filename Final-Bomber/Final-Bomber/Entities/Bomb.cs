@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Final_Bomber.TileEngine;
 using Microsoft.Xna.Framework.Media;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public class Bomb : Entity
     {

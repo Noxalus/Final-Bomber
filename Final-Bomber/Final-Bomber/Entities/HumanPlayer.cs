@@ -7,7 +7,7 @@ using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     class HumanPlayer : Player
     {

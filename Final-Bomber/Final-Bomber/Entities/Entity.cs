@@ -5,7 +5,7 @@ using System.Text;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public abstract class Entity
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Components.AI
+namespace Final_Bomber.Entities.AI
 {
     public static class AIFunction
     {

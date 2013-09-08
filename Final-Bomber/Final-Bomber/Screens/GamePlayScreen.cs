@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Final_Bomber.Components.AI;
+using Final_Bomber.Entities.AI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Input;
 
 using Final_Bomber.Controls;
-using Final_Bomber.Components;
+using Final_Bomber.Entities;
 using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Audio;

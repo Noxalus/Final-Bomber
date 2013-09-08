@@ -1,4 +1,4 @@
-﻿using Final_Bomber.Components;
+﻿using Final_Bomber.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;

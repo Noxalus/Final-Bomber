@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
 
-namespace Final_Bomber.Components
+namespace Final_Bomber.Entities
 {
     public class Teleporter : Entity
     {

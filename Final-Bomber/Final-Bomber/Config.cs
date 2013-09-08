@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Xml.Serialization;
 using System.IO;
-using Final_Bomber.Components;
+using Final_Bomber.Entities;
 
 namespace Final_Bomber
 {

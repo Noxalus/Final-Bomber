@@ -9,7 +9,7 @@ using Lidgren.Network;
 using Final_Bomber.Network;
 using System.Diagnostics;
 using Final_Bomber.Network.Core;
-using Final_Bomber.Components;
+using Final_Bomber.Entities;
 using Final_Bomber.TileEngine;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.WorldEngine;

@@ -1,4 +1,4 @@
-﻿namespace Final_Bomber.Components.AI
+﻿namespace Final_Bomber.Entities.AI
 {
     interface IAIStrategy
     {

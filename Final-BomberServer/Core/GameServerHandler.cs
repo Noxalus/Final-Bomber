@@ -18,32 +18,21 @@ namespace Final_BomberServer.Core
         {
             speedTmr = new Stopwatch();
             game = new HostGame();
-            /*
-            try
-            {
-                MainServer.StartMainConnection();
-            }
-            catch (TypeInitializationException)
-            {
-                Console.WriteLine("Couldn't connect to the internet, please check your connection");
-            }
-            */
-            //t_couldntConnect.Start();
+
             speedTmr.Start();
             Running = true;
         }
 
         public void Update()
         {
-            GameSettings.speed = speedTmr.ElapsedMilliseconds; // This calculates fps, so that the old player's movement is synchronized with the client
+            // This calculates tps, so that the old player's movement is synchronized with the client
+            GameSettings.speed = speedTmr.ElapsedMilliseconds;
+            Console.WriteLine("Speed: " + GameSettings.speed + "|" + speedTmr.ElapsedMilliseconds);
             speedTmr.Reset();
             speedTmr.Start();
 
             ProgramStepProccesing();
-            /*
-            if (MainServer.HasStarted)
-                MainServer.RunMainConnection();
-            */
+
             if (game.HasStarted)
                 game.Update();
         }
