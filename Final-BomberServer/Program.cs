@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Final_BomberServer
@@ -20,7 +21,7 @@ namespace Final_BomberServer
                 }
             }
 
-            GameServerHandler server = new GameServerHandler();
+            var server = new GameServerHandler();
 
             if (!server.Running)
             {

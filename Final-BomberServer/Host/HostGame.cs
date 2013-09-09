@@ -70,22 +70,6 @@ namespace Final_BomberServer.Host
 
         private void GameInitialize()
         {
-            // Config (added code)
-            /*
-            GameSettings.GameValues.Powerup.MovementSpeed = int.Parse(buffer.ReadString());
-            GameSettings.GameValues.Powerup.Tickrate = float.Parse(buffer.ReadString());
-            GameSettings.GameValues.Powerup.Lifes = int.Parse(buffer.ReadString());
-            GameSettings.GameValues.Powerup.BombRange = int.Parse(buffer.ReadString());
-            GameSettings.GameValues.Powerup.BombAmount = int.Parse(buffer.ReadString());
-
-            GameSettings.GameValues.PowerupDrop.Powerups = int.Parse(buffer.ReadString());
-            GameSettings.GameValues.PowerupDrop.SetValues(int.Parse(buffer.ReadString()), int.Parse(buffer.ReadString()),
-                int.Parse(buffer.ReadString()), int.Parse(buffer.ReadString()), int.Parse(buffer.ReadString()));
-
-            GameSettings.GameValues.RecievedValues = true;
-            */
-            GameSettings.GameValues.Powerup.MovementSpeed = 1;
-
             gameHasBegun = false;
             //tmr_BeginGame = new H.U.D.Timer(true);
             bombs = new List<Bomb>();
@@ -206,6 +190,7 @@ namespace Final_BomberServer.Host
 
         private void SuddenDeath_ChangeDirection()
         {
+            /*
             if (suddenDeathMovement.X == 1)
             {
                 suddenDeathMovement.X = 0;
@@ -235,6 +220,7 @@ namespace Final_BomberServer.Host
                     }
                 }
             }
+            */
         }
         private void CheckSuddenDeath()//Kollar när sudden death startar och skapar explosionerna som vandrar runt banan
         {

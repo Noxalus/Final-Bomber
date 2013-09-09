@@ -1,4 +1,5 @@
-﻿using Final_BomberServer.Host;
+﻿using System.Threading;
+using Final_BomberServer.Host;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,9 +28,13 @@ namespace Final_BomberServer.Core
         {
             // This calculates tps, so that the old player's movement is synchronized with the client
             GameSettings.speed = speedTmr.ElapsedMilliseconds;
-            Console.WriteLine("Speed: " + GameSettings.speed + "|" + speedTmr.ElapsedMilliseconds);
+
+            double test = (double)speedTmr.ElapsedTicks / (double)Stopwatch.Frequency;
+            Console.WriteLine(speedTmr.Elapsed.Ticks + "|" + speedTmr.ElapsedTicks + "|" + test);
             speedTmr.Reset();
             speedTmr.Start();
+
+            //Thread.Sleep(10);
 
             ProgramStepProccesing();
 

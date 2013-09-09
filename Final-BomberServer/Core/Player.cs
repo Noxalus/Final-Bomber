@@ -146,9 +146,10 @@ namespace Final_BomberServer.Core
                     case ActionEnum.WalkingRight:
                         float test = GetMovementSpeed();
                         Position.X += 10f*GameSettings.speed;
-                        Console.WriteLine("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
+                        //Console.WriteLine("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
                         if (true /*Position.X > GetCenteredTilePos(NextTile).X*/)
                         {
+                            /*
                             //Position.X = GetCenteredTilePos(NextTile).X;
                             if (Direction != nextDirection)
                             {
@@ -156,11 +157,14 @@ namespace Final_BomberServer.Core
                                 SendPosition();
                             }
                             else
+                            {*/
+                            if (tmrSendPos.Each(200))
                             {
-                                if (tmrSendPos.Each(200))
-                                    SendPosition();
+                                Console.WriteLine("Send position !");
+                                SendPosition();
                             }
-                            CurrentTile = NextTile;
+                            /*}
+                            CurrentTile = NextTile;*/
                             SetMovement(Direction);
                         }
                         break;
