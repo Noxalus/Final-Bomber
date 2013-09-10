@@ -437,22 +437,26 @@ namespace Final_Bomber.Network.Core
         {
             if (_oldLookDirection != LookDirection)
             {
-                Debug.Print("Send new movement !");
                 switch (LookDirection)
                 {
                     case LookDirection.Down:
+                        Debug.Print("[Client]I want to go down !");
                         GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveDown);
                         break;
                     case LookDirection.Left:
+                        Debug.Print("[Client]I want to go left !");
                         GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveLeft);
                         break;
                     case LookDirection.Right:
+                        Debug.Print("[Client]I want to go right !");
                         GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveRight);
                         break;
                     case LookDirection.Up:
+                        Debug.Print("[Client]I want to go up !");
                         GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
                         break;
                     default:
+                        Debug.Print("[Client]I want to go stay here !");
                         GameSettings.GameServer.SendMovement((byte)GameServer.SMT.Standing);
                         break;
                 }

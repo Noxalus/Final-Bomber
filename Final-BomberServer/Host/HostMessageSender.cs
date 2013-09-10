@@ -19,7 +19,7 @@ namespace Final_BomberServer.Host
                 {
                     NetOutgoingMessage send = server.CreateMessage();
                     send.Write((byte)SMT.GameStartInfo);
-                    //send.Write(GameSettings.GetCurrentMap().id);
+                    send.Write(42L /*GameSettings.GetCurrentMap().id*/);
                     Console.WriteLine("\nSended game info map id "/* + GameSettings.GetCurrentMap().id.ToString()*/);
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 }
@@ -49,12 +49,12 @@ namespace Final_BomberServer.Host
             }
         }
 
-        public void SendStartGame(Client client, bool GameinProgress)
+        public void SendStartGame(Client client, bool gameinProgress)
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.StartGame);
-            send.Write(GameinProgress);
-            if (!GameinProgress)
+            send.Write(gameinProgress);
+            if (!gameinProgress)
             {
                 send.Write(client.Player.PlayerId);
                 send.Write(client.Player.MoveSpeed);
@@ -110,9 +110,12 @@ namespace Final_BomberServer.Host
         public void SendPlayerPosition(Player player, bool notDir)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.PlayerPosAndSpeed);
+
             send.Write(player.Position.X);
             send.Write(player.Position.Y);
+
             if (!notDir)
             {
                 send.Write((byte)player.nextDirection);
@@ -121,13 +124,15 @@ namespace Final_BomberServer.Host
             {
                 send.Write((byte)255);
             }
+
             send.Write(player.PlayerId);
             
-            server.SendToAll(send, NetDeliveryMethod.Unreliable);
-            Console.WriteLine("\nSend Position - Player id: " + player.PlayerId);
+            server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            Console.WriteLine("Send Position [Player id: " + player.PlayerId + "|size: " + send.LengthBytes + "]");
         }
 
-        public void SendPlayerPlacingBomb(Player player, float xPos, float yPos)//Skickar till alla spelare att denna spelare har placerat en bomb
+        // Send to all players that this player has placed a bomb
+        public void SendPlayerPlacingBomb(Player player, float xPos, float yPos)
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.PlayerPlacingBomb);

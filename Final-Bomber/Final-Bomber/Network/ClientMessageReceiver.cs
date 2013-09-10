@@ -20,17 +20,16 @@ namespace Final_Bomber.Network
         #endregion
         public void RecieveGameInfo(Int64 mapId)
         {
-            /*
             GameSettings.currentMap = mapId;
-            if (GameSettings.Maps.GetMapById(GameSettings.currentMap) != null) //kollar så att man har banan
+            // Check that you have the path
+            if (true /*GameSettings.Maps.GetMapById(GameSettings.currentMap) != null*/) 
             {
-                OnStartInfo();
+                //OnStartInfo();
             }
             else
             {
                 SendNeedMap();
             }
-            */
         }
         
         public void RecieveMap()
@@ -120,6 +119,7 @@ namespace Final_Bomber.Network
         #endregion
         public void RecievePositionAndSpeed(float posx, float posy, byte action, int playerID)
         {
+            Console.WriteLine("Receive position from server !");
             MovePlayerArgs arg = new MovePlayerArgs();
             arg.pos.X = posx;
             arg.pos.Y = posy;

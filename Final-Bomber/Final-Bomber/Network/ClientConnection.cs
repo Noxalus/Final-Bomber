@@ -58,15 +58,15 @@ namespace Final_Bomber.Network
                 disconnected = true;
             }
 
-            NetIncomingMessage incMsg = client.ReadMessage();
-            while ((incMsg = client.ReadMessage()) != null)
+            NetIncomingMessage message;
+            while ((message = client.ReadMessage()) != null)
             {
                 Debug.Print("Packet received from server !");
-                switch (incMsg.MessageType)
+                switch (message.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        byte type = incMsg.ReadByte();
-                        DataProcessing(type, incMsg);
+                        byte type = message.ReadByte();
+                        DataProcessing(type, message);
                         break;
                 }
             }

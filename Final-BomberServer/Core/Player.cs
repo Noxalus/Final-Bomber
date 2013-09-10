@@ -88,9 +88,10 @@ namespace Final_BomberServer.Core
                 {
                     case ActionEnum.WalkingDown:
                         Position += new Vector2(0, GetMovementSpeed());
-                        if (Position.Y > GetCenteredTilePos(NextTile).Y)
+                        if (true /*Position.Y > GetCenteredTilePos(NextTile).Y*/)
                         {
-                            Position.Y = GetCenteredTilePos(NextTile).Y;
+                            //Position.Y = GetCenteredTilePos(NextTile).Y;
+
                             if (Direction != nextDirection)
                             {
                                 Direction = nextDirection;
@@ -101,15 +102,17 @@ namespace Final_BomberServer.Core
                                 if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
+
                             CurrentTile = NextTile;
                             SetMovement(Direction);
                         }
                         break;
                     case ActionEnum.WalkingUp:
                         Position += new Vector2(0, -GetMovementSpeed());
-                        if (Position.Y < GetCenteredTilePos(NextTile).Y)
+                        if (true /*Position.Y < GetCenteredTilePos(NextTile).Y*/)
                         {
-                            Position.Y = GetCenteredTilePos(NextTile).Y;
+                            //Position.Y = GetCenteredTilePos(NextTile).Y;
+
                             if (Direction != nextDirection)
                             {
                                 Direction = nextDirection;
@@ -120,15 +123,17 @@ namespace Final_BomberServer.Core
                                 if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
+
                             CurrentTile = NextTile;
                             SetMovement(Direction);
                         }
                         break;
                     case ActionEnum.WalkingLeft:
                         Position += new Vector2(-GetMovementSpeed(), 0);
-                        if (Position.X < GetCenteredTilePos(NextTile).X)
+                        if (true /*Position.X < GetCenteredTilePos(NextTile).X*/)
                         {
-                            Position.X = GetCenteredTilePos(NextTile).X;
+                            //Position.X = GetCenteredTilePos(NextTile).X;
+
                             if (Direction != nextDirection)
                             {
                                 Direction = nextDirection;
@@ -139,32 +144,33 @@ namespace Final_BomberServer.Core
                                 if (tmrSendPos.Each(200))
                                     SendPosition();
                             }
+
                             CurrentTile = NextTile;
                             SetMovement(Direction);
                         }
                         break;
                     case ActionEnum.WalkingRight:
-                        float test = GetMovementSpeed();
-                        Position.X += 10f*GameSettings.speed;
+                        Position += new Vector2(GetMovementSpeed(), 0);
                         //Console.WriteLine("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
                         if (true /*Position.X > GetCenteredTilePos(NextTile).X*/)
                         {
-                            /*
                             //Position.X = GetCenteredTilePos(NextTile).X;
+
                             if (Direction != nextDirection)
                             {
                                 Direction = nextDirection;
                                 SendPosition();
                             }
                             else
-                            {*/
-                            if (tmrSendPos.Each(200))
                             {
-                                Console.WriteLine("Send position !");
-                                SendPosition();
+                                if (tmrSendPos.Each(200))
+                                {
+                                    Console.WriteLine("Send position ! (Right => " + Position + ")");
+                                    SendPosition();
+                                }
                             }
-                            /*}
-                            CurrentTile = NextTile;*/
+
+                            CurrentTile = NextTile;
                             SetMovement(Direction);
                         }
                         break;

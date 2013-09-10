@@ -105,7 +105,7 @@ namespace Final_BomberServer.Host
                             if (t_client == null)
                             {
                                 Client con = new Client(ref sender, clientId);
-                                WriteOutput("[Connected]Client " + con.ClientId.ToString() + " connected with ip: " + sender.RemoteEndPoint.ToString());
+                                WriteOutput("[Connected]Client " + con.ClientId + " connected with ip: " + sender.RemoteEndPoint.ToString());
                                 clients.AddClient(con);
                                 clientId++;
                                 OnConnectedClient(con, new EventArgs());
@@ -124,7 +124,7 @@ namespace Final_BomberServer.Host
                                     //Console.WriteLine(reason);
                                     //WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected ()");
 
-                                    var test = incMsg.ReadByte();
+                                    incMsg.ReadByte(); // the message type
                                     WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected (" + incMsg.ReadString() + ")");
 
                                     clients.RemoveClient(t_client);
