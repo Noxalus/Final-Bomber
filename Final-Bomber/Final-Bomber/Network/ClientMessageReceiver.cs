@@ -24,7 +24,7 @@ namespace Final_Bomber.Network
             // Check that you have the path
             if (true /*GameSettings.Maps.GetMapById(GameSettings.currentMap) != null*/) 
             {
-                //OnStartInfo();
+                OnStartInfo();
             }
             else
             {
@@ -117,14 +117,18 @@ namespace Final_Bomber.Network
                 MovePlayer(this, e);
         }
         #endregion
-        public void RecievePositionAndSpeed(float posx, float posy, byte action, int playerID)
+
+        private void RecievePositionAndSpeed(float positionX, float positionY, byte action, int playerID)
         {
             Console.WriteLine("Receive position from server !");
-            MovePlayerArgs arg = new MovePlayerArgs();
-            arg.pos.X = posx;
-            arg.pos.Y = posy;
-            arg.action = action;
-            arg.playerID = playerID;
+
+            var arg = new MovePlayerArgs
+            {
+                Position = { X = positionX, Y = positionY },
+                Action = action,
+                PlayerID =  playerID
+            };
+
             OnMovePlayerAction(arg);
         }
 
@@ -268,8 +272,8 @@ namespace Final_Bomber.Network
 
     public class MovePlayerArgs
     {
-        public Vector2 pos = new Vector2();
-        public byte action = 0;
-        public int playerID = 0;
+        public Vector2 Position = new Vector2();
+        public byte Action = 0;
+        public int PlayerID = 0;
     }
 }

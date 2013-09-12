@@ -58,6 +58,7 @@ namespace Final_BomberServer.Host
                 if (!client.isReady)
                     return false;
             }
+
             return true;
         }
 

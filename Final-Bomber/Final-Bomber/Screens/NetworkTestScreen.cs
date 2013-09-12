@@ -54,6 +54,9 @@ namespace Final_Bomber.Screens
         // Random
         public static Random Random { get; private set; }
 
+        // Timer
+        private Stopwatch _timer;
+
         #endregion
 
         #region Property region
@@ -77,6 +80,9 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
+            _timer = new Stopwatch();
+            _timer.Start();
+
             Random = new Random();
             _hudOrigin = new Point(GameRef.GraphicsDevice.Viewport.Width - 234, 0);
 
@@ -255,7 +261,7 @@ namespace Final_Bomber.Screens
             GameRef.SpriteBatch.DrawString(this.BigFont, _publicIp, new Vector2(530, 60), Color.Black);
 
             // Draw ping
-            GameRef.SpriteBatch.DrawString(this.BigFont, GameSettings.GameServer.Ping.ToString(), new Vector2(740, 100), Color.Black);
+            GameRef.SpriteBatch.DrawString(this.BigFont, GameServer.Ping.ToString(), new Vector2(740, 100), Color.Black);
 
             GameRef.SpriteBatch.End();
         }
@@ -526,8 +532,7 @@ namespace Final_Bomber.Screens
             World.Levels.Add(level);
             World.CurrentLevel = 0;
 
-            int playerID = 0;
-            var me = new OnlineHumanPlayer(Math.Abs(playerID));
+            var me = new OnlineHumanPlayer(0) {Name = "Me"}; // TODO => PlayerID must be provided by server !
             Players.Add(me);
             //map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
 
@@ -539,7 +544,10 @@ namespace Final_Bomber.Screens
         {
             if (Players.GetPlayerByID(playerID) == null)
             {
-                var player = new OnlinePlayer(playerID) {Name = username};
+                var player = new OnlinePlayer(playerID)
+                {
+                    Name = "Online Player"
+                };
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);
                 Players.Add(player);
@@ -548,12 +556,12 @@ namespace Final_Bomber.Screens
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
-            Player player = Players.GetPlayerByID(arg.playerID);
+            Player player = Players.GetPlayerByID(arg.PlayerID);
             if (player != null)
             {
-                Debug.Print(arg.pos.ToString());
+                Debug.Print(arg.Position.ToString());
                 // TODO => Move Players on the map
-                player.Sprite.Position = arg.pos;
+                player.Sprite.Position = arg.Position;
                 /*
                 player.MapPosition = arg.pos;
                 if (arg.action != 255)

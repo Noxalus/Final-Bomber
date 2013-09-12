@@ -163,7 +163,7 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (tmrSendPos.Each(200))
+                                if (tmrSendPos.Each(1))
                                 {
                                     Console.WriteLine("Send position ! (Right => " + Position + ")");
                                     SendPosition();

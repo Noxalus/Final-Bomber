@@ -1,4 +1,5 @@
-﻿using Final_BomberServer.Core;
+﻿using System.Diagnostics;
+using Final_BomberServer.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +31,16 @@ namespace Final_BomberServer
                 server = new GameServerHandler();
                 server.Initialize();
 
+                var timer = new Stopwatch();
+                timer.Start();
                 while(server.Running)
                 {
                     server.Update();
+                    //Console.WriteLine(timer.Elapsed.Ticks);
+                    timer.Restart();
+                    Thread.Sleep(15);
                 }
             }
-
-            Console.WriteLine("COUCOU");
-            Console.ReadKey();
         }
     }
 }

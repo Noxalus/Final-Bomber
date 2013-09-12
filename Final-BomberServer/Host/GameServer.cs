@@ -69,7 +69,7 @@ namespace Final_BomberServer.Host
                 {
                     checkPort = true;
                     config.Port++;
-                    WriteOutput("Can't use old port, trying with Port: " + config.Port.ToString());
+                    WriteOutput("Can't use old port, trying with Port: " + config.Port);
                     if (config.Port > 6800)
                     {
                         checkPort = false;
@@ -77,34 +77,31 @@ namespace Final_BomberServer.Host
                 }
             } while (checkPort);
 
-            //buffer = server.CreateBuffer();
-
             clients = new ClientCollection();
 
             hostStarted = true;
-            WriteOutput("[START]Game has started at " + System.DateTime.Now.ToString());
-            WriteOutput("[PORT]: " + config.Port.ToString());
-
-            //MainServer.SendCurrentPort();
+            WriteOutput("[START]Game has started at " + System.DateTime.Now);
+            WriteOutput("[PORT]: " + config.Port);
         }
 
         public void RunServer()
         {
-            NetIncomingMessage incMsg;
-            NetConnection sender;
-            while ((incMsg = server.ReadMessage()) != null)
+            NetIncomingMessage message;
+
+            while ((message = server.ReadMessage()) != null)
             {
-                sender = incMsg.SenderConnection;
-                Client t_client = clients.GetClientFromConnection(sender);
-                switch (incMsg.MessageType)
+                NetConnection sender = message.SenderConnection;
+                Client currentClient = clients.GetClientFromConnection(sender);
+
+                switch (message.MessageType)
                 {
                     #region StatusChanged
                     case NetIncomingMessageType.StatusChanged:
                         if (sender.Status == NetConnectionStatus.Connected)
                         {
-                            if (t_client == null)
+                            if (currentClient == null)
                             {
-                                Client con = new Client(ref sender, clientId);
+                                var con = new Client(ref sender, clientId);
                                 WriteOutput("[Connected]Client " + con.ClientId + " connected with ip: " + sender.RemoteEndPoint.ToString());
                                 clients.AddClient(con);
                                 clientId++;
@@ -115,20 +112,13 @@ namespace Final_BomberServer.Host
                         {
                             if (sender.Status != NetConnectionStatus.Connected)
                             {
-                                if (t_client != null)
+                                if (currentClient != null)
                                 {
-                                    //string reason = "";
-                                    //incMsg.ReadString(out reason);
+                                    message.ReadByte(); // the message type
+                                    WriteOutput("[Disconnected]Client " + currentClient.ClientId + " has disconnected (" + message.ReadString() + ")");
 
-                                    //Console.WriteLine(incMsg.ReadString());
-                                    //Console.WriteLine(reason);
-                                    //WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected ()");
-
-                                    incMsg.ReadByte(); // the message type
-                                    WriteOutput("[Disconnected]Client " + t_client.ClientId + " has disconnected (" + incMsg.ReadString() + ")");
-
-                                    clients.RemoveClient(t_client);
-                                    OnDisconnectedClient(t_client, new EventArgs());
+                                    clients.RemoveClient(currentClient);
+                                    OnDisconnectedClient(currentClient, new EventArgs());
                                 }
                             }
                         }
@@ -136,18 +126,18 @@ namespace Final_BomberServer.Host
                     #endregion
 
                     case NetIncomingMessageType.Data:
-                        if (incMsg.LengthBytes > 0)
+                        if (message.LengthBytes > 0)
                         {
                             try
                             {
-                                DataProcessing(incMsg.ReadByte(), ref t_client);
+                                DataProcessing(message.ReadByte(), ref currentClient);
                             }
                             catch (Exception e)
                             {
-                                WriteOutput("[ERROR]Client Id: " + '\"' + t_client.ClientId + '\"' +
+                                WriteOutput("[ERROR]Client Id: " + '\"' + currentClient.ClientId + '\"' +
                                     " Ip: " + sender.RemoteEndPoint.ToString() + " caused server exception");
                                 WriteOutput("EXCEPTION: " + e.ToString());
-                                //sender.Disconnect("Caused server error", 0f);
+                                sender.Disconnect("Caused server error");
                             }
                         }
                         break;

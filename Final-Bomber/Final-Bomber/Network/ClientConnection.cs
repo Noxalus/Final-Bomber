@@ -9,57 +9,57 @@ namespace Final_Bomber.Network
 {
     partial class GameServer
     {
-        private bool hasStarted;
-        private bool connected;
-        private bool disconnected;
+        private bool _hasStarted;
+        private bool _connected;
+        private bool _disconnected;
 
-        private NetClient client;
+        private NetClient _client;
 
         public bool HasStarted
         {
-            get { return hasStarted; }
+            get { return _hasStarted; }
         }
         public bool Connected
         {
-            get { return connected; }
+            get { return _connected; }
         }
         public bool Disconnected
         {
-            get { return disconnected; }
+            get { return _disconnected; }
         }
 
-        public int Ping = 10;
+        public const int Ping = 10;
 
-        public void StartClientConnection(string Ip, string Port)
+        public void StartClientConnection(string ip, string port)
         {
-            NetPeerConfiguration config = new NetPeerConfiguration("Final-Bomber");
-            client = new NetClient(config);
+            var config = new NetPeerConfiguration("Final-Bomber");
+            _client = new NetClient(config);
 
-            client.Start();
-            NetConnection test = client.Connect(Ip, int.Parse(Port));
+            _client.Start();
+            _client.Connect(ip, int.Parse(port));
 
             //buffer = client.CreateBuffer();
 
-            hasStarted = true;
-            connected = false;
-            disconnected = false;
+            _hasStarted = true;
+            _connected = false;
+            _disconnected = false;
         }
 
         public void RunClientConnection()
         {
-            if (!connected && client.ConnectionStatus == NetConnectionStatus.Connected)
+            if (!_connected && _client.ConnectionStatus == NetConnectionStatus.Connected)
             {
-                connected = true;
-                disconnected = false;
+                _connected = true;
+                _disconnected = false;
             }
-            if (connected && client.ConnectionStatus == NetConnectionStatus.Disconnected)
+            if (_connected && _client.ConnectionStatus == NetConnectionStatus.Disconnected)
             {
-                connected = false;
-                disconnected = true;
+                _connected = false;
+                _disconnected = true;
             }
 
             NetIncomingMessage message;
-            while ((message = client.ReadMessage()) != null)
+            while ((message = _client.ReadMessage()) != null)
             {
                 Debug.Print("Packet received from server !");
                 switch (message.MessageType)
@@ -74,10 +74,10 @@ namespace Final_Bomber.Network
 
         public void EndClientConnection(string reason)
         {
-            client.Disconnect(reason);
-            hasStarted = false;
-            connected = false;
-            disconnected = false;
+            _client.Disconnect(reason);
+            _hasStarted = false;
+            _connected = false;
+            _disconnected = false;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Final_BomberServer.Host
         List<Bomb> bombs;
         Map CurrentMap;
 
-        //H.U.D.Timer tmr_BeginGame;
+        Timer tmr_BeginGame;
         bool gameHasBegun;
 
         bool suddenDeath = false;
@@ -47,16 +47,20 @@ namespace Final_BomberServer.Host
         public void Update()
         {
             GameSettings.gameServer.RunServer();
+
             GameStepProccesing();
-            if (true /*tmr_BeginGame != null*/)
+            
+            if (tmr_BeginGame != null)
             {
-                if (!gameHasBegun && true /*tmr_BeginGame.Each(3000)*/) //En viloperiod på 3 sekunder innan banan börjar
+                // Game really starts after 3 seconds
+                if (!gameHasBegun /*&& tmr_BeginGame.Each(3000)*/)
                 {
-                    //tmr_BeginGame.Stop();
+                    tmr_BeginGame.Stop();
                     //tmr_UntilSuddenDeath.Start();
                     gameHasBegun = true;
                 }
             }
+
             if (StartedMatch && gameHasBegun)
                 RunGameLogic();
         }
@@ -71,7 +75,7 @@ namespace Final_BomberServer.Host
         private void GameInitialize()
         {
             gameHasBegun = false;
-            //tmr_BeginGame = new H.U.D.Timer(true);
+            tmr_BeginGame = new Timer(true);
             bombs = new List<Bomb>();
             //GameSettings.GetCurrentMap().CreateMap();
             //CurrentMap = GameSettings.GetCurrentMap();

@@ -9,12 +9,11 @@ namespace Final_BomberServer.Host
 {
     partial class HostGame
     {
-        List<Player> alivePlayers;
+        List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.gameServer.clients.Count == 1 // TO CHANGE
+            if (GameSettings.gameServer.clients.Count == 2 // TO CHANGE
                 && !StartedMatch /*&& GameSettings.gameServer.clients.IsClientsReady()*/)
-            //Om rätt antal spelare har joinat, matchen har inte startat och alla spelare är färdiga att starta 
             {
                 GameInitialize();
             }
@@ -30,22 +29,19 @@ namespace Final_BomberServer.Host
             }
 
             // End of game
-            if (false)
+            _alivePlayers = GameSettings.gameServer.clients.GetAlivePlayers();
+            if (StartedMatch && _alivePlayers.Count < 2)
             {
-                alivePlayers = GameSettings.gameServer.clients.GetAlivePlayers();
-                if (StartedMatch && alivePlayers.Count < 2)
+                //MainServer.SendPlayerStats();
+                GameSettings.CurrentMap++;
+                //MainServer.SendNextMap();
+                EndGame();
+                foreach (Client client in GameSettings.gameServer.clients)
                 {
-                    //MainServer.SendPlayerStats();
-                    GameSettings.CurrentMap++;
-                    //MainServer.SendNextMap();
-                    EndGame();
-                    foreach (Client client in GameSettings.gameServer.clients)
-                    {
-                        client.isReady = false;
-                        GameSettings.gameServer.SendEnd(client);
-                        client.Player = new Player(client.Player.PlayerId); //Återställer dens orginal värden
-                        GameSettings.gameServer.SendGameInfo(client);
-                    }
+                    client.isReady = false;
+                    GameSettings.gameServer.SendEnd(client);
+                    client.Player = new Player(client.Player.PlayerId); //Återställer dens orginal värden
+                    GameSettings.gameServer.SendGameInfo(client);
                 }
             }
         }

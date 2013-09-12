@@ -18,20 +18,16 @@ namespace Final_Bomber.Network.Core
 
         private LookDirection _oldLookDirection;
 
-        public Keys[] Keys { get; set; }
-        public Buttons[] Buttons { get; set; }
-        private Keys[] _keysSaved;
-
         public OnlinePlayer(int id)
             : base(id)
         {
-            Keys = Config.PlayersKeys[id - 1];
-            Buttons = Config.PlayersButtons[id - 1];
             _oldLookDirection = LookDirection.Idle;
         }
 
         public override void Update(GameTime gameTime)
         {
+
+
             base.Update(gameTime);
         }
 
@@ -41,6 +37,7 @@ namespace Final_Bomber.Network.Core
 
             _oldLookDirection = LookDirection;
 
+            /*
             // Up
             if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
             {
@@ -69,7 +66,7 @@ namespace Final_Bomber.Network.Core
             {
                 LookDirection = LookDirection.Idle;
             }
-
+            */
             #endregion
 
             #region Moving action
@@ -230,7 +227,7 @@ namespace Final_Bomber.Network.Core
             }
             */
 
-            SendMovement();
+            MovePlayer();
             //UpdatePlayerPosition();
 
             #region Bomb
@@ -257,204 +254,34 @@ namespace Final_Bomber.Network.Core
             #endregion
         }
 
-        public override void ApplyBadItem(BadItemEffect effect)
+        public void MovePlayer()
         {
-            base.ApplyBadItem(effect);
-
-            switch (effect)
+            /*
+            switch (movementAction)
             {
-                case BadItemEffect.TooSlow:
-                    this.SpeedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MinSpeed;
+                case ActionEnum.WalkingDown:
+                    Speed = new Vector2(0, GetMovementSpeed());
                     break;
-                case BadItemEffect.TooSpeed:
-                    SpeedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MaxSpeed;
+                case ActionEnum.WalkingUp:
+                    Speed = new Vector2(0, -GetMovementSpeed());
                     break;
-                case BadItemEffect.KeysInversion:
-                        this._keysSaved = (Keys[]) this.Keys.Clone();
-                        var inversedKeysArray = new int[] { 1, 0, 3, 2 };
-                        for (int i = 0; i < inversedKeysArray.Length; i++)
-                            this.Keys[i] = this._keysSaved[inversedKeysArray[i]];
+                case ActionEnum.WalkingLeft:
+                    Speed = new Vector2(-GetMovementSpeed(), 0);
                     break;
-                case BadItemEffect.BombTimerChanged:
-                    this.BombTimerSaved = this.BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
-                    this.BombTimer = TimeSpan.FromSeconds(randomBombTimer);
+                case ActionEnum.WalkingRight:
+                    Speed = new Vector2(GetMovementSpeed(), 0);
+                    break;
+                case ActionEnum.Standing:
+                    Speed = new Vector2(0);
                     break;
             }
+            */
         }
 
-        protected override void RemoveBadItem()
+        private float GetMovementSpeed()
         {
-            base.RemoveBadItem();
-
-            switch (BadItemEffect)
-            {
-                case BadItemEffect.TooSlow:
-                    Sprite.Speed = SpeedSaved;
-                    break;
-                case BadItemEffect.TooSpeed:
-                    Sprite.Speed = SpeedSaved;
-                    break;
-                case BadItemEffect.KeysInversion:
-                    Keys = _keysSaved;
-                    break;
-                case BadItemEffect.BombTimerChanged:
-                    BombTimer = BombTimerSaved;
-                    break;
-            }
-        }
-
-        protected override void MoveFromEdgeWall()
-        {
-            base.MoveFromEdgeWall();
-
-            // The player is either at the top either at the bottom
-            // => he can only move on the right or on the left
-            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
-            {
-                // If he wants to go to the left
-                if (Sprite.Position.X > 0 && InputHandler.KeyDown(Keys[2]))
-                    Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
-                // If he wants to go to the right
-                else if (Sprite.Position.X < (Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth &&
-                    InputHandler.KeyDown(Keys[3]))
-                    Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
-            }
-            // The player is either on the left either on the right
-            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
-            {
-                // If he wants to go to the top
-                if (Sprite.Position.Y > 0 && InputHandler.KeyDown(Keys[0]))
-                    Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
-                // If he wants to go to the bottom
-                else if (Sprite.Position.Y < (Config.MapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
-                    InputHandler.KeyDown(Keys[1]))
-                    Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
-            }
-
-            if (Sprite.Position.Y <= 0)
-                Sprite.CurrentAnimation = AnimationKey.Down;
-            else if (Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
-                Sprite.CurrentAnimation = AnimationKey.Up;
-            else if (Sprite.Position.X <= 0)
-                Sprite.CurrentAnimation = AnimationKey.Right;
-            else if (Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
-                Sprite.CurrentAnimation = AnimationKey.Left;
-
-            #region Bombs => Edge gameplay
-
-            if (InputHandler.KeyDown(Keys[4]) && this.CurrentBombNumber > 0)
-            {
-                // He can't put a bomb when he is on edges
-                if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
-                    (Sprite.CellPosition.Y == Config.MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
-                {
-                    Level level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
-                    int lag = 0;
-                    Point bombPosition = Sprite.CellPosition;
-                    // Up
-                    if (Sprite.CellPosition.Y == 0)
-                    {
-                        while (Sprite.CellPosition.Y + lag + 3 < Config.MapSize.Y &&
-                                level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
-                        {
-                            lag++;
-                        }
-                        bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
-                        if (bombPosition.Y < Config.MapSize.Y)
-                        {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
-                        }
-                    }
-                    // Down
-                    if (Sprite.CellPosition.Y == Config.MapSize.Y - 1)
-                    {
-                        while (Sprite.CellPosition.Y - lag - 3 >= 0 &&
-                                level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
-                        {
-                            lag++;
-                        }
-                        bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
-                        if (bombPosition.Y >= 0)
-                        {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
-                        }
-                    }
-                    // Left
-                    if (Sprite.CellPosition.X == 0)
-                    {
-                        while (Sprite.CellPosition.X + lag + 3 < Config.MapSize.X &&
-                                level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
-                        {
-                            lag++;
-                        }
-                        bombPosition.X = Sprite.CellPosition.X + lag + 3;
-                        if (bombPosition.X < Config.MapSize.X)
-                        {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
-                        }
-                    }
-                    // Right
-                    if (Sprite.CellPosition.X == Config.MapSize.X - 1)
-                    {
-                        while (Sprite.CellPosition.X - lag - 3 >= 0 &&
-                                level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
-                        {
-                            lag++;
-                        }
-                        bombPosition.X = Sprite.CellPosition.X - lag - 3;
-                        if (bombPosition.X >= 0)
-                        {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
-                        }
-                    }
-                }
-            }
-
-            #endregion
-        }
-
-        private void SendMovement()
-        {
-            if (_oldLookDirection != LookDirection)
-            {
-                switch (LookDirection)
-                {
-                    case LookDirection.Down:
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveDown);
-                        break;
-                    case LookDirection.Left:
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveLeft);
-                        break;
-                    case LookDirection.Right:
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveRight);
-                        break;
-                    case LookDirection.Up:
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
-                        break;
-                    default:
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.Standing);
-                        break;
-                }
-            }
+            float rtn = (/*(float)MoveSpeed * */(float)GameSettings.speed) / 1000;
+            return rtn;
         }
     }
 }

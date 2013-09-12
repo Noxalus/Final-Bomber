@@ -27,7 +27,7 @@ namespace Final_BomberServer.Core
         public void Update()
         {
             // This calculates tps, so that the old player's movement is synchronized with the client
-            GameSettings.speed = (long)(((double) speedTmr.ElapsedTicks/(double) Stopwatch.Frequency) * 1000); //speedTmr.ElapsedMilliseconds;
+            GameSettings.speed = (long)(((double) speedTmr.Elapsed.Ticks/(double) Stopwatch.Frequency) * 1000); //speedTmr.ElapsedMilliseconds;
 
             //Console.WriteLine(speedTmr.Elapsed.Ticks + "|" + speedTmr.ElapsedTicks + "|" + test);
             /*
@@ -41,10 +41,7 @@ namespace Final_BomberServer.Core
 
             //Console.WriteLine("Speed: " + GameSettings.speed);
 
-            speedTmr.Reset();
-            speedTmr.Start();
-
-            Thread.Sleep(10);
+            speedTmr.Restart();
 
             ProgramStepProccesing();
 

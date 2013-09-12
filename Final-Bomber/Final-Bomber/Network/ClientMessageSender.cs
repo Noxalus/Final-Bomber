@@ -10,43 +10,43 @@ namespace Final_Bomber.Network
     {
         public void SendNeedMap()
         {
-            if (client.ConnectionStatus == NetConnectionStatus.Connected)
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = client.CreateMessage();
+                NetOutgoingMessage send = _client.CreateMessage();
                 send.Write((byte)SMT.NeedMap);
-                client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
 
         public void SendIsReady()
         {
-            if (client.ConnectionStatus == NetConnectionStatus.Connected)
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = client.CreateMessage();
+                NetOutgoingMessage send = _client.CreateMessage();
                 send.Write((byte)SMT.Ready);
                 send.Write(GameSettings.Username);
                 send.Write(GameSettings.Password);
-                client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
 
         public void SendMovement(byte direction)
         {
-            if (client.ConnectionStatus == NetConnectionStatus.Connected)
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = client.CreateMessage();
+                NetOutgoingMessage send = _client.CreateMessage();
                 send.Write(direction);
-                client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
 
         public void SendBombPlacing()
         {
-            if (client.ConnectionStatus == NetConnectionStatus.Connected)
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = client.CreateMessage();
+                NetOutgoingMessage send = _client.CreateMessage();
                 send.Write((byte)SMT.PlaceBomb);
-                client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
     }

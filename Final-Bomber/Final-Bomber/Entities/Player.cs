@@ -86,7 +86,7 @@ namespace Final_Bomber.Entities
         protected Player(int id)
         {
             this.Id = id;
-            _name = Config.PlayersName[Id];
+            _name = "";
 
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
@@ -331,9 +331,9 @@ namespace Final_Bomber.Entities
         {
             var playerNamePosition = new Vector2(
                 Sprite.Position.X + Engine.Origin.X + (int)(Sprite.Width/2) - 
-                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id]).X / 2 + 5,
-                Sprite.Position.Y + Engine.Origin.Y - 25 - 
-                ControlManager.SpriteFont.MeasureString(Config.PlayersName[Id]).Y / 2);
+                ControlManager.SpriteFont.MeasureString(_name).X / 2 + 5,
+                Sprite.Position.Y + Engine.Origin.Y - 25 -
+                ControlManager.SpriteFont.MeasureString(_name).Y / 2);
 
             if ((IsAlive && !InDestruction) || OnEdge)
             {
@@ -354,7 +354,7 @@ namespace Final_Bomber.Entities
             else
             {
                 _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[Id], playerNamePosition, Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition, Color.Black);
             }
         }
         #endregion

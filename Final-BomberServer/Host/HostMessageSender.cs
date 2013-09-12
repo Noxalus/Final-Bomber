@@ -63,7 +63,8 @@ namespace Final_BomberServer.Host
             server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendPlayersToNew(Client client) //Skicka alla spelare till denna
+        // Send all players to this player
+        public void SendPlayersToNew(Client client) 
         {
             foreach (Client player in clients)
             {
@@ -76,7 +77,8 @@ namespace Final_BomberServer.Host
             }
         }
 
-        public void SendPlayerInfo(Client client) // Send this player to all other available
+        // Send this player to all other available
+        public void SendPlayerInfo(Client client) 
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
