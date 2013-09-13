@@ -63,7 +63,8 @@ namespace Final_Bomber.Network
                 StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime);
         }
         #endregion
-        public void RecieveStartGame(NetIncomingMessage message)
+
+        private void RecieveStartGame(NetIncomingMessage message)
         {
             bool gameInProgress = message.ReadBoolean();
             if (!gameInProgress)
@@ -72,11 +73,11 @@ namespace Final_Bomber.Network
                 float moveSpeed = message.ReadFloat();
                 int suddenDeathTime = message.ReadInt32();
 
-                OnStartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime);
+                OnStartGame(false, playerId, moveSpeed, suddenDeathTime);
             }
             else
             {
-                OnStartGame(gameInProgress, 0, 0, 0);
+                OnStartGame(true, 0, 0, 0);
             }
         }
 

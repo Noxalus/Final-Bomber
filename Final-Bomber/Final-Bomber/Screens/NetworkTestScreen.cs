@@ -26,6 +26,8 @@ namespace Final_Bomber.Screens
         private string _publicIp;
         private bool _hasConnected;
 
+        private OnlineHumanPlayer me;
+
         // Game logic
         Engine _engine;
 
@@ -96,6 +98,9 @@ namespace Final_Bomber.Screens
             _hasConnected = false;
 
             // Events
+            GameSettings.GameServer.StartInfo += new GameServer.StartInfoEventHandler(GameServer_StartInfo);
+            GameSettings.GameServer.StartGame += new GameServer.StartGameEventHandler(GameServer_StartGame);
+
             GameSettings.GameServer.NewPlayer += new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
             GameSettings.GameServer.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
             GameSettings.GameServer.End += new GameServer.EndEventHandler(GameServer_End);
@@ -120,6 +125,9 @@ namespace Final_Bomber.Screens
             server.Close();
             server.Kill();
             */
+
+            GameSettings.GameServer.StartInfo -= new GameServer.StartInfoEventHandler(GameServer_StartInfo);
+            GameSettings.GameServer.StartGame -= new GameServer.StartGameEventHandler(GameServer_StartGame);
 
             GameSettings.GameServer.NewPlayer -= new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
             GameSettings.GameServer.MovePlayer -= new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
@@ -532,13 +540,51 @@ namespace Final_Bomber.Screens
             World.Levels.Add(level);
             World.CurrentLevel = 0;
 
-            var me = new OnlineHumanPlayer(0) {Name = "Me"}; // TODO => PlayerID must be provided by server !
+            me = new OnlineHumanPlayer(0) { Name = "Me" };
             Players.Add(me);
             //map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
 
         }
 
         #region Game Server events
+
+        private bool _isReady = false;
+        private void GameServer_StartInfo() 
+        {
+            _isReady = true;
+        }
+
+        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime)
+        {
+            if (true /*!mainGame.IsStarted*/)
+            {
+                /*
+                if (lobbyScreen.IsLoaded)
+                {
+                    lobbyScreen.End();
+                    lobbyScreen.Unload();
+                }
+                */
+                if (!gameInProgress)
+                {
+                    me.Id = playerId;
+                    /*
+                    me.MoveSpeed = moveSpeed;
+                    suddenDeathTime = suddenDeathTime;
+                    */
+                }
+                else
+                {
+                    /*
+                    mainGame.me.Kill();
+                    mainGame.Spectator = true;
+                    */
+                }
+
+                //mainGame.Start();
+            }
+        }
+
 
         private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
         {

@@ -12,7 +12,7 @@ namespace Final_BomberServer.Host
         List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.gameServer.clients.Count == 2 // TO CHANGE
+            if (GameSettings.gameServer.clients.Count == 3 // TO CHANGE
                 && !StartedMatch /*&& GameSettings.gameServer.clients.IsClientsReady()*/)
             {
                 GameInitialize();
