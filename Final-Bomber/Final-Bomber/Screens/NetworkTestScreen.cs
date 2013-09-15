@@ -89,8 +89,16 @@ namespace Final_Bomber.Screens
             _hudOrigin = new Point(GameRef.GraphicsDevice.Viewport.Width - 234, 0);
 
             // Launch the dedicated server as host
-            _serverProcess = new Process {StartInfo = {FileName = "Server.exe", Arguments = "COUCOU"}};
-            //server.Start();
+            _serverProcess = new Process 
+            { 
+                StartInfo = 
+                { 
+                    FileName = "Server.exe", 
+                    Arguments = "COUCOU", 
+                    //WindowStyle = ProcessWindowStyle.Hidden 
+                } 
+            };
+            _serverProcess.Start();
 
             Players = new PlayerCollection();
             Entities = new EntityCollection();
@@ -121,10 +129,8 @@ namespace Final_Bomber.Screens
         protected override void UnloadContent()
         {
             GameSettings.GameServer.EndClientConnection("Quit the game !");
-            /*
-            server.Close();
-            server.Kill();
-            */
+
+            _serverProcess.Kill();
 
             GameSettings.GameServer.StartInfo -= new GameServer.StartInfoEventHandler(GameServer_StartInfo);
             GameSettings.GameServer.StartGame -= new GameServer.StartGameEventHandler(GameServer_StartGame);
