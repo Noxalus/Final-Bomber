@@ -98,7 +98,8 @@ namespace Final_Bomber.Screens
                     //WindowStyle = ProcessWindowStyle.Hidden 
                 } 
             };
-            _serverProcess.Start();
+            
+            //_serverProcess.Start();
 
             Players = new PlayerCollection();
             Entities = new EntityCollection();
@@ -130,7 +131,7 @@ namespace Final_Bomber.Screens
         {
             GameSettings.GameServer.EndClientConnection("Quit the game !");
 
-            _serverProcess.Kill();
+            //_serverProcess.Kill();
 
             GameSettings.GameServer.StartInfo -= new GameServer.StartInfoEventHandler(GameServer_StartInfo);
             GameSettings.GameServer.StartGame -= new GameServer.StartGameEventHandler(GameServer_StartGame);
@@ -150,7 +151,7 @@ namespace Final_Bomber.Screens
             {
                 GameSettings.GameServer.StartClientConnection("127.0.0.1", "2643");
 
-                Timer connectedTmr = new Timer();
+                var connectedTmr = new Timer();
                 connectedTmr.Start();
                 while (!_hasConnected)
                 {
@@ -181,33 +182,12 @@ namespace Final_Bomber.Screens
                 }
             }
 
-            /*
-            var config = new NetPeerConfiguration("Final-Bomber");
-
-            NetClient client;
-            client = new NetClient(config);
-
-            client.Connect("127.0.0.1", 2643);
-
-            //client.Connect(Ip, int.Parse(2643));
-
-            //msgOut = client.CreateMessage();
-            /*
-            NetOutgoingMessage sendMsg = server.CreateMessage();
-            sendMsg.Write("Hello");
-            sendMsg.Write(42);
-
-            server.SendMessage(sendMsg, recipient, NetDeliveryMethod.ReliableOrdered);
-            */
-
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
             GameRef.SpriteBatch.Begin();
-
-            base.Draw(gameTime);
 
             ControlManager.Draw(GameRef.SpriteBatch);
 
@@ -263,10 +243,10 @@ namespace Final_Bomber.Screens
                 #endregion
             }
 
-            string str = "Networking Tests";
+            const string str = "Networking Tests";
             GameRef.SpriteBatch.DrawString(this.BigFont, str,
                     new Vector2(
-                        Config.Resolutions[Config.IndexResolution, 0] / 2 -
+                        Config.Resolutions[Config.IndexResolution, 0] / 2f -
                         this.BigFont.MeasureString(str).X / 2,
                         0),
             Color.Black);
@@ -278,6 +258,8 @@ namespace Final_Bomber.Screens
             GameRef.SpriteBatch.DrawString(this.BigFont, GameServer.Ping.ToString(), new Vector2(740, 100), Color.Black);
 
             GameRef.SpriteBatch.End();
+
+            base.Draw(gameTime);
         }
 
         #endregion

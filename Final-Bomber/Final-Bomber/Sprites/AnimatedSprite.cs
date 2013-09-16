@@ -201,8 +201,8 @@ namespace Final_Bomber.Sprites
                 spriteBatch.Draw(
                     _texture,
                     new Rectangle(
-                        (int)(Engine.Origin.X + _position.X - Engine.TileWidth / 4),
-                        (int)(Engine.Origin.Y + _position.Y - Engine.TileHeight / 2),
+                        (int)(Engine.Origin.X + _position.X - Engine.TileWidth / 4f),
+                        (int)(Engine.Origin.Y + _position.Y - Engine.TileHeight / 2f),
                         Engine.TileWidth + Engine.TileWidth / 2,
                         Engine.TileHeight + Engine.TileHeight / 2),
                     sourceRectangle,

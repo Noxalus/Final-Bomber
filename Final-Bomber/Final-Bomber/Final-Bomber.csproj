@@ -217,6 +217,7 @@
     <Compile Include="TileEngine\Tileset.cs" />
     <Compile Include="Utils\FrameRateCounter.cs" />
     <Compile Include="WorldEngine\Level.cs" />
+    <Compile Include="WorldEngine\LevelParser.cs" />
     <Compile Include="WorldEngine\World.cs" />
   </ItemGroup>
   <ItemGroup>

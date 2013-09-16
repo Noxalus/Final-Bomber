@@ -30,7 +30,7 @@ namespace Final_Bomber.WorldEngine
         #region Level Field and Property Region
 
         readonly List<Level> levels = new List<Level>();
-        int currentLevel = -1;
+        int _currentLevel = -1;
 
         public List<Level> Levels
         {
@@ -39,7 +39,7 @@ namespace Final_Bomber.WorldEngine
 
         public int CurrentLevel
         {
-            get { return currentLevel; }
+            get { return _currentLevel; }
             set
             {
                 if (value < 0 || value >= levels.Count)
@@ -48,7 +48,7 @@ namespace Final_Bomber.WorldEngine
                 if (levels[value] == null)
                     throw new NullReferenceException();
 
-                currentLevel = value;
+                _currentLevel = value;
             }
         }
 
@@ -77,7 +77,7 @@ namespace Final_Bomber.WorldEngine
 
         public void DrawLevel(GameTime gameTime, SpriteBatch spriteBatch, Camera camera)
         {
-            levels[currentLevel].Draw(gameTime, spriteBatch, camera);
+            levels[_currentLevel].Draw(gameTime, spriteBatch, camera);
         }
 
         #endregion

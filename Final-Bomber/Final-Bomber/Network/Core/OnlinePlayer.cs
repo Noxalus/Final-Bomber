@@ -26,8 +26,6 @@ namespace Final_Bomber.Network.Core
 
         public override void Update(GameTime gameTime)
         {
-
-
             base.Update(gameTime);
         }
 
