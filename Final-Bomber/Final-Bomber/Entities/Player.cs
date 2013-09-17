@@ -506,10 +506,10 @@ namespace Final_Bomber.Entities
             if (_cellChanging)
             {
                 if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                   Map[_previousCellPosition.X, _previousCellPosition.Y] == this)
+                   Board[_previousCellPosition.X, _previousCellPosition.Y] == this)
                 {
                     FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Map[_previousCellPosition.X, _previousCellPosition.Y] = null;
+                        Board[_previousCellPosition.X, _previousCellPosition.Y] = null;
                 }
 
                 if (_cellTeleporting)
@@ -518,10 +518,10 @@ namespace Final_Bomber.Entities
             else
             {
                 if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
+                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
                 {
                     FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
+                        Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
                 }
             }
             #endregion

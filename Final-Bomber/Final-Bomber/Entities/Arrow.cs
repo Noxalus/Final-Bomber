@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Sprites;
+using Final_Bomber.TileEngine;
 
 namespace Final_Bomber.Entities
 {
@@ -9,7 +10,6 @@ namespace Final_Bomber.Entities
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
-        private readonly FinalBomber _gameRef;
         private bool _isAlive;
         private readonly LookDirection _lookDirection;
         #endregion
@@ -24,10 +24,8 @@ namespace Final_Bomber.Entities
         #endregion
 
         #region Constructor Region
-        public Arrow(FinalBomber game, Vector2 position, LookDirection initialLookDirection)
+        public Arrow(Point position, LookDirection initialLookDirection)
         {
-            this._gameRef = game;
-
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
 
@@ -43,8 +41,8 @@ namespace Final_Bomber.Entities
             animation = new Animation(1, 32, 32, 0, 96, animationFramesPerSecond);
             animations.Add(AnimationKey.Up, animation);
 
-            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/arrow");
-            Sprite = new Sprites.AnimatedSprite(spriteTexture, animations, position) {IsAnimating = true};
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/arrow");
+            Sprite = new AnimatedSprite(spriteTexture, animations, position) {IsAnimating = true};
 
             _lookDirection = initialLookDirection;
             Sprite.CurrentAnimation = LookDirectionToAnimationKey(_lookDirection);
@@ -62,7 +60,7 @@ namespace Final_Bomber.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
 
         #endregion
@@ -113,7 +111,7 @@ namespace Final_Bomber.Entities
                     break;
             }
 
-            if (!_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+            if (!FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                 CollisionLayer[nextPosition.X, nextPosition.Y])
             {
                 bomb.ChangeDirection(_lookDirection, -1);

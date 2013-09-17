@@ -159,6 +159,19 @@ namespace Final_Bomber.Sprites
             _cellPosition = Engine.VectorToCell(position, Dimension);
         }
 
+        public AnimatedSprite(Texture2D sprite, Dictionary<AnimationKey, Animation> animation, Point position)
+        {
+            _texture = sprite;
+            _animations = new Dictionary<AnimationKey, Animation>();
+
+            foreach (AnimationKey key in animation.Keys)
+                _animations.Add(key, (Animation)animation[key].Clone());
+
+            _controlable = true;
+            this._position = Engine.CellToVector(position);
+            _cellPosition = position;
+        }
+
         public AnimatedSprite(Texture2D sprite, Animation animation, Vector2 position)
         {
             _texture = sprite;
@@ -166,6 +179,15 @@ namespace Final_Bomber.Sprites
             _controlable = false;
             this._position = position;
             _cellPosition = Engine.VectorToCell(position, Dimension);
+        }
+
+        public AnimatedSprite(Texture2D sprite, Animation animation, Point position)
+        {
+            _texture = sprite;
+            this._animation = animation;
+            _controlable = false;
+            this._position = Engine.CellToVector(position);
+            _cellPosition = position;
         }
 
         #endregion

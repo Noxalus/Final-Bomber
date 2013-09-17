@@ -125,20 +125,20 @@ namespace Final_Bomber.Entities
                 _cellChanging = true;
 
                 if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[_previousCellPosition.X, _previousCellPosition.Y] == this)
+                    Board[_previousCellPosition.X, _previousCellPosition.Y] == this)
                 {
                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                        Map[_previousCellPosition.X, _previousCellPosition.Y] = null;
+                        Board[_previousCellPosition.X, _previousCellPosition.Y] = null;
                 }
 
                 if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
+                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
                 {
                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                     CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y] = true;
                     
                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
+                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
                 }
 
                 _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
@@ -197,7 +197,7 @@ namespace Final_Bomber.Entities
 
             if (_lookDirection != LookDirection.Idle)
             {
-                Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
+                Map level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
                 switch (_lookDirection)
                 {
                     case LookDirection.Up:
@@ -207,7 +207,7 @@ namespace Final_Bomber.Entities
                             _lookDirection = LookDirection.Idle;
                         
                         var upCell = new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y - 1);
-                        if (level.Map[upCell.X, upCell.Y] is Player || WallAt(upCell))
+                        if (level.Board[upCell.X, upCell.Y] is Player || WallAt(upCell))
                         {
                             // Top collision
                             if (_lookDirection == LookDirection.Up && MoreTopSide())
@@ -225,7 +225,7 @@ namespace Final_Bomber.Entities
                             _lookDirection = LookDirection.Idle;
                         
                         var bottomCell = new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1);
-                        if (level.Map[bottomCell.X, bottomCell.Y] is Player || WallAt(bottomCell))
+                        if (level.Board[bottomCell.X, bottomCell.Y] is Player || WallAt(bottomCell))
                         {
                             // Bottom collision
                             if (_lookDirection == LookDirection.Down && MoreBottomSide())
@@ -243,7 +243,7 @@ namespace Final_Bomber.Entities
                             _lookDirection = LookDirection.Idle;
                         
                         var leftCell = new Point(this.Sprite.CellPosition.X - 1, this.Sprite.CellPosition.Y);
-                        if (level.Map[leftCell.X, leftCell.Y] is Player || WallAt(leftCell))
+                        if (level.Board[leftCell.X, leftCell.Y] is Player || WallAt(leftCell))
                         {
                             // Left collision
                             if (this._lookDirection == LookDirection.Left && MoreLeftSide())
@@ -260,7 +260,7 @@ namespace Final_Bomber.Entities
                             _lookDirection = LookDirection.Idle;
                         
                         var rightCell = new Point(this.Sprite.CellPosition.X + 1, this.Sprite.CellPosition.Y);
-                        if (level.Map[rightCell.X, rightCell.Y] is Player || WallAt(rightCell))
+                        if (level.Board[rightCell.X, rightCell.Y] is Player || WallAt(rightCell))
                         {
                             // Right collision
                             if (this._lookDirection == LookDirection.Right && MoreRightSide())
@@ -279,10 +279,10 @@ namespace Final_Bomber.Entities
             #region Teleporter
 
             if (!_cellTeleporting && _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
+                Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
             {
                 var teleporter = (Teleporter)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
+                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
 
                 teleporter.ChangePosition(this);
                 _cellTeleporting = true;
@@ -293,10 +293,10 @@ namespace Final_Bomber.Entities
             #region Arrow
 
             if (!_cellTeleporting && _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Arrow)
+                Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Arrow)
             {
                 var arrow = (Arrow)(_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
+                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
 
                 arrow.ChangeDirection(this);
             }
@@ -310,7 +310,7 @@ namespace Final_Bomber.Entities
         {
             if (InDestruction)
             {
-                Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
+                Map level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
 
                 if (_explosionAnimationsDirection.Count == 0)
                 {
@@ -396,7 +396,7 @@ namespace Final_Bomber.Entities
             };
 
             int tempPower = this._power - 1;
-            Level level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
+            Map level = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel];
             while (tempPower >= 0)
             {
                 // Directions
@@ -412,7 +412,7 @@ namespace Final_Bomber.Entities
                     if (level.CollisionLayer[this.Sprite.CellPosition.X, up])
                         obstacles["up"] = true;
                     // We don't count the outside walls
-                    if (!(level.Map[this.Sprite.CellPosition.X, up] is EdgeWall))
+                    if (!(level.Board[this.Sprite.CellPosition.X, up] is EdgeWall))
                     {
                         addPosition = new Point(this.Sprite.CellPosition.X, up);
                         this.ActionField.Add(addPosition);
@@ -431,7 +431,7 @@ namespace Final_Bomber.Entities
                     if (level.CollisionLayer[this.Sprite.CellPosition.X, down])
                         obstacles["down"] = true;
                     // We don't count the outside walls
-                    if (!(level.Map[this.Sprite.CellPosition.X, down] is EdgeWall))
+                    if (!(level.Board[this.Sprite.CellPosition.X, down] is EdgeWall))
                     {
                         addPosition = new Point(this.Sprite.CellPosition.X, down);
                         this.ActionField.Add(addPosition);
@@ -450,7 +450,7 @@ namespace Final_Bomber.Entities
                     if (level.CollisionLayer[right, this.Sprite.CellPosition.Y])
                         obstacles["right"] = true;
                     // We don't count the outside walls
-                    if (!(level.Map[right, this.Sprite.CellPosition.Y] is EdgeWall))
+                    if (!(level.Board[right, this.Sprite.CellPosition.Y] is EdgeWall))
                     {
                         addPosition = new Point(right, this.Sprite.CellPosition.Y);
                         this.ActionField.Add(addPosition);
@@ -469,7 +469,7 @@ namespace Final_Bomber.Entities
                     if (level.CollisionLayer[left, this.Sprite.CellPosition.Y])
                         obstacles["left"] = true;
                     // We don't count the outside walls
-                    if (!(level.Map[left, this.Sprite.CellPosition.Y] is EdgeWall))
+                    if (!(level.Board[left, this.Sprite.CellPosition.Y] is EdgeWall))
                     {
                         addPosition = new Point(left, this.Sprite.CellPosition.Y);
                         this.ActionField.Add(addPosition);
@@ -487,7 +487,7 @@ namespace Final_Bomber.Entities
         }
 
         // 0 => Down, 1 => Left, 2 => Right, 3 => Up, 4 => Middle, 5 => Horizontal, 6 => Vertical 
-        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, Level level)
+        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, Map level)
         {
             int downCell = cell.Y + 1, leftCell = cell.X - 1, rightCell = cell.X + 1, upCell = cell.Y - 1;
 

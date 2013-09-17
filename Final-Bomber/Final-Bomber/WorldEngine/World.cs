@@ -29,10 +29,10 @@ namespace Final_Bomber.WorldEngine
 
         #region Level Field and Property Region
 
-        readonly List<Level> levels = new List<Level>();
+        readonly List<Map> levels = new List<Map>();
         int _currentLevel = -1;
 
-        public List<Level> Levels
+        public List<Map> Levels
         {
             get { return levels; }
         }

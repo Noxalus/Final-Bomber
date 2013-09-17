@@ -96,7 +96,7 @@ namespace Final_Bomber.Entities
                     {
                         _visited[_currentPosition.X, _currentPosition.Y] = true;
                         Entity mapItem = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                            Map[_currentPosition.X, _currentPosition.Y];
+                            Board[_currentPosition.X, _currentPosition.Y];
                         if (mapItem != null)
                         {
                             if (mapItem is Player)
@@ -121,8 +121,8 @@ namespace Final_Bomber.Entities
                         }
 
                         _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[_currentPosition.X, _currentPosition.Y] = true;
-                        var u = new UnbreakableWall(_gameRef, Engine.CellToVector(_currentPosition));
-                        _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Map[_currentPosition.X, _currentPosition.Y] = u;
+                        var u = new UnbreakableWall(_currentPosition);
+                        _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].Board[_currentPosition.X, _currentPosition.Y] = u;
                         _gameRef.GamePlayScreen.UnbreakableWallList.Add(u);
                         _timer = TimeSpan.Zero;
                         _previousPosition = _currentPosition;
@@ -133,7 +133,7 @@ namespace Final_Bomber.Entities
                                 _currentPosition.Y--;
                                 if (!_visited[_currentPosition.X, _currentPosition.Y] &&
                                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
+                                    Board[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X, _currentPosition.Y - 1])
@@ -148,7 +148,7 @@ namespace Final_Bomber.Entities
                                 _currentPosition.Y++;
                                 if (!_visited[_currentPosition.X, _currentPosition.Y] &&
                                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
+                                    Board[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X, _currentPosition.Y + 1])
@@ -163,7 +163,7 @@ namespace Final_Bomber.Entities
                                 _currentPosition.X--;
                                 if (!_visited[_currentPosition.X, _currentPosition.Y] &&
                                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
+                                    Board[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X - 1, _currentPosition.Y])
@@ -178,7 +178,7 @@ namespace Final_Bomber.Entities
                                 _currentPosition.X++;
                                 if (!_visited[_currentPosition.X, _currentPosition.Y] &&
                                     _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                                    Map[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
+                                    Board[_currentPosition.X, _currentPosition.Y] is UnbreakableWall)
                                 {
                                     _visited[_currentPosition.X, _currentPosition.Y] = true;
                                     if (_visited[_currentPosition.X + 1, _currentPosition.Y])
@@ -205,7 +205,7 @@ namespace Final_Bomber.Entities
             {
                 // Shadow
                 if (_gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
-                    Map[_currentPosition.X, _currentPosition.Y] == null)
+                    Board[_currentPosition.X, _currentPosition.Y] == null)
                 {
                     _gameRef.SpriteBatch.Draw(_suddenDeathShadow,
                         new Rectangle(_currentPosition.X * Engine.TileWidth + (int)Engine.Origin.X, _currentPosition.Y * Engine.TileHeight + (int)Engine.Origin.Y,

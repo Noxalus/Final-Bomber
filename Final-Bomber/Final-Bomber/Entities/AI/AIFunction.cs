@@ -268,7 +268,7 @@ namespace Final_Bomber.Entities.AI
             // Up
             if (position.Y - power > 0)
             {
-                if(map[position.X, position.Y - power] is Item)
+                if(map[position.X, position.Y - power] is PowerUp)
                     number++;
                 else if (map[position.X, position.Y - power] is Wall)
                 {
@@ -281,7 +281,7 @@ namespace Final_Bomber.Entities.AI
             // Down
             if (position.Y + power < mapSize.Y - 2)
             {
-                if(map[position.X, position.Y + power] is Item)
+                if(map[position.X, position.Y + power] is PowerUp)
                     number++;
                 else if (map[position.X, position.Y + power] is Wall)
                 {
@@ -294,7 +294,7 @@ namespace Final_Bomber.Entities.AI
             // Right
             if (position.X + power < mapSize.X - 2)
             {
-                if (map[position.X + power, position.Y] is Item)
+                if (map[position.X + power, position.Y] is PowerUp)
                     number++;
                 else if (map[position.X + power, position.Y] is Wall)
                 {
@@ -307,7 +307,7 @@ namespace Final_Bomber.Entities.AI
             // Left
             if (position.X - power > 0)
             {
-                if (map[position.X - power, position.Y] is Item)
+                if (map[position.X - power, position.Y] is PowerUp)
                     number++;
                 else if (map[position.X - power, position.Y] is Wall)
                 {
@@ -515,7 +515,7 @@ namespace Final_Bomber.Entities.AI
                 else
                     interest = (int)MathHelper.Clamp((float)id, 1f, (float)((mapSize.X * mapSize.Y) - id - 10 - 1));
             }
-            else if (map[position.X, position.Y] is Item)
+            else if (map[position.X, position.Y] is PowerUp)
                 interest = (mapSize.X * mapSize.Y) - id;
             else if (map[position.X, position.Y] is Player)
             {

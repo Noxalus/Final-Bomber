@@ -357,7 +357,7 @@ namespace Final_Bomber.Network.Core
                 if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
                     (Sprite.CellPosition.Y == Config.MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
                 {
-                    Level level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
+                    Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
                     int lag = 0;
                     Point bombPosition = Sprite.CellPosition;
                     // Up
@@ -374,7 +374,7 @@ namespace Final_Bomber.Network.Core
                             var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
+                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
                     }
@@ -392,7 +392,7 @@ namespace Final_Bomber.Network.Core
                             var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
+                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
                     }
@@ -410,7 +410,7 @@ namespace Final_Bomber.Network.Core
                             var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
+                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
                     }
@@ -428,7 +428,7 @@ namespace Final_Bomber.Network.Core
                             var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Map[bombPosition.X, bombPosition.Y] = bomb;
+                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
                             this.CurrentBombNumber--;
                         }
                     }

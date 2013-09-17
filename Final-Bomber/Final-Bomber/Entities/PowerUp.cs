@@ -3,19 +3,19 @@ using Final_Bomber.Screens;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;
+using Final_Bomber.TileEngine;
 
 namespace Final_Bomber.Entities
 {
     public enum ItemType { Power, Bomb, Speed, Point, BadItem }
     public enum BadItemEffect { NoBomb, BombDrop, BombTimerChanged, TooSpeed, TooSlow, KeysInversion }
 
-    public class Item : Entity
+    public class PowerUp : Entity
     {
         #region Field Region
 
         public override sealed AnimatedSprite Sprite { get; protected set; }
 
-        private readonly FinalBomber _gameRef;
         private readonly ItemType _type;
         private bool _inDestruction;
         private bool _isAlive;
@@ -43,21 +43,19 @@ namespace Final_Bomber.Entities
         #endregion
 
         #region Constructor Region
-        public Item(FinalBomber game, Vector2 position)
+        public PowerUp(Point position)
         {
-            _gameRef = game;
-
             _type = Config.ItemTypeAvaible[GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
 
             var animations = new Dictionary<AnimationKey, Animation>();
             var animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[_type] * 32, 5);
 
-            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/item");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/item");
             Sprite = new AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
 
-            var itemDestroyTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
+            var itemDestroyTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
             animation = new Animation(7, 31, 28, 0, 0, 8);
-            _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation, this.Sprite.Position)
+            _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation, Sprite.Position)
                 {
                     IsAnimating = false
                 };
@@ -82,10 +80,10 @@ namespace Final_Bomber.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
 
             if (_itemDestroyAnimation.IsAnimating)
-                _itemDestroyAnimation.Draw(gameTime, _gameRef.SpriteBatch);
+                _itemDestroyAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
         #endregion
 

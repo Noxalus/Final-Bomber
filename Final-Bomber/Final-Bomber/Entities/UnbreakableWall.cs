@@ -12,14 +12,12 @@ namespace Final_Bomber.Entities
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
-        readonly FinalBomber _gameRef;
         #endregion
 
         #region Constructor Region
-        public UnbreakableWall(FinalBomber game, Vector2 position)
+        public UnbreakableWall(Point position)
         {
-            this._gameRef = game;
-            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
             var animation = new Animation(0, 32, 32, 0, 0, 0);
             Sprite = new Sprites.AnimatedSprite(spriteTexture, animation, position);
         }
@@ -34,7 +32,7 @@ namespace Final_Bomber.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
 
         #endregion

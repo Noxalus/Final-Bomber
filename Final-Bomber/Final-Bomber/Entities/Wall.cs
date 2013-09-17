@@ -18,8 +18,6 @@ namespace Final_Bomber.Entities
 
         public override sealed AnimatedSprite Sprite { get; protected set; }
 
-        private readonly FinalBomber _gameRef;
-
         private bool _inDestruction;
         private bool _isAlive;
 
@@ -40,13 +38,11 @@ namespace Final_Bomber.Entities
         #endregion
 
         #region Constructor Region
-        public Wall(FinalBomber game, Vector2 position)
+        public Wall(Point position)
         {
-            this._gameRef = game;
-
             var animations = new Dictionary<AnimationKey, Animation>();
 
-            var spriteTexture = _gameRef.Content.Load<Texture2D>("Graphics/Characters/wall");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/wall");
             var animation = new Animation(6, 32, 32, 0, 0, 20);
 
             this.Sprite = new AnimatedSprite(spriteTexture, animation, position);
@@ -69,7 +65,7 @@ namespace Final_Bomber.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, _gameRef.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
         #endregion
 

@@ -24,7 +24,7 @@ namespace Final_Bomber.Entities.AI
 
         protected override void Move()
         {
-            Level level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
+            Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
 
             #region Walk
             // If he hasn't reach his goal => we walk to this goal
@@ -53,7 +53,7 @@ namespace Final_Bomber.Entities.AI
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, level.Map, level.CollisionLayer, level.HazardMap, Config.MapSize))
+                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, level.Board, level.CollisionLayer, level.HazardMap, Config.MapSize))
                     {
                         if (this.CurrentBombNumber > 0)
                         {
@@ -83,7 +83,7 @@ namespace Final_Bomber.Entities.AI
                     // We define a new goal
                     Path = AIFunction.MakeAWay(
                         Sprite.CellPosition,
-                        AIFunction.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap, Config.MapSize),
+                        AIFunction.SetNewGoal(Sprite.CellPosition, level.Board, level.CollisionLayer, level.HazardMap, Config.MapSize),
                         level.CollisionLayer, level.HazardMap, Config.MapSize);
 
                     if (Path != null)
@@ -103,7 +103,7 @@ namespace Final_Bomber.Entities.AI
                     // Update the way of the AI each time it changes of cell => usefull to battle against players (little bug here)
                     aiWay = AI.MakeAWay(
                         Sprite.CellPosition,
-                        AI.SetNewGoal(Sprite.CellPosition, level.Map, level.CollisionLayer, level.HazardMap), 
+                        AI.SetNewGoal(Sprite.CellPosition, level.Board, level.CollisionLayer, level.HazardMap), 
                         level.CollisionLayer, level.HazardMap);
                     */
                 }
@@ -145,7 +145,7 @@ namespace Final_Bomber.Entities.AI
             }
         }
 
-        private void CheckIsBlocked(Level level)
+        private void CheckIsBlocked(Map level)
         {
             // If the AI is blocked
             if (level.CollisionLayer[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] ||
@@ -156,7 +156,7 @@ namespace Final_Bomber.Entities.AI
                 // We define a new goal
                 bool[,] collisionLayer = level.CollisionLayer;
                 int[,] hazardMap = level.HazardMap;
-                Entity[,] map = level.Map;
+                Entity[,] map = level.Board;
                 Path = AIFunction.MakeAWay(
                     Sprite.CellPosition,
                     AIFunction.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, Config.MapSize),

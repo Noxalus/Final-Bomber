@@ -43,7 +43,7 @@ namespace Final_Bomber.Screens
         public EntityCollection Entities;
         public PlayerCollection Players;
         private List<Wall> _wallList;
-        private List<Item> _itemList;
+        private List<PowerUp> _itemList;
         private List<EdgeWall> _edgeWallList;
         public List<Bomb> BombList { get; private set; }
         public List<UnbreakableWall> UnbreakableWallList { get; private set; }
@@ -225,7 +225,7 @@ namespace Final_Bomber.Screens
                 foreach (Wall w in _wallList)
                     w.Draw(gameTime);
 
-                foreach (Item i in _itemList)
+                foreach (PowerUp i in _itemList)
                     i.Draw(gameTime);
 
                 foreach (Teleporter t in TeleporterList)
@@ -272,7 +272,7 @@ namespace Final_Bomber.Screens
 
             // Lists
             _wallList = new List<Wall>();
-            _itemList = new List<Item>();
+            _itemList = new List<PowerUp>();
             BombList = new List<Bomb>();
             UnbreakableWallList = new List<UnbreakableWall>();
             _edgeWallList = new List<EdgeWall>();
@@ -487,7 +487,7 @@ namespace Final_Bomber.Screens
                         // Inside wallList
                         if ((x % 2 == 0 && y % 2 == 0 && !(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1))) && mapPlayersPosition[x, y] != 2)
                         {
-                            mapItem = new UnbreakableWall(GameRef, new Vector2(x * Engine.TileHeight, y * Engine.TileWidth));
+                            mapItem = new UnbreakableWall(new Point(x, y));
                             this.UnbreakableWallList.Add((UnbreakableWall)mapItem);
                             map[x, y] = mapItem;
                             collisionLayer[x, y] = true;
@@ -495,7 +495,7 @@ namespace Final_Bomber.Screens
                         // Outside wallList
                         else if (mapPlayersPosition[x, y] != 2)
                         {
-                            mapItem = new EdgeWall(GameRef, new Vector2(x * Engine.TileHeight, y * Engine.TileWidth));
+                            mapItem = new EdgeWall(new Point(x, y));
                             _edgeWallList.Add((EdgeWall)mapItem);
                             counter++;
                             map[x, y] = mapItem;
@@ -509,7 +509,7 @@ namespace Final_Bomber.Screens
                             Random.Next(0, 100) < MathHelper.Clamp(Config.WallNumber, 0, 100))
                         {
                             collisionLayer[x, y] = true;
-                            mapItem = new Wall(GameRef, new Vector2(x * Engine.TileWidth, y * Engine.TileHeight));
+                            mapItem = new Wall(new Point(x, y));
                             _wallList.Add((Wall)mapItem);
                             map[x, y] = mapItem;
                         }
@@ -522,7 +522,7 @@ namespace Final_Bomber.Screens
             var mapLayers = new List<MapLayer> { layer };
 
             var tileMap = new TileMap(tilesets, mapLayers);
-            var level = new Level(Config.MapSize, tileMap, map, collisionLayer);
+            var level = new Map(Config.MapSize, tileMap, map, collisionLayer);
 
             World = new World(GameRef, GameRef.ScreenRectangle);
             World.Levels.Add(level);

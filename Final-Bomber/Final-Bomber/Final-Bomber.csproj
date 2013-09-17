@@ -154,7 +154,7 @@
     <Compile Include="Entities\EdgeWall.cs" />
     <Compile Include="Entities\AI\AIFunction.cs" />
     <Compile Include="Entities\HumanPlayer.cs" />
-    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\PowerUp.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\SuddenDeath.cs" />
@@ -216,8 +216,7 @@
     <Compile Include="TileEngine\TileMap.cs" />
     <Compile Include="TileEngine\Tileset.cs" />
     <Compile Include="Utils\FrameRateCounter.cs" />
-    <Compile Include="WorldEngine\Level.cs" />
-    <Compile Include="WorldEngine\LevelParser.cs" />
+    <Compile Include="WorldEngine\Map.cs" />
     <Compile Include="WorldEngine\World.cs" />
   </ItemGroup>
   <ItemGroup>
