@@ -73,12 +73,12 @@ namespace Final_Bomber
 
         // Base characteristics
         public const int BasePlayerBombPower = 1;
-        public const float BasePlayerSpeed = 2.5f;
+        public const float BasePlayerSpeed = 42f;
         public const float BaseBombSpeed = 3f;
         public const int BasePlayerBombNumber = 1;
 
         // Characteristics minimum and maximum
-        public const float MaxSpeed = 30f;
+        public const float MaxSpeed = 30000f;
         public const float MinSpeed = 1f;
         public static readonly int MaxBombPower = (MapSize.X + MapSize.Y) / 2;
         public const int MinBombPower = 1;

@@ -29,7 +29,7 @@ namespace Final_Bomber.Network.Core
             base.Update(gameTime);
         }
 
-        protected override void Move()
+        protected override void Move(GameTime gameTime)
         {
             #region Moving input
 
@@ -278,7 +278,7 @@ namespace Final_Bomber.Network.Core
 
         private float GetMovementSpeed()
         {
-            float rtn = (/*(float)MoveSpeed * */(float)GameSettings.speed) / 1000;
+            float rtn = (/*(float)MoveSpeed * */(float)GameSettings.speed);
             return rtn;
         }
     }

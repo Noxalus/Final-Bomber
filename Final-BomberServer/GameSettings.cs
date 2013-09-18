@@ -44,7 +44,7 @@ namespace Final_BomberServer
 
         public static GameServer gameServer;
 
-        public static long speed;
+        public static float speed;
 
         #region Settings
         public static bool BombsExplodeBombs = false;

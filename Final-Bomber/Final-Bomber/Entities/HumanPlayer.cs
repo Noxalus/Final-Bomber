@@ -27,7 +27,7 @@ namespace Final_Bomber.Entities
             base.Update(gameTime);
         }
 
-        protected override void Move()
+        protected override void Move(GameTime gameTime)
         {
             #region Moving input
             var motion = new Vector2();

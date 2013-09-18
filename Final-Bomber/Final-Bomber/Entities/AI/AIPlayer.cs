@@ -22,7 +22,7 @@ namespace Final_Bomber.Entities.AI
             Path = new List<Point>();
         }
 
-        protected override void Move()
+        protected override void Move(GameTime gameTime)
         {
             Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
 

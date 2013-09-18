@@ -1,4 +1,5 @@
-﻿using Final_BomberServer.Core;
+﻿using System.Diagnostics;
+using Final_BomberServer.Core;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -134,6 +135,7 @@ namespace Final_BomberServer.Host
             foreach (Client client in GameSettings.gameServer.clients)
             {
                 // Move the player to the next position
+                Console.WriteLine("Player position: " + client.Player.Position);                
                 client.Player.MovePlayer(); 
             }
         }

@@ -7,10 +7,7 @@ using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Final_Bomber.Network.Core
 {
@@ -19,9 +16,13 @@ namespace Final_Bomber.Network.Core
 
         private LookDirection _oldLookDirection;
 
-        public Keys[] Keys { get; set; }
-        public Buttons[] Buttons { get; set; }
+        private Vector2 _motionVector;
+
+        private Keys[] Keys { get; set; }
+        private Buttons[] Buttons { get; set; }
         private Keys[] _keysSaved;
+
+        private bool _movementConfirmed;
 
         public OnlineHumanPlayer(int id)
             : base(id)
@@ -29,52 +30,66 @@ namespace Final_Bomber.Network.Core
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
             _oldLookDirection = LookDirection.Idle;
+            _movementConfirmed = true;
+            _motionVector = Vector2.Zero;
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
-        protected override void Move()
+        protected override void Move(GameTime gameTime)
         {
             #region Moving input
 
+            _motionVector = Vector2.Zero;
             _oldLookDirection = LookDirection;
-            IsMoving = true;
 
             // Up
             if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 LookDirection = LookDirection.Up;
+                _motionVector.Y = -1;
             }
             // Down
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 LookDirection = LookDirection.Down;
+                _motionVector.Y = 1;
             }
             // Left
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 LookDirection = LookDirection.Left;
+                _motionVector.X = -1;
             }
             // Right
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 LookDirection = LookDirection.Right;
+                _motionVector.X = 1;
             }
             else
             {
                 LookDirection = LookDirection.Idle;
-                IsMoving = false;
             }
 
             #endregion
 
+            Debug.Print("Player position: " + Sprite.Position);
+
+            if (_motionVector != Vector2.Zero && _movementConfirmed)
+            {
+                IsMoving = true;
+
+                var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                Sprite.Position += _motionVector * (Sprite.Speed * dt);
+            }
+            else
+            {
+                IsMoving = false;
+            }
 
             Sprite.IsAnimating = IsMoving;
 
@@ -235,8 +250,10 @@ namespace Final_Bomber.Network.Core
                 Sprite.IsAnimating = false;
             }
             */
+            #endregion
 
             SendMovement();
+
             //UpdatePlayerPosition();
 
             #region Bomb
@@ -259,8 +276,6 @@ namespace Final_Bomber.Network.Core
             }
             */
             #endregion
-
-            #endregion
         }
 
         public override void ApplyBadItem(BadItemEffect effect)
@@ -278,10 +293,10 @@ namespace Final_Bomber.Network.Core
                     this.Sprite.Speed = Config.MaxSpeed;
                     break;
                 case BadItemEffect.KeysInversion:
-                        this._keysSaved = (Keys[]) this.Keys.Clone();
-                        var inversedKeysArray = new int[] { 1, 0, 3, 2 };
-                        for (int i = 0; i < inversedKeysArray.Length; i++)
-                            this.Keys[i] = this._keysSaved[inversedKeysArray[i]];
+                    this._keysSaved = (Keys[])this.Keys.Clone();
+                    var inversedKeysArray = new int[] { 1, 0, 3, 2 };
+                    for (int i = 0; i < inversedKeysArray.Length; i++)
+                        this.Keys[i] = this._keysSaved[inversedKeysArray[i]];
                     break;
                 case BadItemEffect.BombTimerChanged:
                     this.BombTimerSaved = this.BombTimer;
@@ -446,23 +461,23 @@ namespace Final_Bomber.Network.Core
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveDown);
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveDown);
                         break;
                     case LookDirection.Left:
                         Debug.Print("[Client]I want to go left !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveLeft);
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveLeft);
                         break;
                     case LookDirection.Right:
                         Debug.Print("[Client]I want to go right !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveRight);
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveRight);
                         break;
                     case LookDirection.Up:
                         Debug.Print("[Client]I want to go up !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveUp);
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
                         break;
                     default:
                         Debug.Print("[Client]I want to go stay here !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.Standing);
+                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.Standing);
                         break;
                 }
             }

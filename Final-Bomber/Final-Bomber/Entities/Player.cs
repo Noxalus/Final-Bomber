@@ -105,11 +105,11 @@ namespace Final_Bomber.Entities
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1");
             
-            this.Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
-            this.Sprite.ChangeFramesPerSecond(10);
-            this.Sprite.Speed = Config.BasePlayerSpeed;
+            Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
+            Sprite.ChangeFramesPerSecond(10);
+            Sprite.Speed = Config.BasePlayerSpeed;
 
-            this._previousCellPosition = this.Sprite.CellPosition;
+            _previousCellPosition = Sprite.CellPosition;
 
             var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
@@ -175,7 +175,7 @@ namespace Final_Bomber.Entities
 
                 _cellChanging = _previousCellPosition != Sprite.CellPosition;
 
-                Move();
+                Move(gameTime);
 
                 #endregion
 
@@ -419,7 +419,7 @@ namespace Final_Bomber.Entities
         }
 
 
-        protected virtual void Move() 
+        protected virtual void Move(GameTime gameTime) 
         { 
         }
 

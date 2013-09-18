@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Final_BomberServer.Core
             this.PlayerId = playerId;
             maxBombAmount = 1;
             currentBombAmount = 0;
-            MoveSpeed = 130;
+            MoveSpeed = 42f;
             lifes = 2;
             IsDead = false;
             Direction = ActionEnum.Standing;
@@ -99,7 +100,7 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (tmrSendPos.Each(200))
+                                if (tmrSendPos.Each(5000))
                                     SendPosition();
                             }
 
@@ -120,7 +121,7 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (tmrSendPos.Each(200))
+                                if (tmrSendPos.Each(5000))
                                     SendPosition();
                             }
 
@@ -141,7 +142,7 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (tmrSendPos.Each(200))
+                                if (tmrSendPos.Each(5000))
                                     SendPosition();
                             }
 
@@ -163,7 +164,7 @@ namespace Final_BomberServer.Core
                             }
                             else
                             {
-                                if (tmrSendPos.Each(1))
+                                if (tmrSendPos.Each(5000))
                                 {
                                     Console.WriteLine("Send position ! (Right => " + Position + ")");
                                     SendPosition();
@@ -255,6 +256,7 @@ namespace Final_BomberServer.Core
                     if (bomb.player != null)
                         bomb.player.Stats.Kills++;
                 }
+
                 IsDead = true;
                 GameSettings.gameServer.SendRemovePlayer(this);
             }
@@ -262,7 +264,7 @@ namespace Final_BomberServer.Core
 
         private float GetMovementSpeed()
         {
-            float rtn = ((float)MoveSpeed * (float)GameSettings.speed) / 1000;
+            float rtn = MoveSpeed * GameSettings.speed;
             return rtn;
         }
     }
