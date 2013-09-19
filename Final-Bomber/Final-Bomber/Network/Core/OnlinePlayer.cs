@@ -235,7 +235,7 @@ namespace Final_Bomber.Network.Core
                     if (bo == null)
                     {
                         this.CurrentBombNumber--;
-                        var bomb = new Bomb(FinalBomber.Instance, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                        var bomb = new Bomb(this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
                         FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                     }

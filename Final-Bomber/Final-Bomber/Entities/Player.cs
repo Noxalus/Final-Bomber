@@ -23,7 +23,7 @@ namespace Final_Bomber.Entities
         Left 
     }
 
-    public abstract class Player : DrawableEntity
+    public abstract class Player : Entity
     {
         #region Field Region
 
@@ -44,7 +44,7 @@ namespace Final_Bomber.Entities
         private bool _cellTeleporting;
 
         protected LookDirection LookDirection;
-        protected LookDirection _previousLookDirection;
+        protected LookDirection PreviousLookDirection;
 
         // Bad item
         protected TimeSpan BombTimerSaved;
@@ -76,6 +76,8 @@ namespace Final_Bomber.Entities
 
         public int TotalBombNumber { get; private set; }
 
+        public TimeSpan BombTimer { get; protected set; }
+
         public bool OnEdge { get; set; }
 
         public bool HasBadItemEffect { get; private set; }
@@ -85,8 +87,6 @@ namespace Final_Bomber.Entities
         public TimeSpan BadItemTimer { get; private set; }
 
         public TimeSpan BadItemTimerLenght { get; private set; }
-
-        public TimeSpan BombTimer { get; protected set; }
 
         #endregion
 
@@ -115,7 +115,7 @@ namespace Final_Bomber.Entities
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1");
             
             Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
-            Sprite.ChangeFramesPerSecond(10);
+            Sprite.ChangeFramesPerSecond(animationFramesPerSecond);
             Sprite.Speed = Config.BasePlayerSpeed;
 
             _previousCellPosition = Sprite.CellPosition;
@@ -141,10 +141,10 @@ namespace Final_Bomber.Entities
             TotalBombNumber = Config.BasePlayerBombNumber;
             CurrentBombNumber = TotalBombNumber;
 
-            BombTimer = Config.BombTimer;
+            BombTimer = Config.BaseBombTimer;
 
             LookDirection = LookDirection.Idle;
-            _previousLookDirection = LookDirection;
+            PreviousLookDirection = LookDirection;
 
             // Bad item
             HasBadItemEffect = false;
@@ -158,7 +158,7 @@ namespace Final_Bomber.Entities
         {
             if (IsAlive && !InDestruction)
             {
-                _previousLookDirection = LookDirection;
+                PreviousLookDirection = LookDirection;
 
                 Sprite.Update(gameTime);
 
@@ -605,7 +605,7 @@ namespace Final_Bomber.Entities
 
         public virtual void ChangeLookDirection(byte newLookDirection)
         {
-            _previousLookDirection = LookDirection;
+            PreviousLookDirection = LookDirection;
             LookDirection = (LookDirection)newLookDirection;
             Debug.Print("New look direction: " + (LookDirection)newLookDirection);
         }

@@ -264,7 +264,7 @@ namespace Final_Bomber.Network.Core
                     if (bo == null)
                     {
                         this.CurrentBombNumber--;
-                        var bomb = new Bomb(FinalBomber.Instance, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                        var bomb = new Bomb(this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
                         FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                     }
@@ -382,7 +382,7 @@ namespace Final_Bomber.Network.Core
                         bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
                         if (bombPosition.Y < Config.MapSize.Y)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
@@ -400,7 +400,7 @@ namespace Final_Bomber.Network.Core
                         bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
                         if (bombPosition.Y >= 0)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
@@ -418,7 +418,7 @@ namespace Final_Bomber.Network.Core
                         bombPosition.X = Sprite.CellPosition.X + lag + 3;
                         if (bombPosition.X < Config.MapSize.X)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
@@ -436,7 +436,7 @@ namespace Final_Bomber.Network.Core
                         bombPosition.X = Sprite.CellPosition.X - lag - 3;
                         if (bombPosition.X >= 0)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
@@ -451,7 +451,7 @@ namespace Final_Bomber.Network.Core
 
         private void SendMovement()
         {
-            if (_previousLookDirection != LookDirection)
+            if (PreviousLookDirection != LookDirection)
             {
                 switch (LookDirection)
                 {

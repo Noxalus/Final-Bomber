@@ -117,9 +117,10 @@ namespace Final_Bomber
         // Bombs
         public static bool BombCollision = true;
         public static bool ExplosionThroughWall = true;
-        public const int BombLatency = 10; // Bomb's animation's frames par second
+        // Bomb's animation's frames par second
+        public const int BombLatency = 10;
         // Initially => 2
-        public static TimeSpan BombTimer = TimeSpan.FromSeconds(2);
+        public static TimeSpan BaseBombTimer = TimeSpan.FromSeconds(2);
 
         // Item
         public static readonly List<ItemType> ItemTypeAvaible = new List<ItemType>() 

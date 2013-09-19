@@ -6,7 +6,7 @@ using Final_Bomber.TileEngine;
 
 namespace Final_Bomber.Entities
 {
-    public class Arrow : DrawableEntity
+    public class Arrow : Entity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }

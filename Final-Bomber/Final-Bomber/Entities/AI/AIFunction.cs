@@ -146,7 +146,7 @@ namespace Final_Bomber.Entities.AI
                     (position.Y <= nextPosition.Y + speed && position.Y >= nextPosition.Y - speed);
         }
 
-        public static Point SetNewGoal(Point position, DrawableEntity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize) 
+        public static Point SetNewGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize) 
         {
             if (hazardMap[position.X, position.Y] < 2)
                 return SetNewOffenseGoal(position, map, collisionLayer, hazardMap, mapSize);
@@ -159,7 +159,7 @@ namespace Final_Bomber.Entities.AI
             return NearestSafeCell(position, collisionLayer, hazardMap, 0, mapSize);
         }
 
-        private static Point SetNewOffenseGoal(Point position, DrawableEntity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        private static Point SetNewOffenseGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
             /*
             int[,] costMatrix = CostMatrix(position, collisionLayer, hazardMap);
@@ -242,7 +242,7 @@ namespace Final_Bomber.Entities.AI
             return new Point(-1, -1);
         }
 
-        private static bool EntityNear(Point position, int power, DrawableEntity[,] map, int[,] hazardMap, Point mapSize)
+        private static bool EntityNear(Point position, int power, Entity[,] map, int[,] hazardMap, Point mapSize)
         {
             power = 1; // We have to compute the bomb action field !
             // Up
@@ -261,7 +261,7 @@ namespace Final_Bomber.Entities.AI
             return false;
         }
 
-        private static int ProximityItemNumber(Point position, int power, DrawableEntity[,] map, int[,] hazardMap, Point mapSize)
+        private static int ProximityItemNumber(Point position, int power, Entity[,] map, int[,] hazardMap, Point mapSize)
         {
             power = 1; // We have to compute the bomb action field !
             int number = 0;
@@ -321,7 +321,7 @@ namespace Final_Bomber.Entities.AI
             return number;
         }
 
-        public static bool TryToPutBomb(Point position, int power, DrawableEntity[,] map, bool[,] collisionLayer, int[,] hM, Point mapSize)
+        public static bool TryToPutBomb(Point position, int power, Entity[,] map, bool[,] collisionLayer, int[,] hM, Point mapSize)
         {
             if (ProximityItemNumber(position, power, map, hM, mapSize) == 0)
             {
@@ -438,7 +438,7 @@ namespace Final_Bomber.Entities.AI
                 return false;
         }
 
-        public static int[,] MakeInterestMatrix(Point position, DrawableEntity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        public static int[,] MakeInterestMatrix(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
             var interestMatrix = new int[mapSize.X, mapSize.Y];
             interestMatrix[position.X, position.Y] = -1;
@@ -499,7 +499,7 @@ namespace Final_Bomber.Entities.AI
             return interestMatrix;
         }
 
-        private static int CellInterest(Point position, int id, DrawableEntity[,] map, int[,] hazardMap, Point mapSize)
+        private static int CellInterest(Point position, int id, Entity[,] map, int[,] hazardMap, Point mapSize)
         {
             int interest = 0;
             if (map[position.X, position.Y] == null)
@@ -524,7 +524,7 @@ namespace Final_Bomber.Entities.AI
             return interest;
         }
 
-        private static int ProximityWallNumber(Point position, DrawableEntity[,] map)
+        private static int ProximityWallNumber(Point position, Entity[,] map)
         {
             int wallNumber = 0;
             // Up
@@ -542,7 +542,7 @@ namespace Final_Bomber.Entities.AI
             return wallNumber;
         }
 
-        private static Point BestCellInterest(Point position, DrawableEntity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        private static Point BestCellInterest(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
         {
             int[,] interestMatrix = MakeInterestMatrix(position, map, collisionLayer, hazardMap, mapSize);
             var cell = new Point(-1, -1);

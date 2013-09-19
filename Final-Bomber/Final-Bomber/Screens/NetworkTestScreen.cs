@@ -39,7 +39,7 @@ namespace Final_Bomber.Screens
         Point _hudOrigin;
 
         // Entity collection
-        private DrawableEntityCollection _entities;
+        private EntityCollection _entities;
         private PlayerCollection _players;
 
         // Dead Players number
@@ -94,7 +94,7 @@ namespace Final_Bomber.Screens
             //_serverProcess.Start();
 
             _players = new PlayerCollection();
-            _entities = new DrawableEntityCollection();
+            _entities = new EntityCollection();
 
             _hasConnected = false;
 

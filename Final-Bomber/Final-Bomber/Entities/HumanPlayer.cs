@@ -70,7 +70,7 @@ namespace Final_Bomber.Entities
             // If the human player wants to move
             if (motion != Vector2.Zero)
             {
-                this.IsMoving = true;
+                IsMoving = true;
                 Sprite.IsAnimating = true;
                 motion.Normalize();
 
@@ -218,7 +218,7 @@ namespace Final_Bomber.Entities
             }
             else
             {
-                this.IsMoving = false;
+                IsMoving = false;
                 Sprite.IsAnimating = false;
             }
 
@@ -229,13 +229,13 @@ namespace Final_Bomber.Entities
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
             {
-                if (this.CurrentBombNumber > 0)
+                if (CurrentBombNumber > 0)
                 {
-                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == Sprite.CellPosition);
                     if (bo == null)
                     {
-                        this.CurrentBombNumber--;
-                        var bomb = new Bomb(FinalBomber.Instance, this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                        CurrentBombNumber--;
+                        var bomb = new Bomb(Id, Sprite.CellPosition, Power, BombTimer, Sprite.Speed);
 
                         FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                     }
@@ -253,23 +253,23 @@ namespace Final_Bomber.Entities
             switch (effect)
             {
                 case BadItemEffect.TooSlow:
-                    this.SpeedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MinSpeed;
+                    SpeedSaved = Sprite.Speed;
+                    Sprite.Speed = Config.MinSpeed;
                     break;
                 case BadItemEffect.TooSpeed:
-                    SpeedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MaxSpeed;
+                    SpeedSaved = Sprite.Speed;
+                    Sprite.Speed = Config.MaxSpeed;
                     break;
                 case BadItemEffect.KeysInversion:
-                        this._keysSaved = (Keys[]) this.Keys.Clone();
+                        _keysSaved = (Keys[]) Keys.Clone();
                         var inversedKeysArray = new int[] { 1, 0, 3, 2 };
                         for (int i = 0; i < inversedKeysArray.Length; i++)
-                            this.Keys[i] = this._keysSaved[inversedKeysArray[i]];
+                            Keys[i] = _keysSaved[inversedKeysArray[i]];
                     break;
                 case BadItemEffect.BombTimerChanged:
-                    this.BombTimerSaved = this.BombTimer;
+                    BombTimerSaved = BombTimer;
                     int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
-                    this.BombTimer = TimeSpan.FromSeconds(randomBombTimer);
+                    BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;
             }
         }
@@ -334,7 +334,7 @@ namespace Final_Bomber.Entities
 
             #region Bombs => Edge gameplay
 
-            if (InputHandler.KeyDown(Keys[4]) && this.CurrentBombNumber > 0)
+            if (InputHandler.KeyDown(Keys[4]) && CurrentBombNumber > 0)
             {
                 // He can't put a bomb when he is on a corner
                 if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
@@ -354,11 +354,11 @@ namespace Final_Bomber.Entities
                         bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
                         if (bombPosition.Y < Config.MapSize.Y)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                     // Down
@@ -372,11 +372,11 @@ namespace Final_Bomber.Entities
                         bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
                         if (bombPosition.Y >= 0)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                     // Left
@@ -390,11 +390,11 @@ namespace Final_Bomber.Entities
                         bombPosition.X = Sprite.CellPosition.X + lag + 3;
                         if (bombPosition.X < Config.MapSize.X)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                     // Right
@@ -408,11 +408,11 @@ namespace Final_Bomber.Entities
                         bombPosition.X = Sprite.CellPosition.X - lag - 3;
                         if (bombPosition.X >= 0)
                         {
-                            var bomb = new Bomb(FinalBomber.Instance, Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                 }

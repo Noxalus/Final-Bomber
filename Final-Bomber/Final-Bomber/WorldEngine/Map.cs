@@ -22,7 +22,7 @@ namespace Final_Bomber.WorldEngine
         private TileMap _tileMap;
 
         private Point _size;
-        private DrawableEntity[,] _board;
+        private Entity[,] _board;
         private bool[,] _collisionLayer;
         private int[,] _hazardMap;
 
@@ -48,7 +48,7 @@ namespace Final_Bomber.WorldEngine
             get { return _size; }
         }
 
-        public DrawableEntity[,] Board
+        public Entity[,] Board
         {
             get { return _board; }
         }
@@ -78,7 +78,7 @@ namespace Final_Bomber.WorldEngine
             _arrowList = new List<Arrow>();
         }
 
-        public Map(Point mSize, TileMap tMap, DrawableEntity[,] m, bool[,] cLayer)
+        public Map(Point mSize, TileMap tMap, Entity[,] m, bool[,] cLayer)
             : this()
         {
             _size = mSize;
@@ -179,7 +179,7 @@ namespace Final_Bomber.WorldEngine
 
                     var collisionLayer = new bool[mapSize.X, mapSize.Y];
                     var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                    var board = new DrawableEntity[mapSize.X, mapSize.Y];
+                    var board = new Entity[mapSize.X, mapSize.Y];
                     var layer = new MapLayer(mapSize.X, mapSize.Y);
                     var voidPosition = new List<Point>();
                     var playerPositions = new Dictionary<int, Point>();
@@ -201,35 +201,35 @@ namespace Final_Bomber.WorldEngine
                         
                             switch (id)
                             {
-                                case (int)DrawableEntity.Type.UnbreakableWall:
+                                case (int)Entity.Type.UnbreakableWall:
                                     var unbreakableWall = new UnbreakableWall(currentPosition);
                                     board[i, j] = unbreakableWall;
                                     _unbreakableWallList.Add(unbreakableWall);
                                     collisionLayer[i, j] = true;
                                     break;
-                                case (int)DrawableEntity.Type.EdgeWall:
+                                case (int)Entity.Type.EdgeWall:
                                     var edgeWall = new EdgeWall(currentPosition);
                                     board[i, j] = edgeWall;
                                     _edgeWallList.Add(edgeWall);
                                     collisionLayer[i, j] = true;
                                     break;
-                                case (int)DrawableEntity.Type.Wall:
+                                case (int)Entity.Type.Wall:
                                     var wall = new Wall(currentPosition);
                                     _wallList.Add(wall);
                                     board[i, j] = wall;
                                     collisionLayer[i, j] = true;
                                     break;
-                                case (int)DrawableEntity.Type.Teleporter:
+                                case (int)Entity.Type.Teleporter:
                                     var teleporter = new Teleporter(currentPosition);
                                     board[i, j] = teleporter;
                                     _teleporterList.Add(teleporter);
                                     break;
-                                case (int)DrawableEntity.Type.Arrow:
+                                case (int)Entity.Type.Arrow:
                                     var arrow = new Arrow(currentPosition, LookDirection.Down);
                                     _arrowList.Add(arrow);
                                     board[i, j] = arrow;
                                     break;
-                                case (int)DrawableEntity.Type.Player:
+                                case (int)Entity.Type.Player:
                                     if (playerNumber <= Config.PlayersNumber)
                                     {
                                         playerPositions[playerNumber] = currentPosition;
