@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FBLibrary.Core;
 
 namespace Final_BomberServer.Core
 {
@@ -102,24 +103,24 @@ namespace Final_BomberServer.Core
             return null;
         }
 
-        public MapTile GetTileByPlayerDirection(Player player, Player.ActionEnum direction)
+        public MapTile GetTileByPlayerDirection(Player player, LookDirection direction)
         {
             MapTile nextTile = null;
             switch (direction)
             {
-                case Player.ActionEnum.WalkingDown:
+                case LookDirection.Down:
                     nextTile = GetTileByTilePosition((int)player.NextTile.TilePosition.X, (int)player.NextTile.TilePosition.Y + 1);
                     break;
-                case Player.ActionEnum.WalkingLeft:
+                case LookDirection.Left:
                     nextTile = GetTileByTilePosition((int)player.NextTile.TilePosition.X - 1, (int)player.NextTile.TilePosition.Y);
                     break;
-                case Player.ActionEnum.WalkingRight:
+                case LookDirection.Right:
                     nextTile = GetTileByTilePosition((int)player.NextTile.TilePosition.X + 1, (int)player.NextTile.TilePosition.Y);
                     break;
-                case Player.ActionEnum.WalkingUp:
+                case LookDirection.Up:
                     nextTile = GetTileByTilePosition((int)player.NextTile.TilePosition.X, (int)player.NextTile.TilePosition.Y - 1);
                     break;
-                case Player.ActionEnum.Standing:
+                case LookDirection.Idle:
                     nextTile = player.NextTile;
                     break;
 
@@ -330,13 +331,13 @@ namespace Final_BomberServer.Core
     {
         switch ( player.newAction )
         {
-            case Player.ActionEnum.WalkingDown:
+            case LookDirection.Down:
                 return new Vector2( player.Position.X, tile.GetMapPos().Y - player.SizeOffset.Y - player.Size.Y - 1 );
-            case Player.ActionEnum.WalkingLeft:
+            case LookDirection.Left:
                 return new Vector2( tile.GetMapPos().X + MapTile.SIZE - player.SizeOffset.X + 1, player.Position.Y );
-            case Player.ActionEnum.WalkingRight:
+            case LookDirection.Right:
                 return new Vector2( tile.GetMapPos().X - player.Size.X - player.SizeOffset.X - 1, player.Position.Y );
-            case Player.ActionEnum.WalkingUp:
+            case LookDirection.Up:
                 return new Vector2( player.Position.X, tile.GetMapPos().Y + MapTile.SIZE - player.SizeOffset.Y + 1);
         }
         return null;

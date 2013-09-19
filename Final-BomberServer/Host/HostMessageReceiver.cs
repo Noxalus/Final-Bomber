@@ -1,4 +1,5 @@
-﻿using Final_BomberServer.Core;
+﻿using FBLibrary.Core;
+using Final_BomberServer.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Final_BomberServer.Host
             Program.Log.Info("\nClient " + client.ClientId + " is ready to play");
         }
 
-        void ReceiveMovePlayer(Client client, Player.ActionEnum movement)
+        void ReceiveMovePlayer(Client client, LookDirection movement)
         {
             if (!client.Player.IsDead)
                 client.Player.SetMovement(movement); // Receives the player's current direction

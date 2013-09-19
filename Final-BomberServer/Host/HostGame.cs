@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using FBLibrary.Core;
 using Final_BomberServer.Core;
 using Microsoft.Xna.Framework;
 using System;
@@ -105,12 +106,12 @@ namespace Final_BomberServer.Host
             StartedMatch = true;
         }
 
-        public void EndGame()
+        private void EndGame()
         {
             StartedMatch = false;
             foreach (Client client in GameSettings.gameServer.Clients)
             {
-                client.Player.nextDirection = Player.ActionEnum.Standing;
+                client.Player.nextDirection = LookDirection.Idle;
                 GameSettings.gameServer.SendPlayerPosition(client.Player, false);
             }
         }

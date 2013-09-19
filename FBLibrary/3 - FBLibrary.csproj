@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Core\Bomb.cs" />
     <Compile Include="Core\Entity.cs" />
-    <Compile Include="Core\BasePlayer.cs" />
+    <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\PowerUp.cs" />
     <Compile Include="Core\Wall.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

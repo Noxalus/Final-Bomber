@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace Final_BomberServer.Core
     {
         const int INVURNABLETIME = 5000;
 
-        public ActionEnum Direction;
-        public ActionEnum nextDirection;
+        public LookDirection Direction;
+        public LookDirection nextDirection;
         public Vector2 Position = new Vector2(0);
         public MapTile AfterNextTile;
         public MapTile NextTile;
@@ -42,22 +43,13 @@ namespace Final_BomberServer.Core
             MoveSpeed = 100f;
             lifes = 2;
             IsDead = false;
-            Direction = ActionEnum.Standing;
-            nextDirection = ActionEnum.Standing;
+            Direction = LookDirection.Idle;
+            nextDirection = LookDirection.Idle;
             ExplodeRange = 2;
             BombTickPerSek = 1;
         }
 
-        public enum ActionEnum
-        {
-            Standing,
-            WalkingUp,
-            WalkingRight,
-            WalkingDown,
-            WalkingLeft
-        }
-
-        public void SetMovement(ActionEnum direction)
+        public void SetMovement(LookDirection direction)
         {
             MapTile nextTile = null;
             if (NextTile != null) // Got an error that this fixes
@@ -68,7 +60,7 @@ namespace Final_BomberServer.Core
             if (true /*nextTile != null*/)
             {
                 nextDirection = direction;
-                if (Direction == ActionEnum.Standing && direction != ActionEnum.Standing)
+                if (Direction == LookDirection.Idle && direction != LookDirection.Idle)
                 {
                     Direction = direction;
                     SendPosition();
@@ -76,7 +68,7 @@ namespace Final_BomberServer.Core
             }
             else
             {
-                nextDirection = ActionEnum.Standing;
+                nextDirection = LookDirection.Idle;
             }
         }
 
@@ -87,7 +79,7 @@ namespace Final_BomberServer.Core
             {
                 switch (Direction)
                 {
-                    case ActionEnum.WalkingDown:
+                    case LookDirection.Down:
                         Position += new Vector2(0, GetMovementSpeed());
                         if (true /*Position.Y > GetCenteredTilePos(NextTile).Y*/)
                         {
@@ -108,7 +100,7 @@ namespace Final_BomberServer.Core
                             SetMovement(Direction);
                         }
                         break;
-                    case ActionEnum.WalkingUp:
+                    case LookDirection.Up:
                         Position += new Vector2(0, -GetMovementSpeed());
                         if (true /*Position.Y < GetCenteredTilePos(NextTile).Y*/)
                         {
@@ -129,7 +121,7 @@ namespace Final_BomberServer.Core
                             SetMovement(Direction);
                         }
                         break;
-                    case ActionEnum.WalkingLeft:
+                    case LookDirection.Left:
                         Position += new Vector2(-GetMovementSpeed(), 0);
                         if (true /*Position.X < GetCenteredTilePos(NextTile).X*/)
                         {
@@ -150,7 +142,7 @@ namespace Final_BomberServer.Core
                             SetMovement(Direction);
                         }
                         break;
-                    case ActionEnum.WalkingRight:
+                    case LookDirection.Right:
                         Position += new Vector2(GetMovementSpeed(), 0);
                         //Program.Log.Info("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
                         if (true /*Position.X > GetCenteredTilePos(NextTile).X*/)
