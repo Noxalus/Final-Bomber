@@ -39,7 +39,7 @@ namespace Final_BomberServer.Core
             this.PlayerId = playerId;
             maxBombAmount = 1;
             currentBombAmount = 0;
-            MoveSpeed = 42f;
+            MoveSpeed = 100f;
             lifes = 2;
             IsDead = false;
             Direction = ActionEnum.Standing;
@@ -264,7 +264,7 @@ namespace Final_BomberServer.Core
 
         private float GetMovementSpeed()
         {
-            float rtn = MoveSpeed * GameSettings.speed;
+            float rtn = (MoveSpeed * GameSettings.speed) / 1000f;
             return rtn;
         }
     }

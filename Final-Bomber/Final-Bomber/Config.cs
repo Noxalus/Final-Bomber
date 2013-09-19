@@ -73,7 +73,7 @@ namespace Final_Bomber
 
         // Base characteristics
         public const int BasePlayerBombPower = 1;
-        public const float BasePlayerSpeed = 42f;
+        public const float BasePlayerSpeed = 100f;
         public const float BaseBombSpeed = 3f;
         public const int BasePlayerBombNumber = 1;
 

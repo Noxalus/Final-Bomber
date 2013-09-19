@@ -10,10 +10,18 @@ using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Input;
 using Final_Bomber.Entities;
+using System.Diagnostics;
 
 namespace Final_Bomber.Entities
 {
-    public enum LookDirection { Down, Left, Right, Up, Idle }
+    public enum LookDirection 
+    { 
+        Idle,
+        Up,
+        Right,
+        Down,
+        Left 
+    }
 
     public abstract class Player : Entity
     {
@@ -36,6 +44,7 @@ namespace Final_Bomber.Entities
         private bool _cellTeleporting;
 
         protected LookDirection LookDirection;
+        protected LookDirection _previousLookDirection;
 
         // Bad item
         protected TimeSpan BombTimerSaved;
@@ -85,7 +94,7 @@ namespace Final_Bomber.Entities
 
         protected Player(int id)
         {
-            this.Id = id;
+            Id = id;
             _name = "";
 
             const int animationFramesPerSecond = 10;
@@ -118,15 +127,15 @@ namespace Final_Bomber.Entities
                     IsAnimating = false
                 };
 
-            this.IsMoving = false;
-            this.IsAlive = true;
-            this.InDestruction = false;
-            this.OnEdge = false;
-            this.IsInvincible = true;
+            IsMoving = false;
+            IsAlive = true;
+            InDestruction = false;
+            OnEdge = false;
+            IsInvincible = true;
 
-            this._invincibleTimer = Config.PlayerInvincibleTimer;
-            this._invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
-            this._invincibleBlinkTimer = TimeSpan.FromSeconds(this._invincibleBlinkFrequency);
+            _invincibleTimer = Config.PlayerInvincibleTimer;
+            _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
+            _invincibleBlinkTimer = TimeSpan.FromSeconds(this._invincibleBlinkFrequency);
 
             Power = Config.BasePlayerBombPower;
             TotalBombNumber = Config.BasePlayerBombNumber;
@@ -134,7 +143,8 @@ namespace Final_Bomber.Entities
 
             BombTimer = Config.BombTimer;
 
-            LookDirection = LookDirection.Down;
+            LookDirection = LookDirection.Idle;
+            _previousLookDirection = LookDirection;
 
             // Bad item
             HasBadItemEffect = false;
@@ -148,6 +158,8 @@ namespace Final_Bomber.Entities
         {
             if (IsAlive && !InDestruction)
             {
+                _previousLookDirection = LookDirection;
+
                 Sprite.Update(gameTime);
 
                 #region Invincibility
@@ -581,14 +593,21 @@ namespace Final_Bomber.Entities
 
         public void Rebirth(Vector2 position)
         {
-            this.IsAlive = true;
-            this.Sprite.IsAnimating = true;
-            this.InDestruction = false;
-            this.Sprite.Position = position;
-            this.Sprite.CurrentAnimation = AnimationKey.Down;
-            this._playerDeathAnimation.IsAnimating = false;
+            IsAlive = true;
+            Sprite.IsAnimating = true;
+            InDestruction = false;
+            Sprite.Position = position;
+            Sprite.CurrentAnimation = AnimationKey.Down;
+            _playerDeathAnimation.IsAnimating = false;
             
             Invincibility();
+        }
+
+        public void ChangeLookDirection(byte newLookDirection)
+        {
+            _previousLookDirection = LookDirection;
+            LookDirection = (LookDirection)newLookDirection;
+            Debug.Print("New look direction: " + (LookDirection)newLookDirection);
         }
         
         #endregion

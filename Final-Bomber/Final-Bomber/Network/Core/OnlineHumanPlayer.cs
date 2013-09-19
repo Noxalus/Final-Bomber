@@ -13,9 +13,6 @@ namespace Final_Bomber.Network.Core
 {
     class OnlineHumanPlayer : Player
     {
-
-        private LookDirection _oldLookDirection;
-
         private Vector2 _motionVector;
 
         private Keys[] Keys { get; set; }
@@ -29,7 +26,6 @@ namespace Final_Bomber.Network.Core
         {
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
-            _oldLookDirection = LookDirection.Idle;
             _movementConfirmed = true;
             _motionVector = Vector2.Zero;
         }
@@ -39,7 +35,6 @@ namespace Final_Bomber.Network.Core
             #region Moving input
 
             _motionVector = Vector2.Zero;
-            _oldLookDirection = LookDirection;
 
             // Up
             if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
@@ -76,8 +71,8 @@ namespace Final_Bomber.Network.Core
 
             #endregion
 
-            Debug.Print("Player position: " + Sprite.Position);
-
+            //Debug.Print("Player position: " + Sprite.Position);
+            
             if (_motionVector != Vector2.Zero && _movementConfirmed)
             {
                 IsMoving = true;
@@ -455,7 +450,7 @@ namespace Final_Bomber.Network.Core
 
         private void SendMovement()
         {
-            if (_oldLookDirection != LookDirection)
+            if (_previousLookDirection != LookDirection)
             {
                 switch (LookDirection)
                 {

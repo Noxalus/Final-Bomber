@@ -135,7 +135,7 @@ namespace Final_BomberServer.Host
             foreach (Client client in GameSettings.gameServer.clients)
             {
                 // Move the player to the next position
-                Console.WriteLine("Player position: " + client.Player.Position);                
+                //Console.WriteLine("Player position: " + client.Player.Position);                
                 client.Player.MovePlayer(); 
             }
         }

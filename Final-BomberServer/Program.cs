@@ -32,7 +32,7 @@ namespace Final_BomberServer
                 while(server.Running)
                 {
                     server.Update();
-                    //Console.WriteLine(timer.Elapsed.Ticks);
+                    //Console.WriteLine(timer.Elapsed.Milliseconds);
                     timer.Restart();
                     Thread.Sleep(15);
                 }

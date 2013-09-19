@@ -591,11 +591,12 @@ namespace Final_Bomber.Screens
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
             Player player = Players.GetPlayerByID(arg.PlayerID);
+
             if (player != null)
             {
-                Debug.Print(arg.Position.ToString());
                 // TODO => Move Players on the map
                 player.Sprite.Position = arg.Position;
+                player.ChangeLookDirection(arg.Action);
                 /*
                 player.MapPosition = arg.pos;
                 if (arg.action != 255)

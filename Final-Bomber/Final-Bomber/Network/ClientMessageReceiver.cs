@@ -121,8 +121,6 @@ namespace Final_Bomber.Network
 
         private void RecievePositionAndSpeed(float positionX, float positionY, byte action, int playerID)
         {
-            Console.WriteLine("Receive position from server !");
-
             var arg = new MovePlayerArgs
             {
                 Position = { X = positionX, Y = positionY },

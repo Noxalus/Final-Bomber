@@ -10,18 +10,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace Final_Bomber.Network.Core
 {
     class OnlinePlayer : Player
     {
 
-        private LookDirection _oldLookDirection;
-
         public OnlinePlayer(int id)
             : base(id)
         {
-            _oldLookDirection = LookDirection.Idle;
         }
 
         public override void Update(GameTime gameTime)
@@ -31,41 +29,39 @@ namespace Final_Bomber.Network.Core
 
         protected override void Move(GameTime gameTime)
         {
-            #region Moving input
+            Debug.Print("Look Direction: " + LookDirection);
+            var motionVector = Vector2.Zero;
 
-            _oldLookDirection = LookDirection;
+            switch (LookDirection)
+            {
+                case LookDirection.Down:
+                    Sprite.CurrentAnimation = AnimationKey.Down;
+                    motionVector.Y = 1;
+                    break;
+                case LookDirection.Left:
+                    Sprite.CurrentAnimation = AnimationKey.Left;
+                    motionVector.X = -1;
+                    break;
+                case LookDirection.Right:
+                    Sprite.CurrentAnimation = AnimationKey.Right;
+                    motionVector.X = 1;
+                    break;
+                case LookDirection.Up:
+                    Sprite.CurrentAnimation = AnimationKey.Up;
+                    motionVector.Y = -1;
+                    break;
+            }
 
-            /*
-            // Up
-            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
+            if (motionVector != Vector2.Zero)
             {
-                Sprite.CurrentAnimation = AnimationKey.Up;
-                LookDirection = LookDirection.Up;
-            }
-            // Down
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Down;
-                LookDirection = LookDirection.Down;
-            }
-            // Left
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Left;
-                LookDirection = LookDirection.Left;
-            }
-            // Right
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Right;
-                LookDirection = LookDirection.Right;
+                var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Sprite.IsAnimating = true;
+                Sprite.Position += motionVector * (Sprite.Speed * dt);
             }
             else
             {
-                LookDirection = LookDirection.Idle;
+                Sprite.IsAnimating = false;
             }
-            */
-            #endregion
 
             #region Moving action
 
@@ -225,7 +221,6 @@ namespace Final_Bomber.Network.Core
             }
             */
 
-            MovePlayer();
             //UpdatePlayerPosition();
 
             #region Bomb
@@ -250,36 +245,6 @@ namespace Final_Bomber.Network.Core
             #endregion
 
             #endregion
-        }
-
-        public void MovePlayer()
-        {
-            /*
-            switch (movementAction)
-            {
-                case ActionEnum.WalkingDown:
-                    Speed = new Vector2(0, GetMovementSpeed());
-                    break;
-                case ActionEnum.WalkingUp:
-                    Speed = new Vector2(0, -GetMovementSpeed());
-                    break;
-                case ActionEnum.WalkingLeft:
-                    Speed = new Vector2(-GetMovementSpeed(), 0);
-                    break;
-                case ActionEnum.WalkingRight:
-                    Speed = new Vector2(GetMovementSpeed(), 0);
-                    break;
-                case ActionEnum.Standing:
-                    Speed = new Vector2(0);
-                    break;
-            }
-            */
-        }
-
-        private float GetMovementSpeed()
-        {
-            float rtn = (/*(float)MoveSpeed * */(float)GameSettings.speed);
-            return rtn;
         }
     }
 }
