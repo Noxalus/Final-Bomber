@@ -603,7 +603,7 @@ namespace Final_Bomber.Entities
             Invincibility();
         }
 
-        public void ChangeLookDirection(byte newLookDirection)
+        public virtual void ChangeLookDirection(byte newLookDirection)
         {
             _previousLookDirection = LookDirection;
             LookDirection = (LookDirection)newLookDirection;

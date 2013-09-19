@@ -26,7 +26,7 @@ namespace Final_Bomber.Network.Core
         {
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
-            _movementConfirmed = true;
+            _movementConfirmed = false;
             _motionVector = Vector2.Zero;
         }
 
@@ -67,12 +67,13 @@ namespace Final_Bomber.Network.Core
             else
             {
                 LookDirection = LookDirection.Idle;
+                _movementConfirmed = false;
             }
 
             #endregion
 
             //Debug.Print("Player position: " + Sprite.Position);
-            
+
             if (_motionVector != Vector2.Zero && _movementConfirmed)
             {
                 IsMoving = true;
@@ -476,6 +477,19 @@ namespace Final_Bomber.Network.Core
                         break;
                 }
             }
+        }
+
+        public override void ChangeLookDirection(byte newLookDirection)
+        {
+            base.ChangeLookDirection(newLookDirection);
+
+            // TODO
+            /*
+            if (LookDirection != LookDirection.Idle)
+                _movementConfirmed = true;
+            else
+                _movementConfirmed = false;
+            */
         }
     }
 }

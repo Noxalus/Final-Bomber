@@ -158,7 +158,7 @@ namespace Final_BomberServer.Host
 
         public void WriteOutput(string msg)
         {
-            Console.WriteLine(msg);
+            Program.Log.Info(msg);
         }
 
         #endregion

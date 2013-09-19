@@ -2,13 +2,19 @@
 using Final_BomberServer.Core;
 using System;
 using System.Threading;
+using log4net;
+using log4net.Config;
 
 namespace Final_BomberServer
 {
     class Program
     {
+        public static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+
         static void Main(string[] args)
         {
+            XmlConfigurator.Configure();
+
             if (args.Length > 0)
             {
                 Console.WriteLine("Arguments:");
