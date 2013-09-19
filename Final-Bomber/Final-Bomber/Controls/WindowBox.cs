@@ -48,7 +48,7 @@ namespace Final_Bomber.Controls
 
         public WindowBox(Texture2D window, Vector2 position, Point size)
         {
-            this.windowSkin = window;
+            windowSkin = window;
 
             topLeft = new Rectangle(0, 0, 12, 12);
             topRight = new Rectangle(13, 0, 12, 12);
@@ -61,8 +61,8 @@ namespace Final_Bomber.Controls
             left = new Rectangle(0, 12, 10, 1);
             right = new Rectangle(15, 12, 10, 1);
 
-            this.size = size;
-            this.position = position;
+            size = size;
+            position = position;
         }
 
         #endregion

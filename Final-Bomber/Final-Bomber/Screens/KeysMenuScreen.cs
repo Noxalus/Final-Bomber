@@ -153,14 +153,14 @@ namespace Final_Bomber.Screens
             if (indexPlayer >= 0)
             {
                 string text = "Changement des touches\n     de " + Config.PlayersName[indexPlayer];
-                GameRef.SpriteBatch.DrawString(this.BigFont, text,
-                        new Vector2(menuPosition.X / 1.5f, (this.BigFont.MeasureString(text).Y) / 2), textColor);
+                GameRef.SpriteBatch.DrawString(BigFont, text,
+                        new Vector2(menuPosition.X / 1.5f, (BigFont.MeasureString(text).Y) / 2), textColor);
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, instructions[0], 
-                    new Vector2(menuPosition.X/1.5f, 2 * (this.BigFont.MeasureString(instructions[0]).Y)), Color.Black);
-                GameRef.SpriteBatch.DrawString(this.BigFont, instructions[1],
-                    new Vector2(menuPosition.X / 1.5f + 250 - this.BigFont.MeasureString(instructions[1]).X / 2, 
-                        6 * (this.BigFont.MeasureString(instructions[1]).Y)), Color.Black);
+                GameRef.SpriteBatch.DrawString(BigFont, instructions[0], 
+                    new Vector2(menuPosition.X/1.5f, 2 * (BigFont.MeasureString(instructions[0]).Y)), Color.Black);
+                GameRef.SpriteBatch.DrawString(BigFont, instructions[1],
+                    new Vector2(menuPosition.X / 1.5f + 250 - BigFont.MeasureString(instructions[1]).X / 2, 
+                        6 * (BigFont.MeasureString(instructions[1]).Y)), Color.Black);
             }
             else
             {
@@ -168,8 +168,8 @@ namespace Final_Bomber.Screens
                 {
                     textColor = i == indexMenu ? Color.Green : Color.Black;
 
-                    GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
-                        new Vector2(menuPosition.X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), textColor);
+                    GameRef.SpriteBatch.DrawString(BigFont, menuString[i],
+                        new Vector2(menuPosition.X, menuPosition.Y + (BigFont.MeasureString(menuString[i]).Y) * i), textColor);
                 }
             }
 

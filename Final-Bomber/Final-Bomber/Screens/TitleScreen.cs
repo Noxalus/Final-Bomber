@@ -126,9 +126,9 @@ namespace Final_Bomber.Screens
                     Color textColor = Color.Black;
                     if (i == indexMenu)
                         textColor = Color.Green;
-                    GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(menuString[i]).X / 2,
-                            menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i - this.BigFont.MeasureString(menuString[i]).Y / 2), textColor);
+                    GameRef.SpriteBatch.DrawString(BigFont, menuString[i],
+                        new Vector2(menuPosition.X - BigFont.MeasureString(menuString[i]).X / 2,
+                            menuPosition.Y + BigFont.MeasureString(menuString[i]).Y * i - BigFont.MeasureString(menuString[i]).Y / 2), textColor);
                 }
             }
 

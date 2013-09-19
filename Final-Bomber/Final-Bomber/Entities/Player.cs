@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using Final_Bomber.Entities.AI;
+using FBLibrary.Core;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Final_Bomber.TileEngine;
-using Final_Bomber.WorldEngine;
-using Microsoft.Xna.Framework.Input;
 using Final_Bomber.Entities;
 using System.Diagnostics;
 
 namespace Final_Bomber.Entities
 {
-    public enum LookDirection 
-    { 
-        Idle,
-        Up,
-        Right,
-        Down,
-        Left 
-    }
-
     public abstract class Player : Entity
     {
         #region Field Region
@@ -43,7 +32,7 @@ namespace Final_Bomber.Entities
         private bool _cellChanging;
         private bool _cellTeleporting;
 
-        protected LookDirection LookDirection;
+        protected LookDirection CurrentLookDirection;
         protected LookDirection PreviousLookDirection;
 
         // Bad item
@@ -143,8 +132,8 @@ namespace Final_Bomber.Entities
 
             BombTimer = Config.BaseBombTimer;
 
-            LookDirection = LookDirection.Idle;
-            PreviousLookDirection = LookDirection;
+            CurrentLookDirection = LookDirection.Idle;
+            PreviousLookDirection = CurrentLookDirection;
 
             // Bad item
             HasBadItemEffect = false;
@@ -158,7 +147,7 @@ namespace Final_Bomber.Entities
         {
             if (IsAlive && !InDestruction)
             {
-                PreviousLookDirection = LookDirection;
+                PreviousLookDirection = CurrentLookDirection;
 
                 Sprite.Update(gameTime);
 
@@ -197,10 +186,10 @@ namespace Final_Bomber.Entities
 
                 if (Config.PlayerCanPush)
                 {
-                    if (LookDirection != LookDirection.Idle)
+                    if (CurrentLookDirection != LookDirection.Idle)
                     {
                         Point direction = Point.Zero;
-                        switch (LookDirection)
+                        switch (CurrentLookDirection)
                         {
                             case LookDirection.Up:
                                 direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
@@ -217,7 +206,7 @@ namespace Final_Bomber.Entities
                         }
                         Bomb bomb = BombAt(direction);
                         if (bomb != null)
-                            bomb.ChangeDirection(LookDirection, this.Id);
+                            bomb.ChangeDirection(CurrentLookDirection, this.Id);
                     }
                 }
 
@@ -448,14 +437,14 @@ namespace Final_Bomber.Entities
                 if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1)))
                 {
                     // Top collision and Bottom collision
-                    if ((LookDirection == LookDirection.Up && IsMoreTopSide()) || (LookDirection == LookDirection.Down && IsMoreBottomSide()))
+                    if ((CurrentLookDirection == LookDirection.Up && IsMoreTopSide()) || (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide()))
                         this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
                 }
                 // No wall at the bottom
                 else
                 {
                     // Top collision
-                    if (LookDirection == LookDirection.Up && IsMoreTopSide())
+                    if (CurrentLookDirection == LookDirection.Up && IsMoreTopSide())
                         this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
                 }
             }
@@ -463,10 +452,10 @@ namespace Final_Bomber.Entities
             else if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1)))
             {
                 // Bottom collision
-                if (LookDirection == LookDirection.Down && IsMoreBottomSide())
+                if (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide())
                     this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
                 // To lag him
-                else if (LookDirection == LookDirection.Down)
+                else if (CurrentLookDirection == LookDirection.Down)
                 {
                     if (IsMoreLeftSide())
                         this.Sprite.PositionX += this.Sprite.Speed;
@@ -483,14 +472,14 @@ namespace Final_Bomber.Entities
                 if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
                 {
                     // Left and right collisions
-                    if ((this.LookDirection == LookDirection.Left && IsMoreLeftSide()) || (this.LookDirection == LookDirection.Right && IsMoreRightSide()))
+                    if ((CurrentLookDirection == LookDirection.Left && IsMoreLeftSide()) || (CurrentLookDirection == LookDirection.Right && IsMoreRightSide()))
                         this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
                 }
                 // Wall only at the left
                 else
                 {
                     // Left collision
-                    if (this.LookDirection == LookDirection.Left && IsMoreLeftSide())
+                    if (CurrentLookDirection == LookDirection.Left && IsMoreLeftSide())
                         this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
                 }
             }
@@ -498,7 +487,7 @@ namespace Final_Bomber.Entities
             else if (WallAt(new Point(this.Sprite.CellPosition.X + 1, this.Sprite.CellPosition.Y)))
             {
                 // Right collision
-                if (this.LookDirection == LookDirection.Right && IsMoreRightSide())
+                if (CurrentLookDirection == LookDirection.Right && IsMoreRightSide())
                     this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
             }
 
@@ -605,8 +594,8 @@ namespace Final_Bomber.Entities
 
         public virtual void ChangeLookDirection(byte newLookDirection)
         {
-            PreviousLookDirection = LookDirection;
-            LookDirection = (LookDirection)newLookDirection;
+            PreviousLookDirection = CurrentLookDirection;
+            CurrentLookDirection = (LookDirection)newLookDirection;
             Debug.Print("New look direction: " + (LookDirection)newLookDirection);
         }
         

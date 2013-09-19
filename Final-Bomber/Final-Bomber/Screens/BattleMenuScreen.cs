@@ -305,48 +305,48 @@ namespace Final_Bomber.Screens
                 else if (i == 5 && disabledArrows)
                     textColor = Color.Gray;
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, text,
-                    new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag,
-                        menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), textColor);
+                GameRef.SpriteBatch.DrawString(BigFont, text,
+                    new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag,
+                        menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                 
                 switch(i)
                 {
                     case 0:
-                        GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Config.PlayersNumber,
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), Color.Black);
+                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.PlayersNumber,
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 1:
-                        GameRef.SpriteBatch.DrawString(this.BigFont, ": ",
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), Color.Black);
+                        GameRef.SpriteBatch.DrawString(BigFont, ": ",
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 2:
-                        GameRef.SpriteBatch.DrawString(this.BigFont, "x",
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), Color.Black);
+                        GameRef.SpriteBatch.DrawString(BigFont, "x",
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 4:
-                        GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Config.ActiveTeleporters,
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), Color.Black);
+                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveTeleporters,
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 5:
                         if(!disabledArrows)
                             textColor = Color.Black;
-                        GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Config.ActiveArrows,
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), textColor);
+                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveArrows,
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                         break;
                     case 6:
-                        GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Config.WallNumber + "%",
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), Color.Black);
+                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.WallNumber + "%",
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 7:
-                        GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Config.ItemNumber + "%",
-                        new Vector2(menuPosition.X - this.BigFont.MeasureString(text).X / 2 + xLag + this.BigFont.MeasureString(text).X,
-                            menuPosition.Y + this.BigFont.MeasureString(text).Y * yLag - this.BigFont.MeasureString(text).Y / 2), Color.Black);
+                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.ItemNumber + "%",
+                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                 }
             }

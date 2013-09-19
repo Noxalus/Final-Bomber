@@ -77,25 +77,25 @@ namespace Final_Bomber.Sprites
 
         public BaseSprite(Texture2D image, Rectangle? sourceRectangle)
         {
-            this.texture = image;
+            texture = image;
 
             if (sourceRectangle.HasValue)
-                this.sourceRectangle = sourceRectangle.Value;
+                sourceRectangle = sourceRectangle.Value;
             else
-                this.sourceRectangle = new Rectangle(
+                sourceRectangle = new Rectangle(
                     0,
                     0,
                     image.Width,
                     image.Height);
 
-            this.position = Vector2.Zero;
-            this.velocity = Vector2.Zero;
+            position = Vector2.Zero;
+            velocity = Vector2.Zero;
         }
 
         public BaseSprite(Texture2D image, Rectangle? sourceRectangle, Point tile)
             : this(image, sourceRectangle)
         {
-            this.position = new Vector2(
+            position = new Vector2(
                 tile.X * Engine.TileWidth,
                 tile.Y * Engine.TileHeight);
         }

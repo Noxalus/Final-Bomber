@@ -1,4 +1,5 @@
 ﻿using System;
+using FBLibrary.Core;
 using Final_Bomber.Controls;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
@@ -36,32 +37,32 @@ namespace Final_Bomber.Entities
             if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
-                LookDirection = LookDirection.Up;
+                CurrentLookDirection = LookDirection.Up;
                 motion.Y = -1;
             }
             // Down
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
-                LookDirection = LookDirection.Down;
+                CurrentLookDirection = LookDirection.Down;
                 motion.Y = 1;
             }
             // Left
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                LookDirection = LookDirection.Left;
+                CurrentLookDirection = LookDirection.Left;
                 motion.X = -1;
             }
             // Right
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
-                LookDirection = LookDirection.Right;
+                CurrentLookDirection = LookDirection.Right;
                 motion.X = 1;
             }
             else
-                LookDirection = LookDirection.Idle;
+                CurrentLookDirection = LookDirection.Idle;
 
             #endregion
 
@@ -83,7 +84,7 @@ namespace Final_Bomber.Entities
                 Sprite.Position += motion * Sprite.Speed;
 
                 // If the player want to go to top...
-                if (motion.Y == -1)
+                if (motion.Y == -1f)
                 {
                     // ...  and that there is a wall
                     if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1)))

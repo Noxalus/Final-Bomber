@@ -1,4 +1,5 @@
-﻿using Final_Bomber.Entities;
+﻿using FBLibrary.Core;
+using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
@@ -40,33 +41,33 @@ namespace Final_Bomber.Network.Core
             if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
-                LookDirection = LookDirection.Up;
+                CurrentLookDirection = LookDirection.Up;
                 _motionVector.Y = -1;
             }
             // Down
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
-                LookDirection = LookDirection.Down;
+                CurrentLookDirection = LookDirection.Down;
                 _motionVector.Y = 1;
             }
             // Left
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                LookDirection = LookDirection.Left;
+                CurrentLookDirection = LookDirection.Left;
                 _motionVector.X = -1;
             }
             // Right
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
-                LookDirection = LookDirection.Right;
+                CurrentLookDirection = LookDirection.Right;
                 _motionVector.X = 1;
             }
             else
             {
-                LookDirection = LookDirection.Idle;
+                CurrentLookDirection = LookDirection.Idle;
                 //_movementConfirmed = false;
             }
 
@@ -451,9 +452,9 @@ namespace Final_Bomber.Network.Core
 
         private void SendMovement()
         {
-            if (PreviousLookDirection != LookDirection)
+            if (PreviousLookDirection != CurrentLookDirection)
             {
-                switch (LookDirection)
+                switch (CurrentLookDirection)
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");

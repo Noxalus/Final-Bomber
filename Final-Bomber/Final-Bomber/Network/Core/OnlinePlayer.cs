@@ -1,4 +1,5 @@
-﻿using Final_Bomber.Entities;
+﻿using FBLibrary.Core;
+using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
@@ -29,10 +30,10 @@ namespace Final_Bomber.Network.Core
 
         protected override void Move(GameTime gameTime)
         {
-            Debug.Print("Look Direction: " + LookDirection);
+            Debug.Print("Look Direction: " + CurrentLookDirection);
             var motionVector = Vector2.Zero;
 
-            switch (LookDirection)
+            switch (CurrentLookDirection)
             {
                 case LookDirection.Down:
                     Sprite.CurrentAnimation = AnimationKey.Down;

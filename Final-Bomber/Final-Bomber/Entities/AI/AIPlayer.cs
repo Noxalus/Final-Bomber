@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FBLibrary.Core;
 using Final_Bomber.Sprites;
 using Final_Bomber.TileEngine;
 using Microsoft.Xna.Framework;
@@ -120,28 +121,28 @@ namespace Final_Bomber.Entities.AI
             {
                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
                 Sprite.CurrentAnimation = AnimationKey.Up;
-                LookDirection = LookDirection.Up;
+                CurrentLookDirection = LookDirection.Up;
             }
             // Down
             else if (Sprite.Position.Y < _aiNextPosition.Y)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
                 Sprite.CurrentAnimation = AnimationKey.Down;
-                LookDirection = LookDirection.Down;
+                CurrentLookDirection = LookDirection.Down;
             }
             // Right
             else if (Sprite.Position.X < _aiNextPosition.X)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Right;
-                LookDirection = LookDirection.Right;
+                CurrentLookDirection = LookDirection.Right;
             }
             // Left
             else if (Sprite.Position.X > _aiNextPosition.X)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                LookDirection = LookDirection.Left;
+                CurrentLookDirection = LookDirection.Left;
             }
         }
 

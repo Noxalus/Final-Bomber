@@ -225,6 +225,10 @@
     <Content Include="Final-Bomber.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FBLibrary\3 - FBLibrary.csproj">
+      <Project>{3af57b97-6bf8-4b50-847b-c42b003a2471}</Project>
+      <Name>3 - FBLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Final-BomberContent\1 - Final-BomberContent.contentproj">
       <Name>1 - Final-BomberContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
