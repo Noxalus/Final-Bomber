@@ -95,7 +95,7 @@ namespace Final_Bomber.Entities
                     if (!AllVisited())
                     {
                         _visited[_currentPosition.X, _currentPosition.Y] = true;
-                        Entity mapItem = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
+                        DrawableEntity mapItem = _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                             Board[_currentPosition.X, _currentPosition.Y];
                         if (mapItem != null)
                         {

@@ -17,10 +17,10 @@ namespace Final_BomberServer
 
             if (args.Length > 0)
             {
-                Console.WriteLine("Arguments:");
+                Program.Log.Info("Arguments:");
                 foreach (string s in args)
                 {
-                    Console.WriteLine(s);
+                    Program.Log.Info(s);
                 }
             }
 
@@ -38,7 +38,7 @@ namespace Final_BomberServer
                 while(server.Running)
                 {
                     server.Update();
-                    //Console.WriteLine(timer.Elapsed.Milliseconds);
+                    //Program.Log.Info(timer.Elapsed.Milliseconds);
                     timer.Restart();
                     Thread.Sleep(15);
                 }

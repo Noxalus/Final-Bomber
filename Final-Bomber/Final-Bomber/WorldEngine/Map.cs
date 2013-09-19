@@ -15,15 +15,19 @@ namespace Final_Bomber.WorldEngine
     {
         #region Field Region
 
-        readonly TileMap tileMap;
+        // Textures
+        Texture2D _mapTexture;
+        Texture2D _wallTexture;
 
-        private Point size;
-        private Entity[,] board;
-        private bool[,] collisionLayer;
-        private int[,] hazardMap;
+        private TileMap _tileMap;
+
+        private Point _size;
+        private DrawableEntity[,] _board;
+        private bool[,] _collisionLayer;
+        private int[,] _hazardMap;
 
         private List<Wall> _wallList;
-        private List<PowerUp> powerUpList;
+        private List<PowerUp> _powerUpList;
         private List<EdgeWall> _edgeWallList;
         private List<Bomb> _bombList;
         private List<UnbreakableWall> _unbreakableWallList;
@@ -36,43 +40,37 @@ namespace Final_Bomber.WorldEngine
 
         public TileMap TileMap
         {
-            get { return tileMap; }
+            get { return _tileMap; }
         }
 
         public Point Size
         {
-            get { return size; }
+            get { return _size; }
         }
 
-        public Entity[,] Board
+        public DrawableEntity[,] Board
         {
-            get { return board; }
+            get { return _board; }
         }
 
         public bool[,] CollisionLayer
         {
-            get { return collisionLayer; }
+            get { return _collisionLayer; }
         }
 
         public int[,] HazardMap
         {
-            get { return hazardMap; }
+            get { return _hazardMap; }
         }
 
         #endregion
 
         #region Constructor Region
 
-        public Map(Point mSize, TileMap tMap, Entity[,] m, bool[,] cLayer)
+        public Map()
         {
-            size = mSize;
-            this.board = m;
-            this.tileMap = tMap;
-            this.collisionLayer = cLayer;
-            this.hazardMap = new int[mSize.X, mSize.Y];
-
             _wallList = new List<Wall>();
-            powerUpList = new List<PowerUp>();
+            _powerUpList = new List<PowerUp>();
             _edgeWallList = new List<EdgeWall>();
             _bombList = new List<Bomb>();
             _unbreakableWallList = new List<UnbreakableWall>();
@@ -80,9 +78,25 @@ namespace Final_Bomber.WorldEngine
             _arrowList = new List<Arrow>();
         }
 
+        public Map(Point mSize, TileMap tMap, DrawableEntity[,] m, bool[,] cLayer)
+            : this()
+        {
+            _size = mSize;
+            _board = m;
+            _tileMap = tMap;
+            _collisionLayer = cLayer;
+            _hazardMap = new int[mSize.X, mSize.Y];
+        }
+
         #endregion
 
         #region Method Region
+
+        public void LoadContent()
+        {
+            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -90,7 +104,48 @@ namespace Final_Bomber.WorldEngine
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Camera camera)
         {
-            tileMap.Draw(spriteBatch, camera, collisionLayer);
+            // Background
+            var position = new Vector2(
+                Engine.Origin.X - (int)(Engine.Origin.X / Engine.TileWidth) * Engine.TileWidth - Engine.TileWidth,
+                Engine.Origin.Y - (int)(Engine.Origin.Y / Engine.TileHeight) * Engine.TileHeight - Engine.TileHeight);
+
+            for (int i = 0; i < (FinalBomber.Instance.GraphicsDevice.Viewport.Width / Engine.TileWidth) + 2; i++)
+            {
+                for (int j = 0; j < (FinalBomber.Instance.GraphicsDevice.Viewport.Height / Engine.TileHeight) + 2; j++)
+                {
+                    if (!((position.X + i * Engine.TileWidth > Engine.Origin.X &&
+                        position.X + i * Engine.TileWidth < Engine.Origin.X + Size.X * Engine.TileWidth - Engine.TileWidth) &&
+                        (position.Y + j * Engine.TileHeight > Engine.Origin.Y &&
+                        position.Y + j * Engine.TileHeight < Engine.Origin.Y + Size.Y * Engine.TileHeight - Engine.TileHeight)))
+                    {
+                        spriteBatch.Draw(_wallTexture, new Vector2(position.X + (i * Engine.TileWidth), position.Y + (j * Engine.TileHeight)), Color.White);
+                    }
+                }
+            }
+
+            _tileMap.Draw(spriteBatch, camera, _collisionLayer);
+
+            // Draw entities
+            foreach (var edgeWall in _edgeWallList)
+                edgeWall.Draw(gameTime);
+
+            foreach (var unbreakableWall in _unbreakableWallList)
+                unbreakableWall.Draw(gameTime);
+
+            foreach (var wall in _wallList)
+                wall.Draw(gameTime);
+
+            foreach (var powerUp in _powerUpList)
+                powerUp.Draw(gameTime);
+
+            foreach (var teleporter in _teleporterList)
+                teleporter.Draw(gameTime);
+
+            foreach (var arrow in _arrowList)
+                arrow.Draw(gameTime);
+
+            foreach (var bomb in _bombList)
+                bomb.Draw(gameTime);
         }
 
         public List<Point> FindEmptyCells()
@@ -108,110 +163,97 @@ namespace Final_Bomber.WorldEngine
             return emptyCells;
         }
 
-        private void Parse(string file, Texture2D mapTexture)
+        public void Parse(string file)
         {
             try
             {
                 var streamReader = new StreamReader("Content/Maps/" + file);
                 string line = streamReader.ReadLine();
-                string[] lineSplit = line.Split(' ');
-                var parsedMapSize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
-
-                var mapSize = new Point(parsedMapSize[0], parsedMapSize[1]);
-                var tilesets = new List<Tileset>() { new Tileset(mapTexture, 64, 32, 32, 32) };
-
-                var collisionLayer = new bool[mapSize.X, mapSize.Y];
-                var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                var board = new Entity[mapSize.X, mapSize.Y];
-                var layer = new MapLayer(mapSize.X, mapSize.Y);
-                var voidPosition = new List<Point>();
-                var playerPositions = new Dictionary<int, Point>();
-
-                Point currentPosition = Point.Zero;
-                int j = 0;
-                while (!streamReader.EndOfStream)
+                if (line != null)
                 {
-                    line = streamReader.ReadLine();
-                    Debug.Assert(line != null, "line != null");
-                    lineSplit = line.Split(' ');
-                    int playerNumber = 0;
-                    currentPosition.Y = j;
-                    for (int i = 0; i < lineSplit.Length; i++)
-                    {
-                        int id = int.Parse(lineSplit[i]);
+                    string[] lineSplit = line.Split(' ');
+                    var parsedMapSize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
 
-                        currentPosition.X = i;
-                        
-                        switch (id)
+                    var mapSize = new Point(parsedMapSize[0], parsedMapSize[1]);
+                    var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
+
+                    var collisionLayer = new bool[mapSize.X, mapSize.Y];
+                    var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
+                    var board = new DrawableEntity[mapSize.X, mapSize.Y];
+                    var layer = new MapLayer(mapSize.X, mapSize.Y);
+                    var voidPosition = new List<Point>();
+                    var playerPositions = new Dictionary<int, Point>();
+
+                    Point currentPosition = Point.Zero;
+                    int j = 0;
+                    while (!streamReader.EndOfStream)
+                    {
+                        line = streamReader.ReadLine();
+                        Debug.Assert(line != null, "line != null");
+                        lineSplit = line.Split(' ');
+                        int playerNumber = 0;
+                        currentPosition.Y = j;
+                        for (int i = 0; i < lineSplit.Length; i++)
                         {
-                            case (int)Entity.Type.UnbreakableWall:
-                                var unbreakableWall = new UnbreakableWall(currentPosition);
-                                board[i, j] = unbreakableWall;
-                                _unbreakableWallList.Add(unbreakableWall);
-                                collisionLayer[i, j] = true;
-                                break;
-                            case (int)Entity.Type.EdgeWall:
-                                var edgeWall = new EdgeWall(currentPosition);
-                                board[i, j] = edgeWall;
-                                _edgeWallList.Add(edgeWall);
-                                collisionLayer[i, j] = true;
-                                break;
-                            case (int)Entity.Type.Wall:
-                                var wall = new Wall(currentPosition);
-                                _wallList.Add(wall);
-                                board[i, j] = wall;
-                                collisionLayer[i, j] = true;
-                                break;
-                            case (int)Entity.Type.Teleporter:
-                                var teleporter = new Teleporter(currentPosition);
-                                board[i, j] = teleporter;
-                                _teleporterList.Add(teleporter);
-                                break;
-                            case (int)Entity.Type.Arrow:
-                                var arrow = new Arrow(currentPosition, LookDirection.Down);
-                                _arrowList.Add(arrow);
-                                board[i, j] = arrow;
-                                break;
-                            case (int)Entity.Type.Player:
-                                if (playerNumber <= Config.PlayersNumber)
-                                {
-                                    playerPositions[playerNumber] = currentPosition;
-                                    playerNumber++;
-                                }
-                                break;
-                            default:
-                                break;
+                            int id = int.Parse(lineSplit[i]);
+
+                            currentPosition.X = i;
+                        
+                            switch (id)
+                            {
+                                case (int)DrawableEntity.Type.UnbreakableWall:
+                                    var unbreakableWall = new UnbreakableWall(currentPosition);
+                                    board[i, j] = unbreakableWall;
+                                    _unbreakableWallList.Add(unbreakableWall);
+                                    collisionLayer[i, j] = true;
+                                    break;
+                                case (int)DrawableEntity.Type.EdgeWall:
+                                    var edgeWall = new EdgeWall(currentPosition);
+                                    board[i, j] = edgeWall;
+                                    _edgeWallList.Add(edgeWall);
+                                    collisionLayer[i, j] = true;
+                                    break;
+                                case (int)DrawableEntity.Type.Wall:
+                                    var wall = new Wall(currentPosition);
+                                    _wallList.Add(wall);
+                                    board[i, j] = wall;
+                                    collisionLayer[i, j] = true;
+                                    break;
+                                case (int)DrawableEntity.Type.Teleporter:
+                                    var teleporter = new Teleporter(currentPosition);
+                                    board[i, j] = teleporter;
+                                    _teleporterList.Add(teleporter);
+                                    break;
+                                case (int)DrawableEntity.Type.Arrow:
+                                    var arrow = new Arrow(currentPosition, LookDirection.Down);
+                                    _arrowList.Add(arrow);
+                                    board[i, j] = arrow;
+                                    break;
+                                case (int)DrawableEntity.Type.Player:
+                                    if (playerNumber <= Config.PlayersNumber)
+                                    {
+                                        playerPositions[playerNumber] = currentPosition;
+                                        playerNumber++;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
+
+                        j++;
                     }
 
-                    j++;
+                    var mapLayers = new List<MapLayer> { layer };
+
+                    var tileMap = new TileMap(tilesets, mapLayers);
+
+                    _size = mapSize;
+                    _board = board;
+                    _tileMap = tileMap;
+                    _collisionLayer = collisionLayer;
                 }
-
-                var mapLayers = new List<MapLayer> { layer };
-
-                var tileMap = new TileMap(tilesets, mapLayers);
-                var level = new Map(mapSize, tileMap, board, collisionLayer);
-                /*
-                World = new World(GameRef, GameRef.ScreenRectangle);
-                World.Levels.Add(level);
-                World.CurrentLevel = 0;
-
-                foreach (int playerID in playerPositions.Keys)
-                {
-                    if (Config.AIPlayers[playerID])
-                    {
-                        var player = new AIPlayer(Math.Abs(playerID));
-                        PlayerList.Add(player);
-                        board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
-                    }
-                    else
-                    {
-                        var player = new HumanPlayer(Math.Abs(playerID));
-                        PlayerList.Add(player);
-                        board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
-                    }
-                }
-                */
+                _hazardMap = new int[_size.X, _size.Y];
             }
             catch (Exception ex)
             {

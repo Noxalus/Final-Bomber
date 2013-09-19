@@ -20,7 +20,7 @@ namespace Final_BomberServer.Host
                     NetOutgoingMessage send = server.CreateMessage();
                     send.Write((byte)SMT.GameStartInfo);
                     send.Write(42L /*GameSettings.GetCurrentMap().id*/);
-                    Console.WriteLine("\nSended game info map id "/* + GameSettings.GetCurrentMap().id.ToString()*/);
+                    Program.Log.Info("Sended game info map id "/* + GameSettings.GetCurrentMap().id.ToString()*/);
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 }
             }
@@ -66,7 +66,7 @@ namespace Final_BomberServer.Host
         // Send all players to this player
         public void SendPlayersToNew(Client client) 
         {
-            foreach (Client player in clients)
+            foreach (Client player in Clients)
             {
                 if (client != player)
                 {
@@ -130,7 +130,7 @@ namespace Final_BomberServer.Host
             send.Write(player.PlayerId);
             
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            Console.WriteLine("Send Position [Player id: " + player.PlayerId + "|size: " + send.LengthBytes + "]");
+            Program.Log.Info("Send Position [Player ID: " + player.PlayerId + " => " + player.Position + "]");
         }
 
         // Send to all players that this player has placed a bomb

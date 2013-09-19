@@ -175,7 +175,7 @@ namespace Final_Bomber.Screens
                 IndexMenuGoDown();
             }
 
-            GameRef.Server.RunMainConnection();
+            //GameRef.Server.RunMainConnection();
 
             base.Update(gameTime);
         }

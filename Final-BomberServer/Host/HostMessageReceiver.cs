@@ -12,14 +12,14 @@ namespace Final_BomberServer.Host
         void ReceiveNeedMap(Client client)
         {
             SendCurrentMap(client);
-            Console.WriteLine("\nClient " + client.ClientId + " need the current map, sending it to him");
+            Program.Log.Info("\nClient " + client.ClientId + " need the current map, sending it to him");
         }
 
         void ReceiveReady(Client client, string username, string password)
         {
             client.Username = username;
             //MainServer.SendCheckIfOnline(username, password);
-            Console.WriteLine("\nClient " + client.ClientId + " is ready to play");
+            Program.Log.Info("\nClient " + client.ClientId + " is ready to play");
         }
 
         void ReceiveMovePlayer(Client client, Player.ActionEnum movement)

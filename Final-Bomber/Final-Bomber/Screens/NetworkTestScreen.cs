@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Final_Bomber.Entities.AI;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
@@ -26,35 +27,26 @@ namespace Final_Bomber.Screens
         private string _publicIp;
         private bool _hasConnected;
 
-        private OnlineHumanPlayer me;
+        private OnlineHumanPlayer _me;
 
         // Game logic
         Engine _engine;
 
         // Map
-        Point _mapSize;
-        Texture2D _mapTexture;
-        Texture2D _wallTexture;
+        private Map _map;
 
         // HUD
         Point _hudOrigin;
 
         // Entity collection
-        public EntityCollection Entities;
-        public PlayerCollection Players;
-        private List<Wall> _wallList;
-        private List<PowerUp> _itemList;
-        private List<EdgeWall> _edgeWallList;
-        public List<Bomb> BombList { get; private set; }
-        public List<UnbreakableWall> UnbreakableWallList { get; private set; }
-        public List<Teleporter> TeleporterList { get; private set; }
-        public List<Arrow> ArrowList { get; set; }
+        private DrawableEntityCollection _entities;
+        private PlayerCollection _players;
 
         // Dead Players number
         int _deadPlayersNumber;
 
         // Random
-        public static Random Random { get; private set; }
+        private static Random Random { get; set; }
 
         // Timer
         private Stopwatch _timer;
@@ -101,8 +93,8 @@ namespace Final_Bomber.Screens
             
             //_serverProcess.Start();
 
-            Players = new PlayerCollection();
-            Entities = new EntityCollection();
+            _players = new PlayerCollection();
+            _entities = new DrawableEntityCollection();
 
             _hasConnected = false;
 
@@ -114,6 +106,12 @@ namespace Final_Bomber.Screens
             GameSettings.GameServer.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
             GameSettings.GameServer.End += new GameServer.EndEventHandler(GameServer_End);
 
+            // Engine
+            _engine = new Engine(32, 32, Vector2.Zero);
+
+            // Map
+            _map = new Map();
+
             base.Initialize();
 
             Reset();
@@ -121,8 +119,8 @@ namespace Final_Bomber.Screens
 
         protected override void LoadContent()
         {
-            _wallTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            _mapTexture = GameRef.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
+            _map.LoadContent();
+            _map.Parse("classic.map");
 
             base.LoadContent();
         }
@@ -176,7 +174,7 @@ namespace Final_Bomber.Screens
                 if (GameSettings.GameServer.HasStarted)
                     GameSettings.GameServer.RunClientConnection();
 
-                foreach (Player p in Players)
+                foreach (Player p in _players)
                 {
                     p.Update(gameTime);
                 }
@@ -193,54 +191,10 @@ namespace Final_Bomber.Screens
 
             if (_hasConnected)
             {
-                // Background
-                var position = new Vector2(
-                    Engine.Origin.X - (int)(Engine.Origin.X / Engine.TileWidth) * Engine.TileWidth - Engine.TileWidth,
-                    Engine.Origin.Y - (int)(Engine.Origin.Y / Engine.TileHeight) * Engine.TileHeight - Engine.TileHeight);
-
-                for (int i = 0; i < (GraphicsDevice.Viewport.Width / Engine.TileWidth) + 2; i++)
-                {
-                    for (int j = 0; j < (GraphicsDevice.Viewport.Height / Engine.TileHeight) + 2; j++)
-                    {
-                        if (!((position.X + i * Engine.TileWidth > Engine.Origin.X &&
-                            position.X + i * Engine.TileWidth < Engine.Origin.X + _mapSize.X * Engine.TileWidth - Engine.TileWidth) &&
-                            (position.Y + j * Engine.TileHeight > Engine.Origin.Y &&
-                            position.Y + j * Engine.TileHeight < Engine.Origin.Y + _mapSize.Y * Engine.TileHeight - Engine.TileHeight)))
-                        {
-                            GameRef.SpriteBatch.Draw(_wallTexture, new Vector2(position.X + (i * Engine.TileWidth), position.Y + (j * Engine.TileHeight)), Color.White);
-                        }
-                    }
-                }
-
                 World.DrawLevel(gameTime, GameRef.SpriteBatch, null);
 
-                #region Draw each entities
-
-                foreach (EdgeWall e in _edgeWallList)
-                    e.Draw(gameTime);
-
-                foreach (UnbreakableWall u in UnbreakableWallList)
-                    u.Draw(gameTime);
-
-                foreach (Wall w in _wallList)
-                    w.Draw(gameTime);
-
-                foreach (PowerUp i in _itemList)
-                    i.Draw(gameTime);
-
-                foreach (Teleporter t in TeleporterList)
-                    t.Draw(gameTime);
-
-                foreach (Arrow a in ArrowList)
-                    a.Draw(gameTime);
-
-                foreach (Bomb b in BombList)
-                    b.Draw(gameTime);
-
-                foreach (Player p in Players)
-                    p.Draw(gameTime);
-
-                #endregion
+                foreach (var player in _players)
+                    player.Draw(gameTime);
             }
 
             const string str = "Networking Tests";
@@ -267,18 +221,6 @@ namespace Final_Bomber.Screens
         private void Reset()
         {
             //_timer = TimeSpan.Zero;
-
-            _engine = new Engine(32, 32, Vector2.Zero);
-
-            // Lists
-            _wallList = new List<Wall>();
-            _itemList = new List<PowerUp>();
-            BombList = new List<Bomb>();
-            UnbreakableWallList = new List<UnbreakableWall>();
-            _edgeWallList = new List<EdgeWall>();
-            TeleporterList = new List<Teleporter>();
-            ArrowList = new List<Arrow>();
-
             _deadPlayersNumber = 0;
 
             CreateWorld();
@@ -293,245 +235,30 @@ namespace Final_Bomber.Screens
 
         private void CreateWorld()
         {
-            var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
-
-            var collisionLayer = new bool[Config.MapSize.X, Config.MapSize.Y];
-            var mapPlayersPosition = new int[Config.MapSize.X, Config.MapSize.Y];
-            var map = new Entity[Config.MapSize.X, Config.MapSize.Y];
-            var layer = new MapLayer(Config.MapSize.X, Config.MapSize.Y);
-            var voidPosition = new List<Point>();
-
-            // Item Map
-
-            // List of player position
-            var playerPositions = new Dictionary<int, Point>();
-
-            // We don't put wall around the players
-            for (int i = 0; i < Config.PlayersNumber; i++)
-            {
-                Point playerPosition = Config.PlayersPositions[i];
-                playerPositions[i + 1] = playerPosition;
-
-                mapPlayersPosition[playerPosition.X, playerPosition.Y] = 2;
-                mapPlayersPosition[playerPosition.X + 1, playerPosition.Y] = 1;
-                mapPlayersPosition[playerPosition.X, playerPosition.Y + 1] = 1;
-                mapPlayersPosition[playerPosition.X, playerPosition.Y - 1] = 1;
-                mapPlayersPosition[playerPosition.X - 1, playerPosition.Y] = 1;
-
-                mapPlayersPosition[playerPosition.X - 1, playerPosition.Y - 1] = 1;
-                mapPlayersPosition[playerPosition.X - 1, playerPosition.Y + 1] = 1;
-                mapPlayersPosition[playerPosition.X + 1, playerPosition.Y - 1] = 1;
-                mapPlayersPosition[playerPosition.X + 1, playerPosition.Y + 1] = 1;
-            }
-
-            /*
-            mapItem = new Teleporter(GameRef, new Vector2(
-                        5 * Engine.TileWidth,
-                        1 * Engine.TileHeight));
-            teleporterList.Add((Teleporter)mapItem);
-            map[5,1] = mapItem;
-
-            mapItem = new Teleporter(GameRef, new Vector2(
-                        10 * Engine.TileWidth,
-                        1 * Engine.TileHeight));
-            teleporterList.Add((Teleporter)mapItem);
-            map[10, 1] = mapItem;
-            */
-
-            for (int x = 0; x < Config.MapSize.X; x++)
-            {
-                for (int y = 0; y < Config.MapSize.Y; y++)
-                {
-                    if (!(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
-                        (x % 2 == 0 && y % 2 == 0)) && (mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2))
-                        voidPosition.Add(new Point(x, y));
-                }
-            }
-
-            #region Teleporter
-            /*
-            if (Config.ActiveTeleporters)
-            {
-                if (Config.TeleporterPositionType == TeleporterPositionTypeEnum.Randomly)
-                {
-                    int randomVoid = 0;
-                    for (int i = 0; i < MathHelper.Clamp(Config.TeleporterNumber, 0, voidPosition.Count - 1); i++)
-                    {
-                        randomVoid = Random.Next(voidPosition.Count);
-                        mapItem = new Teleporter(GameRef, new Vector2(
-                            voidPosition[randomVoid].X * Engine.TileWidth,
-                            voidPosition[randomVoid].Y * Engine.TileHeight));
-                        TeleporterList.Add((Teleporter)mapItem);
-                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = mapItem;
-                        voidPosition.Remove(voidPosition[randomVoid]);
-                    }
-                }
-                else if (Config.TeleporterPositionType == TeleporterPositionTypeEnum.PlusForm)
-                {
-                    var teleporterPositions = new Point[]
-                    {
-                        new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), 1),
-                        new Point(1, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2)),
-                        new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), Config.MapSize.Y - 2),
-                        new Point(Config.MapSize.X - 2, (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2))
-                    };
-
-                    for (int i = 0; i < teleporterPositions.Length; i++)
-                    {
-                        mapItem = new Teleporter(GameRef, new Vector2(
-                            teleporterPositions[i].X * Engine.TileWidth,
-                            teleporterPositions[i].Y * Engine.TileHeight));
-                        TeleporterList.Add((Teleporter)mapItem);
-                        map[teleporterPositions[i].X, teleporterPositions[i].Y] = mapItem;
-                    }
-                }
-            }
-            */
-            #endregion
-
-            #region Arrow
-            /*
-            if (Config.ActiveArrows)
-            {
-                if (Config.ArrowPositionType == ArrowPositionTypeEnum.Randomly)
-                {
-                    var lookDirectionArray = new LookDirection[] { LookDirection.Up, LookDirection.Down, LookDirection.Left, LookDirection.Right };
-                    for (int i = 0; i < MathHelper.Clamp(Config.ArrowNumber, 0, voidPosition.Count - 1); i++)
-                    {
-                        int randomVoid = Random.Next(voidPosition.Count);
-                        mapItem = new Arrow(GameRef, new Vector2(
-                            voidPosition[randomVoid].X * Engine.TileWidth,
-                            voidPosition[randomVoid].Y * Engine.TileHeight),
-                            lookDirectionArray[Random.Next(lookDirectionArray.Length)]);
-                        ArrowList.Add((Arrow)mapItem);
-                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = mapItem;
-                        voidPosition.Remove(voidPosition[randomVoid]);
-                    }
-                }
-                else if (Config.ArrowPositionType == ArrowPositionTypeEnum.SquareForm)
-                {
-                    int outsideArrowsLag = 0;
-                    var ratio = (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2)) / (double)5);
-                    if (ratio % 2 == 0)
-                        outsideArrowsLag = 1;
-
-                    var arrowPositions = new Point[]
-                    {
-                        // ~~ Inside ~~ //
-                        // Top left
-                        new Point(
-                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)4) + 1, 
-                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)4) + 1),
-
-                        // Top right
-                        new Point(
-                            (int)Math.Ceiling((double)(3 * (Config.MapSize.X - 2))/(double)4) - 1, 
-                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)4) + 1),
-
-                        // Bottom left
-                        new Point(
-                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)4) + 1, 
-                            (int)Math.Ceiling((double)(3 * (Config.MapSize.Y - 2))/(double)4) - 1),
-
-                        // Bottom right
-                        new Point(
-                            (int)Math.Ceiling((double)(3 * (Config.MapSize.X - 2))/(double)4) - 1, 
-                            (int)Math.Ceiling((double)(3 * (Config.MapSize.Y - 2))/(double)4) - 1),
-
-                        // ~~ Outside ~~ //
-                        // Top left
-                        new Point(
-                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)5), 
-                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)5)),
-
-                        // Top right
-                        new Point(
-                            (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5) + outsideArrowsLag, 
-                            (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)5)),
-
-                        // Bottom left
-                        new Point(
-                            (int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)5), 
-                            (int)Math.Ceiling((double)(4 * (Config.MapSize.Y - 2))/(double)5) + outsideArrowsLag),
-
-                        // Bottom right
-                        new Point(
-                            (int)Math.Ceiling((double)(4 * (Config.MapSize.X - 2))/(double)5 + outsideArrowsLag), 
-                            (int)Math.Ceiling((double)(4 * (Config.MapSize.Y - 2))/(double)5) + outsideArrowsLag)
-                    };
-
-                    for (int i = 0; i < arrowPositions.Length; i++)
-                    {
-                        mapItem = new Arrow(GameRef, new Vector2(
-                            arrowPositions[i].X * Engine.TileWidth,
-                            arrowPositions[i].Y * Engine.TileHeight),
-                            Config.ArrowLookDirection[i % 4]);
-                        ArrowList.Add((Arrow)mapItem);
-                        map[arrowPositions[i].X, arrowPositions[i].Y] = mapItem;
-                    }
-                }
-            }
-            */
-            #endregion
-
-            int counter = 0;
-            for (int x = 0; x < Config.MapSize.X; x++)
-            {
-                Entity mapItem;
-                for (int y = 0; y < Config.MapSize.Y; y++)
-                {
-                    var tile = new Tile(0, 0);
-                    if (x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1) ||
-                        (x % 2 == 0 && y % 2 == 0))
-                    {
-                        // Inside wallList
-                        if ((x % 2 == 0 && y % 2 == 0 && !(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1))) && mapPlayersPosition[x, y] != 2)
-                        {
-                            mapItem = new UnbreakableWall(new Point(x, y));
-                            this.UnbreakableWallList.Add((UnbreakableWall)mapItem);
-                            map[x, y] = mapItem;
-                            collisionLayer[x, y] = true;
-                        }
-                        // Outside wallList
-                        else if (mapPlayersPosition[x, y] != 2)
-                        {
-                            mapItem = new EdgeWall(new Point(x, y));
-                            _edgeWallList.Add((EdgeWall)mapItem);
-                            counter++;
-                            map[x, y] = mapItem;
-                            collisionLayer[x, y] = true;
-                        }
-                    }
-                    else
-                    {
-                        // Wall
-                        if ((mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2) && map[x, y] == null &&
-                            Random.Next(0, 100) < MathHelper.Clamp(Config.WallNumber, 0, 100))
-                        {
-                            collisionLayer[x, y] = true;
-                            mapItem = new Wall(new Point(x, y));
-                            _wallList.Add((Wall)mapItem);
-                            map[x, y] = mapItem;
-                        }
-                        //tile = new Tile(0, 0);
-                    }
-                    layer.SetTile(x, y, tile);
-                }
-            }
-
-            var mapLayers = new List<MapLayer> { layer };
-
-            var tileMap = new TileMap(tilesets, mapLayers);
-            var level = new Map(Config.MapSize, tileMap, map, collisionLayer);
-
             World = new World(GameRef, GameRef.ScreenRectangle);
-            World.Levels.Add(level);
+            World.Levels.Add(_map);
             World.CurrentLevel = 0;
 
-            me = new OnlineHumanPlayer(0) { Name = "Me" };
-            Players.Add(me);
-            //map[playerPositions[playerID].X, playerPositions[playerID].Y] = me;
+            /*
+            foreach (int playerID in playerPositions.Keys)
+            {
+                if (Config.AIPlayers[playerID])
+                {
+                    var player = new AIPlayer(Math.Abs(playerID));
+                    PlayerList.Add(player);
+                    board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
+                }
+                else
+                {
+                    var player = new HumanPlayer(Math.Abs(playerID));
+                    PlayerList.Add(player);
+                    board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
+                }
+            }
+            */
 
+            _me = new OnlineHumanPlayer(0) { Name = "Me" };
+            _players.Add(_me);
         }
 
         #region Game Server events
@@ -555,7 +282,7 @@ namespace Final_Bomber.Screens
                 */
                 if (!gameInProgress)
                 {
-                    me.Id = playerId;
+                    _me.Id = playerId;
                     /*
                     me.MoveSpeed = moveSpeed;
                     suddenDeathTime = suddenDeathTime;
@@ -576,7 +303,7 @@ namespace Final_Bomber.Screens
 
         private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
         {
-            if (Players.GetPlayerByID(playerID) == null)
+            if (_players.GetPlayerByID(playerID) == null)
             {
                 var player = new OnlinePlayer(playerID)
                 {
@@ -584,13 +311,13 @@ namespace Final_Bomber.Screens
                 };
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);
-                Players.Add(player);
+                _players.Add(player);
             }
         }
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
-            Player player = Players.GetPlayerByID(arg.PlayerID);
+            Player player = _players.GetPlayerByID(arg.PlayerID);
 
             if (player != null)
             {

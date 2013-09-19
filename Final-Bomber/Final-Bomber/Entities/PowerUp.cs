@@ -10,7 +10,7 @@ namespace Final_Bomber.Entities
     public enum ItemType { Power, Bomb, Speed, Point, BadItem }
     public enum BadItemEffect { NoBomb, BombDrop, BombTimerChanged, TooSpeed, TooSlow, KeysInversion }
 
-    public class PowerUp : Entity
+    public class PowerUp : DrawableEntity
     {
         #region Field Region
 

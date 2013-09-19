@@ -23,7 +23,7 @@ namespace Final_Bomber.Entities
         Left 
     }
 
-    public abstract class Player : Entity
+    public abstract class Player : DrawableEntity
     {
         #region Field Region
 

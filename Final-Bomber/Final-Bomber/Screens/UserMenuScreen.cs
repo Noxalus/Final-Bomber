@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
-using Lidgren.Network;
-using Final_BomberNetwork.MainServer;
 
 namespace Final_Bomber.Screens
 {
@@ -45,6 +39,7 @@ namespace Final_Bomber.Screens
             base.Initialize();
 
             // Net
+            /*
             if (GameRef.Server == null || !GameRef.Server.HasStarted)
             {
                 hasLoggedIn = false;
@@ -62,6 +57,7 @@ namespace Final_Bomber.Screens
                     throw new Exception("Couldn't connect to the internet, please check your connection");
                 }
             }
+            */
         }
 
         protected override void LoadContent()
@@ -74,6 +70,7 @@ namespace Final_Bomber.Screens
             ControlManager.Update(gameTime, PlayerIndex.One);
 
             // Net
+            /*
             if(!hasConnected)
             {
                 GameRef.Server.RunMainConnection();
@@ -88,6 +85,7 @@ namespace Final_Bomber.Screens
                         tick -= gameTime.ElapsedGameTime;
                 }
             }
+            */
 
             if (InputHandler.KeyPressed(Keys.Enter))
             {
@@ -151,9 +149,11 @@ namespace Final_Bomber.Screens
 
         private void Exit()
         {
+            /*
             StateManager.ChangeState(GameRef.MultiplayerGameModeMenuScreen);
             if (GameRef.Server.HasStarted)
                 GameRef.Server.EndMainConnection("Bye");
+            */
         }
 
         #endregion

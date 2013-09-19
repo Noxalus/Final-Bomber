@@ -156,7 +156,7 @@ namespace Final_Bomber.Entities.AI
                 // We define a new goal
                 bool[,] collisionLayer = level.CollisionLayer;
                 int[,] hazardMap = level.HazardMap;
-                Entity[,] map = level.Board;
+                DrawableEntity[,] map = level.Board;
                 Path = AIFunction.MakeAWay(
                     Sprite.CellPosition,
                     AIFunction.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, Config.MapSize),

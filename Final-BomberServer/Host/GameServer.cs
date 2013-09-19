@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lidgren.Network;
-using System.Net.Sockets;
 
 namespace Final_BomberServer.Host
 {
@@ -22,8 +17,7 @@ namespace Final_BomberServer.Host
         NetBuffer buffer;
 
         int clientId = 1;
-        public ClientCollection clients;
-        public NetPeerConfiguration config;
+        public ClientCollection Clients;
 
         #region DisconnectedClientEvent
         public delegate void DisconnectedClientEventHandler(Client sender, EventArgs e);
@@ -53,9 +47,11 @@ namespace Final_BomberServer.Host
 
         public void StartServer()
         {
-            config = new NetPeerConfiguration("Final-Bomber");
-            config.MaximumConnections = MAXCONNECTION;
-            config.Port = PORT;
+            var config = new NetPeerConfiguration("Final-Bomber")
+            {
+                MaximumConnections = MAXCONNECTION, 
+                Port = PORT
+            };
 
             bool checkPort;
             do
@@ -78,10 +74,10 @@ namespace Final_BomberServer.Host
                 }
             } while (checkPort);
 
-            clients = new ClientCollection();
+            Clients = new ClientCollection();
 
             hostStarted = true;
-            WriteOutput("[START]Game has started at " + System.DateTime.Now);
+            WriteOutput("[START]Game has started");
             WriteOutput("[PORT]: " + config.Port);
         }
 
@@ -92,7 +88,7 @@ namespace Final_BomberServer.Host
             while ((message = server.ReadMessage()) != null)
             {
                 NetConnection sender = message.SenderConnection;
-                Client currentClient = clients.GetClientFromConnection(sender);
+                Client currentClient = Clients.GetClientFromConnection(sender);
 
                 switch (message.MessageType)
                 {
@@ -104,7 +100,7 @@ namespace Final_BomberServer.Host
                             {
                                 var con = new Client(ref sender, clientId);
                                 WriteOutput("[Connected]Client " + con.ClientId + " connected with ip: " + sender.RemoteEndPoint.ToString());
-                                clients.AddClient(con);
+                                Clients.AddClient(con);
                                 clientId++;
                                 OnConnectedClient(con, new EventArgs());
                             }
@@ -118,7 +114,7 @@ namespace Final_BomberServer.Host
                                     message.ReadByte(); // the message type
                                     WriteOutput("[Disconnected]Client " + currentClient.ClientId + " has disconnected (" + message.ReadString() + ")");
 
-                                    clients.RemoveClient(currentClient);
+                                    Clients.RemoveClient(currentClient);
                                     OnDisconnectedClient(currentClient, new EventArgs());
                                 }
                             }

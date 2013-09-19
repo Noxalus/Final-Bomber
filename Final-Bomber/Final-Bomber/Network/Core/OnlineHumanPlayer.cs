@@ -26,7 +26,7 @@ namespace Final_Bomber.Network.Core
         {
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
-            _movementConfirmed = false;
+            _movementConfirmed = true;
             _motionVector = Vector2.Zero;
         }
 
@@ -67,7 +67,7 @@ namespace Final_Bomber.Network.Core
             else
             {
                 LookDirection = LookDirection.Idle;
-                _movementConfirmed = false;
+                //_movementConfirmed = false;
             }
 
             #endregion

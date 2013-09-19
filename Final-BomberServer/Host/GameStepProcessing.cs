@@ -8,13 +8,13 @@ namespace Final_BomberServer.Host
         List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.gameServer.clients.Count == 4 // TO CHANGE
+            if (GameSettings.gameServer.Clients.Count == 1 // TO CHANGE
                 && !StartedMatch /*&& GameSettings.gameServer.clients.IsClientsReady()*/)
             {
                 GameInitialize();
             }
 
-            foreach (Client client in GameSettings.gameServer.clients)
+            foreach (Client client in GameSettings.gameServer.Clients)
             {
                 if (client.NewClient && StartedMatch && client.isReady)
                 {
@@ -25,14 +25,14 @@ namespace Final_BomberServer.Host
             }
 
             // End of game
-            _alivePlayers = GameSettings.gameServer.clients.GetAlivePlayers();
+            _alivePlayers = GameSettings.gameServer.Clients.GetAlivePlayers();
             if (StartedMatch && false /*_alivePlayers.Count < 2*/)
             {
                 //MainServer.SendPlayerStats();
                 GameSettings.CurrentMap++;
                 //MainServer.SendNextMap();
                 EndGame();
-                foreach (Client client in GameSettings.gameServer.clients)
+                foreach (Client client in GameSettings.gameServer.Clients)
                 {
                     client.isReady = false;
                     GameSettings.gameServer.SendEnd(client);

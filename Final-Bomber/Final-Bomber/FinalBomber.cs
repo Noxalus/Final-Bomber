@@ -1,11 +1,9 @@
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Final_Bomber.Screens;
 using Final_Bomber.Controls;
-using Final_BomberNetwork.MainServer;
 using Final_Bomber.Utils;
 
 namespace Final_Bomber
@@ -20,7 +18,7 @@ namespace Final_Bomber
         SoundEffect _debugModeEnabled;
 
         // Net
-        public MainServer Server;
+        //public MainServer Server;
         public bool HasLoggedIn = false;
 
         #region XNA Field Region
@@ -131,8 +129,10 @@ namespace Final_Bomber
 
         protected override void UnloadContent()
         {
+            /*
             if (Server != null)
                 Server.client.Disconnect("Bye");
+            */
         }
 
         protected override void Update(GameTime gameTime)

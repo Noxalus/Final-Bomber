@@ -6,7 +6,7 @@ using Final_Bomber.WorldEngine;
 
 namespace Final_Bomber.Entities
 {
-    public class Teleporter : Entity
+    public class Teleporter : DrawableEntity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
@@ -49,7 +49,7 @@ namespace Final_Bomber.Entities
 
         #region Public Method Region
 
-        public void ChangePosition(Entity mapItem)
+        public void ChangePosition(DrawableEntity mapItem)
         {
             bool allTeleporterCellTaken = true;
             Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];

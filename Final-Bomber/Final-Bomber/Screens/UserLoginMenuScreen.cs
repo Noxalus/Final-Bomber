@@ -149,7 +149,7 @@ namespace Final_Bomber.Screens
 
             base.Update(gameTime);
 
-            GameRef.Server.RunMainConnection();
+            //GameRef.Server.RunMainConnection();
         }
 
         public override void Draw(GameTime gameTime)

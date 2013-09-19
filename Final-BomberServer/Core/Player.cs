@@ -152,7 +152,7 @@ namespace Final_BomberServer.Core
                         break;
                     case ActionEnum.WalkingRight:
                         Position += new Vector2(GetMovementSpeed(), 0);
-                        //Console.WriteLine("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
+                        //Program.Log.Info("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
                         if (true /*Position.X > GetCenteredTilePos(NextTile).X*/)
                         {
                             //Position.X = GetCenteredTilePos(NextTile).X;
@@ -166,7 +166,6 @@ namespace Final_BomberServer.Core
                             {
                                 if (tmrSendPos.Each(5000))
                                 {
-                                    Console.WriteLine("Send position ! (Right => " + Position + ")");
                                     SendPosition();
                                 }
                             }
@@ -177,7 +176,7 @@ namespace Final_BomberServer.Core
                         break;
                 }
 
-                //Console.WriteLine("[Client #" + this.PlayerId + "]Position: + " + Position.ToString());
+                //Program.Log.Info("[Client #" + this.PlayerId + "]Position: + " + Position.ToString());
             }
         }
 

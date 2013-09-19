@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Entities
 {
-    public class Wall : Entity
+    public class Wall : DrawableEntity
     {
         #region Field Region
 

@@ -83,32 +83,32 @@ namespace Final_BomberServer.Host
             suddenDeath = false;
             //suddenDeathTPE = 1000 / ((CurrentMap.mapWidth * CurrentMap.mapHeight) / 30); //Räknar ut tiden mellan varje explosion (i ms)
             //tmr_UntilSuddenDeath = new H.U.D.Timer(false);
-            GameSettings.gameServer.clients.Sort(new ClientRandomSorter());
+            GameSettings.gameServer.Clients.Sort(new ClientRandomSorter());
             GameSettings.PlayingClients = new ClientCollection();
-            foreach (Client client in GameSettings.gameServer.clients) //Skickar spelarna till varandra
+            foreach (Client client in GameSettings.gameServer.Clients) //Skickar spelarna till varandra
             {
                 GameSettings.gameServer.SendStartGame(client, false); //Starta spelet alla Clienter!!
                 GameSettings.PlayingClients.Add(client);
             }
-            for (int i = 0; i < GameSettings.gameServer.clients.Count; i++)
+            for (int i = 0; i < GameSettings.gameServer.Clients.Count; i++)
             {
                 //GameSettings.gameServer.clients[i].Player.PositionOnTile(CurrentMap.startPositions[i]);//Placerar spelarna på start positioner...
                 //GameSettings.gameServer.clients[i].Player.invurnable.Start();//... och ser till att alla är invurnable i början av spelet
-                GameSettings.gameServer.clients[i].NewClient = false; //Spelaren är inte nyconnectad längre
-                GameSettings.gameServer.clients[i].Spectating = false;
+                GameSettings.gameServer.Clients[i].NewClient = false; //Spelaren är inte nyconnectad längre
+                GameSettings.gameServer.Clients[i].Spectating = false;
             }
-            foreach (Client client in GameSettings.gameServer.clients) //Skickar spelarna till varandra
+            foreach (Client client in GameSettings.gameServer.Clients) //Skickar spelarna till varandra
             {
                 GameSettings.gameServer.SendPlayerInfo(client);
             }
-            Console.WriteLine("\n[INITIALIZED GAME]");
+            Program.Log.Info("[INITIALIZED GAME]");
             StartedMatch = true;
         }
 
         public void EndGame()
         {
             StartedMatch = false;
-            foreach (Client client in GameSettings.gameServer.clients)
+            foreach (Client client in GameSettings.gameServer.Clients)
             {
                 client.Player.nextDirection = Player.ActionEnum.Standing;
                 GameSettings.gameServer.SendPlayerPosition(client.Player, false);
@@ -132,10 +132,10 @@ namespace Final_BomberServer.Host
         #region GameLogic
         private void MovePlayers()
         {
-            foreach (Client client in GameSettings.gameServer.clients)
+            foreach (Client client in GameSettings.gameServer.Clients)
             {
                 // Move the player to the next position
-                //Console.WriteLine("Player position: " + client.Player.Position);                
+                //Program.Log.Info("Player position: " + client.Player.Position);                
                 client.Player.MovePlayer(); 
             }
         }
@@ -162,7 +162,7 @@ namespace Final_BomberServer.Host
                 {
                     foreach (Explosion ex in bomb.Explosion)
                     {
-                        List<Player> players = GameSettings.gameServer.clients.GetPlayersFromTile(ex.Position, true);
+                        List<Player> players = GameSettings.gameServer.Clients.GetPlayersFromTile(ex.Position, true);
                         foreach (Player player in players)
                         {
                             player.Burn(bomb);
@@ -176,7 +176,7 @@ namespace Final_BomberServer.Host
         {
             Vector2 pos;
             MapTile tile;
-            foreach (Client client in GameSettings.gameServer.clients)
+            foreach (Client client in GameSettings.gameServer.Clients)
             {
                 /*
                 pos = client.Player.GetCenterPosition();
@@ -252,7 +252,7 @@ namespace Final_BomberServer.Host
                     suddenDeathBomb.Explosion.Add(ex);
                     GameSettings.gameServer.SendSDExplosion(ex);
                     //Sätter allas liv till 1
-                    foreach (Client client in GameSettings.gameServer.clients)
+                    foreach (Client client in GameSettings.gameServer.Clients)
                     {
                         client.Player.lifes = 1;
                     }
@@ -309,7 +309,7 @@ namespace Final_BomberServer.Host
             }
             else
             {
-                GameSettings.gameServer.clients.Remove(sender);
+                GameSettings.gameServer.Clients.Remove(sender);
                 GameSettings.gameServer.WriteOutput("[FULLGAME] Client tried to connect");
                 sender.ClientConnection.Disconnect("Full Server");
             }
@@ -333,7 +333,7 @@ namespace Final_BomberServer.Host
                 {
                     Vector2 cpos = sender.Player.GetCenterPosition();
                     MapTile pos = CurrentMap.GetTileByPosition(cpos.X, cpos.Y);
-                    List<Player> players = GameSettings.gameServer.clients.GetPlayersFromTile(pos, true);
+                    List<Player> players = GameSettings.gameServer.Clients.GetPlayersFromTile(pos, true);
                     if (players.Count < 2)
                     {
                         if (pos.Bombed == null && pos.walkable)

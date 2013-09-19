@@ -8,7 +8,7 @@ using Final_Bomber.Sprites;
 
 namespace Final_Bomber.Entities
 {
-    public class UnbreakableWall : Entity
+    public class UnbreakableWall : DrawableEntity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
