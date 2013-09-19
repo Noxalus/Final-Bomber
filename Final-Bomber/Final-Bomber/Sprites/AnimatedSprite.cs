@@ -38,9 +38,9 @@ namespace Final_Bomber.Sprites
 
         public Animation[] Animations
         {
-            get 
+            get
             {
-                var anim = new Animation[_animations.Count]; 
+                var anim = new Animation[_animations.Count];
                 int i = 0;
                 foreach (Animation a in _animations.Values)
                 {
@@ -64,7 +64,7 @@ namespace Final_Bomber.Sprites
 
         public int Width
         {
-            get 
+            get
             {
                 if (_controlable)
                     return _animations[_currentAnimation].FrameWidth;
@@ -75,7 +75,7 @@ namespace Final_Bomber.Sprites
 
         public int Height
         {
-            get 
+            get
             {
                 if (_controlable)
                     return _animations[_currentAnimation].FrameHeight;
@@ -104,7 +104,7 @@ namespace Final_Bomber.Sprites
 
         public float PositionX
         {
-            set {  _position.X = value; }
+            set { _position.X = value; }
             get { return _position.X; }
         }
 

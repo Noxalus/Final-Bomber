@@ -76,10 +76,10 @@ namespace Final_Bomber.Sprites
 
         public Animation(int frameCount, int frameWidth, int frameHeight, int xOffset, int yOffset, int framesPerSecond)
         {
-            frameCount = frameCount;
+            this.frameCount = frameCount;
             frames = new Rectangle[frameCount];
-            frameWidth = frameWidth;
-            frameHeight = frameHeight;
+            this.frameWidth = frameWidth;
+            this.frameHeight = frameHeight;
 
             for (int i = 0; i < frameCount; i++)
             {
@@ -99,7 +99,7 @@ namespace Final_Bomber.Sprites
 
         private Animation(Animation animation)
         {
-            frames = animation.frames;
+            this.frames = animation.frames;
         }
 
         #endregion
@@ -129,7 +129,7 @@ namespace Final_Bomber.Sprites
 
         public object Clone()
         {
-            var animationClone = new Animation(this) {frameWidth = frameWidth, frameHeight = frameHeight};
+            var animationClone = new Animation(this) { frameWidth = this.frameWidth, frameHeight = this.frameHeight };
 
             animationClone.Reset();
 
