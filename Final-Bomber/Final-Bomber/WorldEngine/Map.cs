@@ -25,12 +25,13 @@ namespace Final_Bomber.WorldEngine
         private Point _size;
         private Entity[,] _board;
         private bool[,] _collisionLayer;
-        private int[,] _hazardMap;
 
         private List<Wall> _wallList;
         private List<PowerUp> _powerUpList;
-        private List<EdgeWall> _edgeWallList;
         private List<Bomb> _bombList;
+        private int[,] _hazardMap;
+
+        private List<EdgeWall> _edgeWallList;
         private List<UnbreakableWall> _unbreakableWallList;
         private List<Teleporter> _teleporterList;
         private List<Arrow> _arrowList;

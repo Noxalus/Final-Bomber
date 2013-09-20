@@ -212,7 +212,6 @@
     <Compile Include="Sprites\Animation.cs" />
     <Compile Include="Sprites\BaseSprite.cs" />
     <Compile Include="TileEngine\Camera.cs" />
-    <Compile Include="TileEngine\Engine.cs" />
     <Compile Include="TileEngine\MapLayer.cs" />
     <Compile Include="TileEngine\Tile.cs" />
     <Compile Include="TileEngine\TileMap.cs" />
