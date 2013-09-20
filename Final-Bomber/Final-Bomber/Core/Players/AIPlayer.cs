@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FBLibrary.Core;
+using Final_Bomber.Core.Entities;
 using Final_Bomber.Sprites;
 using Final_Bomber.TileEngine;
 using Microsoft.Xna.Framework;
@@ -23,10 +24,8 @@ namespace Final_Bomber.Entities.AI
             Path = new List<Point>();
         }
 
-        protected override void Move(GameTime gameTime)
+        protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
-
             #region Walk
             // If he hasn't reach his goal => we walk to this goal
             if (_aiNextPosition != new Vector2(-1, -1) && !AIFunction.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
@@ -34,7 +33,7 @@ namespace Final_Bomber.Entities.AI
                 IsMoving = true;
                 Sprite.IsAnimating = true;
 
-                CheckIsBlocked(level);
+                CheckIsBlocked(map, hazardMap);
 
                 Walk();
 
@@ -54,7 +53,7 @@ namespace Final_Bomber.Entities.AI
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, level.Board, level.CollisionLayer, level.HazardMap, Config.MapSize))
+                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, map.Board, map.CollisionLayer, hazardMap, Config.MapSize))
                     {
                         if (CurrentBombNumber > 0)
                         {
@@ -67,8 +66,8 @@ namespace Final_Bomber.Entities.AI
                                 // We define a new way (to escape the bomb)
                                 Path = AIFunction.MakeAWay(
                                     Sprite.CellPosition,
-                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, level.CollisionLayer, level.HazardMap, Config.MapSize),
-                                    level.CollisionLayer, level.HazardMap, Config.MapSize);
+                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, map.CollisionLayer, hazardMap, Config.MapSize),
+                                    map.CollisionLayer, hazardMap, Config.MapSize);
 
                                 FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                             }
@@ -84,15 +83,15 @@ namespace Final_Bomber.Entities.AI
                     // We define a new goal
                     Path = AIFunction.MakeAWay(
                         Sprite.CellPosition,
-                        AIFunction.SetNewGoal(Sprite.CellPosition, level.Board, level.CollisionLayer, level.HazardMap, Config.MapSize),
-                        level.CollisionLayer, level.HazardMap, Config.MapSize);
+                        AIFunction.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap, Config.MapSize),
+                        map.CollisionLayer, hazardMap, Config.MapSize);
 
                     if (Path != null)
                     {
                         _aiNextPosition = Engine.CellToVector(Path[Path.Count - 1]);
                         Path.Remove(Path[Path.Count - 1]);
 
-                        CheckIsBlocked(level);
+                        CheckIsBlocked(map, hazardMap);
                     }
                 }
                 else
@@ -104,8 +103,8 @@ namespace Final_Bomber.Entities.AI
                     // Update the way of the AI each time it changes of cell => usefull to battle against players (little bug here)
                     aiWay = AI.MakeAWay(
                         Sprite.CellPosition,
-                        AI.SetNewGoal(Sprite.CellPosition, level.Board, level.CollisionLayer, level.HazardMap), 
-                        level.CollisionLayer, level.HazardMap);
+                        AI.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap), 
+                        map.CollisionLayer, hazardMap);
                     */
                 }
             }
@@ -146,22 +145,19 @@ namespace Final_Bomber.Entities.AI
             }
         }
 
-        private void CheckIsBlocked(Map level)
+        private void CheckIsBlocked(Map map, int[,] hazardMap)
         {
             // If the AI is blocked
-            if (level.CollisionLayer[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] ||
-                    level.HazardMap[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] >= 2)
+            if (map.CollisionLayer[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] ||
+                    hazardMap[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] >= 2)
             {
                 Sprite.IsAnimating = false;
                 IsMoving = false;
                 // We define a new goal
-                bool[,] collisionLayer = level.CollisionLayer;
-                int[,] hazardMap = level.HazardMap;
-                Entity[,] map = level.Board;
                 Path = AIFunction.MakeAWay(
                     Sprite.CellPosition,
-                    AIFunction.SetNewGoal(Sprite.CellPosition, map, collisionLayer, hazardMap, Config.MapSize),
-                    collisionLayer, hazardMap, Config.MapSize);
+                    AIFunction.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap, map.Size),
+                    map.CollisionLayer, hazardMap, map.Size);
             }
         }
 

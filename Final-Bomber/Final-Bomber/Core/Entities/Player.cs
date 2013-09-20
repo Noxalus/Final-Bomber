@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using FBLibrary.Core;
+using Final_Bomber.Core;
+using Final_Bomber.Core.Entities;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
+using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
@@ -12,7 +15,7 @@ using System.Diagnostics;
 
 namespace Final_Bomber.Entities
 {
-    public abstract class Player : Entity
+    public abstract class Player : DynamicEntity
     {
         #region Field Region
 
@@ -143,7 +146,7 @@ namespace Final_Bomber.Entities
         #endregion
 
         #region XNA Method Region
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             if (IsAlive && !InDestruction)
             {
@@ -176,7 +179,7 @@ namespace Final_Bomber.Entities
 
                 _cellChanging = _previousCellPosition != Sprite.CellPosition;
 
-                Move(gameTime);
+                Move(gameTime, map, hazardMap);
 
                 #endregion
 
@@ -420,7 +423,7 @@ namespace Final_Bomber.Entities
         }
 
 
-        protected virtual void Move(GameTime gameTime) 
+        protected virtual void Move(GameTime gameTime, Map map, int[,] hazardMap) 
         { 
         }
 

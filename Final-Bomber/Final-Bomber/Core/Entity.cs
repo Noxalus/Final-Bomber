@@ -18,7 +18,6 @@ namespace Final_Bomber.Entities
 
         public abstract AnimatedSprite Sprite { get; protected set; }
 
-        public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime);
 
         public abstract void Destroy();

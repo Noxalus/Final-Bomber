@@ -144,24 +144,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\AI\AIPlayer.cs" />
-    <Compile Include="Entities\AI\DifficultlAIStrategy.cs" />
-    <Compile Include="Entities\AI\NormalAIStrategy.cs" />
-    <Compile Include="Entities\AI\IAIStrategy.cs" />
-    <Compile Include="Entities\Arrow.cs" />
-    <Compile Include="Entities\Bomb.cs" />
-    <Compile Include="Entities\AI\EasyAIStrategy.cs" />
-    <Compile Include="Entities\EdgeWall.cs" />
-    <Compile Include="Entities\AI\AIFunction.cs" />
-    <Compile Include="Entities\EntityCollection.cs" />
-    <Compile Include="Entities\HumanPlayer.cs" />
-    <Compile Include="Entities\PowerUp.cs" />
-    <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Player.cs" />
-    <Compile Include="Entities\SuddenDeath.cs" />
-    <Compile Include="Entities\Teleporter.cs" />
-    <Compile Include="Entities\UnbreakableWall.cs" />
-    <Compile Include="Entities\Wall.cs" />
+    <Compile Include="Core\GameManager.cs" />
+    <Compile Include="Core\Players\AIPlayer.cs" />
+    <Compile Include="Core\Players\AI\DifficultlAIStrategy.cs" />
+    <Compile Include="Core\Players\AI\NormalAIStrategy.cs" />
+    <Compile Include="Core\Players\AI\IAIStrategy.cs" />
+    <Compile Include="Core\Entities\Arrow.cs" />
+    <Compile Include="Core\Entities\Bomb.cs" />
+    <Compile Include="Core\Players\AI\EasyAIStrategy.cs" />
+    <Compile Include="Core\DynamicEntity.cs" />
+    <Compile Include="Core\Entities\EdgeWall.cs" />
+    <Compile Include="Core\Players\AI\AIFunction.cs" />
+    <Compile Include="Core\EntityCollection.cs" />
+    <Compile Include="Core\Players\HumanPlayer.cs" />
+    <Compile Include="Core\Entities\PowerUp.cs" />
+    <Compile Include="Core\Entity.cs" />
+    <Compile Include="Core\Entities\Player.cs" />
+    <Compile Include="Core\StaticEntity.cs" />
+    <Compile Include="Core\Entities\SuddenDeath.cs" />
+    <Compile Include="Core\Entities\Teleporter.cs" />
+    <Compile Include="Core\Entities\UnbreakableWall.cs" />
+    <Compile Include="Core\Entities\Wall.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\ControlManager.cs" />
@@ -176,8 +179,8 @@
     <Compile Include="Network\ClientMessageSender.cs" />
     <Compile Include="Network\ClientMessageType.cs" />
     <Compile Include="Network\Core\Bomb.cs" />
-    <Compile Include="Network\Core\OnlinePlayer.cs" />
-    <Compile Include="Network\Core\OnlineHumanPlayer.cs" />
+    <Compile Include="Core\Players\OnlinePlayer.cs" />
+    <Compile Include="Core\Players\OnlineHumanPlayer.cs" />
     <Compile Include="Network\DataProcessing.cs" />
     <Compile Include="Network\GameHandler.cs" />
     <Compile Include="Network\GameSettings.cs" />

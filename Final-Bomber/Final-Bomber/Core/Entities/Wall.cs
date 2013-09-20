@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Microsoft.Xna.Framework;
-
+﻿using System.Collections.Generic;
+using Final_Bomber.Entities;
 using Final_Bomber.Sprites;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.Controls;
-using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Entities
 {
-    public class Wall : Entity
+    public class Wall : StaticEntity
     {
         #region Field Region
 

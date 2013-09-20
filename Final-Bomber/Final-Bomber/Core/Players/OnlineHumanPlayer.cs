@@ -1,16 +1,17 @@
-﻿using FBLibrary.Core;
-using Final_Bomber.Entities;
+﻿using System;
+using System.Diagnostics;
+using FBLibrary.Core;
 using Final_Bomber.Controls;
+using Final_Bomber.Core.Entities;
+using Final_Bomber.Entities;
+using Final_Bomber.Network;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
-using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Diagnostics;
 
-namespace Final_Bomber.Network.Core
+namespace Final_Bomber.Core.Players
 {
     class OnlineHumanPlayer : Player
     {
@@ -31,7 +32,7 @@ namespace Final_Bomber.Network.Core
             _motionVector = Vector2.Zero;
         }
 
-        protected override void Move(GameTime gameTime)
+        protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
             #region Moving input
 

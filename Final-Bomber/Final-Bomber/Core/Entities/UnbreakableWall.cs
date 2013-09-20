@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.Sprites;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Entities
 {
-    public class EdgeWall : Entity
+    public class UnbreakableWall : StaticEntity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
         #endregion
 
         #region Constructor Region
-        public EdgeWall(Point position)
+        public UnbreakableWall(Point position)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
             var animation = new Animation(0, 32, 32, 0, 0, 0);
@@ -36,7 +32,7 @@ namespace Final_Bomber.Entities
         }
 
         #endregion
-            
+
         #region Override Method Region
         public override void Destroy()
         {

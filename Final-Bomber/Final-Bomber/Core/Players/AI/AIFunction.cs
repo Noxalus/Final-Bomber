@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using FBLibrary.Core;
+using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Entities.AI

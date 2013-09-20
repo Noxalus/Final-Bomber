@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 using FBLibrary.Core;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
+using Final_Bomber.Controls;
+using Final_Bomber.Entities;
 using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
-using Final_Bomber.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Final_Bomber.TileEngine;
-using Microsoft.Xna.Framework.Media;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Entities
 {
-    public class Bomb : Entity
+    public class Bomb : DynamicEntity
     {
         #region Field Region
         private enum ExplosionDirection { Down, Left, Right, Up, Middle, Horizontal, Vertical };
@@ -29,6 +27,8 @@ namespace Final_Bomber.Entities
         private readonly Texture2D _explosionSpriteTexture;
         private readonly SoundEffect _explosionSound;
         private bool _willExplode;
+
+        private int[,] _hazardMap;
 
         private readonly int _power;
 
@@ -103,6 +103,8 @@ namespace Final_Bomber.Entities
 
             this._lastPlayerThatPushIt = -1;
 
+            _hazardMap = null;
+
             // Action field
             this.ActionField = new List<Point>();
             ComputeActionField(1);
@@ -111,8 +113,10 @@ namespace Final_Bomber.Entities
 
         #region XNA Method
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
+            _hazardMap = hazardMap;
+
             Sprite.Update(gameTime);
 
             #region Is moving ?
@@ -375,11 +379,9 @@ namespace Final_Bomber.Entities
             // We put the bomb in its action field
             this.ActionField = new List<Point> {new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y)};
 
-            if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        HazardMap[this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y] < dangerType)
+            if (_hazardMap[this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y] < dangerType)
             {
-                FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                HazardMap[this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y] = dangerType;
+                _hazardMap[this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y] = dangerType;
             }
 
             // 0 => Top, 1 => Bottom, 2 => Left, 3 => Right
@@ -412,11 +414,9 @@ namespace Final_Bomber.Entities
                     {
                         addPosition = new Point(this.Sprite.CellPosition.X, up);
                         this.ActionField.Add(addPosition);
-                        if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        HazardMap[addPosition.X, addPosition.Y] < dangerType)
+                        if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
-                            FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
+                            _hazardMap[addPosition.X, addPosition.Y] = dangerType;
                         }
                     }
                 }
@@ -431,11 +431,9 @@ namespace Final_Bomber.Entities
                     {
                         addPosition = new Point(this.Sprite.CellPosition.X, down);
                         this.ActionField.Add(addPosition);
-                        if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        HazardMap[addPosition.X, addPosition.Y] < dangerType)
+                        if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
-                            FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
+                            _hazardMap[addPosition.X, addPosition.Y] = dangerType;
                         }
                     }
                 }
@@ -450,11 +448,9 @@ namespace Final_Bomber.Entities
                     {
                         addPosition = new Point(right, this.Sprite.CellPosition.Y);
                         this.ActionField.Add(addPosition);
-                        if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        HazardMap[addPosition.X, addPosition.Y] < dangerType)
+                        if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
-                            FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
+                            _hazardMap[addPosition.X, addPosition.Y] = dangerType;
                         }
                     }
                 }
@@ -469,11 +465,9 @@ namespace Final_Bomber.Entities
                     {
                         addPosition = new Point(left, this.Sprite.CellPosition.Y);
                         this.ActionField.Add(addPosition);
-                        if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        HazardMap[addPosition.X, addPosition.Y] < dangerType)
+                        if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
-                            FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
+                            _hazardMap[addPosition.X, addPosition.Y] = dangerType;
                         }
                     }
                 }
@@ -494,7 +488,7 @@ namespace Final_Bomber.Entities
             // ~ Vertical axis ~ //
 
             // Top extremity
-            if (level.HazardMap[cell.X, upCell] == 0 &&
+            if (_hazardMap[cell.X, upCell] == 0 &&
                 (this.ActionField.Find(c => c.X == cell.X && c.Y == downCell) != Point.Zero))
                 return ExplosionDirection.Up;
             // Vertical
@@ -502,14 +496,14 @@ namespace Final_Bomber.Entities
                 (this.ActionField.Find(c => c.X == cell.X && c.Y == upCell) != Point.Zero))
                 return ExplosionDirection.Vertical;
             // Bottom extremity
-            else if (level.HazardMap[cell.X, downCell] == 0 &&
+            else if (_hazardMap[cell.X, downCell] == 0 &&
                 (this.ActionField.Find(c => c.X == cell.X && c.Y == upCell) != Point.Zero))
                 return ExplosionDirection.Down;
 
             // ~ Horizontal axis ~ //
 
             // Left extremity
-            else if (level.HazardMap[leftCell, cell.Y] == 0 &&
+            else if (_hazardMap[leftCell, cell.Y] == 0 &&
                 (this.ActionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero))
                 return ExplosionDirection.Left;
             // Left - Right
@@ -517,7 +511,7 @@ namespace Final_Bomber.Entities
                 (this.ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero))
                 return ExplosionDirection.Horizontal;
             // Right extremity
-            else if (level.HazardMap[rightCell, cell.Y] == 0 &&
+            else if (_hazardMap[rightCell, cell.Y] == 0 &&
                 (this.ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero))
                 return ExplosionDirection.Right;
 
@@ -588,8 +582,7 @@ namespace Final_Bomber.Entities
                 this._lastPlayerThatPushIt = playerId;
                 foreach (Point p in this.ActionField)
                 {
-                    FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        HazardMap[p.X, p.Y] = 0;
+                    _hazardMap[p.X, p.Y] = 0;
                 }
             }
             else

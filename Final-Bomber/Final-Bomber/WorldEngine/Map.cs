@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FBLibrary.Core;
+using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.TileEngine;
@@ -25,11 +26,6 @@ namespace Final_Bomber.WorldEngine
         private Point _size;
         private Entity[,] _board;
         private bool[,] _collisionLayer;
-
-        private List<Wall> _wallList;
-        private List<PowerUp> _powerUpList;
-        private List<Bomb> _bombList;
-        private int[,] _hazardMap;
 
         private List<EdgeWall> _edgeWallList;
         private List<UnbreakableWall> _unbreakableWallList;
@@ -60,24 +56,19 @@ namespace Final_Bomber.WorldEngine
             get { return _collisionLayer; }
         }
 
-        public int[,] HazardMap
-        {
-            get { return _hazardMap; }
-        }
-
         #endregion
 
         #region Constructor Region
 
         public Map()
         {
-            _wallList = new List<Wall>();
-            _powerUpList = new List<PowerUp>();
             _edgeWallList = new List<EdgeWall>();
-            _bombList = new List<Bomb>();
             _unbreakableWallList = new List<UnbreakableWall>();
             _teleporterList = new List<Teleporter>();
             _arrowList = new List<Arrow>();
+
+            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
         }
 
         public Map(Point mSize, TileMap tMap, Entity[,] m, bool[,] cLayer)
@@ -87,18 +78,11 @@ namespace Final_Bomber.WorldEngine
             _board = m;
             _tileMap = tMap;
             _collisionLayer = cLayer;
-            _hazardMap = new int[mSize.X, mSize.Y];
         }
 
         #endregion
 
         #region Method Region
-
-        public void LoadContent()
-        {
-            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
-        }
 
         public void Update(GameTime gameTime)
         {
@@ -134,20 +118,11 @@ namespace Final_Bomber.WorldEngine
             foreach (var unbreakableWall in _unbreakableWallList)
                 unbreakableWall.Draw(gameTime);
 
-            foreach (var wall in _wallList)
-                wall.Draw(gameTime);
-
-            foreach (var powerUp in _powerUpList)
-                powerUp.Draw(gameTime);
-
             foreach (var teleporter in _teleporterList)
                 teleporter.Draw(gameTime);
 
             foreach (var arrow in _arrowList)
                 arrow.Draw(gameTime);
-
-            foreach (var bomb in _bombList)
-                bomb.Draw(gameTime);
         }
 
         public List<Point> FindEmptyCells()
@@ -215,12 +190,14 @@ namespace Final_Bomber.WorldEngine
                                     _edgeWallList.Add(edgeWall);
                                     collisionLayer[i, j] = true;
                                     break;
+                                /*
                                 case (int)Entity.Type.Wall:
                                     var wall = new Wall(currentPosition);
                                     _wallList.Add(wall);
                                     board[i, j] = wall;
                                     collisionLayer[i, j] = true;
                                     break;
+                                */
                                 case (int)Entity.Type.Teleporter:
                                     var teleporter = new Teleporter(currentPosition);
                                     board[i, j] = teleporter;
@@ -255,7 +232,6 @@ namespace Final_Bomber.WorldEngine
                     _tileMap = tileMap;
                     _collisionLayer = collisionLayer;
                 }
-                _hazardMap = new int[_size.X, _size.Y];
             }
             catch (Exception ex)
             {

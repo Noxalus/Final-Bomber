@@ -1,6 +1,7 @@
 ﻿using System;
 using FBLibrary.Core;
 using Final_Bomber.Controls;
+using Final_Bomber.Core.Entities;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Final_Bomber.TileEngine;
@@ -23,12 +24,12 @@ namespace Final_Bomber.Entities
             Buttons = Config.PlayersButtons[id - 1];
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, map, hazardMap);
         }
 
-        protected override void Move(GameTime gameTime)
+        protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
             #region Moving input
             var motion = new Vector2();

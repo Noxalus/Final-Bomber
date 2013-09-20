@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Final_Bomber.Core.Entities;
 using Final_Bomber.Entities.AI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -170,6 +171,7 @@ namespace Final_Bomber.Screens
 
         public override void Update(GameTime gameTime)
         {
+            /*
             if (!_pause)
             {
                 #region FPS
@@ -463,6 +465,7 @@ namespace Final_Bomber.Screens
                 MediaPlayer.Resume();
                 _pause = false;
             }
+            */
         }
 
         public override void Draw(GameTime gameTime)
@@ -504,8 +507,10 @@ namespace Final_Bomber.Screens
                 {
                     for (int y = 0; y < World.Levels[World.CurrentLevel].Size.Y; y++)
                     {
+                        /*
                         GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, World.Levels[World.CurrentLevel].HazardMap[x, y].ToString(),
                             new Vector2(x * 30, 80 + 20 * y), Color.Black);
+                        */
                     }
                 }
             }
@@ -607,6 +612,7 @@ namespace Final_Bomber.Screens
             }
             else if (Config.Debug && Config.IsThereAIPlayer && InputHandler.KeyDown(Keys.L))
             {
+                /*
                 int[,] costMatrix = AIFunction.CostMatrix(
                     PlayerList[PlayerList.Count - 1].Sprite.CellPosition,
                     World.Levels[World.CurrentLevel].CollisionLayer,
@@ -628,10 +634,11 @@ namespace Final_Bomber.Screens
                         }
                     }
                 }
-
+                */
             }
             else if (Config.Debug && InputHandler.KeyDown(Keys.T))
             {
+                /*
                 int[,] interestMatrix = AIFunction.MakeInterestMatrix(
                     PlayerList[PlayerList.Count - 1].Sprite.CellPosition,
                     World.Levels[World.CurrentLevel].Board,
@@ -654,7 +661,7 @@ namespace Final_Bomber.Screens
                         }
                     }
                 }
-
+                */
             }
             #endregion
             else

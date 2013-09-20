@@ -1,19 +1,11 @@
-﻿using FBLibrary.Core;
+﻿using System.Diagnostics;
+using FBLibrary.Core;
 using Final_Bomber.Entities;
-using Final_Bomber.Controls;
-using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
-using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 
-namespace Final_Bomber.Network.Core
+namespace Final_Bomber.Core.Players
 {
     class OnlinePlayer : Player
     {
@@ -23,12 +15,12 @@ namespace Final_Bomber.Network.Core
         {
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, map, hazardMap);
         }
 
-        protected override void Move(GameTime gameTime)
+        protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
             Debug.Print("Look Direction: " + CurrentLookDirection);
             var motionVector = Vector2.Zero;

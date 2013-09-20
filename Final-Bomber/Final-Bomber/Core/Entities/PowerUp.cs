@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using Final_Bomber.Entities;
 using Final_Bomber.Screens;
-using Microsoft.Xna.Framework;
 using Final_Bomber.Sprites;
+using Final_Bomber.WorldEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.TileEngine;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Entities
 {
     public enum ItemType { Power, Bomb, Speed, Point, BadItem }
     public enum BadItemEffect { NoBomb, BombDrop, BombTimerChanged, TooSpeed, TooSlow, KeysInversion }
 
-    public class PowerUp : Entity
+    public class PowerUp : StaticEntity
     {
         #region Field Region
 

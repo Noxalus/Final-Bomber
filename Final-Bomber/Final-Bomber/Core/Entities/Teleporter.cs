@@ -1,12 +1,13 @@
-﻿using Final_Bomber.Screens;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Final_Bomber.Entities;
+using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Entities
 {
-    public class Teleporter : Entity
+    public class Teleporter : StaticEntity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }

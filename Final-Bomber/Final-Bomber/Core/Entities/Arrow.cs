@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using FBLibrary.Core;
+using Final_Bomber.Core;
+using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Sprites;
@@ -7,7 +9,7 @@ using Final_Bomber.TileEngine;
 
 namespace Final_Bomber.Entities
 {
-    public class Arrow : Entity
+    public class Arrow : StaticEntity
     {
         #region Field Region
         public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
