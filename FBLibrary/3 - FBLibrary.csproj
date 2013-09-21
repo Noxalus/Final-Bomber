@@ -54,6 +54,7 @@
     <Compile Include="Core\BaseEntities\BaseTeleporter.cs" />
     <Compile Include="Core\BaseEntities\BaseUnbreakableWall.cs" />
     <Compile Include="Core\BaseEntities\BaseWall.cs" />
+    <Compile Include="Core\BaseGameManager.cs" />
     <Compile Include="Core\DynamicEntity.cs" />
     <Compile Include="Core\IEntity.cs" />
     <Compile Include="Core\Engine.cs" />

@@ -2,10 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core
 {
-    public class StaticEntity : BaseEntity
+    public abstract class StaticEntity : BaseEntity
     {
+        protected StaticEntity()
+        {
+        }
+
+        protected StaticEntity(Point cellPosition)
+            : base(cellPosition)
+        {
+            
+        }
     }
 }

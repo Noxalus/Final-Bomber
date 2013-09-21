@@ -235,6 +235,16 @@ namespace Final_BomberServer.Core
             float rtn = (Speed * GameSettings.speed) / 1000f;
             return rtn;
         }
+
+        public override void Destroy()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Remove()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class PlayerStats

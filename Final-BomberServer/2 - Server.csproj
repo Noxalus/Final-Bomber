@@ -62,9 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Entities\Arrow.cs" />
     <Compile Include="Core\Entities\Bomb.cs" />
+    <Compile Include="Core\Entities\EdgeWall.cs" />
+    <Compile Include="Core\Entities\Teleporter.cs" />
+    <Compile Include="Core\Entities\UnbreakableWall.cs" />
+    <Compile Include="Core\Entities\Wall.cs" />
+    <Compile Include="Core\GameManager.cs" />
     <Compile Include="Core\GameServerHandler.cs" />
-    <Compile Include="Core\Map.cs" />
+    <Compile Include="Core\WorldEngine\Map.cs" />
     <Compile Include="Core\OldMap.cs" />
     <Compile Include="Core\MapTile.cs" />
     <Compile Include="Core\Player.cs" />

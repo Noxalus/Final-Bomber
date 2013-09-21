@@ -120,7 +120,7 @@ namespace Final_Bomber.Core.Entities
             }
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             if (!_itemDestroyAnimation.IsAnimating)
             {
@@ -129,7 +129,7 @@ namespace Final_Bomber.Core.Entities
             }
         }
 
-        public void Remove()
+        public override void Remove()
         {
             _isAlive = false;
         }

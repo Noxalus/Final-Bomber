@@ -2,7 +2,7 @@
 
 namespace FBLibrary.Core
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : IEntity
     {
         private Vector2 _position;
         private Point _cellPosition;
@@ -79,5 +79,8 @@ namespace FBLibrary.Core
             _position.Y = y;
             _cellPosition = Engine.VectorToCell(Position);
         }
+
+        public abstract void Destroy();
+        public abstract void Remove();
     }
 }

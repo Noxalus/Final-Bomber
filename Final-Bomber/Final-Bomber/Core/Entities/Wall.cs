@@ -68,13 +68,13 @@ namespace Final_Bomber.Core.Entities
 
         #region Method Region
 
-        public void Destroy()
+        public override void Destroy()
         {
             if (!_inDestruction)
                 _inDestruction = true;
         }
 
-        public void Remove()
+        public override void Remove()
         {
             _isAlive = false;
             _inDestruction = false;

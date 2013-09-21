@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Entities;
 using Final_Bomber.TileEngine;
@@ -11,34 +12,37 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Core
 {
-    public class GameManager
+    public class GameManager : BaseGameManager
     {
         // Game logic
 
         // Players
+        public PlayerCollection Players;
+
+        // Collections
         private readonly List<Bomb> _bombList;
         private readonly List<PowerUp> _powerUpList;
         private readonly List<Wall> _wallList;
-        public PlayerCollection Players;
+
         private SoundEffect _bombExplosionSound;
 
         // Dead Players number
         private Map _currentMap;
         private int _deadPlayersNumber;
-        private Engine _engine;
         private int[,] _hazardMap;
 
-        // Dynamic entities
-        private SoundEffect _itemPickUpSound;
+        // Songs & sounds effect
         private Song _mapHurrySong;
         private Song _mapSong;
+        private SoundEffect _itemPickUpSound;
         private SoundEffect _playerDeathSound;
-        public static Random Random;
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
 
         #region Properties
+
+        public World World { get; set; }
 
         public List<Wall> WallList
         {
@@ -51,19 +55,12 @@ namespace Final_Bomber.Core
         {
             Players = new PlayerCollection();
 
-            Random = new Random();
-
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
 
-            // Engine
-            _engine = new Engine(32, 32, Vector2.Zero);
-
             World = new World(FinalBomber.Instance, FinalBomber.Instance.ScreenRectangle);
         }
-
-        public World World { get; set; }
 
         public void Initialize()
         {

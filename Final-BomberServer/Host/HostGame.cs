@@ -147,7 +147,7 @@ namespace Final_BomberServer.Host
             for (int i = 0; i < bombs.Count; i++)
             {
                 bombs[i].CheckTick();
-                if (bombs[i].Remove)//När den ska tas bort
+                if (bombs[i]._remove)//När den ska tas bort
                 {
                     CurrentMap.CheckToRemoveExplodedTiles(bombs[i]); //Kollar om den spränger bort någon tile
                     bombs[i].player.CurrentBombAmount--; //Så spelaren kan lägga en bomb igen

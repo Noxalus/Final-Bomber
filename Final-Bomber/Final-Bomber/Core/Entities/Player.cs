@@ -588,7 +588,7 @@ namespace Final_Bomber.Entities
 
         #region Override Method Region
 
-        public void Destroy()
+        public override void Destroy()
         {
             if (!InDestruction)
             {
@@ -599,7 +599,7 @@ namespace Final_Bomber.Entities
             }
         }
 
-        public void Remove()
+        public override void Remove()
         {
             _playerDeathAnimation.IsAnimating = false;
             InDestruction = false;

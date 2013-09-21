@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class Bomb : BaseBomb, IEntity
+    public class Bomb : BaseBomb
     {
         #region Field Region
 
@@ -606,7 +606,7 @@ namespace Final_Bomber.Core.Entities
             _timer = TimeSpan.Zero;
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             if (InDestruction) return;
 
@@ -615,7 +615,7 @@ namespace Final_Bomber.Core.Entities
             ComputeActionField(3);
         }
 
-        public void Remove()
+        public override void Remove()
         {
             IsAlive = false;
         }

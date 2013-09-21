@@ -18,7 +18,7 @@ namespace Final_BomberServer.Core.Entities
         public bool Exploded = false;
         public Player player;
         public ExplosionCollection Explosion = new ExplosionCollection();
-        public bool Remove = false; //När bomben har gjort det den kan och ska tas bort
+        public bool _remove = false; //När bomben har gjort det den kan och ska tas bort
         public bool IsSuddenDeath = false;
 
         float tickCount = 5;
@@ -47,7 +47,7 @@ namespace Final_BomberServer.Core.Entities
                 {
                     if (true /*ExplosionTmr.Each(1000)*/)
                     {
-                        Remove = true;
+                        _remove = true;
                     }
                 }
             }
@@ -64,6 +64,16 @@ namespace Final_BomberServer.Core.Entities
         {
             float rtn = 0f;//((float)player.BombTickPerSek * (float)GameSettings.speed) / 1000;
             return rtn;
+        }
+
+        public override void Destroy()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Remove()
+        {
+            throw new System.NotImplementedException();
         }
     }
 

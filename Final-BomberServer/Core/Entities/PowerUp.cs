@@ -58,5 +58,15 @@ namespace Final_BomberServer.Core.Entities
 
             return 0;
         }
+
+        public override void Destroy()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Remove()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

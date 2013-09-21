@@ -39,11 +39,11 @@ namespace Final_Bomber.Core.Entities
 
         #region Override Method Region
 
-        public void Destroy()
+        public override void Destroy()
         {
         }
 
-        public void Remove()
+        public override void Remove()
         {
         }
 
