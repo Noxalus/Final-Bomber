@@ -6,6 +6,21 @@ namespace Final_Bomber.Core
 {
     public abstract class DynamicEntity : Entity
     {
-        public abstract void Update(GameTime gameTime, Map map, int[,] hazardMap);
+        public Point PreviousCellPosition;
+
+        protected DynamicEntity()
+        {
+            PreviousCellPosition = Point.Zero;
+        }
+
+        public virtual void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        {
+            PreviousCellPosition = Sprite.CellPosition;
+        }
+
+        protected bool IsChangingCell()
+        {
+            return (Sprite.CellPosition != PreviousCellPosition);
+        }
     }
 }

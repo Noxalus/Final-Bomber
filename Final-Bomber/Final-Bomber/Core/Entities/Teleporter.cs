@@ -10,8 +10,10 @@ namespace Final_Bomber.Core.Entities
     public class Teleporter : StaticEntity
     {
         #region Field Region
-        public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
+
         private bool _isAlive;
+        public override sealed AnimatedSprite Sprite { get; protected set; }
+
         #endregion
 
         #region Property Region
@@ -24,14 +26,16 @@ namespace Final_Bomber.Core.Entities
         #endregion
 
         #region Constructor Region
+
         public Teleporter(Point position)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/teleporter");
             var animation = new Animation(2, 32, 32, 0, 0, 2);
-            Sprite = new Sprites.AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
+            Sprite = new AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
 
             _isAlive = true;
         }
+
         #endregion
 
         #region XNA Method Region
@@ -41,7 +45,7 @@ namespace Final_Bomber.Core.Entities
             Sprite.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
@@ -53,11 +57,12 @@ namespace Final_Bomber.Core.Entities
         public void ChangePosition(Entity mapItem)
         {
             bool allTeleporterCellTaken = true;
-            Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
+            Map level =
+                FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
             foreach (Teleporter t in FinalBomber.Instance.GamePlayScreen.TeleporterList)
             {
                 Point position = t.Sprite.CellPosition;
-                if (position != this.Sprite.CellPosition && level.Board[position.X, position.Y] is Teleporter)
+                if (position != Sprite.CellPosition && level.Board[position.X, position.Y] is Teleporter)
                     allTeleporterCellTaken = false;
             }
 
@@ -67,8 +72,8 @@ namespace Final_Bomber.Core.Entities
                 while (position == Sprite.CellPosition)
                 {
                     position = FinalBomber.Instance.GamePlayScreen.TeleporterList[
-                    GamePlayScreen.Random.Next(FinalBomber.Instance.GamePlayScreen.TeleporterList.Count)].
-                    Sprite.CellPosition;
+                        GamePlayScreen.Random.Next(FinalBomber.Instance.GamePlayScreen.TeleporterList.Count)].
+                        Sprite.CellPosition;
                 }
 
                 var bomb = mapItem as Bomb;
@@ -86,14 +91,16 @@ namespace Final_Bomber.Core.Entities
         #endregion
 
         #region Override Method Region
+
         public override void Destroy()
         {
         }
 
-        public override  void Remove()
+        public override void Remove()
         {
-            this._isAlive = false;
+            _isAlive = false;
         }
+
         #endregion
     }
 }

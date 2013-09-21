@@ -86,9 +86,6 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="db_FileIO">
-      <HintPath>..\..\DLL\db_FileIO.dll</HintPath>
-    </Reference>
     <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DLL\Lidgren.Network.dll</HintPath>
@@ -161,7 +158,7 @@
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Entities\Player.cs" />
     <Compile Include="Core\StaticEntity.cs" />
-    <Compile Include="Core\Entities\SuddenDeath.cs" />
+    <Compile Include="Core\SuddenDeath.cs" />
     <Compile Include="Core\Entities\Teleporter.cs" />
     <Compile Include="Core\Entities\UnbreakableWall.cs" />
     <Compile Include="Core\Entities\Wall.cs" />
@@ -185,6 +182,7 @@
     <Compile Include="Network\GameHandler.cs" />
     <Compile Include="Network\GameSettings.cs" />
     <Compile Include="Network\MainGame.cs" />
+    <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Network\ProgramStepProcessing.cs" />
     <Compile Include="Network\Timer.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -266,7 +264,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram3.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

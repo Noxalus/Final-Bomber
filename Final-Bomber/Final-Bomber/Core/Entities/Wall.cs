@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Final_Bomber.Entities;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,10 +9,9 @@ namespace Final_Bomber.Core.Entities
     {
         #region Field Region
 
-        public override sealed AnimatedSprite Sprite { get; protected set; }
-
         private bool _inDestruction;
         private bool _isAlive;
+        public override sealed AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
@@ -32,6 +30,7 @@ namespace Final_Bomber.Core.Entities
         #endregion
 
         #region Constructor Region
+
         public Wall(Point position)
         {
             var animations = new Dictionary<AnimationKey, Animation>();
@@ -39,13 +38,15 @@ namespace Final_Bomber.Core.Entities
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/wall");
             var animation = new Animation(6, 32, 32, 0, 0, 20);
 
-            this.Sprite = new AnimatedSprite(spriteTexture, animation, position);
-            this._inDestruction = false;
-            this._isAlive = true;            
+            Sprite = new AnimatedSprite(spriteTexture, animation, position);
+            _inDestruction = false;
+            _isAlive = true;
         }
+
         #endregion
 
         #region XNA Method Region
+
         public override void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
@@ -54,27 +55,28 @@ namespace Final_Bomber.Core.Entities
                 Remove();
 
             if (_inDestruction)
-                this.Sprite.IsAnimating = true;
+                Sprite.IsAnimating = true;
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
+
         #endregion
 
         #region Method Region
 
         public override void Destroy()
         {
-            if(!this._inDestruction)
-                this._inDestruction = true;
+            if (!_inDestruction)
+                _inDestruction = true;
         }
 
         public override void Remove()
         {
-            this._isAlive = false;
-            this._inDestruction = false;
+            _isAlive = false;
+            _inDestruction = false;
         }
 
         #endregion

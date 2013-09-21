@@ -1,20 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FBLibrary.Core;
 using Final_Bomber.Core.Entities;
-using Final_Bomber.Sprites;
-using Final_Bomber.TileEngine;
-using Microsoft.Xna.Framework;
-using Final_Bomber.WorldEngine;
+using Final_Bomber.Entities;
+using Final_Bomber.Entities.AI;
 using Final_Bomber.Screens;
-using System;
+using Final_Bomber.Sprites;
+using Final_Bomber.WorldEngine;
+using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Entities.AI
+namespace Final_Bomber.Core.Players
 {
-    class AIPlayer : Player
+    internal class AIPlayer : Player
     {
-        Vector2 _aiNextPosition;
-
-        public List<Point> Path { get; private set; }
+        private Vector2 _aiNextPosition;
 
         public AIPlayer(int id)
             : base(id)
@@ -24,11 +23,15 @@ namespace Final_Bomber.Entities.AI
             Path = new List<Point>();
         }
 
+        public List<Point> Path { get; private set; }
+
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
             #region Walk
+
             // If he hasn't reach his goal => we walk to this goal
-            if (_aiNextPosition != new Vector2(-1, -1) && !AIFunction.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
+            if (_aiNextPosition != new Vector2(-1, -1) &&
+                !AIFunction.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
             {
                 IsMoving = true;
                 Sprite.IsAnimating = true;
@@ -39,25 +42,29 @@ namespace Final_Bomber.Entities.AI
 
                 ComputeWallCollision();
             }
-            #endregion
+                #endregion
 
-            #region Search a goal
-            // Otherwise => we find another goal
+                #region Search a goal
+                // Otherwise => we find another goal
             else
             {
                 // We place the player at the center of its cell
                 Sprite.Position = Engine.CellToVector(Sprite.CellPosition);
 
                 #region Bomb => AI
+
                 // Try to put a bomb
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, map.Board, map.CollisionLayer, hazardMap, Config.MapSize))
+                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, map.Board, map.CollisionLayer, hazardMap,
+                        Config.MapSize))
                     {
                         if (CurrentBombNumber > 0)
                         {
-                            var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == Sprite.CellPosition);
+                            Bomb bo =
+                                FinalBomber.Instance.GamePlayScreen.BombList.Find(
+                                    b => b.Sprite.CellPosition == Sprite.CellPosition);
                             if (bo == null)
                             {
                                 CurrentBombNumber--;
@@ -66,7 +73,8 @@ namespace Final_Bomber.Entities.AI
                                 // We define a new way (to escape the bomb)
                                 Path = AIFunction.MakeAWay(
                                     Sprite.CellPosition,
-                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, map.CollisionLayer, hazardMap, Config.MapSize),
+                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, map.CollisionLayer, hazardMap,
+                                        Config.MapSize),
                                     map.CollisionLayer, hazardMap, Config.MapSize);
 
                                 FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
@@ -74,6 +82,7 @@ namespace Final_Bomber.Entities.AI
                         }
                     }
                 }
+
                 #endregion
 
                 if (Path == null || Path.Count == 0)
@@ -83,7 +92,8 @@ namespace Final_Bomber.Entities.AI
                     // We define a new goal
                     Path = AIFunction.MakeAWay(
                         Sprite.CellPosition,
-                        AIFunction.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap, Config.MapSize),
+                        AIFunction.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap,
+                            Config.MapSize),
                         map.CollisionLayer, hazardMap, Config.MapSize);
 
                     if (Path != null)
@@ -108,6 +118,7 @@ namespace Final_Bomber.Entities.AI
                     */
                 }
             }
+
             #endregion
 
             UpdatePlayerPosition();
@@ -122,21 +133,21 @@ namespace Final_Bomber.Entities.AI
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 CurrentLookDirection = LookDirection.Up;
             }
-            // Down
+                // Down
             else if (Sprite.Position.Y < _aiNextPosition.Y)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 CurrentLookDirection = LookDirection.Down;
             }
-            // Right
+                // Right
             else if (Sprite.Position.X < _aiNextPosition.X)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 CurrentLookDirection = LookDirection.Right;
             }
-            // Left
+                // Left
             else if (Sprite.Position.X > _aiNextPosition.X)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
@@ -149,7 +160,7 @@ namespace Final_Bomber.Entities.AI
         {
             // If the AI is blocked
             if (map.CollisionLayer[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] ||
-                    hazardMap[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] >= 2)
+                hazardMap[Engine.VectorToCell(_aiNextPosition).X, Engine.VectorToCell(_aiNextPosition).Y] >= 2)
             {
                 Sprite.IsAnimating = false;
                 IsMoving = false;
@@ -163,7 +174,6 @@ namespace Final_Bomber.Entities.AI
 
         protected override void MoveFromEdgeWall()
         {
-
         }
 
         public override void ApplyBadItem(BadItemEffect effect)
@@ -182,7 +192,8 @@ namespace Final_Bomber.Entities.AI
                     break;
                 case BadItemEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
+                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin,
+                        Config.BadItemTimerChangedMax);
                     BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;
             }

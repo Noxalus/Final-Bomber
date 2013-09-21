@@ -2,19 +2,17 @@
 using FBLibrary.Core;
 using Final_Bomber.Controls;
 using Final_Bomber.Core.Entities;
+using Final_Bomber.Entities;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
-using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Players
 {
-    class HumanPlayer : Player
+    internal class HumanPlayer : Player
     {
-        public Keys[] Keys { get; set; }
-        public Buttons[] Buttons { get; set; }
         private Keys[] _keysSaved;
 
         public HumanPlayer(int id)
@@ -24,6 +22,9 @@ namespace Final_Bomber.Entities
             Buttons = Config.PlayersButtons[id - 1];
         }
 
+        public Keys[] Keys { get; set; }
+        public Buttons[] Buttons { get; set; }
+
         public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             base.Update(gameTime, map, hazardMap);
@@ -32,31 +33,36 @@ namespace Final_Bomber.Entities
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
             #region Moving input
+
             var motion = new Vector2();
 
             // Up
-            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
+            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) ||
+                InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 CurrentLookDirection = LookDirection.Up;
                 motion.Y = -1;
             }
-            // Down
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
+                // Down
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) ||
+                     InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 CurrentLookDirection = LookDirection.Down;
                 motion.Y = 1;
             }
-            // Left
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
+                // Left
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) ||
+                     InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 CurrentLookDirection = LookDirection.Left;
                 motion.X = -1;
             }
-            // Right
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
+                // Right
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) ||
+                     InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 CurrentLookDirection = LookDirection.Right;
@@ -76,13 +82,13 @@ namespace Final_Bomber.Entities
                 Sprite.IsAnimating = true;
                 motion.Normalize();
 
-                Vector2 nextPosition = Sprite.Position + motion * Sprite.Speed;
+                Vector2 nextPosition = Sprite.Position + motion*Sprite.Speed;
                 Point nextPositionCell = Engine.VectorToCell(nextPosition, Sprite.Dimension);
 
                 #region Moving of the player
 
                 // We move the player
-                Sprite.Position += motion * Sprite.Speed;
+                Sprite.Position += motion*Sprite.Speed;
 
                 // If the player want to go to top...
                 if (motion.Y == -1f)
@@ -103,7 +109,7 @@ namespace Final_Bomber.Entities
                                 Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                         }
                     }
-                    // ... and that there is no wall
+                        // ... and that there is no wall
                     else
                     {
                         // If he is more on the left side
@@ -111,14 +117,14 @@ namespace Final_Bomber.Entities
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                         }
-                        // If he is more on the right side
+                            // If he is more on the right side
                         else if (IsMoreRightSide())
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                         }
                     }
                 }
-                // If the player want to go to bottom and that there is a wall
+                    // If the player want to go to bottom and that there is a wall
                 else if (motion.Y == 1)
                 {
                     // Wall at the bottom ?
@@ -144,14 +150,14 @@ namespace Final_Bomber.Entities
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                         }
-                        // If he is more on the right side
+                            // If he is more on the right side
                         else if (IsMoreRightSide())
                         {
                             Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                         }
                     }
                 }
-                // If the player want to go to left and that there is a wall
+                    // If the player want to go to left and that there is a wall
                 else if (motion.X == -1)
                 {
                     if (WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y)))
@@ -182,7 +188,7 @@ namespace Final_Bomber.Entities
                         }
                     }
                 }
-                // If the player want to go to right and that there is a wall
+                    // If the player want to go to right and that there is a wall
                 else if (motion.X == 1)
                 {
                     if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
@@ -227,13 +233,17 @@ namespace Final_Bomber.Entities
             UpdatePlayerPosition();
 
             #region Bomb
+
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
-                ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
-                (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
+                ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) ||
+                 InputHandler.KeyPressed(Keys[4]) &&
+                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
             {
                 if (CurrentBombNumber > 0)
                 {
-                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == Sprite.CellPosition);
+                    Bomb bo =
+                        FinalBomber.Instance.GamePlayScreen.BombList.Find(
+                            b => b.Sprite.CellPosition == Sprite.CellPosition);
                     if (bo == null)
                     {
                         CurrentBombNumber--;
@@ -243,6 +253,7 @@ namespace Final_Bomber.Entities
                     }
                 }
             }
+
             #endregion
 
             #endregion
@@ -263,14 +274,15 @@ namespace Final_Bomber.Entities
                     Sprite.Speed = Config.MaxSpeed;
                     break;
                 case BadItemEffect.KeysInversion:
-                        _keysSaved = (Keys[]) Keys.Clone();
-                        var inversedKeysArray = new int[] { 1, 0, 3, 2 };
-                        for (int i = 0; i < inversedKeysArray.Length; i++)
-                            Keys[i] = _keysSaved[inversedKeysArray[i]];
+                    _keysSaved = (Keys[]) Keys.Clone();
+                    var inversedKeysArray = new[] {1, 0, 3, 2};
+                    for (int i = 0; i < inversedKeysArray.Length; i++)
+                        Keys[i] = _keysSaved[inversedKeysArray[i]];
                     break;
                 case BadItemEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
+                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin,
+                        Config.BadItemTimerChangedMax);
                     BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;
             }
@@ -303,35 +315,35 @@ namespace Final_Bomber.Entities
 
             // The player is either at the top either at the bottom
             // => he can only move on the right or on the left
-            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
+            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (Config.MapSize.Y - 1)*Engine.TileHeight)
             {
                 // If he wants to go to the left
                 if (Sprite.Position.X > 0 && InputHandler.KeyDown(Keys[2]))
                     Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
-                // If he wants to go to the right
-                else if (Sprite.Position.X < (Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth &&
-                    InputHandler.KeyDown(Keys[3]))
+                    // If he wants to go to the right
+                else if (Sprite.Position.X < (Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth &&
+                         InputHandler.KeyDown(Keys[3]))
                     Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
             }
             // The player is either on the left either on the right
-            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
+            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (Config.MapSize.X - 1)*Engine.TileWidth)
             {
                 // If he wants to go to the top
                 if (Sprite.Position.Y > 0 && InputHandler.KeyDown(Keys[0]))
                     Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
-                // If he wants to go to the bottom
-                else if (Sprite.Position.Y < (Config.MapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
-                    InputHandler.KeyDown(Keys[1]))
+                    // If he wants to go to the bottom
+                else if (Sprite.Position.Y < (Config.MapSize.Y*Engine.TileHeight) - Engine.TileHeight &&
+                         InputHandler.KeyDown(Keys[1]))
                     Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
             }
 
             if (Sprite.Position.Y <= 0)
                 Sprite.CurrentAnimation = AnimationKey.Down;
-            else if (Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
+            else if (Sprite.Position.Y >= (Config.MapSize.Y - 1)*Engine.TileHeight)
                 Sprite.CurrentAnimation = AnimationKey.Up;
             else if (Sprite.Position.X <= 0)
                 Sprite.CurrentAnimation = AnimationKey.Right;
-            else if (Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
+            else if (Sprite.Position.X >= (Config.MapSize.X - 1)*Engine.TileWidth)
                 Sprite.CurrentAnimation = AnimationKey.Left;
 
             #region Bombs => Edge gameplay
@@ -339,17 +351,22 @@ namespace Final_Bomber.Entities
             if (InputHandler.KeyDown(Keys[4]) && CurrentBombNumber > 0)
             {
                 // He can't put a bomb when he is on a corner
-                if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
-                    (Sprite.CellPosition.Y == Config.MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
+                if (
+                    !((Sprite.CellPosition.Y == 0 &&
+                       (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
+                      (Sprite.CellPosition.Y == Config.MapSize.Y - 1 &&
+                       (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
                 {
-                    Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
+                    Map level =
+                        FinalBomber.Instance.GamePlayScreen.World.Levels[
+                            FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
                     int lag = 0;
                     Point bombPosition = Sprite.CellPosition;
                     // Up
                     if (Sprite.CellPosition.Y == 0)
                     {
                         while (Sprite.CellPosition.Y + lag + 3 < Config.MapSize.Y &&
-                                level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
+                               level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
                         {
                             lag++;
                         }
@@ -367,7 +384,7 @@ namespace Final_Bomber.Entities
                     if (Sprite.CellPosition.Y == Config.MapSize.Y - 1)
                     {
                         while (Sprite.CellPosition.Y - lag - 3 >= 0 &&
-                                level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
+                               level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
                         {
                             lag++;
                         }
@@ -385,7 +402,7 @@ namespace Final_Bomber.Entities
                     if (Sprite.CellPosition.X == 0)
                     {
                         while (Sprite.CellPosition.X + lag + 3 < Config.MapSize.X &&
-                                level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
+                               level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
                         {
                             lag++;
                         }
@@ -403,7 +420,7 @@ namespace Final_Bomber.Entities
                     if (Sprite.CellPosition.X == Config.MapSize.X - 1)
                     {
                         while (Sprite.CellPosition.X - lag - 3 >= 0 &&
-                                level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
+                               level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
                         {
                             lag++;
                         }

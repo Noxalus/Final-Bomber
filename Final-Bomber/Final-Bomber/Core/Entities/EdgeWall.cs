@@ -7,16 +7,20 @@ namespace Final_Bomber.Core.Entities
     public class EdgeWall : StaticEntity
     {
         #region Field Region
-        public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
+
+        public override sealed AnimatedSprite Sprite { get; protected set; }
+
         #endregion
 
         #region Constructor Region
+
         public EdgeWall(Point position)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
             var animation = new Animation(0, 32, 32, 0, 0, 0);
-            Sprite = new Sprites.AnimatedSprite(spriteTexture, animation, position);
+            Sprite = new AnimatedSprite(spriteTexture, animation, position);
         }
+
         #endregion
 
         #region XNA Method Region
@@ -26,21 +30,23 @@ namespace Final_Bomber.Core.Entities
             Sprite.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
 
         #endregion
-            
+
         #region Override Method Region
+
         public override void Destroy()
         {
         }
 
-        public override  void Remove()
+        public override void Remove()
         {
         }
+
         #endregion
     }
 }

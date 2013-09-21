@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
+using Final_Bomber.Core.Players;
 using Final_Bomber.Entities.AI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

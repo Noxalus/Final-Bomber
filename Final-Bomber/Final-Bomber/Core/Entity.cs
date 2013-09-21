@@ -1,5 +1,4 @@
 ﻿using Final_Bomber.Sprites;
-using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Entities
 {
@@ -17,8 +16,6 @@ namespace Final_Bomber.Entities
         };
 
         public abstract AnimatedSprite Sprite { get; protected set; }
-
-        public abstract void Draw(GameTime gameTime);
 
         public abstract void Destroy();
         public abstract void Remove();

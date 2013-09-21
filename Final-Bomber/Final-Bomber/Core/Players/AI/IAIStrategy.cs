@@ -1,6 +1,6 @@
 ﻿namespace Final_Bomber.Entities.AI
 {
-    interface IAIStrategy
+    internal interface IAIStrategy
     {
         void Execute();
     }

@@ -7,9 +7,8 @@ using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Core.Players
 {
-    class OnlinePlayer : Player
+    internal class OnlinePlayer : Player
     {
-
         public OnlinePlayer(int id)
             : base(id)
         {
@@ -23,7 +22,7 @@ namespace Final_Bomber.Core.Players
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
             Debug.Print("Look Direction: " + CurrentLookDirection);
-            var motionVector = Vector2.Zero;
+            Vector2 motionVector = Vector2.Zero;
 
             switch (CurrentLookDirection)
             {
@@ -47,9 +46,9 @@ namespace Final_Bomber.Core.Players
 
             if (motionVector != Vector2.Zero)
             {
-                var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
                 Sprite.IsAnimating = true;
-                Sprite.Position += motionVector * (Sprite.Speed * dt);
+                Sprite.Position += motionVector*(Sprite.Speed*dt);
             }
             else
             {
@@ -217,6 +216,7 @@ namespace Final_Bomber.Core.Players
             //UpdatePlayerPosition();
 
             #region Bomb
+
             /*
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
@@ -235,6 +235,7 @@ namespace Final_Bomber.Core.Players
                 }
             }
             */
+
             #endregion
 
             #endregion

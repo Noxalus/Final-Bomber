@@ -2,7 +2,7 @@
 
 namespace Final_Bomber.Entities.AI
 {
-    class NormalAIStrategy : IAIStrategy
+    internal class NormalAIStrategy : IAIStrategy
     {
         public void Execute()
         {

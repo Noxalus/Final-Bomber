@@ -16,7 +16,7 @@ namespace Final_Bomber.Entities.AI
             // We put all cells at the infinity
             for (int x = 0; x < mapSize.X; x++)
                 for (int y = 0; y < mapSize.Y; y++)
-                    costMatrix[x, y] = mapSize.X * mapSize.Y;
+                    costMatrix[x, y] = mapSize.X*mapSize.Y;
 
             var pos = new Point();
             int id = 0;
@@ -73,7 +73,8 @@ namespace Final_Bomber.Entities.AI
             return costMatrix;
         }
 
-        public static List<Point> MakeAWay(Point origin, Point goal, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        public static List<Point> MakeAWay(Point origin, Point goal, bool[,] collisionLayer, int[,] hazardMap,
+            Point mapSize)
         {
             int[,] costMatrix = CostMatrix(origin, collisionLayer, hazardMap, mapSize);
             if (goal.X == -1 && goal.Y == -1)
@@ -81,79 +82,76 @@ namespace Final_Bomber.Entities.AI
                 return null;
             }
             // We can't reach the goal
-            if (costMatrix[goal.X, goal.Y] == mapSize.X * mapSize.Y)
+            if (costMatrix[goal.X, goal.Y] == mapSize.X*mapSize.Y)
             {
                 //throw new Exception("Cette case ne peut pas être atteinte !");
                 return null;
             }
-            else
+            var path = new List<Point> {goal};
+            int min = mapSize.X*mapSize.Y;
+            var lookDirection = LookDirection.Idle;
+            while (origin != goal && path.Count < 100)
             {
-                var path = new List<Point> {goal};
-                int min = mapSize.X * mapSize.Y;
-                var lookDirection = LookDirection.Idle;
-                while (origin != goal && path.Count < 100)
+                min = mapSize.X*mapSize.Y;
+                // Up
+                if (costMatrix[goal.X, goal.Y - 1] < min)
                 {
-                    min = mapSize.X * mapSize.Y;
-                    // Up
-                    if (costMatrix[goal.X, goal.Y - 1] < min)
-                    {
-                        min = costMatrix[goal.X, goal.Y - 1];
-                        lookDirection = LookDirection.Up;
-                    }
-                    // Down
-                    if (costMatrix[goal.X, goal.Y + 1] < min)
-                    {
-                        min = costMatrix[goal.X, goal.Y + 1];
-                        lookDirection = LookDirection.Down;
-                    }
-                    // Right
-                    if (costMatrix[goal.X + 1, goal.Y] < min)
-                    {
-                        min = costMatrix[goal.X + 1, goal.Y];
-                        lookDirection = LookDirection.Right;
-                    }
-                    // Left
-                    if (costMatrix[goal.X - 1, goal.Y] < min)
-                    {
-                        min = costMatrix[goal.X - 1, goal.Y];
-                        lookDirection = LookDirection.Left;
-                    }
-
-                    switch (lookDirection)
-                    {
-                        case LookDirection.Up:
-                            goal.Y--;
-                            break;
-                        case LookDirection.Down:
-                            goal.Y++;
-                            break;
-                        case LookDirection.Right:
-                            goal.X++;
-                            break;
-                        case LookDirection.Left:
-                            goal.X--;
-                            break;
-                    }
-
-                    if(goal != origin)
-                        path.Add(goal);
+                    min = costMatrix[goal.X, goal.Y - 1];
+                    lookDirection = LookDirection.Up;
                 }
-                return path;
+                // Down
+                if (costMatrix[goal.X, goal.Y + 1] < min)
+                {
+                    min = costMatrix[goal.X, goal.Y + 1];
+                    lookDirection = LookDirection.Down;
+                }
+                // Right
+                if (costMatrix[goal.X + 1, goal.Y] < min)
+                {
+                    min = costMatrix[goal.X + 1, goal.Y];
+                    lookDirection = LookDirection.Right;
+                }
+                // Left
+                if (costMatrix[goal.X - 1, goal.Y] < min)
+                {
+                    min = costMatrix[goal.X - 1, goal.Y];
+                    lookDirection = LookDirection.Left;
+                }
+
+                switch (lookDirection)
+                {
+                    case LookDirection.Up:
+                        goal.Y--;
+                        break;
+                    case LookDirection.Down:
+                        goal.Y++;
+                        break;
+                    case LookDirection.Right:
+                        goal.X++;
+                        break;
+                    case LookDirection.Left:
+                        goal.X--;
+                        break;
+                }
+
+                if (goal != origin)
+                    path.Add(goal);
             }
+            return path;
         }
 
         public static bool HasReachNextPosition(Vector2 position, float speed, Vector2 nextPosition)
         {
             return (position.X <= nextPosition.X + speed && position.X >= nextPosition.X - speed) &&
-                    (position.Y <= nextPosition.Y + speed && position.Y >= nextPosition.Y - speed);
+                   (position.Y <= nextPosition.Y + speed && position.Y >= nextPosition.Y - speed);
         }
 
-        public static Point SetNewGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize) 
+        public static Point SetNewGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+            Point mapSize)
         {
             if (hazardMap[position.X, position.Y] < 2)
                 return SetNewOffenseGoal(position, map, collisionLayer, hazardMap, mapSize);
-            else
-                return SetNewDefenseGoal(position, collisionLayer, hazardMap, mapSize);
+            return SetNewDefenseGoal(position, collisionLayer, hazardMap, mapSize);
         }
 
         public static Point SetNewDefenseGoal(Point position, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
@@ -161,7 +159,8 @@ namespace Final_Bomber.Entities.AI
             return NearestSafeCell(position, collisionLayer, hazardMap, 0, mapSize);
         }
 
-        private static Point SetNewOffenseGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        private static Point SetNewOffenseGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+            Point mapSize)
         {
             /*
             int[,] costMatrix = CostMatrix(position, collisionLayer, hazardMap);
@@ -188,7 +187,8 @@ namespace Final_Bomber.Entities.AI
             return BestCellInterest(position, map, collisionLayer, hazardMap, mapSize);
         }
 
-        private static Point NearestSafeCell(Point position, bool[,] collisionLayer, int[,] hazardMap, int hazardLevel, Point mapSize)
+        private static Point NearestSafeCell(Point position, bool[,] collisionLayer, int[,] hazardMap, int hazardLevel,
+            Point mapSize)
         {
             var queue = new Queue<Point>();
             queue.Enqueue(position);
@@ -208,8 +208,7 @@ namespace Final_Bomber.Entities.AI
                         cell = new Point(pos.X, pos.Y - 1);
                         if (hazardMap[cell.X, cell.Y] <= hazardLevel)
                             return cell;
-                        else
-                            queue.Enqueue(cell);
+                        queue.Enqueue(cell);
                     }
                     // Down
                     if (pos.Y + 1 < mapSize.Y && !collisionLayer[pos.X, pos.Y + 1])
@@ -217,8 +216,7 @@ namespace Final_Bomber.Entities.AI
                         cell = new Point(pos.X, pos.Y + 1);
                         if (hazardMap[cell.X, cell.Y] <= hazardLevel)
                             return cell;
-                        else
-                            queue.Enqueue(cell);
+                        queue.Enqueue(cell);
                     }
                     // Right
                     if (pos.X + 1 < mapSize.X && !collisionLayer[pos.X + 1, pos.Y])
@@ -226,8 +224,7 @@ namespace Final_Bomber.Entities.AI
                         cell = new Point(pos.X + 1, pos.Y);
                         if (hazardMap[cell.X, cell.Y] <= hazardLevel)
                             return cell;
-                        else
-                            queue.Enqueue(cell);
+                        queue.Enqueue(cell);
                     }
                     // Left
                     if (pos.X - 1 >= 0 && !collisionLayer[pos.X - 1, pos.Y])
@@ -235,8 +232,7 @@ namespace Final_Bomber.Entities.AI
                         cell = new Point(pos.X - 1, pos.Y);
                         if (hazardMap[cell.X, cell.Y] <= hazardLevel)
                             return cell;
-                        else
-                            queue.Enqueue(cell);
+                        queue.Enqueue(cell);
                     }
                 }
                 limit++;
@@ -248,16 +244,20 @@ namespace Final_Bomber.Entities.AI
         {
             power = 1; // We have to compute the bomb action field !
             // Up
-            if (position.Y - power > 0 && (map[position.X, position.Y - power] is Wall || map[position.X, position.Y - power] is Player))
+            if (position.Y - power > 0 &&
+                (map[position.X, position.Y - power] is Wall || map[position.X, position.Y - power] is Player))
                 return true;
-            // Down
-            else if (position.Y + power < mapSize.Y - 2 && (map[position.X, position.Y + power] is Wall || map[position.X, position.Y + power] is Player))
+                // Down
+            if (position.Y + power < mapSize.Y - 2 &&
+                (map[position.X, position.Y + power] is Wall || map[position.X, position.Y + power] is Player))
                 return true;
-            // Right
-            else if (position.X + power < mapSize.X - 2 && (map[position.X + power, position.Y] is Wall || map[position.X + power, position.Y] is Player))
+                // Right
+            if (position.X + power < mapSize.X - 2 &&
+                (map[position.X + power, position.Y] is Wall || map[position.X + power, position.Y] is Player))
                 return true;
-            // Left
-            else if (position.X - power > 0 && (map[position.X - power, position.Y] is Wall || map[position.X - power, position.Y] is Player))
+                // Left
+            if (position.X - power > 0 &&
+                (map[position.X - power, position.Y] is Wall || map[position.X - power, position.Y] is Player))
                 return true;
 
             return false;
@@ -270,7 +270,7 @@ namespace Final_Bomber.Entities.AI
             // Up
             if (position.Y - power > 0)
             {
-                if(map[position.X, position.Y - power] is PowerUp)
+                if (map[position.X, position.Y - power] is PowerUp)
                     number++;
                 else if (map[position.X, position.Y - power] is Wall)
                 {
@@ -283,7 +283,7 @@ namespace Final_Bomber.Entities.AI
             // Down
             if (position.Y + power < mapSize.Y - 2)
             {
-                if(map[position.X, position.Y + power] is PowerUp)
+                if (map[position.X, position.Y + power] is PowerUp)
                     number++;
                 else if (map[position.X, position.Y + power] is Wall)
                 {
@@ -323,13 +323,15 @@ namespace Final_Bomber.Entities.AI
             return number;
         }
 
-        public static bool TryToPutBomb(Point position, int power, Entity[,] map, bool[,] collisionLayer, int[,] hM, Point mapSize)
+        public static bool TryToPutBomb(Point position, int power, Entity[,] map, bool[,] collisionLayer, int[,] hM,
+            Point mapSize)
         {
             if (ProximityItemNumber(position, power, map, hM, mapSize) == 0)
             {
                 if (EntityNear(position, power, map, hM, mapSize))
                 {
                     #region Compute the bomb's action field
+
                     const int dangerType = 1;
 
                     // We put the bomb in its action field
@@ -345,11 +347,11 @@ namespace Final_Bomber.Entities.AI
                         hazardMap[position.X, position.Y] = dangerType;
 
                     // 0 => Top, 1 => Bottom, 2 => Left, 3 => Right
-                    var obstacles = new Dictionary<String, bool> 
-                    { 
-                        {"up", false}, 
-                        {"down", false}, 
-                        {"right",false}, 
+                    var obstacles = new Dictionary<String, bool>
+                    {
+                        {"up", false},
+                        {"down", false},
+                        {"right", false},
                         {"left", false}
                     };
 
@@ -425,22 +427,21 @@ namespace Final_Bomber.Entities.AI
 
                         tempPower--;
                     }
+
                     #endregion
 
                     // Watch if NearestSafeCell returns a Point(-1, -1)
                     if (NearestSafeCell(position, collisionLayer, hazardMap, 0, mapSize) == new Point(-1, -1))
                         return false;
-                    else
-                        return true;
+                    return true;
                 }
-                else
-                    return false;
-            }
-            else
                 return false;
+            }
+            return false;
         }
 
-        public static int[,] MakeInterestMatrix(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        public static int[,] MakeInterestMatrix(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+            Point mapSize)
         {
             var interestMatrix = new int[mapSize.X, mapSize.Y];
             interestMatrix[position.X, position.Y] = -1;
@@ -466,7 +467,8 @@ namespace Final_Bomber.Entities.AI
                         }
                     }
                     // Droite
-                    if (pos.X + 1 < mapSize.X && !collisionLayer[pos.X + 1, pos.Y] && interestMatrix[pos.X + 1, pos.Y] == 0)
+                    if (pos.X + 1 < mapSize.X && !collisionLayer[pos.X + 1, pos.Y] &&
+                        interestMatrix[pos.X + 1, pos.Y] == 0)
                     {
                         cell = new Point(pos.X + 1, pos.Y);
                         if (hazardMap[cell.X, cell.Y] <= 1)
@@ -476,7 +478,8 @@ namespace Final_Bomber.Entities.AI
                         }
                     }
                     // Bas
-                    if (pos.Y + 1 < mapSize.Y && !collisionLayer[pos.X, pos.Y + 1] && interestMatrix[pos.X, pos.Y + 1] == 0)
+                    if (pos.Y + 1 < mapSize.Y && !collisionLayer[pos.X, pos.Y + 1] &&
+                        interestMatrix[pos.X, pos.Y + 1] == 0)
                     {
                         cell = new Point(pos.X, pos.Y + 1);
                         if (hazardMap[cell.X, cell.Y] <= 1)
@@ -509,19 +512,19 @@ namespace Final_Bomber.Entities.AI
                 int proximityWallNumber = ProximityWallNumber(position, map);
                 if (proximityWallNumber > 0)
                 {
-                    interest = (int)MathHelper.Clamp(
-                        (float)(((mapSize.X * mapSize.Y) / 2) - id + proximityWallNumber),
-                        (float)proximityWallNumber,
-                        (float)((mapSize.X * mapSize.Y) / 2 + 4));
+                    interest = (int) MathHelper.Clamp(
+                        ((mapSize.X*mapSize.Y)/2) - id + proximityWallNumber,
+                        proximityWallNumber,
+                        (mapSize.X*mapSize.Y)/2 + 4);
                 }
                 else
-                    interest = (int)MathHelper.Clamp((float)id, 1f, (float)((mapSize.X * mapSize.Y) - id - 10 - 1));
+                    interest = (int) MathHelper.Clamp(id, 1f, (mapSize.X*mapSize.Y) - id - 10 - 1);
             }
             else if (map[position.X, position.Y] is PowerUp)
-                interest = (mapSize.X * mapSize.Y) - id;
+                interest = (mapSize.X*mapSize.Y) - id;
             else if (map[position.X, position.Y] is Player)
             {
-                interest = (mapSize.X * mapSize.Y) - id - 10;
+                interest = (mapSize.X*mapSize.Y) - id - 10;
             }
             return interest;
         }
@@ -544,7 +547,8 @@ namespace Final_Bomber.Entities.AI
             return wallNumber;
         }
 
-        private static Point BestCellInterest(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap, Point mapSize)
+        private static Point BestCellInterest(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+            Point mapSize)
         {
             int[,] interestMatrix = MakeInterestMatrix(position, map, collisionLayer, hazardMap, mapSize);
             var cell = new Point(-1, -1);

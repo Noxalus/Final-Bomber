@@ -13,24 +13,21 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Core.Players
 {
-    class OnlineHumanPlayer : Player
+    public class OnlineHumanPlayer : Player
     {
-        private Vector2 _motionVector;
-
-        private Keys[] Keys { get; set; }
-        private Buttons[] Buttons { get; set; }
         private Keys[] _keysSaved;
-
-        private bool _movementConfirmed;
+        private Vector2 _motionVector;
 
         public OnlineHumanPlayer(int id)
             : base(id)
         {
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
-            _movementConfirmed = true;
             _motionVector = Vector2.Zero;
         }
+
+        private Keys[] Keys { get; set; }
+        private Buttons[] Buttons { get; set; }
 
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
@@ -39,28 +36,32 @@ namespace Final_Bomber.Core.Players
             _motionVector = Vector2.Zero;
 
             // Up
-            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) || InputHandler.KeyDown(Keys[0]))
+            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) ||
+                InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 CurrentLookDirection = LookDirection.Up;
                 _motionVector.Y = -1;
             }
-            // Down
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) || InputHandler.KeyDown(Keys[1]))
+                // Down
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) ||
+                     InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 CurrentLookDirection = LookDirection.Down;
                 _motionVector.Y = 1;
             }
-            // Left
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) || InputHandler.KeyDown(Keys[2]))
+                // Left
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) ||
+                     InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 CurrentLookDirection = LookDirection.Left;
                 _motionVector.X = -1;
             }
-            // Right
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) || InputHandler.KeyDown(Keys[3]))
+                // Right
+            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) ||
+                     InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 CurrentLookDirection = LookDirection.Right;
@@ -69,20 +70,19 @@ namespace Final_Bomber.Core.Players
             else
             {
                 CurrentLookDirection = LookDirection.Idle;
-                //_movementConfirmed = false;
             }
 
             #endregion
 
             //Debug.Print("Player position: " + Sprite.Position);
 
-            if (_motionVector != Vector2.Zero && _movementConfirmed)
+            if (_motionVector != Vector2.Zero)
             {
                 IsMoving = true;
 
-                var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
-                Sprite.Position += _motionVector * (Sprite.Speed * dt);
+                Sprite.Position += _motionVector*(Sprite.Speed*dt);
             }
             else
             {
@@ -248,6 +248,7 @@ namespace Final_Bomber.Core.Players
                 Sprite.IsAnimating = false;
             }
             */
+
             #endregion
 
             SendMovement();
@@ -255,6 +256,7 @@ namespace Final_Bomber.Core.Players
             //UpdatePlayerPosition();
 
             #region Bomb
+
             /*
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
@@ -273,6 +275,7 @@ namespace Final_Bomber.Core.Players
                 }
             }
             */
+
             #endregion
         }
 
@@ -283,23 +286,24 @@ namespace Final_Bomber.Core.Players
             switch (effect)
             {
                 case BadItemEffect.TooSlow:
-                    this.SpeedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MinSpeed;
+                    SpeedSaved = Sprite.Speed;
+                    Sprite.Speed = Config.MinSpeed;
                     break;
                 case BadItemEffect.TooSpeed:
-                    SpeedSaved = this.Sprite.Speed;
-                    this.Sprite.Speed = Config.MaxSpeed;
+                    SpeedSaved = Sprite.Speed;
+                    Sprite.Speed = Config.MaxSpeed;
                     break;
                 case BadItemEffect.KeysInversion:
-                    this._keysSaved = (Keys[])this.Keys.Clone();
-                    var inversedKeysArray = new int[] { 1, 0, 3, 2 };
+                    _keysSaved = (Keys[]) Keys.Clone();
+                    var inversedKeysArray = new[] {1, 0, 3, 2};
                     for (int i = 0; i < inversedKeysArray.Length; i++)
-                        this.Keys[i] = this._keysSaved[inversedKeysArray[i]];
+                        Keys[i] = _keysSaved[inversedKeysArray[i]];
                     break;
                 case BadItemEffect.BombTimerChanged:
-                    this.BombTimerSaved = this.BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin, Config.BadItemTimerChangedMax);
-                    this.BombTimer = TimeSpan.FromSeconds(randomBombTimer);
+                    BombTimerSaved = BombTimer;
+                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin,
+                        Config.BadItemTimerChangedMax);
+                    BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;
             }
         }
@@ -331,53 +335,58 @@ namespace Final_Bomber.Core.Players
 
             // The player is either at the top either at the bottom
             // => he can only move on the right or on the left
-            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
+            if (Sprite.Position.Y <= 0 || Sprite.Position.Y >= (Config.MapSize.Y - 1)*Engine.TileHeight)
             {
                 // If he wants to go to the left
                 if (Sprite.Position.X > 0 && InputHandler.KeyDown(Keys[2]))
                     Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
-                // If he wants to go to the right
-                else if (Sprite.Position.X < (Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth &&
-                    InputHandler.KeyDown(Keys[3]))
+                    // If he wants to go to the right
+                else if (Sprite.Position.X < (Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth &&
+                         InputHandler.KeyDown(Keys[3]))
                     Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
             }
             // The player is either on the left either on the right
-            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
+            if (Sprite.Position.X <= 0 || Sprite.Position.X >= (Config.MapSize.X - 1)*Engine.TileWidth)
             {
                 // If he wants to go to the top
                 if (Sprite.Position.Y > 0 && InputHandler.KeyDown(Keys[0]))
                     Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
-                // If he wants to go to the bottom
-                else if (Sprite.Position.Y < (Config.MapSize.Y * Engine.TileHeight) - Engine.TileHeight &&
-                    InputHandler.KeyDown(Keys[1]))
+                    // If he wants to go to the bottom
+                else if (Sprite.Position.Y < (Config.MapSize.Y*Engine.TileHeight) - Engine.TileHeight &&
+                         InputHandler.KeyDown(Keys[1]))
                     Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
             }
 
             if (Sprite.Position.Y <= 0)
                 Sprite.CurrentAnimation = AnimationKey.Down;
-            else if (Sprite.Position.Y >= (Config.MapSize.Y - 1) * Engine.TileHeight)
+            else if (Sprite.Position.Y >= (Config.MapSize.Y - 1)*Engine.TileHeight)
                 Sprite.CurrentAnimation = AnimationKey.Up;
             else if (Sprite.Position.X <= 0)
                 Sprite.CurrentAnimation = AnimationKey.Right;
-            else if (Sprite.Position.X >= (Config.MapSize.X - 1) * Engine.TileWidth)
+            else if (Sprite.Position.X >= (Config.MapSize.X - 1)*Engine.TileWidth)
                 Sprite.CurrentAnimation = AnimationKey.Left;
 
             #region Bombs => Edge gameplay
 
-            if (InputHandler.KeyDown(Keys[4]) && this.CurrentBombNumber > 0)
+            if (InputHandler.KeyDown(Keys[4]) && CurrentBombNumber > 0)
             {
                 // He can't put a bomb when he is on edges
-                if (!((Sprite.CellPosition.Y == 0 && (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
-                    (Sprite.CellPosition.Y == Config.MapSize.Y - 1 && (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
+                if (
+                    !((Sprite.CellPosition.Y == 0 &&
+                       (Sprite.CellPosition.X == 0 || Sprite.CellPosition.X == Config.MapSize.X - 1)) ||
+                      (Sprite.CellPosition.Y == Config.MapSize.Y - 1 &&
+                       (Sprite.CellPosition.X == 0 || (Sprite.CellPosition.X == Config.MapSize.X - 1)))))
                 {
-                    Map level = FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
+                    Map level =
+                        FinalBomber.Instance.GamePlayScreen.World.Levels[
+                            FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
                     int lag = 0;
                     Point bombPosition = Sprite.CellPosition;
                     // Up
                     if (Sprite.CellPosition.Y == 0)
                     {
                         while (Sprite.CellPosition.Y + lag + 3 < Config.MapSize.Y &&
-                                level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
+                               level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y + lag + 3])
                         {
                             lag++;
                         }
@@ -388,14 +397,14 @@ namespace Final_Bomber.Core.Players
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                     // Down
                     if (Sprite.CellPosition.Y == Config.MapSize.Y - 1)
                     {
                         while (Sprite.CellPosition.Y - lag - 3 >= 0 &&
-                                level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
+                               level.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y - lag - 3])
                         {
                             lag++;
                         }
@@ -406,14 +415,14 @@ namespace Final_Bomber.Core.Players
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                     // Left
                     if (Sprite.CellPosition.X == 0)
                     {
                         while (Sprite.CellPosition.X + lag + 3 < Config.MapSize.X &&
-                                level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
+                               level.CollisionLayer[Sprite.CellPosition.X + lag + 3, Sprite.CellPosition.Y])
                         {
                             lag++;
                         }
@@ -424,14 +433,14 @@ namespace Final_Bomber.Core.Players
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                     // Right
                     if (Sprite.CellPosition.X == Config.MapSize.X - 1)
                     {
                         while (Sprite.CellPosition.X - lag - 3 >= 0 &&
-                                level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
+                               level.CollisionLayer[Sprite.CellPosition.X - lag - 3, Sprite.CellPosition.Y])
                         {
                             lag++;
                         }
@@ -442,7 +451,7 @@ namespace Final_Bomber.Core.Players
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            this.CurrentBombNumber--;
+                            CurrentBombNumber--;
                         }
                     }
                 }
@@ -459,23 +468,23 @@ namespace Final_Bomber.Core.Players
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveDown);
+                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveDown);
                         break;
                     case LookDirection.Left:
                         Debug.Print("[Client]I want to go left !");
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveLeft);
+                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveLeft);
                         break;
                     case LookDirection.Right:
                         Debug.Print("[Client]I want to go right !");
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveRight);
+                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveRight);
                         break;
                     case LookDirection.Up:
                         Debug.Print("[Client]I want to go up !");
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.MoveUp);
+                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveUp);
                         break;
                     default:
                         Debug.Print("[Client]I want to go stay here !");
-                        GameSettings.GameServer.SendMovement((byte)GameServer.SMT.Standing);
+                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.Standing);
                         break;
                 }
             }

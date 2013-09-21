@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FBLibrary.Core;
+using Final_Bomber.Controls;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
+using Final_Bomber.Entities;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Final_Bomber.Controls;
 using Final_Bomber.TileEngine;
-using Final_Bomber.Entities;
-using System.Diagnostics;
+using Final_Bomber.WorldEngine;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Entities
 {
@@ -19,28 +19,22 @@ namespace Final_Bomber.Entities
     {
         #region Field Region
 
-        private string _name;
-
-        public override sealed AnimatedSprite Sprite { get; protected set; }
-
         private readonly AnimatedSprite _playerDeathAnimation;
-
-        protected bool IsMoving;
-
-        private TimeSpan _invincibleTimer;
-        private TimeSpan _invincibleBlinkTimer;
-        private float _invincibleBlinkFrequency;
-        
-        private Point _previousCellPosition;
-        private bool _cellChanging;
-        private bool _cellTeleporting;
+        protected TimeSpan BombTimerSaved;
 
         protected LookDirection CurrentLookDirection;
+        protected bool IsMoving;
         protected LookDirection PreviousLookDirection;
 
         // Bad item
-        protected TimeSpan BombTimerSaved;
         protected float SpeedSaved;
+        private bool _cellTeleporting;
+        private float _invincibleBlinkFrequency;
+        private TimeSpan _invincibleBlinkTimer;
+        private TimeSpan _invincibleTimer;
+        private string _name;
+
+        public override sealed AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
@@ -105,19 +99,17 @@ namespace Final_Bomber.Entities
             animations.Add(AnimationKey.Up, animation);
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1");
-            
+
             Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
             Sprite.ChangeFramesPerSecond(animationFramesPerSecond);
             Sprite.Speed = Config.BasePlayerSpeed;
 
-            _previousCellPosition = Sprite.CellPosition;
-
             var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
             _playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation, Sprite.Position)
-                {
-                    IsAnimating = false
-                };
+            {
+                IsAnimating = false
+            };
 
             IsMoving = false;
             IsAlive = true;
@@ -127,7 +119,7 @@ namespace Final_Bomber.Entities
 
             _invincibleTimer = Config.PlayerInvincibleTimer;
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
-            _invincibleBlinkTimer = TimeSpan.FromSeconds(this._invincibleBlinkFrequency);
+            _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
 
             Power = Config.BasePlayerBombPower;
             TotalBombNumber = Config.BasePlayerBombNumber;
@@ -143,9 +135,11 @@ namespace Final_Bomber.Entities
             BadItemTimer = TimeSpan.Zero;
             BadItemTimerLenght = TimeSpan.Zero;
         }
+
         #endregion
 
         #region XNA Method Region
+
         public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             if (IsAlive && !InDestruction)
@@ -177,8 +171,6 @@ namespace Final_Bomber.Entities
 
                 #region Moving
 
-                _cellChanging = _previousCellPosition != Sprite.CellPosition;
-
                 Move(gameTime, map, hazardMap);
 
                 #endregion
@@ -209,7 +201,7 @@ namespace Final_Bomber.Entities
                         }
                         Bomb bomb = BombAt(direction);
                         if (bomb != null)
-                            bomb.ChangeDirection(CurrentLookDirection, this.Id);
+                            bomb.ChangeDirection(CurrentLookDirection, Id);
                     }
                 }
 
@@ -261,29 +253,36 @@ namespace Final_Bomber.Entities
                     _cellTeleporting = true;
                 }
                 */
+
                 #endregion
             }
 
-            #region Death
-            else if(_playerDeathAnimation.IsAnimating)
+                #region Death
+
+            else if (_playerDeathAnimation.IsAnimating)
             {
                 _playerDeathAnimation.Update(gameTime);
 
                 if (_playerDeathAnimation.Animation.CurrentFrame == _playerDeathAnimation.Animation.FrameCount - 1)
                     Remove();
             }
-            #endregion
+                #endregion
 
-            #region Edge wall gameplay
-            else if (OnEdge && (!Config.ActiveSuddenDeath || (Config.ActiveSuddenDeath && !FinalBomber.Instance.GamePlayScreen.SuddenDeath.HasStarted)))
+                #region Edge wall gameplay
+
+            else if (OnEdge &&
+                     (!Config.ActiveSuddenDeath ||
+                      (Config.ActiveSuddenDeath && !FinalBomber.Instance.GamePlayScreen.SuddenDeath.HasStarted)))
             {
                 Sprite.Update(gameTime);
 
                 MoveFromEdgeWall();
             }
+
             #endregion
 
             #region Camera
+
             /*
             Camera.Update(gameTime);
 
@@ -326,41 +325,44 @@ namespace Final_Bomber.Entities
             if (IsMoving && Camera.CameraMode == CameraMode.Follow)
                 Camera.LockToSprite(Sprite);
             */
-            #endregion
 
-            _previousCellPosition = Sprite.CellPosition;
+            #endregion
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             var playerNamePosition = new Vector2(
-                Sprite.Position.X + Engine.Origin.X + (int)(Sprite.Width/2) - 
-                ControlManager.SpriteFont.MeasureString(_name).X / 2 + 5,
+                Sprite.Position.X + Engine.Origin.X + Sprite.Width/2 -
+                ControlManager.SpriteFont.MeasureString(_name).X/2 + 5,
                 Sprite.Position.Y + Engine.Origin.Y - 25 -
-                ControlManager.SpriteFont.MeasureString(_name).Y / 2);
+                ControlManager.SpriteFont.MeasureString(_name).Y/2);
 
             if ((IsAlive && !InDestruction) || OnEdge)
             {
                 if (IsInvincible)
                 {
-                    if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency * 0.5f))
+                    if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency*0.5f))
                     {
                         Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition, Color.Black);
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition,
+                            Color.Black);
                     }
                 }
                 else
                 {
                     Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition, Color.Black);
+                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition,
+                        Color.Black);
                 }
             }
             else
             {
                 _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition, Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition,
+                    Color.Black);
             }
         }
+
         #endregion
 
         #region Method Region
@@ -369,27 +371,32 @@ namespace Final_Bomber.Entities
 
         private Bomb BombAt(Point cell)
         {
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.X &&
-                cell.Y < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.Y)
+            if (cell.X >= 0 && cell.Y >= 0 &&
+                cell.X <
+                FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel]
+                    .Size.X &&
+                cell.Y <
+                FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel]
+                    .Size.Y)
             {
                 Bomb bomb = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == cell);
                 return (bomb);
             }
-            else
-                return null;
+            return null;
         }
 
         private void Invincibility()
         {
-            this.IsInvincible = true;
-            this._invincibleTimer = Config.PlayerInvincibleTimer;
-            this._invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
-            this._invincibleBlinkTimer = TimeSpan.FromSeconds(this._invincibleBlinkFrequency);
+            IsInvincible = true;
+            _invincibleTimer = Config.PlayerInvincibleTimer;
+            _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
+            _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
         }
 
         #endregion
 
         #region Protected Method Region
+
         protected bool WallAt(Point cell)
         {
             return false;
@@ -404,66 +411,68 @@ namespace Final_Bomber.Entities
 
         protected bool IsMoreTopSide()
         {
-            return this.Sprite.Position.Y < ((this.Sprite.CellPosition.Y * Engine.TileHeight) - (this.Sprite.Speed / 2));
+            return Sprite.Position.Y < ((Sprite.CellPosition.Y*Engine.TileHeight) - (Sprite.Speed/2));
         }
 
         protected bool IsMoreBottomSide()
         {
-            return this.Sprite.Position.Y > ((Sprite.CellPosition.Y * Engine.TileHeight) + (Sprite.Speed / 2));
+            return Sprite.Position.Y > ((Sprite.CellPosition.Y*Engine.TileHeight) + (Sprite.Speed/2));
         }
 
         protected bool IsMoreLeftSide()
         {
-            return this.Sprite.Position.X < ((this.Sprite.CellPosition.X * Engine.TileWidth) - (this.Sprite.Speed / 2));
+            return Sprite.Position.X < ((Sprite.CellPosition.X*Engine.TileWidth) - (Sprite.Speed/2));
         }
 
         protected bool IsMoreRightSide()
         {
-            return this.Sprite.Position.X > ((this.Sprite.CellPosition.X * Engine.TileWidth) + (this.Sprite.Speed / 2));
+            return Sprite.Position.X > ((Sprite.CellPosition.X*Engine.TileWidth) + (Sprite.Speed/2));
         }
 
 
-        protected virtual void Move(GameTime gameTime, Map map, int[,] hazardMap) 
-        { 
+        protected virtual void Move(GameTime gameTime, Map map, int[,] hazardMap)
+        {
         }
 
         protected void ComputeWallCollision()
         {
             #region Wall collisions
+
             Sprite.LockToMap();
 
             // -- Vertical check -- //
             // Is there a wall on the top ?
-            if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y - 1)))
+            if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1)))
             {
                 // Is there a wall on the bottom ?
-                if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1)))
+                if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
                 {
                     // Top collision and Bottom collision
-                    if ((CurrentLookDirection == LookDirection.Up && IsMoreTopSide()) || (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide()))
-                        this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
+                    if ((CurrentLookDirection == LookDirection.Up && IsMoreTopSide()) ||
+                        (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide()))
+                        Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
                 }
-                // No wall at the bottom
+                    // No wall at the bottom
                 else
                 {
                     // Top collision
                     if (CurrentLookDirection == LookDirection.Up && IsMoreTopSide())
-                        this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
+                        Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
                 }
             }
-            // Wall only at the bottom
-            else if (WallAt(new Point(this.Sprite.CellPosition.X, this.Sprite.CellPosition.Y + 1)))
+                // Wall only at the bottom
+            else if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
             {
                 // Bottom collision
                 if (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide())
-                    this.Sprite.PositionY = this.Sprite.CellPosition.Y * Engine.TileHeight;
-                // To lag him
+                    Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
+                    // To lag him
                 else if (CurrentLookDirection == LookDirection.Down)
                 {
                     if (IsMoreLeftSide())
-                        this.Sprite.PositionX += this.Sprite.Speed;
+                        Sprite.PositionX += Sprite.Speed;
                     else if (IsMoreRightSide())
-                        this.Sprite.PositionX -= this.Sprite.Speed;
+                        Sprite.PositionX -= Sprite.Speed;
                 }
             }
 
@@ -475,31 +484,36 @@ namespace Final_Bomber.Entities
                 if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
                 {
                     // Left and right collisions
-                    if ((CurrentLookDirection == LookDirection.Left && IsMoreLeftSide()) || (CurrentLookDirection == LookDirection.Right && IsMoreRightSide()))
-                        this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
+                    if ((CurrentLookDirection == LookDirection.Left && IsMoreLeftSide()) ||
+                        (CurrentLookDirection == LookDirection.Right && IsMoreRightSide()))
+                        Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
+                                           Engine.TileWidth/2;
                 }
-                // Wall only at the left
+                    // Wall only at the left
                 else
                 {
                     // Left collision
                     if (CurrentLookDirection == LookDirection.Left && IsMoreLeftSide())
-                        this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
+                        Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
+                                           Engine.TileWidth/2;
                 }
             }
-            // Wall only at the right
-            else if (WallAt(new Point(this.Sprite.CellPosition.X + 1, this.Sprite.CellPosition.Y)))
+                // Wall only at the right
+            else if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
             {
                 // Right collision
                 if (CurrentLookDirection == LookDirection.Right && IsMoreRightSide())
-                    this.Sprite.PositionX = this.Sprite.CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
+                    Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 + Engine.TileWidth/2;
             }
 
 
             // The player must stay in the map
-            this.Sprite.PositionX = MathHelper.Clamp(this.Sprite.Position.X, Engine.TileWidth,
-                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
-            this.Sprite.PositionY = MathHelper.Clamp(this.Sprite.Position.Y, Engine.TileHeight,
-                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
+            Sprite.PositionX = MathHelper.Clamp(Sprite.Position.X, Engine.TileWidth,
+                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
+                    ].Size.X*Engine.TileWidth) - 2*Engine.TileWidth);
+            Sprite.PositionY = MathHelper.Clamp(Sprite.Position.Y, Engine.TileHeight,
+                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
+                    ].Size.Y*Engine.TileHeight) - 2*Engine.TileHeight);
 
             #endregion
         }
@@ -507,13 +521,16 @@ namespace Final_Bomber.Entities
         protected void UpdatePlayerPosition()
         {
             #region Update player's position
-            if (_cellChanging)
+
+            if (IsChangingCell())
             {
-                if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                   Board[_previousCellPosition.X, _previousCellPosition.Y] == this)
+                if (FinalBomber.Instance.GamePlayScreen.World.Levels[
+                    FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
+                    Board[PreviousCellPosition.X, PreviousCellPosition.Y] == this)
                 {
-                    FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Board[_previousCellPosition.X, _previousCellPosition.Y] = null;
+                    FinalBomber.Instance.GamePlayScreen.World.Levels[
+                        FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
+                        Board[PreviousCellPosition.X, PreviousCellPosition.Y] = null;
                 }
 
                 if (_cellTeleporting)
@@ -521,13 +538,16 @@ namespace Final_Bomber.Entities
             }
             else
             {
-                if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
+                if (FinalBomber.Instance.GamePlayScreen.World.Levels[
+                    FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                     Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
                 {
-                    FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
+                    FinalBomber.Instance.GamePlayScreen.World.Levels[
+                        FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
                         Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
                 }
             }
+
             #endregion
         }
 
@@ -537,43 +557,44 @@ namespace Final_Bomber.Entities
 
         public void IncreaseTotalBombNumber(int incr)
         {
-            if (this.TotalBombNumber + incr > Config.MaxBombNumber)
+            if (TotalBombNumber + incr > Config.MaxBombNumber)
             {
-                this.TotalBombNumber = Config.MaxBombNumber;
-                this.CurrentBombNumber = TotalBombNumber;
+                TotalBombNumber = Config.MaxBombNumber;
+                CurrentBombNumber = TotalBombNumber;
             }
-            else if (this.TotalBombNumber + incr < Config.MinBombNumber)
+            else if (TotalBombNumber + incr < Config.MinBombNumber)
             {
-                this.TotalBombNumber = Config.MinBombNumber;
-                this.CurrentBombNumber = TotalBombNumber;
+                TotalBombNumber = Config.MinBombNumber;
+                CurrentBombNumber = TotalBombNumber;
             }
             else
             {
-                this.TotalBombNumber += incr;
-                this.CurrentBombNumber += incr;
+                TotalBombNumber += incr;
+                CurrentBombNumber += incr;
             }
         }
 
         public void IncreasePower(int incr)
         {
-            if (this.Power + incr > Config.MaxBombPower)
-                this.Power = Config.MaxBombPower;
-            else if (this.Power + incr < Config.MinBombPower)
-                this.Power = Config.MinBombPower;
+            if (Power + incr > Config.MaxBombPower)
+                Power = Config.MaxBombPower;
+            else if (Power + incr < Config.MinBombPower)
+                Power = Config.MinBombPower;
             else
-                this.Power += incr;
+                Power += incr;
         }
 
         public void IncreaseSpeed(float incr)
         {
-            this.Sprite.Speed += incr;
+            Sprite.Speed += incr;
         }
 
         public virtual void ApplyBadItem(BadItemEffect effect)
         {
-            this.HasBadItemEffect = true;
-            this.BadItemEffect = effect;
-            this.BadItemTimerLenght = TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
+            HasBadItemEffect = true;
+            BadItemEffect = effect;
+            BadItemTimerLenght =
+                TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
         }
 
         protected virtual void RemoveBadItem()
@@ -591,57 +612,56 @@ namespace Final_Bomber.Entities
             Sprite.Position = position;
             Sprite.CurrentAnimation = AnimationKey.Down;
             _playerDeathAnimation.IsAnimating = false;
-            
+
             Invincibility();
         }
 
         public virtual void ChangeLookDirection(byte newLookDirection)
         {
             PreviousLookDirection = CurrentLookDirection;
-            CurrentLookDirection = (LookDirection)newLookDirection;
-            Debug.Print("New look direction: " + (LookDirection)newLookDirection);
+            CurrentLookDirection = (LookDirection) newLookDirection;
+            Debug.Print("New look direction: " + (LookDirection) newLookDirection);
         }
-        
+
         #endregion
 
         #region Override Method Region
 
         public override void Destroy()
         {
-            if (!this.InDestruction)
+            if (!InDestruction)
             {
-                this.Sprite.IsAnimating = false;
-                this.InDestruction = true;
+                Sprite.IsAnimating = false;
+                InDestruction = true;
                 FinalBomber.Instance.GamePlayScreen.PlayerDeathSound.Play();
-                this._playerDeathAnimation.Position = this.Sprite.Position;
-                this._playerDeathAnimation.IsAnimating = true;
+                _playerDeathAnimation.Position = Sprite.Position;
+                _playerDeathAnimation.IsAnimating = true;
             }
         }
 
         public override void Remove()
         {
-            this._playerDeathAnimation.IsAnimating = false;
-            this.InDestruction = false;
-            this.IsAlive = false;
+            _playerDeathAnimation.IsAnimating = false;
+            InDestruction = false;
+            IsAlive = false;
 
             // Replacing for the gameplay on the edges
             // Right side
-            if (Config.MapSize.X - this.Sprite.CellPosition.X < Config.MapSize.X / 2)
+            if (Config.MapSize.X - Sprite.CellPosition.X < Config.MapSize.X/2)
             {
-                this.Sprite.CurrentAnimation = AnimationKey.Left;
-                this.Sprite.Position = new Vector2((Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth, this.Sprite.Position.Y);
+                Sprite.CurrentAnimation = AnimationKey.Left;
+                Sprite.Position = new Vector2((Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth, Sprite.Position.Y);
             }
-            // Left side
+                // Left side
             else
             {
-                this.Sprite.CurrentAnimation = AnimationKey.Right;
-                this.Sprite.Position = new Vector2(0, this.Sprite.Position.Y);
+                Sprite.CurrentAnimation = AnimationKey.Right;
+                Sprite.Position = new Vector2(0, Sprite.Position.Y);
             }
         }
 
         protected virtual void MoveFromEdgeWall()
         {
-            
         }
 
         #endregion

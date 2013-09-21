@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using FBLibrary.Core;
-using Final_Bomber.Core;
-using Final_Bomber.Core.Entities;
+using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.Sprites;
-using Final_Bomber.TileEngine;
 
-namespace Final_Bomber.Entities
+namespace Final_Bomber.Core.Entities
 {
     public class Arrow : StaticEntity
     {
         #region Field Region
-        public override sealed Sprites.AnimatedSprite Sprite { get; protected set; }
-        private bool _isAlive;
+
         private readonly LookDirection _lookDirection;
+        private bool _isAlive;
+        public override sealed AnimatedSprite Sprite { get; protected set; }
+
         #endregion
 
         #region Property Region
@@ -27,6 +26,7 @@ namespace Final_Bomber.Entities
         #endregion
 
         #region Constructor Region
+
         public Arrow(Point position, LookDirection initialLookDirection)
         {
             const int animationFramesPerSecond = 10;
@@ -52,6 +52,7 @@ namespace Final_Bomber.Entities
 
             _isAlive = true;
         }
+
         #endregion
 
         #region XNA Method Region
@@ -61,7 +62,7 @@ namespace Final_Bomber.Entities
             Sprite.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
@@ -114,8 +115,10 @@ namespace Final_Bomber.Entities
                     break;
             }
 
-            if (!FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                CollisionLayer[nextPosition.X, nextPosition.Y])
+            if (
+                !FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
+                    ].
+                    CollisionLayer[nextPosition.X, nextPosition.Y])
             {
                 bomb.ChangeDirection(_lookDirection, -1);
                 //bomb.ChangeSpeed(bomb.Sprite.Speed + Config.BombSpeedIncrementeur);
@@ -126,14 +129,16 @@ namespace Final_Bomber.Entities
         #endregion
 
         #region Override Method Region
+
         public override void Destroy()
         {
         }
 
-        public override  void Remove()
+        public override void Remove()
         {
-            this._isAlive = false;
+            _isAlive = false;
         }
+
         #endregion
     }
 }

@@ -2,26 +2,40 @@
 using Final_Bomber.Entities;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public enum ItemType { Power, Bomb, Speed, Point, BadItem }
-    public enum BadItemEffect { NoBomb, BombDrop, BombTimerChanged, TooSpeed, TooSlow, KeysInversion }
+    public enum ItemType
+    {
+        Power,
+        Bomb,
+        Speed,
+        Point,
+        BadItem
+    }
+
+    public enum BadItemEffect
+    {
+        NoBomb,
+        BombDrop,
+        BombTimerChanged,
+        TooSpeed,
+        TooSlow,
+        KeysInversion
+    }
 
     public class PowerUp : StaticEntity
     {
         #region Field Region
 
-        public override sealed AnimatedSprite Sprite { get; protected set; }
-
+        private readonly AnimatedSprite _itemDestroyAnimation;
         private readonly ItemType _type;
         private bool _inDestruction;
         private bool _isAlive;
+        public override sealed AnimatedSprite Sprite { get; protected set; }
 
-        readonly AnimatedSprite _itemDestroyAnimation;
         #endregion
 
         #region Property Region
@@ -44,12 +58,13 @@ namespace Final_Bomber.Core.Entities
         #endregion
 
         #region Constructor Region
+
         public PowerUp(Point position)
         {
             _type = Config.ItemTypeAvaible[GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
 
             var animations = new Dictionary<AnimationKey, Animation>();
-            var animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[_type] * 32, 5);
+            var animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[_type]*32, 5);
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/item");
             Sprite = new AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
@@ -57,16 +72,18 @@ namespace Final_Bomber.Core.Entities
             var itemDestroyTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
             animation = new Animation(7, 31, 28, 0, 0, 8);
             _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation, Sprite.Position)
-                {
-                    IsAnimating = false
-                };
+            {
+                IsAnimating = false
+            };
 
             _inDestruction = false;
             _isAlive = true;
         }
+
         #endregion
 
         #region XNA Method Region
+
         public override void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
@@ -79,38 +96,40 @@ namespace Final_Bomber.Core.Entities
             }
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
 
             if (_itemDestroyAnimation.IsAnimating)
                 _itemDestroyAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
         }
+
         #endregion
 
         #region Method Region
+
         public void ApplyItem(Player p)
         {
             switch (_type)
             {
-                // More power
+                    // More power
                 case ItemType.Power:
                     p.IncreasePower(1);
                     break;
-                // More bombs
+                    // More bombs
                 case ItemType.Bomb:
                     p.IncreaseTotalBombNumber(1);
                     break;
-                // More speed
+                    // More speed
                 case ItemType.Speed:
                     p.IncreaseSpeed(Config.PlayerSpeedIncrementeur);
                     break;
-                // Skeleton ! => Bad items
+                    // Skeleton ! => Bad items
                 case ItemType.BadItem:
                     int randomBadEffect = GamePlayScreen.Random.Next(Config.BadItemEffectList.Count);
                     p.ApplyBadItem(Config.BadItemEffectList[randomBadEffect]);
                     break;
-                // More points
+                    // More points
                 case ItemType.Point:
                     Config.PlayersScores[p.Id]++;
                     break;
@@ -119,17 +138,18 @@ namespace Final_Bomber.Core.Entities
 
         public override void Destroy()
         {
-            if (!this._itemDestroyAnimation.IsAnimating)
+            if (!_itemDestroyAnimation.IsAnimating)
             {
-                this._inDestruction = true;
-                this._itemDestroyAnimation.IsAnimating = true;
+                _inDestruction = true;
+                _itemDestroyAnimation.IsAnimating = true;
             }
         }
 
         public override void Remove()
         {
-            this._isAlive = false;
+            _isAlive = false;
         }
+
         #endregion
     }
 }
