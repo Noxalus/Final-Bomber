@@ -258,10 +258,10 @@ namespace Final_Bomber.Screens
 
                     // Is it die ?
                     if (World.Levels[World.CurrentLevel].
-                        HazardMap[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] == 3)
+                        HazardMap[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] == 3)
                     {
                         World.Levels[World.CurrentLevel].
-                        HazardMap[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = 0;
+                        HazardMap[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = 0;
                         _wallList[i].Destroy();
                     }
 
@@ -269,18 +269,18 @@ namespace Final_Bomber.Screens
                     if (!_wallList[i].IsAlive)
                     {
                         if (!Config.ActiveSuddenDeath ||
-                            (Config.ActiveSuddenDeath && !SuddenDeath.Visited[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y]))
+                            (Config.ActiveSuddenDeath && !SuddenDeath.Visited[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y]))
                         {
-                            World.Levels[World.CurrentLevel].CollisionLayer[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = false;
+                            World.Levels[World.CurrentLevel].CollisionLayer[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = false;
                             if (Random.Next(0, 100) < MathHelper.Clamp(Config.ItemNumber, 0, 100))
                             {
-                                var item = new PowerUp(_wallList[i].Sprite.CellPosition);
+                                var item = new PowerUp(_wallList[i].CellPosition);
                                 _itemList.Add(item);
-                                World.Levels[World.CurrentLevel].Board[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = item;
+                                World.Levels[World.CurrentLevel].Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = item;
                             }
                             else
                             {
-                                World.Levels[World.CurrentLevel].Board[_wallList[i].Sprite.CellPosition.X, _wallList[i].Sprite.CellPosition.Y] = null;
+                                World.Levels[World.CurrentLevel].Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = null;
                             }
                         }
                         _wallList.Remove(_wallList[i]);
@@ -295,7 +295,7 @@ namespace Final_Bomber.Screens
 
                     // Is it die ?
                     if (World.Levels[World.CurrentLevel].
-                        HazardMap[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] == 3 &&
+                        HazardMap[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] == 3 &&
                         !BombList[i].InDestruction)
                     {
                         BombList[i].Destroy();
@@ -304,9 +304,9 @@ namespace Final_Bomber.Screens
                     // We clean the obsolete elements
                     if (!BombList[i].IsAlive)
                     {
-                        if (World.Levels[World.CurrentLevel].Board[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] is Bomb)
-                            World.Levels[World.CurrentLevel].Board[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] = null;
-                        World.Levels[World.CurrentLevel].CollisionLayer[BombList[i].Sprite.CellPosition.X, BombList[i].Sprite.CellPosition.Y] = false;
+                        if (World.Levels[World.CurrentLevel].Board[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] is Bomb)
+                            World.Levels[World.CurrentLevel].Board[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] = null;
+                        World.Levels[World.CurrentLevel].CollisionLayer[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] = false;
 
                         // We don't forget to give it back to its owner
                         if (BombList[i].Id > 0)
@@ -321,8 +321,8 @@ namespace Final_Bomber.Screens
                         foreach (Point p in BombList[i].ActionField)
                         {
                             bool sameCellThanAnOther = false;
-                            if (BombList.Where(b => !(b.Sprite.CellPosition.X == BombList[i].Sprite.CellPosition.X &&
-                                                      b.Sprite.CellPosition.Y == BombList[i].Sprite.CellPosition.Y)).Any(b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
+                            if (BombList.Where(b => !(b.CellPosition.X == BombList[i].CellPosition.X &&
+                                                      b.CellPosition.Y == BombList[i].CellPosition.Y)).Any(b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
                             {
                                 this.World.Levels[this.World.CurrentLevel].HazardMap[p.X, p.Y] = 2;
                                 sameCellThanAnOther = true;
@@ -342,14 +342,14 @@ namespace Final_Bomber.Screens
 
                     // Is it die ?
                     if (World.Levels[World.CurrentLevel].
-                        HazardMap[_itemList[i].Sprite.CellPosition.X, _itemList[i].Sprite.CellPosition.Y] == 3)
+                        HazardMap[_itemList[i].CellPosition.X, _itemList[i].CellPosition.Y] == 3)
                         _itemList[i].Destroy();
 
                     // We clean the obsolete elements
                     if (!_itemList[i].IsAlive)
                     {
-                        if (World.Levels[World.CurrentLevel].Board[_itemList[i].Sprite.CellPosition.X, _itemList[i].Sprite.CellPosition.Y] is PowerUp)
-                            World.Levels[World.CurrentLevel].Board[_itemList[i].Sprite.CellPosition.X, _itemList[i].Sprite.CellPosition.Y] = null;
+                        if (World.Levels[World.CurrentLevel].Board[_itemList[i].CellPosition.X, _itemList[i].CellPosition.Y] is PowerUp)
+                            World.Levels[World.CurrentLevel].Board[_itemList[i].CellPosition.X, _itemList[i].CellPosition.Y] = null;
                         _itemList.Remove(_itemList[i]);
                     }
                 }
@@ -362,13 +362,13 @@ namespace Final_Bomber.Screens
 
                     // Is it die ?
                     if (!PlayerList[i].InDestruction && !PlayerList[i].IsInvincible && World.Levels[World.CurrentLevel].
-                        HazardMap[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y] == 3)
+                        HazardMap[PlayerList[i].CellPosition.X, PlayerList[i].CellPosition.Y] == 3)
                     {
                         int bombId = -42;
                         List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
                         foreach (Bomb b in bl)
                         {
-                            if (b.ActionField.Any(po => po == PlayerList[i].Sprite.CellPosition))
+                            if (b.ActionField.Any(po => po == PlayerList[i].CellPosition))
                             {
                                 bombId = b.Id;
                             }
@@ -382,7 +382,7 @@ namespace Final_Bomber.Screens
                             Player player = PlayerList.Find(p => p.Id == bombId);
                             if (player.OnEdge)
                             {
-                                player.Rebirth(PlayerList[i].Sprite.Position);
+                                player.Rebirth(PlayerList[i].Position);
                                 _deadPlayersNumber--;
                             }
                         }
@@ -394,11 +394,11 @@ namespace Final_Bomber.Screens
                     {
                         if (!PlayerList[i].OnEdge)
                         {
-                            if (World.Levels[World.CurrentLevel].Board[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y] is Player)
+                            if (World.Levels[World.CurrentLevel].Board[PlayerList[i].CellPosition.X, PlayerList[i].CellPosition.Y] is Player)
                             {
-                                var p = (Player)World.Levels[World.CurrentLevel].Board[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y];
+                                var p = (Player)World.Levels[World.CurrentLevel].Board[PlayerList[i].CellPosition.X, PlayerList[i].CellPosition.Y];
                                 if (p.Id == PlayerList[i].Id)
-                                    World.Levels[World.CurrentLevel].Board[PlayerList[i].Sprite.CellPosition.X, PlayerList[i].Sprite.CellPosition.Y] = null;
+                                    World.Levels[World.CurrentLevel].Board[PlayerList[i].CellPosition.X, PlayerList[i].CellPosition.Y] = null;
                             }
                             _deadPlayersNumber++;
                         }
@@ -616,7 +616,7 @@ namespace Final_Bomber.Screens
             {
                 /*
                 int[,] costMatrix = AIFunction.CostMatrix(
-                    PlayerList[PlayerList.Count - 1].Sprite.CellPosition,
+                    PlayerList[PlayerList.Count - 1].CellPosition,
                     World.Levels[World.CurrentLevel].CollisionLayer,
                     World.Levels[World.CurrentLevel].HazardMap, Config.MapSize);
 
@@ -642,7 +642,7 @@ namespace Final_Bomber.Screens
             {
                 /*
                 int[,] interestMatrix = AIFunction.MakeInterestMatrix(
-                    PlayerList[PlayerList.Count - 1].Sprite.CellPosition,
+                    PlayerList[PlayerList.Count - 1].CellPosition,
                     World.Levels[World.CurrentLevel].Board,
                     World.Levels[World.CurrentLevel].CollisionLayer,
                     World.Levels[World.CurrentLevel].HazardMap, _mapSize);
@@ -750,7 +750,7 @@ namespace Final_Bomber.Screens
 
                     if (Config.Debug)
                     {
-                        GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.Sprite.CellPosition).ToString(),
+                        GameRef.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.CellPosition).ToString(),
                             new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * Config.PlayersNumber + 60 + 20 * (p.Id)), Color.Black);
                     }
 
@@ -813,10 +813,10 @@ namespace Final_Bomber.Screens
 
                     // Player's speed
                     int counterRedShoes = 0;
-                    if (p.Sprite.Speed / Config.PlayerSpeedIncrementeur >= 10)
+                    if (p.Speed / Config.PlayerSpeedIncrementeur >= 10)
                     {
                         iconLag = 10;
-                        counterRedShoes = (int)(p.Sprite.Speed / Config.PlayerSpeedIncrementeur) / 10;
+                        counterRedShoes = (int)(p.Speed / Config.PlayerSpeedIncrementeur) / 10;
                         for (int i = 0; i < counterRedShoes; i++)
                             GameRef.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
                                 _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
@@ -824,7 +824,7 @@ namespace Final_Bomber.Screens
                     }
                     else
                         iconLag = 0;
-                    int counterBlueShoes = (int)(p.Sprite.Speed / Config.PlayerSpeedIncrementeur) % 10;
+                    int counterBlueShoes = (int)(p.Speed / Config.PlayerSpeedIncrementeur) % 10;
 
                     for (int i = 0; i < counterBlueShoes; i++)
                         GameRef.SpriteBatch.Draw(_itemInfoIcon,
@@ -961,7 +961,7 @@ namespace Final_Bomber.Screens
             var voidPosition = new List<Point>();
 
             // Item Map
-            IEntity mapItem;
+            IEntity entity;
 
             // List of player position
             var playerPositions = new Dictionary<int, Point>();
@@ -985,17 +985,17 @@ namespace Final_Bomber.Screens
             }
 
             /*
-            mapItem = new Teleporter(GameRef, new Vector2(
+            entity = new Teleporter(GameRef, new Vector2(
                         5 * Engine.TileWidth,
                         1 * Engine.TileHeight));
-            teleporterList.Add((Teleporter)mapItem);
-            map[5,1] = mapItem;
+            teleporterList.Add((Teleporter)entity);
+            map[5,1] = entity;
 
-            mapItem = new Teleporter(GameRef, new Vector2(
+            entity = new Teleporter(GameRef, new Vector2(
                         10 * Engine.TileWidth,
                         1 * Engine.TileHeight));
-            teleporterList.Add((Teleporter)mapItem);
-            map[10, 1] = mapItem;
+            teleporterList.Add((Teleporter)entity);
+            map[10, 1] = entity;
             */
 
             for (int x = 0; x < Config.MapSize.X; x++)
@@ -1017,11 +1017,11 @@ namespace Final_Bomber.Screens
                     for (int i = 0; i < MathHelper.Clamp(Config.TeleporterNumber, 0, voidPosition.Count - 1); i++)
                     {
                         randomVoid = Random.Next(voidPosition.Count);
-                        mapItem = new Teleporter(new Point(
+                        entity = new Teleporter(new Point(
                             voidPosition[randomVoid].X,
                             voidPosition[randomVoid].Y));
-                        TeleporterList.Add((Teleporter)mapItem);
-                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = mapItem;
+                        TeleporterList.Add((Teleporter)entity);
+                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = entity;
                         voidPosition.Remove(voidPosition[randomVoid]);
                     }
                 }
@@ -1037,11 +1037,11 @@ namespace Final_Bomber.Screens
 
                     for (int i = 0; i < teleporterPositions.Length; i++)
                     {
-                        mapItem = new Teleporter(new Point(
+                        entity = new Teleporter(new Point(
                             teleporterPositions[i].X,
                             teleporterPositions[i].Y));
-                        TeleporterList.Add((Teleporter)mapItem);
-                        map[teleporterPositions[i].X, teleporterPositions[i].Y] = mapItem;
+                        TeleporterList.Add((Teleporter)entity);
+                        map[teleporterPositions[i].X, teleporterPositions[i].Y] = entity;
                     }
                 }
             }
@@ -1056,12 +1056,12 @@ namespace Final_Bomber.Screens
                     for (int i = 0; i < MathHelper.Clamp(Config.ArrowNumber, 0, voidPosition.Count - 1); i++)
                     {
                         int randomVoid = Random.Next(voidPosition.Count);
-                        mapItem = new Arrow(new Point(
+                        entity = new Arrow(new Point(
                             voidPosition[randomVoid].X,
                             voidPosition[randomVoid].Y),
                             lookDirectionArray[Random.Next(lookDirectionArray.Length)]);
-                        ArrowList.Add((Arrow)mapItem);
-                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = mapItem;
+                        ArrowList.Add((Arrow)entity);
+                        map[voidPosition[randomVoid].X, voidPosition[randomVoid].Y] = entity;
                         voidPosition.Remove(voidPosition[randomVoid]);
                     }
                 }
@@ -1119,12 +1119,12 @@ namespace Final_Bomber.Screens
 
                     for (int i = 0; i < arrowPositions.Length; i++)
                     {
-                        mapItem = new Arrow(new Point(
+                        entity = new Arrow(new Point(
                             arrowPositions[i].X,
                             arrowPositions[i].Y),
                             Config.ArrowLookDirection[i % 4]);
-                        ArrowList.Add((Arrow)mapItem);
-                        map[arrowPositions[i].X, arrowPositions[i].Y] = mapItem;
+                        ArrowList.Add((Arrow)entity);
+                        map[arrowPositions[i].X, arrowPositions[i].Y] = entity;
                     }
                 }
             }
@@ -1142,18 +1142,18 @@ namespace Final_Bomber.Screens
                         // Inside wallList
                         if ((x % 2 == 0 && y % 2 == 0 && !(x == 0 || y == 0 || x == (Config.MapSize.X - 1) || y == (Config.MapSize.Y - 1))) && mapPlayersPosition[x, y] != 2)
                         {
-                            mapItem = new UnbreakableWall(new Point(x, y));
-                            this.UnbreakableWallList.Add((UnbreakableWall)mapItem);
-                            map[x, y] = mapItem;
+                            entity = new UnbreakableWall(new Point(x, y));
+                            this.UnbreakableWallList.Add((UnbreakableWall)entity);
+                            map[x, y] = entity;
                             collisionLayer[x, y] = true;
                         }
                         // Outside wallList
                         else if (mapPlayersPosition[x, y] != 2)
                         {
-                            mapItem = new EdgeWall(new Point(x, y));
-                            this._edgeWallList.Add((EdgeWall)mapItem);
+                            entity = new EdgeWall(new Point(x, y));
+                            this._edgeWallList.Add((EdgeWall)entity);
                             counter++;
-                            map[x, y] = mapItem;
+                            map[x, y] = entity;
                             collisionLayer[x, y] = true;
                         }
                     }
@@ -1164,9 +1164,9 @@ namespace Final_Bomber.Screens
                             Random.Next(0, 100) < MathHelper.Clamp(Config.WallNumber, 0, 100))
                         {
                             collisionLayer[x, y] = true;
-                            mapItem = new Wall(new Point(x, y));
-                            _wallList.Add((Wall)mapItem);
-                            map[x, y] = mapItem;
+                            entity = new Wall(new Point(x, y));
+                            _wallList.Add((Wall)entity);
+                            map[x, y] = entity;
                         }
                         //tile = new Tile(0, 0);
                     }
@@ -1305,12 +1305,12 @@ namespace Final_Bomber.Screens
         public void AddBomb(Bomb bomb)
         {
             if (World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                            Board[bomb.Sprite.CellPositionX, bomb.Sprite.CellPositionY] is Player)
+                            Board[bomb.CellPositionX, bomb.CellPositionY] is Player)
             {
                 World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                    Board[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = bomb;
+                    Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
                 World.Levels[GameRef.GamePlayScreen.World.CurrentLevel].
-                CollisionLayer[bomb.Sprite.CellPosition.X, bomb.Sprite.CellPosition.Y] = true;
+                CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
             }
 
             BombList.Add(bomb);

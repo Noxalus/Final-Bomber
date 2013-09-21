@@ -164,9 +164,9 @@ namespace Final_Bomber.TileEngine
 
         public void LockToSprite(AnimatedSprite sprite)
         {
-            position.X = (sprite.Position.X + sprite.Width / 2) * zoom
+            position.X = (Position.X + sprite.Width / 2) * zoom
                             - (viewportRectangle.Width / 2);
-            position.Y = (sprite.Position.Y + sprite.Height / 2) * zoom
+            position.Y = (Position.Y + sprite.Height / 2) * zoom
                             - (viewportRectangle.Height / 2);
             LockCamera();
         }

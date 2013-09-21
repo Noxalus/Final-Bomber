@@ -75,13 +75,13 @@ namespace Final_Bomber.Entities
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1");
 
-            Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
+            Sprite = new AnimatedSprite(spriteTexture, animations);
             Sprite.ChangeFramesPerSecond(animationFramesPerSecond);
-            Sprite.Speed = GameConfiguration.BasePlayerSpeed;
+            Speed = GameConfiguration.BasePlayerSpeed;
 
             var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
-            _playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation, Sprite.Position)
+            _playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation)
             {
                 IsAnimating = false
             };
@@ -106,7 +106,7 @@ namespace Final_Bomber.Entities
 
         #region XNA Method Region
 
-        public void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        public virtual void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             if (IsAlive && !InDestruction)
             {
@@ -153,16 +153,16 @@ namespace Final_Bomber.Entities
                         switch (CurrentDirection)
                         {
                             case LookDirection.Up:
-                                direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
+                                direction = new Point(CellPosition.X, CellPosition.Y - 1);
                                 break;
                             case LookDirection.Down:
-                                direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1);
+                                direction = new Point(CellPosition.X, CellPosition.Y + 1);
                                 break;
                             case LookDirection.Left:
-                                direction = new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y);
+                                direction = new Point(CellPosition.X - 1, CellPosition.Y);
                                 break;
                             case LookDirection.Right:
-                                direction = new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y);
+                                direction = new Point(CellPosition.X + 1, CellPosition.Y);
                                 break;
                         }
                         Bomb bomb = BombAt(direction);
@@ -179,10 +179,10 @@ namespace Final_Bomber.Entities
 
                 /*
                 if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Item)
+                    Map[CellPosition.X, CellPosition.Y] is Item)
                 {
                     var item = (Item)(FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
+                        Map[CellPosition.X, CellPosition.Y]);
                     if (!item.InDestruction)
                     {
                         if (!HasBadItemEffect || (HasBadItemEffect && item.Type != ItemType.BadItem))
@@ -210,10 +210,10 @@ namespace Final_Bomber.Entities
 
                 /*
                 if (!_cellTeleporting && FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Map[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
+                    Map[CellPosition.X, CellPosition.Y] is Teleporter)
                 {
                     var teleporter = (Teleporter)(FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Map[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
+                        Map[CellPosition.X, CellPosition.Y]);
 
                     teleporter.ChangePosition(this);
                     _cellTeleporting = true;
@@ -298,9 +298,9 @@ namespace Final_Bomber.Entities
         public void Draw(GameTime gameTime)
         {
             var playerNamePosition = new Vector2(
-                Sprite.Position.X + Engine.Origin.X + Sprite.Width/2f -
+                Position.X + Engine.Origin.X + Sprite.Width/2f -
                 ControlManager.SpriteFont.MeasureString(Name).X/2 + 5,
-                Sprite.Position.Y + Engine.Origin.Y - 25 -
+                Position.Y + Engine.Origin.Y - 25 -
                 ControlManager.SpriteFont.MeasureString(Name).Y/2);
 
             if ((IsAlive && !InDestruction) || OnEdge)
@@ -309,21 +309,21 @@ namespace Final_Bomber.Entities
                 {
                     if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency*0.5f))
                     {
-                        Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                        Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
                         FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
                             Color.Black);
                     }
                 }
                 else
                 {
-                    Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                    Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
                     FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
                         Color.Black);
                 }
             }
             else
             {
-                _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
                     Color.Black);
             }
@@ -345,7 +345,7 @@ namespace Final_Bomber.Entities
                 FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel]
                     .Size.Y)
             {
-                Bomb bomb = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == cell);
+                Bomb bomb = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.CellPosition == cell);
                 return (bomb);
             }
             return null;
@@ -377,22 +377,22 @@ namespace Final_Bomber.Entities
 
         protected bool IsMoreTopSide()
         {
-            return Sprite.Position.Y < ((Sprite.CellPosition.Y*Engine.TileHeight) - (Sprite.Speed/2));
+            return Position.Y < ((CellPosition.Y*Engine.TileHeight) - (Speed/2));
         }
 
         protected bool IsMoreBottomSide()
         {
-            return Sprite.Position.Y > ((Sprite.CellPosition.Y*Engine.TileHeight) + (Sprite.Speed/2));
+            return Position.Y > ((CellPosition.Y*Engine.TileHeight) + (Speed/2));
         }
 
         protected bool IsMoreLeftSide()
         {
-            return Sprite.Position.X < ((Sprite.CellPosition.X*Engine.TileWidth) - (Sprite.Speed/2));
+            return Position.X < ((CellPosition.X*Engine.TileWidth) - (Speed/2));
         }
 
         protected bool IsMoreRightSide()
         {
-            return Sprite.Position.X > ((Sprite.CellPosition.X*Engine.TileWidth) + (Sprite.Speed/2));
+            return Position.X > ((CellPosition.X*Engine.TileWidth) + (Speed/2));
         }
 
 
@@ -404,55 +404,55 @@ namespace Final_Bomber.Entities
         {
             #region Wall collisions
 
-            Sprite.LockToMap();
+            //Sprite.LockToMap();
 
             // -- Vertical check -- //
             // Is there a wall on the top ?
-            if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1)))
+            if (WallAt(new Point(CellPosition.X, CellPosition.Y - 1)))
             {
                 // Is there a wall on the bottom ?
-                if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
+                if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
                 {
                     // Top collision and Bottom collision
                     if ((CurrentDirection == LookDirection.Up && IsMoreTopSide()) ||
                         (CurrentDirection == LookDirection.Down && IsMoreBottomSide()))
-                        Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
+                        PositionY = CellPosition.Y*Engine.TileHeight;
                 }
                     // No wall at the bottom
                 else
                 {
                     // Top collision
                     if (CurrentDirection == LookDirection.Up && IsMoreTopSide())
-                        Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
+                        PositionY = CellPosition.Y*Engine.TileHeight;
                 }
             }
                 // Wall only at the bottom
-            else if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
+            else if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
             {
                 // Bottom collision
                 if (CurrentDirection == LookDirection.Down && IsMoreBottomSide())
-                    Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
+                    PositionY = CellPosition.Y*Engine.TileHeight;
                     // To lag him
                 else if (CurrentDirection == LookDirection.Down)
                 {
                     if (IsMoreLeftSide())
-                        Sprite.PositionX += Sprite.Speed;
+                        PositionX += Speed;
                     else if (IsMoreRightSide())
-                        Sprite.PositionX -= Sprite.Speed;
+                        PositionX -= Speed;
                 }
             }
 
             // -- Horizontal check -- //
             // Is there a wall on the left ?
-            if (WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y)))
+            if (WallAt(new Point(CellPosition.X - 1, CellPosition.Y)))
             {
                 // Is there a wall on the right ?
-                if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
+                if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
                 {
                     // Left and right collisions
                     if ((CurrentDirection == LookDirection.Left && IsMoreLeftSide()) ||
                         (CurrentDirection == LookDirection.Right && IsMoreRightSide()))
-                        Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
+                        PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                            Engine.TileWidth/2;
                 }
                     // Wall only at the left
@@ -460,24 +460,24 @@ namespace Final_Bomber.Entities
                 {
                     // Left collision
                     if (CurrentDirection == LookDirection.Left && IsMoreLeftSide())
-                        Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
+                        PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                            Engine.TileWidth/2;
                 }
             }
                 // Wall only at the right
-            else if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
+            else if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
             {
                 // Right collision
                 if (CurrentDirection == LookDirection.Right && IsMoreRightSide())
-                    Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 + Engine.TileWidth/2;
+                    PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 + Engine.TileWidth/2;
             }
 
 
             // The player must stay in the map
-            Sprite.PositionX = MathHelper.Clamp(Sprite.Position.X, Engine.TileWidth,
+            PositionX = MathHelper.Clamp(Position.X, Engine.TileWidth,
                 (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
                     ].Size.X*Engine.TileWidth) - 2*Engine.TileWidth);
-            Sprite.PositionY = MathHelper.Clamp(Sprite.Position.Y, Engine.TileHeight,
+            PositionY = MathHelper.Clamp(Position.Y, Engine.TileHeight,
                 (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
                     ].Size.Y*Engine.TileHeight) - 2*Engine.TileHeight);
 
@@ -506,11 +506,11 @@ namespace Final_Bomber.Entities
             {
                 if (FinalBomber.Instance.GamePlayScreen.World.Levels[
                     FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
+                    Board[CellPosition.X, CellPosition.Y] == null)
                 {
                     FinalBomber.Instance.GamePlayScreen.World.Levels[
                         FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
+                        Board[CellPosition.X, CellPosition.Y] = this;
                 }
             }
 
@@ -552,7 +552,7 @@ namespace Final_Bomber.Entities
 
         public void IncreaseSpeed(float incr)
         {
-            Sprite.Speed += incr;
+            Speed += incr;
         }
 
         public virtual void ApplyBadItem(BadItemEffect effect)
@@ -575,7 +575,7 @@ namespace Final_Bomber.Entities
             IsAlive = true;
             Sprite.IsAnimating = true;
             InDestruction = false;
-            Sprite.Position = position;
+            Position = position;
             Sprite.CurrentAnimation = AnimationKey.Down;
             _playerDeathAnimation.IsAnimating = false;
 
@@ -600,7 +600,6 @@ namespace Final_Bomber.Entities
                 Sprite.IsAnimating = false;
                 InDestruction = true;
                 FinalBomber.Instance.GamePlayScreen.PlayerDeathSound.Play();
-                _playerDeathAnimation.Position = Sprite.Position;
                 _playerDeathAnimation.IsAnimating = true;
             }
         }
@@ -613,16 +612,16 @@ namespace Final_Bomber.Entities
 
             // Replacing for the gameplay on the edges
             // Right side
-            if (Config.MapSize.X - Sprite.CellPosition.X < Config.MapSize.X/2)
+            if (Config.MapSize.X - CellPosition.X < Config.MapSize.X/2)
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                Sprite.Position = new Vector2((Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth, Sprite.Position.Y);
+                Position = new Vector2((Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth, Position.Y);
             }
                 // Left side
             else
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
-                Sprite.Position = new Vector2(0, Sprite.Position.Y);
+                Position = new Vector2(0, Position.Y);
             }
         }
 

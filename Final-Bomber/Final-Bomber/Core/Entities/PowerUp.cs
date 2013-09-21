@@ -51,11 +51,11 @@ namespace Final_Bomber.Core.Entities
             var animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[_type]*32, 5);
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/item");
-            Sprite = new AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
+            Sprite = new AnimatedSprite(spriteTexture, animation) {IsAnimating = true};
 
             var itemDestroyTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
             animation = new Animation(7, 31, 28, 0, 0, 8);
-            _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation, Sprite.Position)
+            _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation)
             {
                 IsAnimating = false
             };
@@ -82,10 +82,10 @@ namespace Final_Bomber.Core.Entities
 
         public void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
 
             if (_itemDestroyAnimation.IsAnimating)
-                _itemDestroyAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                _itemDestroyAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion

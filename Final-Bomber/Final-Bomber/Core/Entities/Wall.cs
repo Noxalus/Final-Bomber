@@ -39,7 +39,7 @@ namespace Final_Bomber.Core.Entities
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/wall");
             var animation = new Animation(6, 32, 32, 0, 0, 20);
 
-            Sprite = new AnimatedSprite(spriteTexture, animation, position);
+            Sprite = new AnimatedSprite(spriteTexture, animation);
             _inDestruction = false;
             _isAlive = true;
         }
@@ -61,7 +61,7 @@ namespace Final_Bomber.Core.Entities
 
         public void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion

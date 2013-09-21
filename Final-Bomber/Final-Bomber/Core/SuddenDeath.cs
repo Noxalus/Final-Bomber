@@ -104,36 +104,36 @@ namespace Final_Bomber.Core
                     if (!AllVisited())
                     {
                         _visited[_currentPosition.X, _currentPosition.Y] = true;
-                        IEntity mapItem =
+                        IEntity entity =
                             _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                 Board[_currentPosition.X, _currentPosition.Y];
-                        if (mapItem != null)
+                        if (entity != null)
                         {
-                            if (mapItem is Player)
+                            if (entity is Player)
                             {
-                                mapItem.Destroy();
+                                entity.Destroy();
                                 List<Player> pl =
                                     _gameRef.GamePlayScreen.PlayerList.FindAll(
-                                        p => p.Sprite.CellPosition == _currentPosition);
+                                        p => p.CellPosition == _currentPosition);
                                 foreach (Player p in pl)
                                     p.Destroy();
                             }
-                            else if (mapItem is Teleporter || mapItem is Arrow || mapItem is Bomb)
+                            else if (entity is Teleporter || entity is Arrow || entity is Bomb)
                             {
                                 List<Player> pl =
                                     _gameRef.GamePlayScreen.PlayerList.FindAll(
-                                        p => p.Sprite.CellPosition == _currentPosition);
+                                        p => p.CellPosition == _currentPosition);
                                 foreach (Player p in pl)
                                     p.Destroy();
                                 List<Bomb> bl =
                                     _gameRef.GamePlayScreen.BombList.FindAll(
-                                        b => b.Sprite.CellPosition == _currentPosition);
+                                        b => b.CellPosition == _currentPosition);
                                 foreach (Bomb b in bl)
                                     b.Remove();
-                                mapItem.Remove();
+                                entity.Remove();
                             }
                             else
-                                mapItem.Remove();
+                                entity.Remove();
                         }
 
                         _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].CollisionLayer[

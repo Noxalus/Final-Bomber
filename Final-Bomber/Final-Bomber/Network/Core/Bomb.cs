@@ -8,7 +8,7 @@ using System.Text;
 namespace Final_Bomber.Network.Core
 {
     /*
-    class Bomb : MapItem
+    class Bomb : entity
     {
         public Bomb(Vector2 pos, float tickSpeed, bool enemy)
             : base(LayerStatus.BehindPlayer)

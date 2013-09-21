@@ -18,10 +18,6 @@ namespace Final_Bomber.Sprites
         bool _isAnimating;
 
         readonly Texture2D _texture;
-        Vector2 _position;
-        private Point _cellPosition;
-        Vector2 _velocity;
-        float _speed = 2.5f;
 
         readonly Animation _animation;
 
@@ -90,64 +86,11 @@ namespace Final_Bomber.Sprites
             get { return new Point(Width, Height); }
         }
 
-        public float Speed
-        {
-            get { return _speed; }
-            set { _speed = MathHelper.Clamp(value, Config.PlayerSpeedIncrementeur, Config.MaxSpeed); }
-        }
-
-        public Vector2 Position
-        {
-            get { return _position; }
-            set
-            { _position = value; }
-        }
-
-        public float PositionX
-        {
-            set { _position.X = value; }
-            get { return _position.X; }
-        }
-
-        public float PositionY
-        {
-            set { _position.Y = value; }
-            get { return _position.Y; }
-        }
-
-        public int CellPositionX
-        {
-            get { return _cellPosition.X; }
-            set { _cellPosition.X = value; }
-        }
-
-        public int CellPositionY
-        {
-            get { return _cellPosition.Y; }
-            set { _cellPosition.Y = value; }
-        }
-
-        public Point CellPosition
-        {
-            get { return _cellPosition; }
-        }
-
-        public Vector2 Velocity
-        {
-            get { return _velocity; }
-            set
-            {
-                _velocity = value;
-                if (_velocity != Vector2.Zero)
-                    _velocity.Normalize();
-            }
-        }
-
         #endregion
 
         #region Constructor Region
 
-        public AnimatedSprite(Texture2D sprite, Dictionary<AnimationKey, Animation> animation, Vector2 position)
+        public AnimatedSprite(Texture2D sprite, Dictionary<AnimationKey, Animation> animation)
         {
             _texture = sprite;
             _animations = new Dictionary<AnimationKey, Animation>();
@@ -156,39 +99,13 @@ namespace Final_Bomber.Sprites
                 _animations.Add(key, (Animation)animation[key].Clone());
 
             _controlable = true;
-            this._position = position;
-            _cellPosition = Engine.VectorToCell(position, Dimension);
         }
 
-        public AnimatedSprite(Texture2D sprite, Dictionary<AnimationKey, Animation> animation, Point position)
-        {
-            _texture = sprite;
-            _animations = new Dictionary<AnimationKey, Animation>();
-
-            foreach (AnimationKey key in animation.Keys)
-                _animations.Add(key, (Animation)animation[key].Clone());
-
-            _controlable = true;
-            this._position = Engine.CellToVector(position);
-            _cellPosition = position;
-        }
-
-        public AnimatedSprite(Texture2D sprite, Animation animation, Vector2 position)
+        public AnimatedSprite(Texture2D sprite, Animation animation)
         {
             _texture = sprite;
             this._animation = animation;
             _controlable = false;
-            this._position = position;
-            _cellPosition = Engine.VectorToCell(position, Dimension);
-        }
-
-        public AnimatedSprite(Texture2D sprite, Animation animation, Point position)
-        {
-            _texture = sprite;
-            this._animation = animation;
-            _controlable = false;
-            this._position = Engine.CellToVector(position);
-            _cellPosition = position;
         }
 
         #endregion
@@ -211,11 +128,9 @@ namespace Final_Bomber.Sprites
                 else
                     _animation.Reset();
             }
-
-            _cellPosition = Engine.VectorToCell(_position, Dimension);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
         {
             Rectangle? sourceRectangle = _controlable ? _animations[_currentAnimation].CurrentFrameRect : _animation.CurrentFrameRect;
 
@@ -224,8 +139,8 @@ namespace Final_Bomber.Sprites
                 spriteBatch.Draw(
                     _texture,
                     new Rectangle(
-                        (int)(Engine.Origin.X + _position.X - Engine.TileWidth / 4f),
-                        (int)(Engine.Origin.Y + _position.Y - Engine.TileHeight / 2f),
+                        (int)(Engine.Origin.X + position.X - Engine.TileWidth / 4f),
+                        (int)(Engine.Origin.Y + position.Y - Engine.TileHeight / 2f),
                         Engine.TileWidth + Engine.TileWidth / 2,
                         Engine.TileHeight + Engine.TileHeight / 2),
                     sourceRectangle,
@@ -235,7 +150,7 @@ namespace Final_Bomber.Sprites
             {
                 spriteBatch.Draw(
                 _texture,
-                new Vector2(Engine.Origin.X + _position.X, Engine.Origin.Y + _position.Y),
+                new Vector2(Engine.Origin.X + position.X, Engine.Origin.Y + position.Y),
                 sourceRectangle,
                 Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
             }
@@ -244,12 +159,6 @@ namespace Final_Bomber.Sprites
         #endregion
 
         #region Method Regions
-
-        public void LockToMap()
-        {
-            _position.X = MathHelper.Clamp(_position.X, 0, TileMap.WidthInPixels - Width);
-            _position.Y = MathHelper.Clamp(_position.Y, 0, TileMap.HeightInPixels - Height);
-        }
 
         public void ChangeFramesPerSecond(int newValue)
         {
@@ -260,6 +169,13 @@ namespace Final_Bomber.Sprites
             }
             else
                 _animation.FramesPerSecond = newValue;
+        }
+
+        /*
+        public void LockToMap()
+        {
+            _position.X = MathHelper.Clamp(_position.X, 0, TileMap.WidthInPixels - Width);
+            _position.Y = MathHelper.Clamp(_position.Y, 0, TileMap.HeightInPixels - Height);
         }
 
         public void ChangePosition(Point p)
@@ -281,6 +197,8 @@ namespace Final_Bomber.Sprites
             _position.Y = y;
             _cellPosition = Engine.VectorToCell(_position);
         }
+        */
+
         #endregion
     }
 }

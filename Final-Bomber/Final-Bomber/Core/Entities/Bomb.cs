@@ -62,7 +62,8 @@ namespace Final_Bomber.Core.Entities
 
         #region Constructor Region
 
-        public Bomb(int id, Point position, int pow, TimeSpan timerLenght, float playerSpeed)
+        public Bomb(int id, Point cellPosition, int pow, TimeSpan timerLenght, float playerSpeed)
+            : base(cellPosition)
         {
             // ID of the player that planted the bomb
             _id = id;
@@ -70,7 +71,7 @@ namespace Final_Bomber.Core.Entities
             // Bomb Sprite
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/bomb");
             var animation = new Animation(3, 32, 32, 0, 0, 3);
-            Sprite = new AnimatedSprite(spriteTexture, animation, Engine.CellToVector(position))
+            Sprite = new AnimatedSprite(spriteTexture, animation)
             {
                 IsAnimating = true
             };
@@ -136,10 +137,10 @@ namespace Final_Bomber.Core.Entities
                     _map.Board[PreviousCellPosition.X, PreviousCellPosition.Y] = null;
                 }
 
-                if (_map.Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] == null)
+                if (_map.Board[CellPosition.X, CellPosition.Y] == null)
                 {
-                    _map.CollisionLayer[Sprite.CellPosition.X, Sprite.CellPosition.Y] = true;
-                    _map.Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] = this;
+                    _map.CollisionLayer[CellPosition.X, CellPosition.Y] = true;
+                    _map.Board[CellPosition.X, CellPosition.Y] = this;
                 }
 
                 _map.CollisionLayer[PreviousCellPosition.X, PreviousCellPosition.Y] = false;
@@ -147,7 +148,7 @@ namespace Final_Bomber.Core.Entities
                 if (_cellTeleporting)
                     _cellTeleporting = false;
 
-                Sprite.Position = Engine.CellToVector(Sprite.CellPosition);
+                Position = Engine.CellToVector(CellPosition);
             }
 
             #endregion
@@ -203,72 +204,72 @@ namespace Final_Bomber.Core.Entities
                 switch (_lookDirection)
                 {
                     case LookDirection.Up:
-                        if (Sprite.Position.Y > Engine.TileHeight)
-                            Sprite.PositionY = Sprite.Position.Y - Sprite.Speed;
+                        if (Position.Y > Engine.TileHeight)
+                            PositionY = Position.Y - Speed;
                         else
                             _lookDirection = LookDirection.Idle;
 
-                        var upCell = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
+                        var upCell = new Point(CellPosition.X, CellPosition.Y - 1);
                         if (_map.Board[upCell.X, upCell.Y] is Player || WallAt(upCell))
                         {
                             // Top collision
                             if (_lookDirection == LookDirection.Up && MoreTopSide())
                             {
-                                Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
+                                PositionY = CellPosition.Y*Engine.TileHeight;
                                 _lookDirection = LookDirection.Idle;
                             }
                         }
 
                         break;
                     case LookDirection.Down:
-                        if (Sprite.Position.Y < (_map.Size.Y - 2)*Engine.TileHeight)
-                            Sprite.PositionY = Sprite.Position.Y + Sprite.Speed;
+                        if (Position.Y < (_map.Size.Y - 2)*Engine.TileHeight)
+                            PositionY = Position.Y + Speed;
                         else
                             _lookDirection = LookDirection.Idle;
 
-                        var bottomCell = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1);
+                        var bottomCell = new Point(CellPosition.X, CellPosition.Y + 1);
                         if (_map.Board[bottomCell.X, bottomCell.Y] is Player || WallAt(bottomCell))
                         {
                             // Bottom collision
                             if (_lookDirection == LookDirection.Down && MoreBottomSide())
                             {
-                                Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
+                                PositionY = CellPosition.Y*Engine.TileHeight;
                                 _lookDirection = LookDirection.Idle;
                             }
                         }
 
                         break;
                     case LookDirection.Left:
-                        if (Sprite.Position.X > Engine.TileWidth)
-                            Sprite.PositionX = Sprite.Position.X - Sprite.Speed;
+                        if (Position.X > Engine.TileWidth)
+                            PositionX = Position.X - Speed;
                         else
                             _lookDirection = LookDirection.Idle;
 
-                        var leftCell = new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y);
+                        var leftCell = new Point(CellPosition.X - 1, CellPosition.Y);
                         if (_map.Board[leftCell.X, leftCell.Y] is Player || WallAt(leftCell))
                         {
                             // Left collision
                             if (_lookDirection == LookDirection.Left && MoreLeftSide())
                             {
-                                Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
+                                PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                                    Engine.TileWidth/2;
                                 _lookDirection = LookDirection.Idle;
                             }
                         }
                         break;
                     case LookDirection.Right:
-                        if (Sprite.Position.X < (_map.Size.X - 2)*Engine.TileWidth)
-                            Sprite.PositionX = Sprite.Position.X + Sprite.Speed;
+                        if (Position.X < (_map.Size.X - 2)*Engine.TileWidth)
+                            PositionX = Position.X + Speed;
                         else
                             _lookDirection = LookDirection.Idle;
 
-                        var rightCell = new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y);
+                        var rightCell = new Point(CellPosition.X + 1, CellPosition.Y);
                         if (_map.Board[rightCell.X, rightCell.Y] is Player || WallAt(rightCell))
                         {
                             // Right collision
                             if (_lookDirection == LookDirection.Right && MoreRightSide())
                             {
-                                Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
+                                PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                                    Engine.TileWidth/2;
                                 _lookDirection = LookDirection.Idle;
                             }
@@ -276,7 +277,7 @@ namespace Final_Bomber.Core.Entities
                         break;
                 }
                 if (_lookDirection == LookDirection.Idle)
-                    Sprite.Position = Engine.CellToVector(Sprite.CellPosition);
+                    Position = Engine.CellToVector(CellPosition);
             }
 
             #endregion
@@ -284,13 +285,12 @@ namespace Final_Bomber.Core.Entities
             #region Teleporter
 
             if (!_cellTeleporting && _map.
-                Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Teleporter)
+                Board[CellPosition.X, CellPosition.Y] is Teleporter)
             {
                 var teleporter = (Teleporter) (_map.
-                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
+                    Board[CellPosition.X, CellPosition.Y]);
 
-                // TODO
-                //teleporter.ChangePosition(this);
+                teleporter.ChangeEntityPosition(this, _map);
                 _cellTeleporting = true;
             }
 
@@ -299,10 +299,10 @@ namespace Final_Bomber.Core.Entities
             #region Arrow
 
             if (!_cellTeleporting && _map.
-                Board[Sprite.CellPosition.X, Sprite.CellPosition.Y] is Arrow)
+                Board[CellPosition.X, CellPosition.Y] is Arrow)
             {
                 var arrow = (Arrow) (_map.
-                    Board[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
+                    Board[CellPosition.X, CellPosition.Y]);
 
                 arrow.ChangeDirection(this);
             }
@@ -322,7 +322,7 @@ namespace Final_Bomber.Core.Entities
                     foreach (Point p in ActionField)
                     {
                         // Is this a wall ? => we don't like wall !
-                        if (!_map.CollisionLayer[p.X, p.Y] || p == Sprite.CellPosition)
+                        if (!_map.CollisionLayer[p.X, p.Y] || p == CellPosition)
                         {
                             // We choose the sprite of explosion for each cell
                             _explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p, _map, _hazardMap);
@@ -340,7 +340,7 @@ namespace Final_Bomber.Core.Entities
                 }
             }
             else
-                Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+                Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion
@@ -359,22 +359,22 @@ namespace Final_Bomber.Core.Entities
 
         private bool MoreTopSide()
         {
-            return Sprite.Position.Y < ((Sprite.CellPosition.Y*Engine.TileHeight) - (Sprite.Speed/2));
+            return Position.Y < ((CellPosition.Y*Engine.TileHeight) - (Speed/2));
         }
 
         private bool MoreBottomSide()
         {
-            return Sprite.Position.Y > ((Sprite.CellPosition.Y*Engine.TileHeight) + (Sprite.Speed/2));
+            return Position.Y > ((CellPosition.Y*Engine.TileHeight) + (Speed/2));
         }
 
         private bool MoreLeftSide()
         {
-            return Sprite.Position.X < ((Sprite.CellPosition.X*Engine.TileWidth) - (Sprite.Speed/2));
+            return Position.X < ((CellPosition.X*Engine.TileWidth) - (Speed/2));
         }
 
         private bool MoreRightSide()
         {
-            return Sprite.Position.X > ((Sprite.CellPosition.X*Engine.TileWidth) + (Sprite.Speed/2));
+            return Position.X > ((CellPosition.X*Engine.TileWidth) + (Speed/2));
         }
 
         // Compute bomb's effect field: 1 => just planted, 2 => will explode soon, 3 => deathly
@@ -382,11 +382,11 @@ namespace Final_Bomber.Core.Entities
         {
             // Reset the actionField list
             // We put the bomb in its action field
-            ActionField = new List<Point> {new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y)};
+            ActionField = new List<Point> {new Point(CellPosition.X, CellPosition.Y)};
 
-            if (_hazardMap[Sprite.CellPosition.X, Sprite.CellPosition.Y] < dangerType)
+            if (_hazardMap[CellPosition.X, CellPosition.Y] < dangerType)
             {
-                _hazardMap[Sprite.CellPosition.X, Sprite.CellPosition.Y] = dangerType;
+                _hazardMap[CellPosition.X, CellPosition.Y] = dangerType;
             }
 
             // 0 => Top, 1 => Bottom, 2 => Left, 3 => Right
@@ -402,21 +402,21 @@ namespace Final_Bomber.Core.Entities
             while (tempPower >= 0)
             {
                 // Directions
-                int up = Sprite.CellPosition.Y - (_power - tempPower);
-                int down = Sprite.CellPosition.Y + (_power - tempPower);
-                int right = Sprite.CellPosition.X + (_power - tempPower);
-                int left = Sprite.CellPosition.X - (_power - tempPower);
+                int up = CellPosition.Y - (_power - tempPower);
+                int down = CellPosition.Y + (_power - tempPower);
+                int right = CellPosition.X + (_power - tempPower);
+                int left = CellPosition.X - (_power - tempPower);
 
                 // Up
                 Point addPosition;
                 if (up >= 0 && !obstacles["up"])
                 {
-                    if (_map.CollisionLayer[Sprite.CellPosition.X, up])
+                    if (_map.CollisionLayer[CellPosition.X, up])
                         obstacles["up"] = true;
                     // We don't count the outside walls
-                    if (!(_map.Board[Sprite.CellPosition.X, up] is EdgeWall))
+                    if (!(_map.Board[CellPosition.X, up] is EdgeWall))
                     {
-                        addPosition = new Point(Sprite.CellPosition.X, up);
+                        addPosition = new Point(CellPosition.X, up);
                         ActionField.Add(addPosition);
                         if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
@@ -428,12 +428,12 @@ namespace Final_Bomber.Core.Entities
                 // Down
                 if (down < _map.Size.Y - 1 && !obstacles["down"])
                 {
-                    if (_map.CollisionLayer[Sprite.CellPosition.X, down])
+                    if (_map.CollisionLayer[CellPosition.X, down])
                         obstacles["down"] = true;
                     // We don't count the outside walls
-                    if (!(_map.Board[Sprite.CellPosition.X, down] is EdgeWall))
+                    if (!(_map.Board[CellPosition.X, down] is EdgeWall))
                     {
-                        addPosition = new Point(Sprite.CellPosition.X, down);
+                        addPosition = new Point(CellPosition.X, down);
                         ActionField.Add(addPosition);
                         if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
@@ -445,12 +445,12 @@ namespace Final_Bomber.Core.Entities
                 // Right
                 if (right < _map.Size.X - 1 && !obstacles["right"])
                 {
-                    if (_map.CollisionLayer[right, Sprite.CellPosition.Y])
+                    if (_map.CollisionLayer[right, CellPosition.Y])
                         obstacles["right"] = true;
                     // We don't count the outside walls
-                    if (!(_map.Board[right, Sprite.CellPosition.Y] is EdgeWall))
+                    if (!(_map.Board[right, CellPosition.Y] is EdgeWall))
                     {
-                        addPosition = new Point(right, Sprite.CellPosition.Y);
+                        addPosition = new Point(right, CellPosition.Y);
                         ActionField.Add(addPosition);
                         if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
@@ -462,12 +462,12 @@ namespace Final_Bomber.Core.Entities
                 // Left
                 if (left >= 0 && !obstacles["left"])
                 {
-                    if (_map.CollisionLayer[left, Sprite.CellPosition.Y])
+                    if (_map.CollisionLayer[left, CellPosition.Y])
                         obstacles["left"] = true;
                     // We don't count the outside walls
-                    if (!(_map.Board[left, Sprite.CellPosition.Y] is EdgeWall))
+                    if (!(_map.Board[left, CellPosition.Y] is EdgeWall))
                     {
-                        addPosition = new Point(left, Sprite.CellPosition.Y);
+                        addPosition = new Point(left, CellPosition.Y);
                         ActionField.Add(addPosition);
                         if (_hazardMap[addPosition.X, addPosition.Y] < dangerType)
                         {
@@ -486,7 +486,7 @@ namespace Final_Bomber.Core.Entities
             int downCell = cell.Y + 1, leftCell = cell.X - 1, rightCell = cell.X + 1, upCell = cell.Y - 1;
 
             // ~ The middle ~ //
-            if (cell.X == Sprite.CellPosition.X && cell.Y == Sprite.CellPosition.Y)
+            if (cell.X == CellPosition.X && cell.Y == CellPosition.Y)
                 return ExplosionDirection.Middle;
 
             // ~ Vertical axis ~ //
@@ -569,16 +569,16 @@ namespace Final_Bomber.Core.Entities
             switch (lD)
             {
                 case LookDirection.Up:
-                    pos = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
+                    pos = new Point(CellPosition.X, CellPosition.Y - 1);
                     break;
                 case LookDirection.Down:
-                    pos = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1);
+                    pos = new Point(CellPosition.X, CellPosition.Y + 1);
                     break;
                 case LookDirection.Left:
-                    pos = new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y);
+                    pos = new Point(CellPosition.X - 1, CellPosition.Y);
                     break;
                 case LookDirection.Right:
-                    pos = new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y);
+                    pos = new Point(CellPosition.X + 1, CellPosition.Y);
                     break;
             }
 
@@ -597,7 +597,7 @@ namespace Final_Bomber.Core.Entities
 
         public void ChangeSpeed(float changing)
         {
-            Sprite.Speed = changing;
+            Speed = changing;
         }
 
         public void ResetTimer()

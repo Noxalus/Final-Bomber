@@ -31,7 +31,7 @@ namespace Final_Bomber.Core.Players
 
             // If he hasn't reach his goal => we walk to this goal
             if (_aiNextPosition != new Vector2(-1, -1) &&
-                !AIFunction.HasReachNextPosition(Sprite.Position, Sprite.Speed, _aiNextPosition))
+                !AIFunction.HasReachNextPosition(Position, Speed, _aiNextPosition))
             {
                 IsMoving = true;
                 Sprite.IsAnimating = true;
@@ -49,7 +49,7 @@ namespace Final_Bomber.Core.Players
             else
             {
                 // We place the player at the center of its cell
-                Sprite.Position = Engine.CellToVector(Sprite.CellPosition);
+                Position = Engine.CellToVector(CellPosition);
 
                 #region Bomb => AI
 
@@ -57,23 +57,23 @@ namespace Final_Bomber.Core.Players
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, BombPower, map.Board, map.CollisionLayer, hazardMap,
+                    if (AIFunction.TryToPutBomb(CellPosition, BombPower, map.Board, map.CollisionLayer, hazardMap,
                         Config.MapSize))
                     {
                         if (CurrentBombAmount > 0)
                         {
                             Bomb bo =
                                 FinalBomber.Instance.GamePlayScreen.BombList.Find(
-                                    b => b.Sprite.CellPosition == Sprite.CellPosition);
+                                    b => b.CellPosition == CellPosition);
                             if (bo == null)
                             {
                                 CurrentBombAmount--;
-                                var bomb = new Bomb(Id, Sprite.CellPosition, BombPower, BombTimer, Sprite.Speed);
+                                var bomb = new Bomb(Id, CellPosition, BombPower, BombTimer, Speed);
 
                                 // We define a new way (to escape the bomb)
                                 Path = AIFunction.MakeAWay(
-                                    Sprite.CellPosition,
-                                    AIFunction.SetNewDefenseGoal(Sprite.CellPosition, map.CollisionLayer, hazardMap,
+                                    CellPosition,
+                                    AIFunction.SetNewDefenseGoal(CellPosition, map.CollisionLayer, hazardMap,
                                         Config.MapSize),
                                     map.CollisionLayer, hazardMap, Config.MapSize);
 
@@ -91,8 +91,8 @@ namespace Final_Bomber.Core.Players
                     IsMoving = false;
                     // We define a new goal
                     Path = AIFunction.MakeAWay(
-                        Sprite.CellPosition,
-                        AIFunction.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap,
+                        CellPosition,
+                        AIFunction.SetNewGoal(CellPosition, map.Board, map.CollisionLayer, hazardMap,
                             Config.MapSize),
                         map.CollisionLayer, hazardMap, Config.MapSize);
 
@@ -112,8 +112,8 @@ namespace Final_Bomber.Core.Players
                     /*
                     // Update the way of the AI each time it changes of cell => usefull to battle against players (little bug here)
                     aiWay = AI.MakeAWay(
-                        Sprite.CellPosition,
-                        AI.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap), 
+                        CellPosition,
+                        AI.SetNewGoal(CellPosition, map.Board, map.CollisionLayer, hazardMap), 
                         map.CollisionLayer, hazardMap);
                     */
                 }
@@ -127,30 +127,30 @@ namespace Final_Bomber.Core.Players
         private void Walk()
         {
             // Up
-            if (Sprite.Position.Y > _aiNextPosition.Y)
+            if (Position.Y > _aiNextPosition.Y)
             {
-                Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
+                Position = new Vector2(Position.X, Position.Y - Speed);
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 CurrentDirection = LookDirection.Up;
             }
                 // Down
-            else if (Sprite.Position.Y < _aiNextPosition.Y)
+            else if (Position.Y < _aiNextPosition.Y)
             {
-                Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
+                Position = new Vector2(Position.X, Position.Y + Speed);
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 CurrentDirection = LookDirection.Down;
             }
                 // Right
-            else if (Sprite.Position.X < _aiNextPosition.X)
+            else if (Position.X < _aiNextPosition.X)
             {
-                Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
+                Position = new Vector2(Position.X + Speed, Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 CurrentDirection = LookDirection.Right;
             }
                 // Left
-            else if (Sprite.Position.X > _aiNextPosition.X)
+            else if (Position.X > _aiNextPosition.X)
             {
-                Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
+                Position = new Vector2(Position.X - Speed, Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 CurrentDirection = LookDirection.Left;
             }
@@ -166,8 +166,8 @@ namespace Final_Bomber.Core.Players
                 IsMoving = false;
                 // We define a new goal
                 Path = AIFunction.MakeAWay(
-                    Sprite.CellPosition,
-                    AIFunction.SetNewGoal(Sprite.CellPosition, map.Board, map.CollisionLayer, hazardMap, map.Size),
+                    CellPosition,
+                    AIFunction.SetNewGoal(CellPosition, map.Board, map.CollisionLayer, hazardMap, map.Size),
                     map.CollisionLayer, hazardMap, map.Size);
             }
         }
@@ -183,12 +183,12 @@ namespace Final_Bomber.Core.Players
             switch (effect)
             {
                 case BadItemEffect.TooSlow:
-                    SpeedSaved = Sprite.Speed;
-                    Sprite.Speed = Config.MinSpeed;
+                    SpeedSaved = Speed;
+                    Speed = Config.MinSpeed;
                     break;
                 case BadItemEffect.TooSpeed:
-                    SpeedSaved = Sprite.Speed;
-                    Sprite.Speed = Config.MaxSpeed;
+                    SpeedSaved = Speed;
+                    Speed = Config.MaxSpeed;
                     break;
                 case BadItemEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
@@ -206,10 +206,10 @@ namespace Final_Bomber.Core.Players
             switch (BadItemEffect)
             {
                 case BadItemEffect.TooSlow:
-                    Sprite.Speed = SpeedSaved;
+                    Speed = SpeedSaved;
                     break;
                 case BadItemEffect.TooSpeed:
-                    Sprite.Speed = SpeedSaved;
+                    Speed = SpeedSaved;
                     break;
                 case BadItemEffect.BombTimerChanged:
                     BombTimer = BombTimerSaved;

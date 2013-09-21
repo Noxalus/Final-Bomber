@@ -31,7 +31,7 @@ namespace Final_Bomber.Core.Entities
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/teleporter");
             var animation = new Animation(2, 32, 32, 0, 0, 2);
-            Sprite = new AnimatedSprite(spriteTexture, animation, position) {IsAnimating = true};
+            Sprite = new AnimatedSprite(spriteTexture, animation) {IsAnimating = true};
 
             _isAlive = true;
         }
@@ -47,45 +47,43 @@ namespace Final_Bomber.Core.Entities
 
         public void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion
 
         #region Public Method Region
 
-        public void ChangePosition(IEntity mapItem, Map map)
+        public void ChangeEntityPosition(DynamicEntity entity, Map map)
         {
             bool allTeleporterCellTaken = true;
          
             foreach (Teleporter t in map.TeleporterList)
             {
-                Point position = t.Sprite.CellPosition;
-                if (position != Sprite.CellPosition && map.Board[position.X, position.Y] is Teleporter)
+                Point position = t.CellPosition;
+                if (position != CellPosition && map.Board[position.X, position.Y] is Teleporter)
                     allTeleporterCellTaken = false;
             }
 
             if (!allTeleporterCellTaken)
             {
-                Point position = Sprite.CellPosition;
-                while (position == Sprite.CellPosition)
+                Point position = CellPosition;
+                while (position == CellPosition)
                 {
                     position = FinalBomber.Instance.GamePlayScreen.TeleporterList[
                         GamePlayScreen.Random.Next(FinalBomber.Instance.GamePlayScreen.TeleporterList.Count)].
-                        Sprite.CellPosition;
+                        CellPosition;
                 }
 
-                var bomb = mapItem as Bomb;
+                var bomb = entity as Bomb;
                 if (bomb != null)
                 {
-                    bomb.ChangeSpeed(bomb.Sprite.Speed + Config.BombSpeedIncrementeur);
+                    bomb.ChangeSpeed(bomb.Speed + Config.BombSpeedIncrementeur);
                     bomb.ResetTimer();
-                    bomb.Sprite.ChangePosition(position);
+                    bomb.ChangePosition(position);
                 }
-                /* TODO: Fix this modelisation problem !
                 else
-                    mapItem.ChangePosition(position);
-                */
+                    entity.ChangePosition(position);
             }
         }
 

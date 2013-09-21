@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core
 {
@@ -17,5 +18,17 @@ namespace FBLibrary.Core
         public const int BasePlayerBombAmount = 1;
         // Initially => 2
         public static TimeSpan BaseBombTimer = TimeSpan.FromSeconds(2);
+
+        // Characteristics minimum and maximum
+        public const float MaxSpeed = 300f;
+        public const float MinSpeed = 1f;
+        public const int MinBombPower = 1;
+        public const int MinBombAmount = 1;
+
+        // Game info
+        public const float PlayerSpeedIncrementeur = 0.25f;
+
+        // World
+        public static Point BaseTileSize = new Point(32, 32);
     }
 }

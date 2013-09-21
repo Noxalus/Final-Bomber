@@ -144,7 +144,7 @@ namespace Final_Bomber.Network
             if (player != null)
             {
                 // TODO => Move Players on the map
-                player.Sprite.Position = arg.Position;
+                player.Position = arg.Position;
                 player.ChangeLookDirection(arg.Action);
                 /*
                 player.MapPosition = arg.pos;

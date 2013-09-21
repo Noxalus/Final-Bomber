@@ -45,7 +45,7 @@ namespace Final_Bomber.Core.Entities
             animations.Add(AnimationKey.Up, animation);
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/arrow");
-            Sprite = new AnimatedSprite(spriteTexture, animations, position) {IsAnimating = true};
+            Sprite = new AnimatedSprite(spriteTexture, animations) {IsAnimating = true};
 
             _lookDirection = initialLookDirection;
             Sprite.CurrentAnimation = LookDirectionToAnimationKey(_lookDirection);
@@ -64,7 +64,7 @@ namespace Final_Bomber.Core.Entities
 
         public void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion
@@ -98,7 +98,7 @@ namespace Final_Bomber.Core.Entities
 
         public void ChangeDirection(Bomb bomb)
         {
-            Point nextPosition = bomb.Sprite.CellPosition;
+            Point nextPosition = bomb.CellPosition;
             switch (_lookDirection)
             {
                 case LookDirection.Up:
@@ -121,7 +121,7 @@ namespace Final_Bomber.Core.Entities
                     CollisionLayer[nextPosition.X, nextPosition.Y])
             {
                 bomb.ChangeDirection(_lookDirection, -1);
-                //bomb.ChangeSpeed(bomb.Sprite.Speed + Config.BombSpeedIncrementeur);
+                //bomb.ChangeSpeed(bomb.Speed + Config.BombSpeedIncrementeur);
                 bomb.ResetTimer();
             }
         }

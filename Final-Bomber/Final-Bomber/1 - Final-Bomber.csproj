@@ -149,7 +149,6 @@
     <Compile Include="Core\Entities\Arrow.cs" />
     <Compile Include="Core\Entities\Bomb.cs" />
     <Compile Include="Core\Players\AI\EasyAIStrategy.cs" />
-    <Compile Include="Core\DynamicEntity.cs" />
     <Compile Include="Core\Entities\EdgeWall.cs" />
     <Compile Include="Core\Players\AI\AIFunction.cs" />
     <Compile Include="Core\EntityCollection.cs" />

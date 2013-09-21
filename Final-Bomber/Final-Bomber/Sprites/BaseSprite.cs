@@ -16,10 +16,6 @@ namespace Final_Bomber.Sprites
         protected Texture2D texture;
         protected Rectangle sourceRectangle;
 
-        protected Vector2 position;
-        protected Vector2 velocity;
-        protected float speed = 2.0f;
-
         #endregion
 
         #region Property Region
@@ -34,6 +30,7 @@ namespace Final_Bomber.Sprites
             get { return sourceRectangle.Height; }
         }
 
+        /*
         public Rectangle Rectangle
         {
             get
@@ -44,33 +41,7 @@ namespace Final_Bomber.Sprites
                       Width,
                       Height);
             }
-        }
-
-        public float Speed
-        {
-            get { return speed; }
-            set { speed = MathHelper.Clamp(speed, 1.0f, 16.0f); }
-        }
-
-        public Vector2 Position
-        {
-            get { return position; }
-            set
-            {
-                position = value;
-            }
-        }
-
-        public Vector2 Velocity
-        {
-            get { return velocity; }
-            set
-            {
-                velocity = value;
-                if (velocity != Vector2.Zero)
-                    velocity.Normalize();
-            }
-        }
+        }*/
 
         #endregion
 
@@ -88,17 +59,6 @@ namespace Final_Bomber.Sprites
                     0,
                     image.Width,
                     image.Height);
-
-            this.position = Vector2.Zero;
-            this.velocity = Vector2.Zero;
-        }
-
-        public BaseSprite(Texture2D image, Rectangle? sourceRectangle, Point tile)
-            : this(image, sourceRectangle)
-        {
-            this.position = new Vector2(
-                tile.X * Engine.TileWidth,
-                tile.Y * Engine.TileHeight);
         }
 
         #endregion
@@ -112,11 +72,11 @@ namespace Final_Bomber.Sprites
         {
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
         {
             spriteBatch.Draw(
                 texture,
-                Position,
+                position,
                 sourceRectangle,
                 Color.White);
         }

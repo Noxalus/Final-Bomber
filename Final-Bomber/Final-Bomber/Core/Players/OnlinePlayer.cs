@@ -14,7 +14,7 @@ namespace Final_Bomber.Core.Players
         {
         }
 
-        public void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             base.Update(gameTime, map, hazardMap);
         }
@@ -48,7 +48,7 @@ namespace Final_Bomber.Core.Players
             {
                 var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
                 Sprite.IsAnimating = true;
-                Sprite.Position += motionVector*(Sprite.Speed*dt);
+                Position += motionVector*(Speed*dt);
             }
             else
             {
@@ -65,31 +65,31 @@ namespace Final_Bomber.Core.Players
                 Sprite.IsAnimating = true;
                 motion.Normalize();
 
-                Vector2 nextPosition = Sprite.Position + motion * Sprite.Speed;
+                Vector2 nextPosition = Position + motion * Speed;
                 Point nextPositionCell = Engine.VectorToCell(nextPosition, Sprite.Dimension);
 
                 #region Moving of the player
 
                 // We move the player
-                Sprite.Position += motion * Sprite.Speed;
+                Position += motion * Speed;
 
                 // If the player want to go to top...
                 if (motion.Y == -1)
                 {
                     // ...  and that there is a wall
-                    if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1)))
+                    if (WallAt(new Point(CellPosition.X, CellPosition.Y - 1)))
                     {
                         // If he is more on the left side, we lag him to the left
-                        if (IsMoreLeftSide() && !WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y - 1)))
+                        if (IsMoreLeftSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y - 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y)))
-                                Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
+                            if (!WallAt(new Point(CellPosition.X - 1, CellPosition.Y)))
+                                Position = new Vector2(Position.X - Speed, Position.Y);
                         }
                         else if (IsMoreRightSide() &&
-                                 !WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y - 1)))
+                                 !WallAt(new Point(CellPosition.X + 1, CellPosition.Y - 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
-                                Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
+                            if (!WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
+                                Position = new Vector2(Position.X + Speed, Position.Y);
                         }
                     }
                     // ... and that there is no wall
@@ -98,12 +98,12 @@ namespace Final_Bomber.Core.Players
                         // If he is more on the left side
                         if (IsMoreLeftSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
+                            Position = new Vector2(Position.X + Speed, Position.Y);
                         }
                         // If he is more on the right side
                         else if (IsMoreRightSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
+                            Position = new Vector2(Position.X - Speed, Position.Y);
                         }
                     }
                 }
@@ -111,19 +111,19 @@ namespace Final_Bomber.Core.Players
                 else if (motion.Y == 1)
                 {
                     // Wall at the bottom ?
-                    if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
+                    if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
                     {
                         // If he is more on the left side, we lag him to the left
-                        if (IsMoreLeftSide() && !WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y + 1)))
+                        if (IsMoreLeftSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y + 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y)))
-                                Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
+                            if (!WallAt(new Point(CellPosition.X - 1, CellPosition.Y)))
+                                Position = new Vector2(Position.X - Speed, Position.Y);
                         }
                         else if (IsMoreRightSide() &&
-                                 !WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y + 1)))
+                                 !WallAt(new Point(CellPosition.X + 1, CellPosition.Y + 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
-                                Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
+                            if (!WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
+                                Position = new Vector2(Position.X + Speed, Position.Y);
                         }
                     }
                     else
@@ -131,31 +131,31 @@ namespace Final_Bomber.Core.Players
                         // If he is more on the left side
                         if (IsMoreLeftSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
+                            Position = new Vector2(Position.X + Speed, Position.Y);
                         }
                         // If he is more on the right side
                         else if (IsMoreRightSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
+                            Position = new Vector2(Position.X - Speed, Position.Y);
                         }
                     }
                 }
                 // If the player want to go to left and that there is a wall
                 else if (motion.X == -1)
                 {
-                    if (WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y)))
+                    if (WallAt(new Point(CellPosition.X - 1, CellPosition.Y)))
                     {
                         // If he is more on the top side, we lag him to the top
-                        if (IsMoreTopSide() && !WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y - 1)))
+                        if (IsMoreTopSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y - 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1)))
-                                Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
+                            if (!WallAt(new Point(CellPosition.X, CellPosition.Y - 1)))
+                                Position = new Vector2(Position.X, Position.Y - Speed);
                         }
                         else if (IsMoreBottomSide() &&
-                                 !WallAt(new Point(Sprite.CellPosition.X - 1, Sprite.CellPosition.Y + 1)))
+                                 !WallAt(new Point(CellPosition.X - 1, CellPosition.Y + 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
-                                Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
+                            if (!WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
+                                Position = new Vector2(Position.X, Position.Y + Speed);
                         }
                     }
                     else
@@ -163,30 +163,30 @@ namespace Final_Bomber.Core.Players
                         // If he is more on the top side, we lag him to the bottom
                         if (IsMoreTopSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
+                            Position = new Vector2(Position.X, Position.Y + Speed);
                         }
                         else if (IsMoreBottomSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
+                            Position = new Vector2(Position.X, Position.Y - Speed);
                         }
                     }
                 }
                 // If the player want to go to right and that there is a wall
                 else if (motion.X == 1)
                 {
-                    if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
+                    if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
                     {
                         // If he is more on the top side, we lag him to the top
-                        if (IsMoreTopSide() && !WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y - 1)))
+                        if (IsMoreTopSide() && !WallAt(new Point(CellPosition.X + 1, CellPosition.Y - 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1)))
-                                Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
+                            if (!WallAt(new Point(CellPosition.X, CellPosition.Y - 1)))
+                                Position = new Vector2(Position.X, Position.Y - Speed);
                         }
                         else if (IsMoreBottomSide() &&
-                                 !WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y + 1)))
+                                 !WallAt(new Point(CellPosition.X + 1, CellPosition.Y + 1)))
                         {
-                            if (!WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
-                                Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
+                            if (!WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
+                                Position = new Vector2(Position.X, Position.Y + Speed);
                         }
                     }
                     else
@@ -194,11 +194,11 @@ namespace Final_Bomber.Core.Players
                         // If he is more on the top side, we lag him to the top
                         if (IsMoreTopSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
+                            Position = new Vector2(Position.X, Position.Y + Speed);
                         }
                         else if (IsMoreBottomSide())
                         {
-                            Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
+                            Position = new Vector2(Position.X, Position.Y - Speed);
                         }
                     }
                 }
@@ -224,11 +224,11 @@ namespace Final_Bomber.Core.Players
             {
                 if (this.CurrentBombAmount > 0)
                 {
-                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
+                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.CellPosition == this.CellPosition);
                     if (bo == null)
                     {
                         this.CurrentBombAmount--;
-                        var bomb = new Bomb(this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                        var bomb = new Bomb(this.Id, CellPosition, this.Power, this.BombTimer, this.Speed);
 
                         FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                     }

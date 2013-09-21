@@ -9,7 +9,7 @@ namespace Final_Bomber.Core.Entities
     {
         #region Field Region
 
-        public AnimatedSprite Sprite { get; protected set; }
+        public BaseSprite Sprite { get; protected set; }
 
         #endregion
 
@@ -18,8 +18,9 @@ namespace Final_Bomber.Core.Entities
         public UnbreakableWall(Point position)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            var animation = new Animation(0, 32, 32, 0, 0, 0);
-            Sprite = new AnimatedSprite(spriteTexture, animation, position);
+            Sprite = new BaseSprite(spriteTexture, new Rectangle(0, 0, 32, 32));
+
+            ChangePosition(position);
         }
 
         #endregion
@@ -33,7 +34,7 @@ namespace Final_Bomber.Core.Entities
 
         public void Draw(GameTime gameTime)
         {
-            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
+            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion
