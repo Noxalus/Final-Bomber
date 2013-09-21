@@ -85,7 +85,8 @@ namespace Final_BomberServer.Host
             //GameSettings.Get_gameManager.CurrentMap().CreateMap();
             //_gameManager.CurrentMap = GameSettings.Get_gameManager.CurrentMap();
             _gameManager.LoadMap("classic.map");
-            _gameManager.CurrentMap.DisplayMap();
+            _gameManager.CurrentMap.DisplayBoard();
+            _gameManager.CurrentMap.DisplayCollisionLayer();
 
             suddenDeath = false;
             //suddenDeathTPE = 1000 / ((_gameManager.CurrentMap.mapWidth * _gameManager.CurrentMap.mapHeight) / 30); //Räknar ut tiden mellan varje explosion (i ms)

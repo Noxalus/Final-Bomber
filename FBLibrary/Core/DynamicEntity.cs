@@ -8,6 +8,8 @@ namespace FBLibrary.Core
         private float _speed;
         private Vector2 _velocity;
 
+        protected bool IsMoving;
+
         public float Speed
         {
             get { return _speed; }
@@ -38,9 +40,10 @@ namespace FBLibrary.Core
         protected virtual void Update()
         {
             PreviousCellPosition = CellPosition;
+            CellPosition = Engine.VectorToCell(Position, Dimension);
         }
 
-        protected bool IsChangingCell()
+        public bool IsChangingCell()
         {
             return (CellPosition != PreviousCellPosition);
         }

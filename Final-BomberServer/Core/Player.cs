@@ -57,100 +57,51 @@ namespace Final_BomberServer.Core
         {
             if (IsAlive)
             {
+                IsMoving = true;
                 switch (CurrentDirection)
                 {
                     case LookDirection.Down:
                         Position += new Vector2(0, GetMovementSpeed());
-                        if (true /*Position.Y > GetCenteredTilePos(NextTile).Y*/)
-                        {
-                            //Position.Y = GetCenteredTilePos(NextTile).Y;
-
-                            if (CurrentDirection != nextDirection)
-                            {
-                                CurrentDirection = nextDirection;
-                                SendPosition();
-                            }
-                            else
-                            {
-                                if (_tmrSendPos.Each(5000))
-                                    SendPosition();
-                            }
-
-                            CurrentTile = NextTile;
-                            SetMovement(CurrentDirection);
-                        }
                         break;
                     case LookDirection.Up:
                         Position += new Vector2(0, -GetMovementSpeed());
-                        if (true /*Position.Y < GetCenteredTilePos(NextTile).Y*/)
-                        {
-                            //Position.Y = GetCenteredTilePos(NextTile).Y;
-
-                            if (CurrentDirection != nextDirection)
-                            {
-                                CurrentDirection = nextDirection;
-                                SendPosition();
-                            }
-                            else
-                            {
-                                if (_tmrSendPos.Each(5000))
-                                    SendPosition();
-                            }
-
-                            CurrentTile = NextTile;
-                            SetMovement(CurrentDirection);
-                        }
                         break;
                     case LookDirection.Left:
                         Position += new Vector2(-GetMovementSpeed(), 0);
-                        if (true /*Position.X < GetCenteredTilePos(NextTile).X*/)
-                        {
-                            //Position.X = GetCenteredTilePos(NextTile).X;
-
-                            if (CurrentDirection != nextDirection)
-                            {
-                                CurrentDirection = nextDirection;
-                                SendPosition();
-                            }
-                            else
-                            {
-                                if (_tmrSendPos.Each(5000))
-                                    SendPosition();
-                            }
-
-                            CurrentTile = NextTile;
-                            SetMovement(CurrentDirection);
-                        }
                         break;
                     case LookDirection.Right:
                         Position += new Vector2(GetMovementSpeed(), 0);
                         //Program.Log.Info("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
-                        if (true /*Position.X > GetCenteredTilePos(NextTile).X*/)
-                        {
-                            //Position.X = GetCenteredTilePos(NextTile).X;
-
-                            if (CurrentDirection != nextDirection)
-                            {
-                                CurrentDirection = nextDirection;
-                                SendPosition();
-                            }
-                            else
-                            {
-                                if (_tmrSendPos.Each(5000))
-                                {
-                                    SendPosition();
-                                }
-                            }
-
-                            CurrentTile = NextTile;
-                            SetMovement(CurrentDirection);
-                        }
+                        break;
+                    default:
+                        IsMoving = false;
                         break;
                 }
 
-                ComputeWallCollision(map);
+                // If the player is moving
+                if (IsMoving)
+                {
+                    ComputeWallCollision(map);
+                }
+
+                if (CurrentDirection != nextDirection)
+                {
+                    CurrentDirection = nextDirection;
+                    SendPosition();
+                }
+                else
+                {
+                    if (_tmrSendPos.Each(ServerSettings.SendPlayerPositionTime))
+                        SendPosition();
+                }
+
+                CurrentTile = NextTile;
+                SetMovement(CurrentDirection);
 
                 //Program.Log.Info("[Client #" + Id + "]Position: + " + Position.ToString());
+
+                // Call Update method of DynamicEntity class
+                Update();
             }
         }
 

@@ -128,8 +128,8 @@ namespace Final_Bomber.Screens
             int counter = 0;
             foreach (var player in _gameManager.Players)
             {
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player #" + player.Id + 
-                    ": \nR: " + player.Position + 
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player #" + player.Id + ": (" + player.IsChangingCell() + 
+                    ")\nR: " + player.Position + 
                     "\nP: " + player.CellPosition, new Vector2(530, 60 + (100 * counter)), Color.Black);
 
                 counter++;

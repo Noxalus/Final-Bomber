@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core.BaseEntities
@@ -37,6 +38,11 @@ namespace FBLibrary.Core.BaseEntities
             PositionX = Engine.TileHeight;
         }
 
+        public void Update()
+        {
+            base.Update();
+        }
+
         protected void ComputeWallCollision(BaseMap map)
         {
             #region Wall collisions
@@ -44,9 +50,12 @@ namespace FBLibrary.Core.BaseEntities
             // Is there a wall on the top ?
             if (WallAt(new Point(CellPosition.X, CellPosition.Y - 1), map))
             {
+                Console.WriteLine("Wall at top !");
+
                 // Is there a wall on the bottom ?
                 if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
                 {
+                    Console.WriteLine("Wall at bottom !");
                     // Top collision and Bottom collision
                     if ((CurrentDirection == LookDirection.Up && IsMoreTopSide()) ||
                         (CurrentDirection == LookDirection.Down && IsMoreBottomSide()))
@@ -63,9 +72,12 @@ namespace FBLibrary.Core.BaseEntities
             // Wall only at the bottom
             else if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
             {
+                Console.WriteLine("Wall only at bottom !");
                 // Bottom collision
                 if (CurrentDirection == LookDirection.Down && IsMoreBottomSide())
-                    PositionY = CellPosition.Y * Engine.TileHeight;
+                {
+                    PositionY = CellPosition.Y*Engine.TileHeight;
+                }
                 // To lag him
                 else if (CurrentDirection == LookDirection.Down)
                 {
@@ -123,22 +135,22 @@ namespace FBLibrary.Core.BaseEntities
 
         private bool IsMoreTopSide()
         {
-            return Position.Y < ((CellPosition.Y * Engine.TileHeight) - (Speed / 2));
+            return Position.Y < ((CellPosition.Y * Engine.TileHeight));
         }
 
         private bool IsMoreBottomSide()
         {
-            return Position.Y > ((CellPosition.Y * Engine.TileHeight) + (Speed / 2));
+            return Position.Y > ((CellPosition.Y * Engine.TileHeight));
         }
 
         private bool IsMoreLeftSide()
         {
-            return Position.X < ((CellPosition.X * Engine.TileWidth) - (Speed / 2));
+            return Position.X < ((CellPosition.X * Engine.TileWidth));
         }
 
         private bool IsMoreRightSide()
         {
-            return Position.X > ((CellPosition.X * Engine.TileWidth) + (Speed / 2));
+            return Position.X > ((CellPosition.X * Engine.TileWidth));
         }
     }
 }

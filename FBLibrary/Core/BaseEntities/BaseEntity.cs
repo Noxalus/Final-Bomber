@@ -43,6 +43,7 @@ namespace FBLibrary.Core
         public Point CellPosition
         {
             get { return _cellPosition; }
+            protected set { _cellPosition = value; }
         }
 
         public Point Dimension { get; set; }

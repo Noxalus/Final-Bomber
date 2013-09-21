@@ -133,7 +133,8 @@ namespace Final_BomberServer.Core.WorldEngine
             }
         }
 
-        public void DisplayMap()
+        #region Displaying region
+        public void DisplayBoard()
         {
             for (int x = 0; x < Size.X; x++)
             {
@@ -164,5 +165,19 @@ namespace Final_BomberServer.Core.WorldEngine
                 Console.WriteLine();
             }
         }
+
+        public void DisplayCollisionLayer()
+        {
+            for (int x = 0; x < Size.X; x++)
+            {
+                for (int y = 0; y < Size.Y; y++)
+                {
+                    Console.Write(CollisionLayer[x, y] ? "1 " : "0 ");
+                }
+
+                Console.WriteLine();
+            }
+        }
+        #endregion
     }
 }

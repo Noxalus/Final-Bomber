@@ -221,8 +221,6 @@ namespace Final_Bomber.Core.Players
                 }
                 */
                 #endregion
-
-                ComputeWallCollision(map);
             }
             else
             {
@@ -257,6 +255,8 @@ namespace Final_Bomber.Core.Players
             #endregion
 
             #endregion
+
+            base.Move(gameTime, map, hazardMap);
         }
 
         public override void ApplyBadItem(BadItemEffect effect)

@@ -23,7 +23,6 @@ namespace Final_Bomber.Entities
         private readonly AnimatedSprite _playerDeathAnimation;
         protected TimeSpan BombTimerSaved;
 
-        protected bool IsMoving;
         protected LookDirection PreviousLookDirection;
 
         // Bad item
@@ -293,6 +292,9 @@ namespace Final_Bomber.Entities
             */
 
             #endregion
+
+            // Call DynamicEntity Update method
+            base.Update();
         }
 
         public void Draw(GameTime gameTime)
@@ -365,7 +367,8 @@ namespace Final_Bomber.Entities
 
         protected virtual void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            ComputeWallCollision(map);
+            if (IsMoving)
+                ComputeWallCollision(map);
         }
 
         protected void UpdatePlayerPosition()
