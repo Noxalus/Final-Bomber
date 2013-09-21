@@ -25,7 +25,7 @@ namespace Final_BomberServer.Host
 
         void ReceiveMovePlayer(Client client, LookDirection movement)
         {
-            if (!client.Player.IsDead)
+            if (client.Player.IsAlive)
                 client.Player.SetMovement(movement); // Receives the player's current direction
         }
 
@@ -40,7 +40,7 @@ namespace Final_BomberServer.Host
         #endregion
         void ReceiveBombPlacing(Client client)
         {
-            if (!client.Player.IsDead)
+            if (client.Player.IsAlive)
                 OnBombPlacing(client);
         }
 

@@ -9,44 +9,21 @@ using System.Threading.Tasks;
 
 namespace Final_BomberServer.Core
 {
-    public class Player
+    public class Player : BasePlayer
     {
-        const int INVURNABLETIME = 5000;
-
-        public LookDirection Direction;
         public LookDirection nextDirection;
-        public Vector2 Position = new Vector2(0);
         public MapTile AfterNextTile;
         public MapTile NextTile;
         public MapTile CurrentTile;
-        public int PlayerId;
-        public Vector2 Size = new Vector2(25, 20);
         public Vector2 SizeOffset = new Vector2(15, 30);
         public PlayerStats Stats = new PlayerStats();
 
-        public Timer tmrSendPos = new Timer(true);
+        private readonly Timer _tmrSendPos = new Timer(true);
 
-
-        public int maxBombAmount;
-        public int currentBombAmount;
-        public float MoveSpeed;
-        public int lifes;
-        public bool IsDead;
-        public int ExplodeRange;
-        public float BombTickPerSek; //Bomb ticks per second
-
-        public Player(int playerId)
+        public Player(int id)
+            : base(id)
         {
-            this.PlayerId = playerId;
-            maxBombAmount = 1;
-            currentBombAmount = 0;
-            MoveSpeed = 100f;
-            lifes = 2;
-            IsDead = false;
-            Direction = LookDirection.Idle;
             nextDirection = LookDirection.Idle;
-            ExplodeRange = 2;
-            BombTickPerSek = 1;
         }
 
         public void SetMovement(LookDirection direction)
@@ -60,9 +37,9 @@ namespace Final_BomberServer.Core
             if (true /*nextTile != null*/)
             {
                 nextDirection = direction;
-                if (Direction == LookDirection.Idle && direction != LookDirection.Idle)
+                if (CurrentDirection == LookDirection.Idle && direction != LookDirection.Idle)
                 {
-                    Direction = direction;
+                    CurrentDirection = direction;
                     SendPosition();
                 }
             }
@@ -75,9 +52,9 @@ namespace Final_BomberServer.Core
 
         public void MovePlayer()
         {
-            if (!IsDead)
+            if (IsAlive)
             {
-                switch (Direction)
+                switch (CurrentDirection)
                 {
                     case LookDirection.Down:
                         Position += new Vector2(0, GetMovementSpeed());
@@ -85,19 +62,19 @@ namespace Final_BomberServer.Core
                         {
                             //Position.Y = GetCenteredTilePos(NextTile).Y;
 
-                            if (Direction != nextDirection)
+                            if (CurrentDirection != nextDirection)
                             {
-                                Direction = nextDirection;
+                                CurrentDirection = nextDirection;
                                 SendPosition();
                             }
                             else
                             {
-                                if (tmrSendPos.Each(5000))
+                                if (_tmrSendPos.Each(5000))
                                     SendPosition();
                             }
 
                             CurrentTile = NextTile;
-                            SetMovement(Direction);
+                            SetMovement(CurrentDirection);
                         }
                         break;
                     case LookDirection.Up:
@@ -106,19 +83,19 @@ namespace Final_BomberServer.Core
                         {
                             //Position.Y = GetCenteredTilePos(NextTile).Y;
 
-                            if (Direction != nextDirection)
+                            if (CurrentDirection != nextDirection)
                             {
-                                Direction = nextDirection;
+                                CurrentDirection = nextDirection;
                                 SendPosition();
                             }
                             else
                             {
-                                if (tmrSendPos.Each(5000))
+                                if (_tmrSendPos.Each(5000))
                                     SendPosition();
                             }
 
                             CurrentTile = NextTile;
-                            SetMovement(Direction);
+                            SetMovement(CurrentDirection);
                         }
                         break;
                     case LookDirection.Left:
@@ -127,19 +104,19 @@ namespace Final_BomberServer.Core
                         {
                             //Position.X = GetCenteredTilePos(NextTile).X;
 
-                            if (Direction != nextDirection)
+                            if (CurrentDirection != nextDirection)
                             {
-                                Direction = nextDirection;
+                                CurrentDirection = nextDirection;
                                 SendPosition();
                             }
                             else
                             {
-                                if (tmrSendPos.Each(5000))
+                                if (_tmrSendPos.Each(5000))
                                     SendPosition();
                             }
 
                             CurrentTile = NextTile;
-                            SetMovement(Direction);
+                            SetMovement(CurrentDirection);
                         }
                         break;
                     case LookDirection.Right:
@@ -149,21 +126,21 @@ namespace Final_BomberServer.Core
                         {
                             //Position.X = GetCenteredTilePos(NextTile).X;
 
-                            if (Direction != nextDirection)
+                            if (CurrentDirection != nextDirection)
                             {
-                                Direction = nextDirection;
+                                CurrentDirection = nextDirection;
                                 SendPosition();
                             }
                             else
                             {
-                                if (tmrSendPos.Each(5000))
+                                if (_tmrSendPos.Each(5000))
                                 {
                                     SendPosition();
                                 }
                             }
 
                             CurrentTile = NextTile;
-                            SetMovement(Direction);
+                            SetMovement(CurrentDirection);
                         }
                         break;
                 }
@@ -179,7 +156,7 @@ namespace Final_BomberServer.Core
 
         public Vector2 GetCenterPosition()
         {
-            return new Vector2(Position.X + SizeOffset.X + Size.X / 2, Position.Y + SizeOffset.Y + Size.Y / 2);
+            return new Vector2(Position.X + SizeOffset.X + Dimension.X / 2f, Position.Y + SizeOffset.Y + Dimension.Y / 2f);
         }
 
         public void PositionOnTile(MapTile tile)
@@ -187,8 +164,10 @@ namespace Final_BomberServer.Core
             CurrentTile = tile;
             NextTile = tile;
             Vector2 pos = GetCenteredTilePos(tile);
+            /*
             Position.X = pos.X;
             Position.Y = pos.Y;
+            */
         }
 
         public Vector2 GetCenteredTilePos(MapTile tile)
@@ -196,8 +175,8 @@ namespace Final_BomberServer.Core
             Vector2 rtn = new Vector2(0);
             Vector2 pos = Vector2.Zero; //tile.GetMapPos();
             pos += new Vector2(MapTile.SIZE / 2);
-            rtn.X = pos.X - (SizeOffset.X + Size.X / 2);
-            rtn.Y = pos.Y - (SizeOffset.Y + Size.Y / 2);
+            rtn.X = pos.X - (SizeOffset.X + Dimension.X / 2f);
+            rtn.Y = pos.Y - (SizeOffset.Y + Dimension.Y / 2f);
             return rtn;
         }
 
@@ -224,19 +203,15 @@ namespace Final_BomberServer.Core
                     }
                 }
                 Stats.Burns++;
-                lifes--;
                 //invurnable.Reset();
                 GameSettings.gameServer.SendPlayerGotBurned(this);
-                if (lifes == 0)
-                {
-                    Kill(bomb);
-                }
+                Kill(bomb);
             }
         }
 
         public void Kill(Bomb bomb)
         {
-            if (!IsDead)
+            if (IsAlive)
             {
                 if (bomb.player == this)
                 {
@@ -248,14 +223,14 @@ namespace Final_BomberServer.Core
                         bomb.player.Stats.Kills++;
                 }
 
-                IsDead = true;
+                IsAlive = false;
                 GameSettings.gameServer.SendRemovePlayer(this);
             }
         }
 
         private float GetMovementSpeed()
         {
-            float rtn = (MoveSpeed * GameSettings.speed) / 1000f;
+            float rtn = (Speed * GameSettings.speed) / 1000f;
             return rtn;
         }
     }

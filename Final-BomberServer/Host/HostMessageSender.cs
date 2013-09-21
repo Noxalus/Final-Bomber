@@ -56,8 +56,8 @@ namespace Final_BomberServer.Host
             send.Write(gameinProgress);
             if (!gameinProgress)
             {
-                send.Write(client.Player.PlayerId);
-                send.Write(client.Player.MoveSpeed);
+                send.Write(client.Player.Id);
+                send.Write(client.Player.Speed);
                 send.Write(999/*GameSettings.GetCurrentMap().suddenDeathTime*/);
             }
             server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
@@ -92,7 +92,7 @@ namespace Final_BomberServer.Host
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.RemovePlayer);
-            send.Write(removePlayer.PlayerId);
+            send.Write(removePlayer.Id);
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
@@ -101,8 +101,8 @@ namespace Final_BomberServer.Host
         {
             NetOutgoingMessage rtn = server.CreateMessage();
             rtn.Write((byte)SMT.PlayerInfo);
-            rtn.Write(client.Player.PlayerId);
-            rtn.Write(client.Player.MoveSpeed);
+            rtn.Write(client.Player.Id);
+            rtn.Write(client.Player.Speed);
             rtn.Write(client.Username);
             return rtn;
         }
@@ -127,10 +127,10 @@ namespace Final_BomberServer.Host
                 send.Write((byte)255);
             }
 
-            send.Write(player.PlayerId);
+            send.Write(player.Id);
             
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            Program.Log.Info("Send Position [Player ID: " + player.PlayerId + " => " + player.Position + "]");
+            Program.Log.Info("Send Position [Player ID: " + player.Id + " => " + player.Position + "]");
         }
 
         // Send to all players that this player has placed a bomb
@@ -138,7 +138,7 @@ namespace Final_BomberServer.Host
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.PlayerPlacingBomb);
-            send.Write(player.PlayerId);
+            send.Write(player.Id);
             send.Write(xPos);
             send.Write(yPos);
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
@@ -164,7 +164,7 @@ namespace Final_BomberServer.Host
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.Burn);
-            send.Write(player.PlayerId);
+            send.Write(player.Id);
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
@@ -194,7 +194,7 @@ namespace Final_BomberServer.Host
             Vector2 pos = tile.GetMapPos();
             send.Write(pos.X);
             send.Write(pos.Y);
-            send.Write(player.PlayerId);
+            send.Write(player.Id);
             send.Write(tile.Poweruped.GetPowerupValue());
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
@@ -221,7 +221,7 @@ namespace Final_BomberServer.Host
             {
                 NetOutgoingMessage send = server.CreateMessage();
                 send.Write((byte)SMT.End);
-                send.Write(!client.Player.IsDead);
+                send.Write(client.Player.IsAlive);
                 server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
             }
         }

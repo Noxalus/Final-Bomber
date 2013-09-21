@@ -36,7 +36,7 @@ namespace Final_BomberServer.Host
                 {
                     client.isReady = false;
                     GameSettings.gameServer.SendEnd(client);
-                    client.Player = new Player(client.Player.PlayerId); //Återställer dens orginal värden
+                    client.Player = new Player(client.Player.Id); //Återställer dens orginal värden
                     GameSettings.gameServer.SendGameInfo(client);
                 }
             }

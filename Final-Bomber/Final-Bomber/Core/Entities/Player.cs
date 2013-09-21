@@ -77,7 +77,6 @@ namespace Final_Bomber.Entities
 
             Sprite = new AnimatedSprite(spriteTexture, animations);
             Sprite.ChangeFramesPerSecond(animationFramesPerSecond);
-            Speed = GameConfiguration.BasePlayerSpeed;
 
             var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);

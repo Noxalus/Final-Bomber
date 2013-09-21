@@ -132,7 +132,7 @@ namespace Final_BomberServer.Host
             List<Player> rtn = new List<Player>();
             foreach (Client client in this)
             {
-                if (!client.Player.IsDead && !client.Spectating)
+                if (client.Player.IsAlive && !client.Spectating)
                     rtn.Add(client.Player);
             }
             return rtn;

@@ -13,8 +13,8 @@ namespace Final_Bomber.Sprites
     {
         #region Field Region
 
-        protected Texture2D texture;
-        protected Rectangle sourceRectangle;
+        protected readonly Texture2D Texture;
+        protected Rectangle SourceRectangle;
 
         #endregion
 
@@ -22,12 +22,12 @@ namespace Final_Bomber.Sprites
 
         public int Width
         {
-            get { return sourceRectangle.Width; }
+            get { return SourceRectangle.Width; }
         }
 
         public int Height
         {
-            get { return sourceRectangle.Height; }
+            get { return SourceRectangle.Height; }
         }
 
         /*
@@ -49,12 +49,12 @@ namespace Final_Bomber.Sprites
 
         public BaseSprite(Texture2D image, Rectangle? sourceRectangle)
         {
-            this.texture = image;
+            this.Texture = image;
 
             if (sourceRectangle.HasValue)
-                this.sourceRectangle = sourceRectangle.Value;
+                this.SourceRectangle = sourceRectangle.Value;
             else
-                this.sourceRectangle = new Rectangle(
+                this.SourceRectangle = new Rectangle(
                     0,
                     0,
                     image.Width,
@@ -74,11 +74,26 @@ namespace Final_Bomber.Sprites
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.Draw(
-                texture,
-                new Vector2(Engine.Origin.X + position.X, Engine.Origin.Y + position.Y),
-                sourceRectangle,
-                Color.White);
+            if (Width != Engine.TileWidth || Height != Engine.TileHeight)
+            {
+                spriteBatch.Draw(
+                    Texture,
+                    new Rectangle(
+                        (int) (Engine.Origin.X + position.X - Engine.TileWidth/4f),
+                        (int) (Engine.Origin.Y + position.Y - Engine.TileHeight/2f),
+                        Engine.TileWidth + Engine.TileWidth/2,
+                        Engine.TileHeight + Engine.TileHeight/2),
+                    SourceRectangle,
+                    Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            }
+            else
+            {
+                spriteBatch.Draw(
+                    Texture,
+                    new Vector2(Engine.Origin.X + position.X, Engine.Origin.Y + position.Y),
+                    SourceRectangle,
+                    Color.White);
+            }
         }
 
         #endregion

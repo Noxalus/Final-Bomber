@@ -131,7 +131,7 @@ namespace Final_BomberServer.Core
                 {
                     if (nextTile.Bombed != null)
                     {
-                        if (nextTile.Bombed.player.PlayerId != player.PlayerId)
+                        if (nextTile.Bombed.player.Id != player.Id)
                             return null;
                     }
                     return nextTile;
@@ -160,16 +160,16 @@ namespace Final_BomberServer.Core
                             (player.Position.Y + player.SizeOffset.Y));
                         break;
                     case 1:
-                        tile = GetTileByPosition((player.Position.X + player.SizeOffset.X) + player.Size.X,
+                        tile = GetTileByPosition((player.Position.X + player.SizeOffset.X) + player.Dimension.X,
                             (player.Position.Y + player.SizeOffset.Y));
                         break;
                     case 2:
                         tile = GetTileByPosition((player.Position.X + player.SizeOffset.X),
-                            (player.Position.Y + player.SizeOffset.Y) + player.Size.Y);
+                            (player.Position.Y + player.SizeOffset.Y) + player.Dimension.Y);
                         break;
                     case 3:
-                        tile = GetTileByPosition((player.Position.X + player.SizeOffset.X) + player.Size.X,
-                            (player.Position.Y + player.SizeOffset.Y) + player.Size.Y);
+                        tile = GetTileByPosition((player.Position.X + player.SizeOffset.X) + player.Dimension.X,
+                            (player.Position.Y + player.SizeOffset.Y) + player.Dimension.Y);
                         break;
                 }
                 rtn.Add(tile);
@@ -315,7 +315,7 @@ namespace Final_BomberServer.Core
                 {
                     if ( tile.Bombed != null )
                     {
-                        if ( tile.Bombed.player.PlayerId != player.PlayerId )
+                        if ( tile.Bombed.Player.Id != Player.Id )
                             return GetCollisionPos( player, tile );
                     }
                 }
@@ -350,7 +350,7 @@ namespace Final_BomberServer.Core
             bomb.Explosion.Add(new Explosion(Explosion.ExplosionType.Mid, bomb.Position));
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 1; j <= bomb.player.ExplodeRange; j++)
+                for (int j = 1; j <= bomb.player.BombPower; j++)
                 {
                     MapTile tile = null;
                     switch (i)
@@ -385,11 +385,11 @@ namespace Final_BomberServer.Core
                                 if (tile.canExplode)
                                 {
                                     AddExplosion(bomb, tile, i, j, true);
-                                    j = bomb.player.ExplodeRange + 1; //Avsluta denna riktning
+                                    j = bomb.player.BombPower + 1; //Avsluta denna riktning
                                 }
                                 else
                                 {
-                                    j = bomb.player.ExplodeRange + 1; //Avsluta denna riktning
+                                    j = bomb.player.BombPower + 1; //Avsluta denna riktning
                                 }
                             }
                             else
@@ -400,7 +400,7 @@ namespace Final_BomberServer.Core
                     }
                     else
                     {
-                        j = bomb.player.ExplodeRange + 1; //Avsluta denna riktning
+                        j = bomb.player.BombPower + 1; //Avsluta denna riktning
                     }
                 }
             }
@@ -411,7 +411,7 @@ namespace Final_BomberServer.Core
             switch (dir)
             {
                 case 0: //Up
-                    if (nr == bomb.player.ExplodeRange || end)
+                    if (nr == bomb.player.BombPower || end)
                     {
                         bomb.Explosion.Add(new Explosion(Explosion.ExplosionType.UpEnd, tile));
                     }
@@ -421,7 +421,7 @@ namespace Final_BomberServer.Core
                     }
                     break;
                 case 1: //Right
-                    if (nr == bomb.player.ExplodeRange || end)
+                    if (nr == bomb.player.BombPower || end)
                     {
                         bomb.Explosion.Add(new Explosion(Explosion.ExplosionType.RightEnd, tile));
                     }
@@ -431,7 +431,7 @@ namespace Final_BomberServer.Core
                     }
                     break;
                 case 2: //Down
-                    if (nr == bomb.player.ExplodeRange || end)
+                    if (nr == bomb.player.BombPower || end)
                     {
                         bomb.Explosion.Add(new Explosion(Explosion.ExplosionType.DownEnd, tile));
                     }
@@ -441,7 +441,7 @@ namespace Final_BomberServer.Core
                     }
                     break;
                 case 3: //Left
-                    if (nr == bomb.player.ExplodeRange || end)
+                    if (nr == bomb.player.BombPower || end)
                     {
                         bomb.Explosion.Add(new Explosion(Explosion.ExplosionType.LeftEnd, tile));
                     }

@@ -149,7 +149,7 @@ namespace Final_BomberServer.Host
                 if (bombs[i].Remove)//När den ska tas bort
                 {
                     CurrentMap.CheckToRemoveExplodedTiles(bombs[i]); //Kollar om den spränger bort någon tile
-                    bombs[i].player.currentBombAmount--; //Så spelaren kan lägga en bomb igen
+                    bombs[i].player.CurrentBombAmount--; //Så spelaren kan lägga en bomb igen
                     bombs.RemoveAt(i); //Ta bort bomben
                 }
             }
@@ -255,7 +255,7 @@ namespace Final_BomberServer.Host
                     //Sätter allas liv till 1
                     foreach (Client client in GameSettings.gameServer.Clients)
                     {
-                        client.Player.lifes = 1;
+                        //client.Player.lifes = 1;
                     }
                 }
             }
@@ -301,7 +301,7 @@ namespace Final_BomberServer.Host
                 GameSettings.gameServer.SendGameInfo(sender);
                 if (StartedMatch)
                 {
-                    sender.Player.IsDead = true;
+                    sender.Player.IsAlive = false;
                     sender.Spectating = true;
                     sender.NewClient = true;
                 }
@@ -320,7 +320,7 @@ namespace Final_BomberServer.Host
         {
             if (StartedMatch)
             {
-                sender.Player.IsDead = true;
+                sender.Player.IsAlive = false;
                 GameSettings.gameServer.SendRemovePlayer(sender.Player);
             }
             //MainServer.SendCurrentPlayerAmount();
@@ -330,7 +330,7 @@ namespace Final_BomberServer.Host
         {
             if (gameHasBegun)
             {
-                if (sender.Player.currentBombAmount < sender.Player.maxBombAmount)
+                if (sender.Player.CurrentBombAmount < sender.Player.TotalBombAmount)
                 {
                     Vector2 cpos = sender.Player.GetCenterPosition();
                     MapTile pos = CurrentMap.GetTileByPosition(cpos.X, cpos.Y);
@@ -342,7 +342,7 @@ namespace Final_BomberServer.Host
                             Bomb bomb = new Bomb(pos, sender.Player);
                             bomb.IsExploded += new Bomb.IsExplodedEventHandler(bomb_IsExploded);
                             bombs.Add(bomb);
-                            sender.Player.currentBombAmount++;
+                            sender.Player.CurrentBombAmount++;
                             pos.Bombed = bomb;
                             GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, pos.GetMapPos().X, pos.GetMapPos().Y);
                         }

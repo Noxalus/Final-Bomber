@@ -65,7 +65,7 @@ namespace Final_BomberServer.Core
 
         private float GetTickSpeed()
         {
-            float rtn = ((float)player.BombTickPerSek * (float)GameSettings.speed) / 1000;
+            float rtn = 0f;//((float)player.BombTickPerSek * (float)GameSettings.speed) / 1000;
             return rtn;
         }
     }

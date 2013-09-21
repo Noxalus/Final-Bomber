@@ -29,6 +29,7 @@ namespace FBLibrary.Core
             CurrentBombAmount = TotalBombAmount;
             BombPower = GameConfiguration.BasePlayerBombPower;
             BombTimer = GameConfiguration.BaseBombTimer;
+            Speed = GameConfiguration.BasePlayerSpeed;
             // etc...
         }
     }

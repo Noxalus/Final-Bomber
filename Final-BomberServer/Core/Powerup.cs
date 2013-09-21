@@ -28,20 +28,24 @@ namespace Final_BomberServer.Core
             player.Stats.PowerupsPicked++;
             switch (Type)
             {
+                /*
                 case PowerupType.ExtraLife:
                     player.lifes += (int)GetPowerupValue();
                     break;
+                */
                 case PowerupType.MoveSpeed:
-                    player.MoveSpeed += GetPowerupValue();
+                    player.Speed += GetPowerupValue();
                     break;
+                /*
                 case PowerupType.TickRate:
                     player.BombTickPerSek += GetPowerupValue();
                     break;
+                */
                 case PowerupType.MaxBombs:
-                    player.maxBombAmount += (int)GetPowerupValue();
+                    player.TotalBombAmount += (int)GetPowerupValue();
                     break;
                 case PowerupType.ExplosionRange:
-                    player.ExplodeRange += (int)GetPowerupValue();
+                    player.BombPower += (int)GetPowerupValue();
                     break;
             }
         }
