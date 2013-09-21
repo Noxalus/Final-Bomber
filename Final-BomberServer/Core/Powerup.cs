@@ -3,25 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FBLibrary.Core;
 
 namespace Final_BomberServer.Core
 {
-    public class Powerup
+    public class PowerUp
     {
-        public Powerup(PowerupType type)
+        public PowerUp(PowerUpType type)
         {
             Type = type;
         }
-        public PowerupType Type;
-
-        public enum PowerupType
-        {
-            ExplosionRange,
-            ExtraLife,
-            MaxBombs,
-            MoveSpeed,
-            TickRate,
-        }
+        public PowerUpType Type;
 
         public void GetPowerup(Player player)
         {
@@ -33,7 +25,7 @@ namespace Final_BomberServer.Core
                     player.lifes += (int)GetPowerupValue();
                     break;
                 */
-                case PowerupType.MoveSpeed:
+                case PowerUpType.Speed:
                     player.Speed += GetPowerupValue();
                     break;
                 /*
@@ -41,10 +33,10 @@ namespace Final_BomberServer.Core
                     player.BombTickPerSek += GetPowerupValue();
                     break;
                 */
-                case PowerupType.MaxBombs:
+                case PowerUpType.Bomb:
                     player.TotalBombAmount += (int)GetPowerupValue();
                     break;
-                case PowerupType.ExplosionRange:
+                case PowerUpType.Power:
                     player.BombPower += (int)GetPowerupValue();
                     break;
             }
@@ -54,17 +46,20 @@ namespace Final_BomberServer.Core
         {
             switch (Type)
             {
-                case PowerupType.ExtraLife:
+                /*
+                case PowerUpType.ExtraLife:
                     return GameSettings.GameValues.Powerup.Lifes;
-                case PowerupType.MoveSpeed:
-                    return GameSettings.GameValues.Powerup.MovementSpeed;
-                case PowerupType.TickRate:
+                case PowerUpType.TickRate:
                     return GameSettings.GameValues.Powerup.Tickrate;
-                case PowerupType.MaxBombs:
+                */
+                case PowerUpType.Speed:
+                    return GameSettings.GameValues.Powerup.MovementSpeed;
+                case PowerUpType.Bomb:
                     return GameSettings.GameValues.Powerup.BombAmount;
-                case PowerupType.ExplosionRange:
+                case PowerUpType.Power:
                     return GameSettings.GameValues.Powerup.BombRange;
             }
+
             return 0;
         }
     }

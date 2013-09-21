@@ -115,30 +115,30 @@ namespace Final_Bomber
         public const int BombLatency = 10;
 
         // Item
-        public static readonly List<ItemType> ItemTypeAvaible = new List<ItemType>() 
+        public static readonly List<PowerUpType> ItemTypeAvaible = new List<PowerUpType>() 
         { 
-            ItemType.Power,
-            ItemType.Bomb,
-            ItemType.Speed,
-            //ItemType.BadItem,
-            ItemType.Point 
+            PowerUpType.Power,
+            PowerUpType.Bomb,
+            PowerUpType.Speed,
+            //PowerUpType.BadItem,
+            PowerUpType.Score 
         };
-        public static readonly ItemType[] ItemTypeArray = new ItemType[]
+        public static readonly PowerUpType[] ItemTypeArray = new PowerUpType[]
         {
-            ItemType.Power,
-            ItemType.Bomb,
-            ItemType.Speed,
-            ItemType.BadItem,
-            ItemType.Point
+            PowerUpType.Power,
+            PowerUpType.Bomb,
+            PowerUpType.Speed,
+            PowerUpType.BadItem,
+            PowerUpType.Score
         };
         // 0 => Power, 1 => Bomb, 2 => Speed, 3 => Bad item, 4 => Point
-        public static readonly Dictionary<ItemType, int> ItemTypeIndex = new Dictionary<ItemType, int>
+        public static readonly Dictionary<PowerUpType, int> ItemTypeIndex = new Dictionary<PowerUpType, int>
         {
-            {ItemType.Power, 0},
-            {ItemType.Bomb, 1},
-            {ItemType.Speed, 2},
-            {ItemType.BadItem, 3},
-            {ItemType.Point, 4}
+            {PowerUpType.Power, 0},
+            {PowerUpType.Bomb, 1},
+            {PowerUpType.Speed, 2},
+            {PowerUpType.BadItem, 3},
+            {PowerUpType.Score, 4}
         };
 
         // Volume

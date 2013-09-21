@@ -15,7 +15,7 @@ namespace Final_Bomber.Core.Entities
         #region Field Region
 
         private readonly AnimatedSprite _itemDestroyAnimation;
-        private readonly ItemType _type;
+        private readonly PowerUpType _type;
         private bool _inDestruction;
         private bool _isAlive;
         public AnimatedSprite Sprite { get; protected set; }
@@ -34,7 +34,7 @@ namespace Final_Bomber.Core.Entities
             get { return _inDestruction; }
         }
 
-        public ItemType Type
+        public PowerUpType Type
         {
             get { return _type; }
         }
@@ -97,24 +97,24 @@ namespace Final_Bomber.Core.Entities
             switch (_type)
             {
                     // More power
-                case ItemType.Power:
+                case PowerUpType.Power:
                     p.IncreasePower(1);
                     break;
                     // More bombs
-                case ItemType.Bomb:
+                case PowerUpType.Bomb:
                     p.IncreaseTotalBombNumber(1);
                     break;
                     // More speed
-                case ItemType.Speed:
+                case PowerUpType.Speed:
                     p.IncreaseSpeed(Config.PlayerSpeedIncrementeur);
                     break;
                     // Skeleton ! => Bad items
-                case ItemType.BadItem:
+                case PowerUpType.BadItem:
                     int randomBadEffect = GamePlayScreen.Random.Next(Config.BadItemEffectList.Count);
                     p.ApplyBadItem(Config.BadItemEffectList[randomBadEffect]);
                     break;
                     // More points
-                case ItemType.Point:
+                case PowerUpType.Score:
                     Config.PlayersScores[p.Id]++;
                     break;
             }

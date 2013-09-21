@@ -184,7 +184,7 @@ namespace Final_Bomber.Entities
                         Map[CellPosition.X, CellPosition.Y]);
                     if (!item.InDestruction)
                     {
-                        if (!HasBadItemEffect || (HasBadItemEffect && item.Type != ItemType.BadItem))
+                        if (!HasBadItemEffect || (HasBadItemEffect && item.Type != PowerUpType.BadItem))
                         {
                             item.ApplyItem(this);
                             FinalBomber.Instance.GamePlayScreen.ItemPickUpSound.Play();

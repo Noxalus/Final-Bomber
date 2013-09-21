@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FBLibrary.Core;
 
 namespace Final_BomberServer.Core
@@ -260,31 +257,31 @@ namespace Final_BomberServer.Core
                     int type = rnd.Next(100) + 1;
                     if (type <= GameSettings.GameValues.PowerupDrop.MovementSpeed)
                     {
-                        tile.Poweruped = new Powerup(Powerup.PowerupType.MoveSpeed);
+                        tile.Poweruped = new PowerUp(PowerUpType.Speed);
                     }
                     else
                     {
                         if (type <= GameSettings.GameValues.PowerupDrop.Tickrate)
                         {
-                            tile.Poweruped = new Powerup(Powerup.PowerupType.TickRate);
+                            //tile.Poweruped = new PowerUp(PowerUpType.TickRate);
                         }
                         else
                         {
                             if (type <= GameSettings.GameValues.PowerupDrop.Lifes)
                             {
-                                tile.Poweruped = new Powerup(Powerup.PowerupType.ExtraLife);
+                                //tile.Poweruped = new PowerUp(PowerUpType.ExtraLife);
                             }
                             else
                             {
                                 if (type <= GameSettings.GameValues.PowerupDrop.BombRange)
                                 {
-                                    tile.Poweruped = new Powerup(Powerup.PowerupType.ExplosionRange);
+                                    tile.Poweruped = new PowerUp(PowerUpType.Power);
                                 }
                                 else
                                 {
                                     if (type <= GameSettings.GameValues.PowerupDrop.BombAmount)
                                     {
-                                        tile.Poweruped = new Powerup(Powerup.PowerupType.MaxBombs);
+                                        tile.Poweruped = new PowerUp(PowerUpType.Bomb);
                                     }
                                 }
                             }

@@ -24,15 +24,6 @@ namespace FBLibrary.Core
         Left = 4
     }
 
-    public enum ItemType
-    {
-        Power,
-        Bomb,
-        Speed,
-        Point,
-        BadItem
-    }
-
     public enum BadItemEffect
     {
         NoBomb,
@@ -41,6 +32,15 @@ namespace FBLibrary.Core
         TooSpeed,
         TooSlow,
         KeysInversion
+    }
+
+    public enum PowerUpType
+    {
+        Power,
+        Bomb,
+        Speed,
+        Score,
+        BadItem
     }
 
     #endregion
