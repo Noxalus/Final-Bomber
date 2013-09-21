@@ -178,13 +178,13 @@ namespace Final_Bomber.WorldEngine
                         
                             switch (id)
                             {
-                                case (int)Entity.Type.UnbreakableWall:
+                                case (int)EntityType.UnbreakableWall:
                                     var unbreakableWall = new UnbreakableWall(currentPosition);
                                     board[i, j] = unbreakableWall;
                                     _unbreakableWallList.Add(unbreakableWall);
                                     collisionLayer[i, j] = true;
                                     break;
-                                case (int)Entity.Type.EdgeWall:
+                                case (int)EntityType.EdgeWall:
                                     var edgeWall = new EdgeWall(currentPosition);
                                     board[i, j] = edgeWall;
                                     _edgeWallList.Add(edgeWall);
@@ -198,17 +198,17 @@ namespace Final_Bomber.WorldEngine
                                     collisionLayer[i, j] = true;
                                     break;
                                 */
-                                case (int)Entity.Type.Teleporter:
+                                case (int)EntityType.Teleporter:
                                     var teleporter = new Teleporter(currentPosition);
                                     board[i, j] = teleporter;
                                     _teleporterList.Add(teleporter);
                                     break;
-                                case (int)Entity.Type.Arrow:
+                                case (int)EntityType.Arrow:
                                     var arrow = new Arrow(currentPosition, LookDirection.Down);
                                     _arrowList.Add(arrow);
                                     board[i, j] = arrow;
                                     break;
-                                case (int)Entity.Type.Player:
+                                case (int)EntityType.Player:
                                     if (playerNumber <= Config.PlayersNumber)
                                     {
                                         playerPositions[playerNumber] = currentPosition;

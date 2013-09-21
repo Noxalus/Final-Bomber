@@ -2,6 +2,17 @@
 using Microsoft.Xna.Framework;
 namespace FBLibrary.Core
 {
+    public enum EntityType
+    {
+        Void = 0,
+        UnbreakableWall = 1,
+        EdgeWall = 2,
+        Wall = 3,
+        Player = 4,
+        Teleporter = 6,
+        Arrow = 7
+    };
+
     public enum LookDirection
     {
         Idle = 0,
