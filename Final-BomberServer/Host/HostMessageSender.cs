@@ -1,4 +1,5 @@
 ﻿using Final_BomberServer.Core;
+using Final_BomberServer.Core.Entities;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using System;

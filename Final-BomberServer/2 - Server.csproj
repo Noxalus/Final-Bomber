@@ -62,12 +62,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Bomb.cs" />
+    <Compile Include="Core\Entities\Bomb.cs" />
     <Compile Include="Core\GameServerHandler.cs" />
     <Compile Include="Core\Map.cs" />
+    <Compile Include="Core\OldMap.cs" />
     <Compile Include="Core\MapTile.cs" />
     <Compile Include="Core\Player.cs" />
-    <Compile Include="Core\PowerUp.cs" />
+    <Compile Include="Core\Entities\PowerUp.cs" />
     <Compile Include="Core\ProgramStepProcessing.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Host\Client.cs" />

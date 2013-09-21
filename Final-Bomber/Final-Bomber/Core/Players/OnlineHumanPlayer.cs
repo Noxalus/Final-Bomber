@@ -83,6 +83,8 @@ namespace Final_Bomber.Core.Players
                 var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
                 Position += _motionVector*(Speed*dt);
+
+                ComputeWallCollision(map);
             }
             else
             {

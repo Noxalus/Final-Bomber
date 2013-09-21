@@ -59,7 +59,7 @@ namespace Final_BomberServer.Core
             //MainServer.EndMainConnection("byebye");
             Running = false;
             GameSettings.CurrentMap = 0;
-            GameSettings.mapPlayList = new List<Map>();
+            GameSettings.mapPlayList = new List<OldMap>();
         }
     }
 }

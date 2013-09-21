@@ -222,7 +222,7 @@ namespace Final_Bomber.Core.Players
 
                 #endregion
 
-                ComputeWallCollision();
+                ComputeWallCollision(map);
             }
             else
             {

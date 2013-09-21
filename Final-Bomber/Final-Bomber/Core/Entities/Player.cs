@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Controls;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
@@ -56,7 +57,8 @@ namespace Final_Bomber.Entities
 
         #region Constructor Region
 
-        protected Player(int id) : base(id)
+        protected Player(int id)
+            : base(id)
         {
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
@@ -92,7 +94,7 @@ namespace Final_Bomber.Entities
             _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-            
+
             PreviousLookDirection = CurrentDirection;
 
             // Bad item
@@ -222,7 +224,7 @@ namespace Final_Bomber.Entities
                 #endregion
             }
 
-                #region Death
+            #region Death
 
             else if (_playerDeathAnimation.IsAnimating)
             {
@@ -231,9 +233,9 @@ namespace Final_Bomber.Entities
                 if (_playerDeathAnimation.Animation.CurrentFrame == _playerDeathAnimation.Animation.FrameCount - 1)
                     Remove();
             }
-                #endregion
+            #endregion
 
-                #region Edge wall gameplay
+            #region Edge wall gameplay
 
             else if (OnEdge &&
                      (!Config.ActiveSuddenDeath ||
@@ -247,10 +249,9 @@ namespace Final_Bomber.Entities
             #endregion
 
             #region Camera
-
             /*
             Camera.Update(gameTime);
-
+            
             if (Config.Debug)
             {
                 if (InputHandler.KeyDown(Microsoft.Xna.Framework.Input.Keys.PageUp) ||
@@ -297,16 +298,16 @@ namespace Final_Bomber.Entities
         public void Draw(GameTime gameTime)
         {
             var playerNamePosition = new Vector2(
-                Position.X + Engine.Origin.X + Sprite.Width/2f -
-                ControlManager.SpriteFont.MeasureString(Name).X/2 + 5,
+                Position.X + Engine.Origin.X + Sprite.Width / 2f -
+                ControlManager.SpriteFont.MeasureString(Name).X / 2 + 5,
                 Position.Y + Engine.Origin.Y - 25 -
-                ControlManager.SpriteFont.MeasureString(Name).Y/2);
+                ControlManager.SpriteFont.MeasureString(Name).Y / 2);
 
             if ((IsAlive && !InDestruction) || OnEdge)
             {
                 if (IsInvincible)
                 {
-                    if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency*0.5f))
+                    if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency * 0.5f))
                     {
                         Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
                         FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
@@ -376,22 +377,22 @@ namespace Final_Bomber.Entities
 
         protected bool IsMoreTopSide()
         {
-            return Position.Y < ((CellPosition.Y*Engine.TileHeight) - (Speed/2));
+            return Position.Y < ((CellPosition.Y * Engine.TileHeight) - (Speed / 2));
         }
 
         protected bool IsMoreBottomSide()
         {
-            return Position.Y > ((CellPosition.Y*Engine.TileHeight) + (Speed/2));
+            return Position.Y > ((CellPosition.Y * Engine.TileHeight) + (Speed / 2));
         }
 
         protected bool IsMoreLeftSide()
         {
-            return Position.X < ((CellPosition.X*Engine.TileWidth) - (Speed/2));
+            return Position.X < ((CellPosition.X * Engine.TileWidth) - (Speed / 2));
         }
 
         protected bool IsMoreRightSide()
         {
-            return Position.X > ((CellPosition.X*Engine.TileWidth) + (Speed/2));
+            return Position.X > ((CellPosition.X * Engine.TileWidth) + (Speed / 2));
         }
 
 
@@ -399,7 +400,7 @@ namespace Final_Bomber.Entities
         {
         }
 
-        protected void ComputeWallCollision()
+        protected void ComputeWallCollision(Map map)
         {
             #region Wall collisions
 
@@ -415,23 +416,23 @@ namespace Final_Bomber.Entities
                     // Top collision and Bottom collision
                     if ((CurrentDirection == LookDirection.Up && IsMoreTopSide()) ||
                         (CurrentDirection == LookDirection.Down && IsMoreBottomSide()))
-                        PositionY = CellPosition.Y*Engine.TileHeight;
+                        PositionY = CellPosition.Y * Engine.TileHeight;
                 }
-                    // No wall at the bottom
+                // No wall at the bottom
                 else
                 {
                     // Top collision
                     if (CurrentDirection == LookDirection.Up && IsMoreTopSide())
-                        PositionY = CellPosition.Y*Engine.TileHeight;
+                        PositionY = CellPosition.Y * Engine.TileHeight;
                 }
             }
-                // Wall only at the bottom
+            // Wall only at the bottom
             else if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
             {
                 // Bottom collision
                 if (CurrentDirection == LookDirection.Down && IsMoreBottomSide())
-                    PositionY = CellPosition.Y*Engine.TileHeight;
-                    // To lag him
+                    PositionY = CellPosition.Y * Engine.TileHeight;
+                // To lag him
                 else if (CurrentDirection == LookDirection.Down)
                 {
                     if (IsMoreLeftSide())
@@ -451,34 +452,29 @@ namespace Final_Bomber.Entities
                     // Left and right collisions
                     if ((CurrentDirection == LookDirection.Left && IsMoreLeftSide()) ||
                         (CurrentDirection == LookDirection.Right && IsMoreRightSide()))
-                        PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
-                                           Engine.TileWidth/2;
+                        PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 +
+                                           Engine.TileWidth / 2;
                 }
-                    // Wall only at the left
+                // Wall only at the left
                 else
                 {
                     // Left collision
                     if (CurrentDirection == LookDirection.Left && IsMoreLeftSide())
-                        PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
-                                           Engine.TileWidth/2;
+                        PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 +
+                                           Engine.TileWidth / 2;
                 }
             }
-                // Wall only at the right
+            // Wall only at the right
             else if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
             {
                 // Right collision
                 if (CurrentDirection == LookDirection.Right && IsMoreRightSide())
-                    PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 + Engine.TileWidth/2;
+                    PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
             }
 
-
             // The player must stay in the map
-            PositionX = MathHelper.Clamp(Position.X, Engine.TileWidth,
-                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
-                    ].Size.X*Engine.TileWidth) - 2*Engine.TileWidth);
-            PositionY = MathHelper.Clamp(Position.Y, Engine.TileHeight,
-                (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel
-                    ].Size.Y*Engine.TileHeight) - 2*Engine.TileHeight);
+            PositionX = MathHelper.Clamp(Position.X, Engine.TileWidth, (map.Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
+            PositionY = MathHelper.Clamp(Position.Y, Engine.TileHeight, (map.Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
 
             #endregion
         }
@@ -584,8 +580,8 @@ namespace Final_Bomber.Entities
         public virtual void ChangeLookDirection(byte newLookDirection)
         {
             PreviousLookDirection = CurrentDirection;
-            CurrentDirection = (LookDirection) newLookDirection;
-            Debug.Print("New look direction: " + (LookDirection) newLookDirection);
+            CurrentDirection = (LookDirection)newLookDirection;
+            Debug.Print("New look direction: " + (LookDirection)newLookDirection);
         }
 
         #endregion
@@ -611,12 +607,12 @@ namespace Final_Bomber.Entities
 
             // Replacing for the gameplay on the edges
             // Right side
-            if (Config.MapSize.X - CellPosition.X < Config.MapSize.X/2)
+            if (Config.MapSize.X - CellPosition.X < Config.MapSize.X / 2)
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                Position = new Vector2((Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth, Position.Y);
+                Position = new Vector2((Config.MapSize.X * Engine.TileWidth) - Engine.TileWidth, Position.Y);
             }
-                // Left side
+            // Left side
             else
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;

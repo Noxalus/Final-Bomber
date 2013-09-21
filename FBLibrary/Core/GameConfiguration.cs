@@ -25,6 +25,7 @@ namespace FBLibrary.Core
 
         // Game info
         public const float PlayerSpeedIncrementeur = 0.25f;
+        public static int WallPercentage = 10; // This is a percentage => from 0% to 100%
 
         // World
         public static Point BaseTileSize = new Point(32, 32);

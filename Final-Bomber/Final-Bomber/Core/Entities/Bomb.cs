@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Controls;
 using Final_Bomber.Entities;
 using Final_Bomber.Sprites;

@@ -44,15 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BaseEntity.cs" />
-    <Compile Include="Core\BasePlayer.cs" />
-    <Compile Include="Core\BaseBomb.cs" />
+    <Compile Include="Core\BaseEntities\BaseArrow.cs" />
+    <Compile Include="Core\BaseEntities\BaseEdgeWall.cs" />
+    <Compile Include="Core\BaseEntities\BaseEntity.cs" />
+    <Compile Include="Core\BaseEntities\BaseMap.cs" />
+    <Compile Include="Core\BaseEntities\BasePlayer.cs" />
+    <Compile Include="Core\BaseEntities\BaseBomb.cs" />
+    <Compile Include="Core\BaseEntities\BasePowerUp.cs" />
+    <Compile Include="Core\BaseEntities\BaseTeleporter.cs" />
+    <Compile Include="Core\BaseEntities\BaseUnbreakableWall.cs" />
+    <Compile Include="Core\BaseEntities\BaseWall.cs" />
     <Compile Include="Core\DynamicEntity.cs" />
-    <Compile Include="Core\Entity.cs" />
+    <Compile Include="Core\IEntity.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\GameConfiguration.cs" />
-    <Compile Include="Core\PowerUp.cs" />
-    <Compile Include="Core\Wall.cs" />
+    <Compile Include="Core\StaticEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

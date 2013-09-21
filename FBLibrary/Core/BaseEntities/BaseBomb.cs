@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 
-namespace FBLibrary.Core
+namespace FBLibrary.Core.BaseEntities
 {
     public abstract class BaseBomb : DynamicEntity
     {

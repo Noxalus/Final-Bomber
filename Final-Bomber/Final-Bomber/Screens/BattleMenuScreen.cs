@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -181,13 +181,13 @@ namespace Final_Bomber.Screens
                     break;
                 case 6:
                     if (InputHandler.KeyDown(Keys.Right) || InputHandler.KeyPressed(Keys.Enter))
-                        Config.WallNumber = (Config.WallNumber + 1) % 101;
+                        GameConfiguration.WallPercentage = (GameConfiguration.WallPercentage + 1) % 101;
                     else if (InputHandler.KeyDown(Keys.Left))
                     {
-                        if (Config.WallNumber <= 0)
-                            Config.WallNumber = 100;
+                        if (GameConfiguration.WallPercentage <= 0)
+                            GameConfiguration.WallPercentage = 100;
                         else
-                            Config.WallNumber--;
+                            GameConfiguration.WallPercentage--;
                     }
                     break;
                 case 7:
@@ -339,7 +339,7 @@ namespace Final_Bomber.Screens
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                         break;
                     case 6:
-                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.WallNumber + "%",
+                        GameRef.SpriteBatch.DrawString(BigFont, ": " + GameConfiguration.WallPercentage + "%",
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;

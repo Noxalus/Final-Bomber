@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Final_BomberServer.Core.Entities;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using FBLibrary.Core.BaseEntities;
 
-namespace Final_BomberServer.Core
+namespace Final_BomberServer.Core.Entities
 {
-    public class Bomb
+    public class Bomb : BaseBomb
     {
         #region Exploded
         public delegate void IsExplodedEventHandler(Bomb sender);

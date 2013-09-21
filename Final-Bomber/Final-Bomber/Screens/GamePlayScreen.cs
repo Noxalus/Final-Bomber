@@ -1161,7 +1161,7 @@ namespace Final_Bomber.Screens
                     {
                         // Wall
                         if ((mapPlayersPosition[x, y] != 1 && mapPlayersPosition[x, y] != 2) && map[x, y] == null &&
-                            Random.Next(0, 100) < MathHelper.Clamp(Config.WallNumber, 0, 100))
+                            Random.Next(0, 100) < GameConfiguration.WallPercentage)
                         {
                             collisionLayer[x, y] = true;
                             entity = new Wall(new Point(x, y));

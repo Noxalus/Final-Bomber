@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using FBLibrary.Core;
 using Final_BomberServer.Core;
+using Final_BomberServer.Core.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Final_BomberServer.Host
         bool hasStarted;
         int playerId = 0;
         List<Bomb> bombs;
-        Map CurrentMap;
+        OldMap CurrentMap;
 
         Timer tmr_BeginGame;
         bool gameHasBegun;

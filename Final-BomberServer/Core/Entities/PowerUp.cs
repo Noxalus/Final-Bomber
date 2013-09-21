@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FBLibrary.Core;
+﻿using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 
-namespace Final_BomberServer.Core
+namespace Final_BomberServer.Core.Entities
 {
-    public class PowerUp
+    public class PowerUp : BasePowerUp
     {
         public PowerUp(PowerUpType type)
         {

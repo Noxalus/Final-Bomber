@@ -90,7 +90,7 @@ namespace Final_Bomber
         public static bool DisplayName = true;
         public static readonly string[] PlayersName = new string[] { "Martial", "Noxalus", "Litarium", "Klorius", "Oxilium" };
 
-        public static int WallNumber = 100; // This is a percentage => from 0% to 100%
+        
         public static int ItemNumber = 50; // This is a percentage => from 0% to 100%
         public static int ItemTypeNumber = 5;
         public const int TeleporterNumber = 0;

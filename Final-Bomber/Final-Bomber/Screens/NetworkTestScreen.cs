@@ -125,6 +125,16 @@ namespace Final_Bomber.Screens
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, GameServer.Ping.ToString(), new Vector2(740, 100), Color.Black);
             */
 
+            int counter = 0;
+            foreach (var player in _gameManager.Players)
+            {
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player #" + player.Id + 
+                    ": \nR: " + player.Position + 
+                    "\nP: " + player.CellPosition, new Vector2(530, 60 + (100 * counter)), Color.Black);
+
+                counter++;
+            }
+
             FinalBomber.Instance.SpriteBatch.End();
 
             base.Draw(gameTime);

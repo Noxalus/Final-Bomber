@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace FBLibrary.Core
 {
-    class Wall
+    public interface IEntity
     {
+        void Destroy();
+        void Remove();
     }
 }

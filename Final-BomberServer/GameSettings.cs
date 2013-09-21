@@ -15,8 +15,8 @@ namespace Final_BomberServer
         public static ClientCollection PlayingClients;
         public static GameValues GameValues = new GameValues();
 
-        public static List<Map> mapPlayList = new List<Map>();
-        public static List<Map> Maps = new List<Map>();
+        public static List<OldMap> mapPlayList = new List<OldMap>();
+        public static List<OldMap> Maps = new List<OldMap>();
         static int currentMap = 0;
         public static int CurrentMap
         {
@@ -34,7 +34,7 @@ namespace Final_BomberServer
             }
         }
 
-        public static Map GetCurrentMap()
+        public static OldMap GetCurrentMap()
         {
             if (GameSettings.mapPlayList.Count > 0)
                 return GameSettings.mapPlayList[GameSettings.currentMap];

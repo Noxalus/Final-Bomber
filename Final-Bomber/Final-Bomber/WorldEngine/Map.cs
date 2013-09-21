@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
@@ -11,7 +12,7 @@ using System.IO;
 
 namespace Final_Bomber.WorldEngine
 {
-    public class Map
+    public class Map : BaseMap
     {
         #region Field Region
 
@@ -20,10 +21,6 @@ namespace Final_Bomber.WorldEngine
         Texture2D _wallTexture;
 
         private TileMap _tileMap;
-
-        private Point _size;
-        private IEntity[,] _board;
-        private bool[,] _collisionLayer;
 
         private List<EdgeWall> _edgeWallList;
         private List<UnbreakableWall> _unbreakableWallList;
@@ -37,21 +34,6 @@ namespace Final_Bomber.WorldEngine
         public TileMap TileMap
         {
             get { return _tileMap; }
-        }
-
-        public Point Size
-        {
-            get { return _size; }
-        }
-
-        public IEntity[,] Board
-        {
-            get { return _board; }
-        }
-
-        public bool[,] CollisionLayer
-        {
-            get { return _collisionLayer; }
         }
 
         public List<Teleporter> TeleporterList
@@ -78,10 +60,10 @@ namespace Final_Bomber.WorldEngine
         public Map(Point mSize, TileMap tMap, IEntity[,] m, bool[,] cLayer)
             : this()
         {
-            _size = mSize;
-            _board = m;
+            Size = mSize;
+            Board = m;
             _tileMap = tMap;
-            _collisionLayer = cLayer;
+            CollisionLayer = cLayer;
         }
 
         #endregion
@@ -113,7 +95,7 @@ namespace Final_Bomber.WorldEngine
                 }
             }
 
-            _tileMap.Draw(spriteBatch, camera, _collisionLayer);
+            _tileMap.Draw(spriteBatch, camera, CollisionLayer);
 
             // Draw entities
             foreach (var edgeWall in _edgeWallList)
@@ -129,22 +111,7 @@ namespace Final_Bomber.WorldEngine
                 arrow.Draw(gameTime);
         }
 
-        public List<Point> FindEmptyCells()
-        {
-            var emptyCells = new List<Point>();
-            for (int x = 0; x < Size.X; x++)
-            {
-                for (int y = 0; y < Size.Y; y++)
-                {
-                    if (!CollisionLayer[x, y])
-                        emptyCells.Add(new Point(x, y));
-                }
-            }
-
-            return emptyCells;
-        }
-
-        public void Parse(string file)
+        public void Parse(string file, GameManager gameManager)
         {
             try
             {
@@ -182,6 +149,17 @@ namespace Final_Bomber.WorldEngine
                         
                             switch (id)
                             {
+                                case (int)EntityType.Void:
+                                    // Do we put a Wall ?
+                                    if (board[i, j] == null &&
+                                        GameManager.Random.Next(0, 100) < GameConfiguration.WallPercentage)
+                                    {
+                                        var wall = new Wall(currentPosition);
+                                        gameManager.WallList.Add(wall);
+                                        board[i, j] = wall;
+                                        collisionLayer[i, j] = true;
+                                    }
+                                    break;
                                 case (int)EntityType.UnbreakableWall:
                                     var unbreakableWall = new UnbreakableWall(currentPosition);
                                     board[i, j] = unbreakableWall;
@@ -231,10 +209,10 @@ namespace Final_Bomber.WorldEngine
 
                     var tileMap = new TileMap(tilesets, mapLayers);
 
-                    _size = mapSize;
-                    _board = board;
+                    Size = mapSize;
+                    Board = board;
                     _tileMap = tileMap;
-                    _collisionLayer = collisionLayer;
+                    CollisionLayer = collisionLayer;
                 }
             }
             catch (Exception ex)

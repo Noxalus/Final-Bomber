@@ -40,7 +40,7 @@ namespace Final_Bomber.Core.Players
 
                 Walk();
 
-                ComputeWallCollision();
+                ComputeWallCollision(map);
             }
                 #endregion
 

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Core
 {
-    internal class GameManager
+    public class GameManager
     {
         // Game logic
 
@@ -33,17 +33,25 @@ namespace Final_Bomber.Core
         private Song _mapHurrySong;
         private Song _mapSong;
         private SoundEffect _playerDeathSound;
-        private Random _random;
-
+        public static Random Random;
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
+
+        #region Properties
+
+        public List<Wall> WallList
+        {
+            get { return _wallList; }
+        }
+
+        #endregion
 
         public GameManager()
         {
             Players = new PlayerCollection();
 
-            _random = new Random();
+            Random = new Random();
 
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
@@ -76,7 +84,7 @@ namespace Final_Bomber.Core
         public void LoadMap(string mapName)
         {
             _currentMap = new Map();
-            _currentMap.Parse(mapName);
+            _currentMap.Parse(mapName, this);
 
             _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
 
@@ -96,10 +104,7 @@ namespace Final_Bomber.Core
         {
             World.DrawLevel(gameTime, FinalBomber.Instance.SpriteBatch, new Camera(FinalBomber.Instance.ScreenRectangle));
 
-            foreach (Player player in Players)
-                player.Draw(gameTime);
-
-            foreach (Wall wall in _wallList)
+            foreach (Wall wall in WallList)
                 wall.Draw(gameTime);
 
             foreach (PowerUp powerUp in _powerUpList)
@@ -107,6 +112,9 @@ namespace Final_Bomber.Core
 
             foreach (Bomb bomb in _bombList)
                 bomb.Draw(gameTime);
+
+            foreach (Player player in Players)
+                player.Draw(gameTime);
         }
 
         public void Reset()
@@ -116,8 +124,8 @@ namespace Final_Bomber.Core
 
             CreateWorld();
 
-            var origin = new Vector2( /*_hudOrigin.X / 2 -*/ ((32*_currentMap.Size.X)/2f),
-                FinalBomber.Instance.GraphicsDevice.Viewport.Height/2 - ((32*_currentMap.Size.Y)/2));
+            var origin = new Vector2( /*_hudOrigin.X / 2 -*/ ((32 * _currentMap.Size.X) / 2f),
+                FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - ((32 * _currentMap.Size.Y) / 2));
 
             Engine.Origin = origin;
 

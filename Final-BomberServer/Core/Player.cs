@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
+using Final_BomberServer.Core.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;

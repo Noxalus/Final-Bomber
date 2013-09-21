@@ -154,7 +154,6 @@
     <Compile Include="Core\EntityCollection.cs" />
     <Compile Include="Core\Players\HumanPlayer.cs" />
     <Compile Include="Core\Entities\PowerUp.cs" />
-    <Compile Include="Core\IEntity.cs" />
     <Compile Include="Core\Entities\Player.cs" />
     <Compile Include="Core\StaticEntity.cs" />
     <Compile Include="Core\SuddenDeath.cs" />
