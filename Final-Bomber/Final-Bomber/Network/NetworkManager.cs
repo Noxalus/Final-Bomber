@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using FBLibrary.Core;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Players;
 using Final_Bomber.Entities;
@@ -58,7 +59,7 @@ namespace Final_Bomber.Network
         {
             if (!IsConnected)
             {
-                GameSettings.GameServer.StartClientConnection("127.0.0.1", "2643");
+                GameSettings.GameServer.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
 
                 var connectedTmr = new Timer();
                 connectedTmr.Start();

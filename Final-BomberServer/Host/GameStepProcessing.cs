@@ -1,4 +1,5 @@
-﻿using Final_BomberServer.Core;
+﻿using FBLibrary.Core;
+using Final_BomberServer.Core;
 using System.Collections.Generic;
 
 namespace Final_BomberServer.Host
@@ -8,7 +9,7 @@ namespace Final_BomberServer.Host
         List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.gameServer.Clients.Count == 3 // TO CHANGE
+            if (GameSettings.gameServer.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
                 && !StartedMatch /*&& GameSettings.gameServer.clients.IsClientsReady()*/)
             {
                 GameInitialize();

@@ -29,5 +29,10 @@ namespace FBLibrary.Core
 
         // World
         public static Point BaseTileSize = new Point(32, 32);
+
+        // TO DELETE
+        public static int PlayerNumber = 1;
+        public static string ServerIp = "127.0.0.1";
+        public static string ServerPort = "2643";
     }
 }
