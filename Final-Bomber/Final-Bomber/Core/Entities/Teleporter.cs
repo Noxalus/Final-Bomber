@@ -27,11 +27,12 @@ namespace Final_Bomber.Core.Entities
 
         #region Constructor Region
 
-        public Teleporter(Point position)
+        public Teleporter(Point cellPosition)
+            : base(cellPosition)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/teleporter");
             var animation = new Animation(2, 32, 32, 0, 0, 2);
-            Sprite = new AnimatedSprite(spriteTexture, animation) {IsAnimating = true};
+            Sprite = new AnimatedSprite(spriteTexture, animation) { IsAnimating = true };
 
             _isAlive = true;
         }
@@ -57,7 +58,7 @@ namespace Final_Bomber.Core.Entities
         public void ChangeEntityPosition(DynamicEntity entity, Map map)
         {
             bool allTeleporterCellTaken = true;
-         
+
             foreach (Teleporter t in map.TeleporterList)
             {
                 Point position = t.CellPosition;

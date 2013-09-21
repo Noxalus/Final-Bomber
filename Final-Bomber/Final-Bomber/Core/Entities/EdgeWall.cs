@@ -9,17 +9,16 @@ namespace Final_Bomber.Core.Entities
     {
         #region Field Region
 
-        public AnimatedSprite Sprite { get; protected set; }
+        public BaseSprite Sprite { get; protected set; }
 
         #endregion
 
         #region Constructor Region
 
-        public EdgeWall(Point position)
+        public EdgeWall(Point cellPosition) : base(cellPosition)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            var animation = new Animation(0, 32, 32, 0, 0, 0);
-            Sprite = new AnimatedSprite(spriteTexture, animation);
+            Sprite = new BaseSprite(spriteTexture, new Rectangle(0, 0, 32, 32));
         }
 
         #endregion

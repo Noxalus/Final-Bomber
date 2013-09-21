@@ -76,7 +76,7 @@ namespace Final_Bomber.Sprites
         {
             spriteBatch.Draw(
                 texture,
-                position,
+                new Vector2(Engine.Origin.X + position.X, Engine.Origin.Y + position.Y),
                 sourceRectangle,
                 Color.White);
         }

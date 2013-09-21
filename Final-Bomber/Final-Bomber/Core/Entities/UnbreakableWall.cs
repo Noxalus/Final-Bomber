@@ -15,12 +15,10 @@ namespace Final_Bomber.Core.Entities
 
         #region Constructor Region
 
-        public UnbreakableWall(Point position)
+        public UnbreakableWall(Point cellPosition) : base(cellPosition)
         {
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
             Sprite = new BaseSprite(spriteTexture, new Rectangle(0, 0, 32, 32));
-
-            ChangePosition(position);
         }
 
         #endregion

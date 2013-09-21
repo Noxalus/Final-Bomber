@@ -32,7 +32,7 @@ namespace Final_Bomber.Core.Entities
 
         #region Constructor Region
 
-        public Wall(Point position)
+        public Wall(Point cellPosition) : base(cellPosition)
         {
             var animations = new Dictionary<AnimationKey, Animation>();
 
