@@ -3,23 +3,32 @@ using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core
 {
-    public abstract class BasePlayer
+    public abstract class BasePlayer : DynamicEntity
     {
-        protected int Id;
-        protected bool IsAlive;
-        protected LookDirection CurrentDirection;
-        protected TimeSpan InvincibleTime;
-        protected int CurrentBombAmount;
-        protected int TotalBombAmount;
-        protected int BombPower;
+        public int Id;
+        public string Name;
+        public bool IsAlive;
+        public bool OnEdge;
+        public LookDirection CurrentDirection;
+        public TimeSpan InvincibleTime;
+        public int CurrentBombAmount;
+        public int TotalBombAmount;
+        public int BombPower;
+        public TimeSpan BombTimer;
 
-        // TODO ?
-        protected Vector2 Position;
-        protected float Speed;
 
-        protected BasePlayer()
+        protected BasePlayer(int id)
         {
-            Speed = GameConfiguration.PlayerBaseSpeed;
+            Id = id;
+            Name = "[UNKNOWN]";
+            IsAlive = true;
+            OnEdge = false;
+            CurrentDirection = LookDirection.Idle;
+            InvincibleTime = GameConfiguration.PlayerInvincibleTimer;
+            TotalBombAmount = GameConfiguration.BasePlayerBombAmount;
+            CurrentBombAmount = TotalBombAmount;
+            BombPower = GameConfiguration.BasePlayerBombPower;
+            BombTimer = GameConfiguration.BaseBombTimer;
             // etc...
         }
     }

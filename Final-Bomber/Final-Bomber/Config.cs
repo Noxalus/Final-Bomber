@@ -72,13 +72,7 @@ namespace Final_Bomber
 
         // Joueur
         public static Color[] PlayersColor = new Color[] { Color.White, Color.White, Color.White, Color.White };
-
-        // Base characteristics
-        public const int BasePlayerBombPower = 1;
-        public const float BasePlayerSpeed = 100f;
-        public const float BaseBombSpeed = 3f;
-        public const int BasePlayerBombNumber = 1;
-
+        
         // Characteristics minimum and maximum
         public const float MaxSpeed = 30000f;
         public const float MinSpeed = 1f;
@@ -112,8 +106,6 @@ namespace Final_Bomber
         { LookDirection.Down, LookDirection.Left, LookDirection.Right, LookDirection.Up };
 
         // Invincibility
-        public const bool Invincible = false;
-        public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
         public const float InvincibleBlinkFrequency = 0.5f;
 
         // Bombs
@@ -121,8 +113,6 @@ namespace Final_Bomber
         public static bool ExplosionThroughWall = true;
         // Bomb's animation's frames par second
         public const int BombLatency = 10;
-        // Initially => 2
-        public static TimeSpan BaseBombTimer = TimeSpan.FromSeconds(2);
 
         // Item
         public static readonly List<ItemType> ItemTypeAvaible = new List<ItemType>() 

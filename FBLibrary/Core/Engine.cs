@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 namespace FBLibrary.Core
 {
+    #region Enum
+
     public enum EntityType
     {
         Void = 0,
@@ -21,6 +23,27 @@ namespace FBLibrary.Core
         Down = 3,
         Left = 4
     }
+
+    public enum ItemType
+    {
+        Power,
+        Bomb,
+        Speed,
+        Point,
+        BadItem
+    }
+
+    public enum BadItemEffect
+    {
+        NoBomb,
+        BombDrop,
+        BombTimerChanged,
+        TooSpeed,
+        TooSlow,
+        KeysInversion
+    }
+
+    #endregion
 
     public class Engine
     {

@@ -57,18 +57,18 @@ namespace Final_Bomber.Core.Players
                 // Put a bomb
                 if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
                 {
-                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, Power, map.Board, map.CollisionLayer, hazardMap,
+                    if (AIFunction.TryToPutBomb(Sprite.CellPosition, BombPower, map.Board, map.CollisionLayer, hazardMap,
                         Config.MapSize))
                     {
-                        if (CurrentBombNumber > 0)
+                        if (CurrentBombAmount > 0)
                         {
                             Bomb bo =
                                 FinalBomber.Instance.GamePlayScreen.BombList.Find(
                                     b => b.Sprite.CellPosition == Sprite.CellPosition);
                             if (bo == null)
                             {
-                                CurrentBombNumber--;
-                                var bomb = new Bomb(Id, Sprite.CellPosition, Power, BombTimer, Sprite.Speed);
+                                CurrentBombAmount--;
+                                var bomb = new Bomb(Id, Sprite.CellPosition, BombPower, BombTimer, Sprite.Speed);
 
                                 // We define a new way (to escape the bomb)
                                 Path = AIFunction.MakeAWay(
@@ -131,28 +131,28 @@ namespace Final_Bomber.Core.Players
             {
                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y - Sprite.Speed);
                 Sprite.CurrentAnimation = AnimationKey.Up;
-                CurrentLookDirection = LookDirection.Up;
+                CurrentDirection = LookDirection.Up;
             }
                 // Down
             else if (Sprite.Position.Y < _aiNextPosition.Y)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X, Sprite.Position.Y + Sprite.Speed);
                 Sprite.CurrentAnimation = AnimationKey.Down;
-                CurrentLookDirection = LookDirection.Down;
+                CurrentDirection = LookDirection.Down;
             }
                 // Right
             else if (Sprite.Position.X < _aiNextPosition.X)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X + Sprite.Speed, Sprite.Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Right;
-                CurrentLookDirection = LookDirection.Right;
+                CurrentDirection = LookDirection.Right;
             }
                 // Left
             else if (Sprite.Position.X > _aiNextPosition.X)
             {
                 Sprite.Position = new Vector2(Sprite.Position.X - Sprite.Speed, Sprite.Position.Y);
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                CurrentLookDirection = LookDirection.Left;
+                CurrentDirection = LookDirection.Left;
             }
         }
 

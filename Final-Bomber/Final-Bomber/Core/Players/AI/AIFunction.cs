@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using FBLibrary.Core;
+using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 
@@ -146,7 +147,7 @@ namespace Final_Bomber.Entities.AI
                    (position.Y <= nextPosition.Y + speed && position.Y >= nextPosition.Y - speed);
         }
 
-        public static Point SetNewGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+        public static Point SetNewGoal(Point position, IEntity[,] map, bool[,] collisionLayer, int[,] hazardMap,
             Point mapSize)
         {
             if (hazardMap[position.X, position.Y] < 2)
@@ -159,7 +160,7 @@ namespace Final_Bomber.Entities.AI
             return NearestSafeCell(position, collisionLayer, hazardMap, 0, mapSize);
         }
 
-        private static Point SetNewOffenseGoal(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+        private static Point SetNewOffenseGoal(Point position, IEntity[,] map, bool[,] collisionLayer, int[,] hazardMap,
             Point mapSize)
         {
             /*
@@ -240,7 +241,7 @@ namespace Final_Bomber.Entities.AI
             return new Point(-1, -1);
         }
 
-        private static bool EntityNear(Point position, int power, Entity[,] map, int[,] hazardMap, Point mapSize)
+        private static bool EntityNear(Point position, int power, IEntity[,] map, int[,] hazardMap, Point mapSize)
         {
             power = 1; // We have to compute the bomb action field !
             // Up
@@ -263,7 +264,7 @@ namespace Final_Bomber.Entities.AI
             return false;
         }
 
-        private static int ProximityItemNumber(Point position, int power, Entity[,] map, int[,] hazardMap, Point mapSize)
+        private static int ProximityItemNumber(Point position, int power, IEntity[,] map, int[,] hazardMap, Point mapSize)
         {
             power = 1; // We have to compute the bomb action field !
             int number = 0;
@@ -323,7 +324,7 @@ namespace Final_Bomber.Entities.AI
             return number;
         }
 
-        public static bool TryToPutBomb(Point position, int power, Entity[,] map, bool[,] collisionLayer, int[,] hM,
+        public static bool TryToPutBomb(Point position, int power, IEntity[,] map, bool[,] collisionLayer, int[,] hM,
             Point mapSize)
         {
             if (ProximityItemNumber(position, power, map, hM, mapSize) == 0)
@@ -440,7 +441,7 @@ namespace Final_Bomber.Entities.AI
             return false;
         }
 
-        public static int[,] MakeInterestMatrix(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+        public static int[,] MakeInterestMatrix(Point position, IEntity[,] map, bool[,] collisionLayer, int[,] hazardMap,
             Point mapSize)
         {
             var interestMatrix = new int[mapSize.X, mapSize.Y];
@@ -504,7 +505,7 @@ namespace Final_Bomber.Entities.AI
             return interestMatrix;
         }
 
-        private static int CellInterest(Point position, int id, Entity[,] map, int[,] hazardMap, Point mapSize)
+        private static int CellInterest(Point position, int id, IEntity[,] map, int[,] hazardMap, Point mapSize)
         {
             int interest = 0;
             if (map[position.X, position.Y] == null)
@@ -529,7 +530,7 @@ namespace Final_Bomber.Entities.AI
             return interest;
         }
 
-        private static int ProximityWallNumber(Point position, Entity[,] map)
+        private static int ProximityWallNumber(Point position, IEntity[,] map)
         {
             int wallNumber = 0;
             // Up
@@ -547,7 +548,7 @@ namespace Final_Bomber.Entities.AI
             return wallNumber;
         }
 
-        private static Point BestCellInterest(Point position, Entity[,] map, bool[,] collisionLayer, int[,] hazardMap,
+        private static Point BestCellInterest(Point position, IEntity[,] map, bool[,] collisionLayer, int[,] hazardMap,
             Point mapSize)
         {
             int[,] interestMatrix = MakeInterestMatrix(position, map, collisionLayer, hazardMap, mapSize);

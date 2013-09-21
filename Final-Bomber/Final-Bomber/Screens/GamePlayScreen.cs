@@ -312,8 +312,8 @@ namespace Final_Bomber.Screens
                         if (BombList[i].Id > 0)
                         {
                             Player pl = PlayerList.Find(p => p.Id == BombList[i].Id);
-                            if (pl != null && pl.CurrentBombNumber < pl.TotalBombNumber)
-                                pl.CurrentBombNumber++;
+                            if (pl != null && pl.CurrentBombAmount < pl.TotalBombAmount)
+                                pl.CurrentBombAmount++;
                         }
 
                         // Update the hazard map
@@ -759,10 +759,10 @@ namespace Final_Bomber.Screens
 
                     // Player's power
                     int counterRedFlames = 0;
-                    if (p.Power >= 10)
+                    if (p.BombPower >= 10)
                     {
                         iconLag = 10;
-                        counterRedFlames = p.Power / 10;
+                        counterRedFlames = p.BombPower / 10;
                         for (int i = 0; i < counterRedFlames; i++)
                             GameRef.SpriteBatch.Draw(_itemInfoIcon,
                                 new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
@@ -771,7 +771,7 @@ namespace Final_Bomber.Screens
                     }
                     else
                         iconLag = 0;
-                    int counterYellowFlames = p.Power % 10;
+                    int counterYellowFlames = p.BombPower % 10;
                     for (int i = 0; i < counterYellowFlames; i++)
                         GameRef.SpriteBatch.Draw(_itemInfoIcon,
                             new Vector2(_hudOrigin.X + _hudMarginLeft + 14 * counterRedFlames + 7 * i + iconLag,
@@ -780,10 +780,10 @@ namespace Final_Bomber.Screens
 
                     // Player's bomb number
                     int counterRedBombs = 0;
-                    if (p.CurrentBombNumber >= 10)
+                    if (p.CurrentBombAmount >= 10)
                     {
                         iconLag = 10;
-                        counterRedBombs = p.CurrentBombNumber / 10;
+                        counterRedBombs = p.CurrentBombAmount / 10;
                         for (int i = 0; i < counterRedBombs; i++)
                         {
                             GameRef.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
@@ -793,7 +793,7 @@ namespace Final_Bomber.Screens
                     }
                     else
                         iconLag = 0;
-                    int counterBlackBombs = p.CurrentBombNumber % 10;
+                    int counterBlackBombs = p.CurrentBombAmount % 10;
                     int finalCounter = 0;
                     for (int i = 0; i < counterBlackBombs; i++)
                     {
@@ -843,6 +843,7 @@ namespace Final_Bomber.Screens
                         string badItemTimer = ((int)Math.Round(p.BadItemTimerLenght.TotalSeconds - p.BadItemTimer.TotalSeconds) + 1).ToString();
                         if (p.BadItemEffect == BadItemEffect.BombTimerChanged)
                             badItemTimer += " (" + p.BombTimer.TotalSeconds.ToString() + ")";
+
                         for (int i = 0; i < lenght; i++)
                         {
                             GameRef.SpriteBatch.Draw(_badItemTimerBar,
@@ -955,12 +956,12 @@ namespace Final_Bomber.Screens
 
             var collisionLayer = new bool[Config.MapSize.X, Config.MapSize.Y];
             var mapPlayersPosition = new int[Config.MapSize.X, Config.MapSize.Y];
-            var map = new Entity[Config.MapSize.X, Config.MapSize.Y];
+            var map = new IEntity[Config.MapSize.X, Config.MapSize.Y];
             var layer = new MapLayer(Config.MapSize.X, Config.MapSize.Y);
             var voidPosition = new List<Point>();
 
             // Item Map
-            Entity mapItem;
+            IEntity mapItem;
 
             // List of player position
             var playerPositions = new Dictionary<int, Point>();
@@ -1213,7 +1214,7 @@ namespace Final_Bomber.Screens
 
                 var collisionLayer = new bool[mapSize.X, mapSize.Y];
                 var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                var map = new Entity[mapSize.X, mapSize.Y];
+                var map = new IEntity[mapSize.X, mapSize.Y];
                 var layer = new MapLayer(mapSize.X, mapSize.Y);
                 var voidPosition = new List<Point>();
                 var playerPositions = new Dictionary<int, Point>();

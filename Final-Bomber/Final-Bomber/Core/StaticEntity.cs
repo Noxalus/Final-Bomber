@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Core
 {
-    public abstract class StaticEntity : Entity
+    public abstract class StaticEntity
     {
         public abstract void Update(GameTime gameTime);
     }

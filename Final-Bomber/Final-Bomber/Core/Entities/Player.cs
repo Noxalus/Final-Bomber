@@ -15,14 +15,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Entities
 {
-    public abstract class Player : DynamicEntity
+    public abstract class Player : BasePlayer, IEntity
     {
         #region Field Region
 
         private readonly AnimatedSprite _playerDeathAnimation;
         protected TimeSpan BombTimerSaved;
 
-        protected LookDirection CurrentLookDirection;
         protected bool IsMoving;
         protected LookDirection PreviousLookDirection;
 
@@ -32,39 +31,18 @@ namespace Final_Bomber.Entities
         private float _invincibleBlinkFrequency;
         private TimeSpan _invincibleBlinkTimer;
         private TimeSpan _invincibleTimer;
-        private string _name;
 
-        public override sealed AnimatedSprite Sprite { get; protected set; }
+        public AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
         #region Property Region
 
-        public int Id { get; set; }
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
         public Camera Camera { get; private set; }
-
-        public bool IsAlive { get; private set; }
 
         public bool InDestruction { get; private set; }
 
         public bool IsInvincible { get; private set; }
-
-        public int Power { get; private set; }
-
-        public int CurrentBombNumber { get; set; }
-
-        public int TotalBombNumber { get; private set; }
-
-        public TimeSpan BombTimer { get; protected set; }
-
-        public bool OnEdge { get; set; }
 
         public bool HasBadItemEffect { get; private set; }
 
@@ -78,11 +56,8 @@ namespace Final_Bomber.Entities
 
         #region Constructor Region
 
-        protected Player(int id)
+        protected Player(int id) : base(id)
         {
-            Id = id;
-            _name = "";
-
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
 
@@ -102,7 +77,7 @@ namespace Final_Bomber.Entities
 
             Sprite = new AnimatedSprite(spriteTexture, animations, Vector2.Zero);
             Sprite.ChangeFramesPerSecond(animationFramesPerSecond);
-            Sprite.Speed = Config.BasePlayerSpeed;
+            Sprite.Speed = GameConfiguration.BasePlayerSpeed;
 
             var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
@@ -112,23 +87,14 @@ namespace Final_Bomber.Entities
             };
 
             IsMoving = false;
-            IsAlive = true;
             InDestruction = false;
-            OnEdge = false;
             IsInvincible = true;
 
-            _invincibleTimer = Config.PlayerInvincibleTimer;
+            _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-
-            Power = Config.BasePlayerBombPower;
-            TotalBombNumber = Config.BasePlayerBombNumber;
-            CurrentBombNumber = TotalBombNumber;
-
-            BombTimer = Config.BaseBombTimer;
-
-            CurrentLookDirection = LookDirection.Idle;
-            PreviousLookDirection = CurrentLookDirection;
+            
+            PreviousLookDirection = CurrentDirection;
 
             // Bad item
             HasBadItemEffect = false;
@@ -140,17 +106,17 @@ namespace Final_Bomber.Entities
 
         #region XNA Method Region
 
-        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        public void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             if (IsAlive && !InDestruction)
             {
-                PreviousLookDirection = CurrentLookDirection;
+                PreviousLookDirection = CurrentDirection;
 
                 Sprite.Update(gameTime);
 
                 #region Invincibility
 
-                if (!Config.Invincible && IsInvincible)
+                if (!GameConfiguration.Invincible && IsInvincible)
                 {
                     if (_invincibleTimer >= TimeSpan.Zero)
                     {
@@ -162,7 +128,7 @@ namespace Final_Bomber.Entities
                     }
                     else
                     {
-                        _invincibleTimer = Config.PlayerInvincibleTimer;
+                        _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
                         IsInvincible = false;
                     }
                 }
@@ -181,10 +147,10 @@ namespace Final_Bomber.Entities
 
                 if (Config.PlayerCanPush)
                 {
-                    if (CurrentLookDirection != LookDirection.Idle)
+                    if (CurrentDirection != LookDirection.Idle)
                     {
                         Point direction = Point.Zero;
-                        switch (CurrentLookDirection)
+                        switch (CurrentDirection)
                         {
                             case LookDirection.Up:
                                 direction = new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y - 1);
@@ -201,7 +167,7 @@ namespace Final_Bomber.Entities
                         }
                         Bomb bomb = BombAt(direction);
                         if (bomb != null)
-                            bomb.ChangeDirection(CurrentLookDirection, Id);
+                            bomb.ChangeDirection(CurrentDirection, Id);
                     }
                 }
 
@@ -332,10 +298,10 @@ namespace Final_Bomber.Entities
         public void Draw(GameTime gameTime)
         {
             var playerNamePosition = new Vector2(
-                Sprite.Position.X + Engine.Origin.X + Sprite.Width/2 -
-                ControlManager.SpriteFont.MeasureString(_name).X/2 + 5,
+                Sprite.Position.X + Engine.Origin.X + Sprite.Width/2f -
+                ControlManager.SpriteFont.MeasureString(Name).X/2 + 5,
                 Sprite.Position.Y + Engine.Origin.Y - 25 -
-                ControlManager.SpriteFont.MeasureString(_name).Y/2);
+                ControlManager.SpriteFont.MeasureString(Name).Y/2);
 
             if ((IsAlive && !InDestruction) || OnEdge)
             {
@@ -344,21 +310,21 @@ namespace Final_Bomber.Entities
                     if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency*0.5f))
                     {
                         Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition,
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
                             Color.Black);
                     }
                 }
                 else
                 {
                     Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition,
+                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
                         Color.Black);
                 }
             }
             else
             {
                 _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch);
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _name, playerNamePosition,
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
                     Color.Black);
             }
         }
@@ -388,7 +354,7 @@ namespace Final_Bomber.Entities
         private void Invincibility()
         {
             IsInvincible = true;
-            _invincibleTimer = Config.PlayerInvincibleTimer;
+            _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
         }
@@ -448,15 +414,15 @@ namespace Final_Bomber.Entities
                 if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
                 {
                     // Top collision and Bottom collision
-                    if ((CurrentLookDirection == LookDirection.Up && IsMoreTopSide()) ||
-                        (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide()))
+                    if ((CurrentDirection == LookDirection.Up && IsMoreTopSide()) ||
+                        (CurrentDirection == LookDirection.Down && IsMoreBottomSide()))
                         Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
                 }
                     // No wall at the bottom
                 else
                 {
                     // Top collision
-                    if (CurrentLookDirection == LookDirection.Up && IsMoreTopSide())
+                    if (CurrentDirection == LookDirection.Up && IsMoreTopSide())
                         Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
                 }
             }
@@ -464,10 +430,10 @@ namespace Final_Bomber.Entities
             else if (WallAt(new Point(Sprite.CellPosition.X, Sprite.CellPosition.Y + 1)))
             {
                 // Bottom collision
-                if (CurrentLookDirection == LookDirection.Down && IsMoreBottomSide())
+                if (CurrentDirection == LookDirection.Down && IsMoreBottomSide())
                     Sprite.PositionY = Sprite.CellPosition.Y*Engine.TileHeight;
                     // To lag him
-                else if (CurrentLookDirection == LookDirection.Down)
+                else if (CurrentDirection == LookDirection.Down)
                 {
                     if (IsMoreLeftSide())
                         Sprite.PositionX += Sprite.Speed;
@@ -484,8 +450,8 @@ namespace Final_Bomber.Entities
                 if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
                 {
                     // Left and right collisions
-                    if ((CurrentLookDirection == LookDirection.Left && IsMoreLeftSide()) ||
-                        (CurrentLookDirection == LookDirection.Right && IsMoreRightSide()))
+                    if ((CurrentDirection == LookDirection.Left && IsMoreLeftSide()) ||
+                        (CurrentDirection == LookDirection.Right && IsMoreRightSide()))
                         Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                            Engine.TileWidth/2;
                 }
@@ -493,7 +459,7 @@ namespace Final_Bomber.Entities
                 else
                 {
                     // Left collision
-                    if (CurrentLookDirection == LookDirection.Left && IsMoreLeftSide())
+                    if (CurrentDirection == LookDirection.Left && IsMoreLeftSide())
                         Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                            Engine.TileWidth/2;
                 }
@@ -502,7 +468,7 @@ namespace Final_Bomber.Entities
             else if (WallAt(new Point(Sprite.CellPosition.X + 1, Sprite.CellPosition.Y)))
             {
                 // Right collision
-                if (CurrentLookDirection == LookDirection.Right && IsMoreRightSide())
+                if (CurrentDirection == LookDirection.Right && IsMoreRightSide())
                     Sprite.PositionX = Sprite.CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 + Engine.TileWidth/2;
             }
 
@@ -557,31 +523,31 @@ namespace Final_Bomber.Entities
 
         public void IncreaseTotalBombNumber(int incr)
         {
-            if (TotalBombNumber + incr > Config.MaxBombNumber)
+            if (TotalBombAmount + incr > Config.MaxBombNumber)
             {
-                TotalBombNumber = Config.MaxBombNumber;
-                CurrentBombNumber = TotalBombNumber;
+                TotalBombAmount = Config.MaxBombNumber;
+                CurrentBombAmount = TotalBombAmount;
             }
-            else if (TotalBombNumber + incr < Config.MinBombNumber)
+            else if (TotalBombAmount + incr < Config.MinBombNumber)
             {
-                TotalBombNumber = Config.MinBombNumber;
-                CurrentBombNumber = TotalBombNumber;
+                TotalBombAmount = Config.MinBombNumber;
+                CurrentBombAmount = TotalBombAmount;
             }
             else
             {
-                TotalBombNumber += incr;
-                CurrentBombNumber += incr;
+                TotalBombAmount += incr;
+                CurrentBombAmount += incr;
             }
         }
 
         public void IncreasePower(int incr)
         {
-            if (Power + incr > Config.MaxBombPower)
-                Power = Config.MaxBombPower;
-            else if (Power + incr < Config.MinBombPower)
-                Power = Config.MinBombPower;
+            if (BombPower + incr > Config.MaxBombPower)
+                BombPower = Config.MaxBombPower;
+            else if (BombPower + incr < Config.MinBombPower)
+                BombPower = Config.MinBombPower;
             else
-                Power += incr;
+                BombPower += incr;
         }
 
         public void IncreaseSpeed(float incr)
@@ -618,8 +584,8 @@ namespace Final_Bomber.Entities
 
         public virtual void ChangeLookDirection(byte newLookDirection)
         {
-            PreviousLookDirection = CurrentLookDirection;
-            CurrentLookDirection = (LookDirection) newLookDirection;
+            PreviousLookDirection = CurrentDirection;
+            CurrentDirection = (LookDirection) newLookDirection;
             Debug.Print("New look direction: " + (LookDirection) newLookDirection);
         }
 
@@ -627,7 +593,7 @@ namespace Final_Bomber.Entities
 
         #region Override Method Region
 
-        public override void Destroy()
+        public void Destroy()
         {
             if (!InDestruction)
             {
@@ -639,7 +605,7 @@ namespace Final_Bomber.Entities
             }
         }
 
-        public override void Remove()
+        public void Remove()
         {
             _playerDeathAnimation.IsAnimating = false;
             InDestruction = false;

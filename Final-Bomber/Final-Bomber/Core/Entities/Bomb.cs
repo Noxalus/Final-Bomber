@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class Bomb : DynamicEntity
+    public class Bomb : BaseBomb, IEntity
     {
         #region Field Region
 
@@ -35,7 +35,7 @@ namespace Final_Bomber.Core.Entities
         private TimeSpan _timer;
         private TimeSpan _timerLenght;
         private bool _willExplode;
-        public override sealed AnimatedSprite Sprite { get; protected set; }
+        public AnimatedSprite Sprite { get; protected set; }
 
         private enum ExplosionDirection
         {
@@ -123,7 +123,7 @@ namespace Final_Bomber.Core.Entities
 
         #region XNA Method
 
-        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        public void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             Sprite.Update(gameTime);
 
@@ -289,7 +289,8 @@ namespace Final_Bomber.Core.Entities
                 var teleporter = (Teleporter) (_map.
                     Board[Sprite.CellPosition.X, Sprite.CellPosition.Y]);
 
-                teleporter.ChangePosition(this);
+                // TODO
+                //teleporter.ChangePosition(this);
                 _cellTeleporting = true;
             }
 
@@ -308,7 +309,8 @@ namespace Final_Bomber.Core.Entities
 
             #endregion
 
-            base.Update(gameTime, _map, _hazardMap);
+            // Call Update method of DynamicEntity class
+            Update();
         }
 
         public void Draw(GameTime gameTime)
@@ -603,7 +605,7 @@ namespace Final_Bomber.Core.Entities
             _timer = TimeSpan.Zero;
         }
 
-        public override void Destroy()
+        public void Destroy()
         {
             if (InDestruction) return;
 
@@ -612,7 +614,7 @@ namespace Final_Bomber.Core.Entities
             ComputeActionField(3);
         }
 
-        public override void Remove()
+        public void Remove()
         {
             IsAlive = false;
         }

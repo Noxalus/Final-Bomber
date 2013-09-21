@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BaseEntity.cs" />
     <Compile Include="Core\BasePlayer.cs" />
-    <Compile Include="Core\Bomb.cs" />
+    <Compile Include="Core\BaseBomb.cs" />
+    <Compile Include="Core\DynamicEntity.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\GameConfiguration.cs" />

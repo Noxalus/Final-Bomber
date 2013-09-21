@@ -14,17 +14,17 @@ namespace Final_Bomber.Core.Players
         {
         }
 
-        public override void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        public void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
             base.Update(gameTime, map, hazardMap);
         }
 
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            Debug.Print("Look Direction: " + CurrentLookDirection);
+            Debug.Print("Look Direction: " + CurrentDirection);
             Vector2 motionVector = Vector2.Zero;
 
-            switch (CurrentLookDirection)
+            switch (CurrentDirection)
             {
                 case LookDirection.Down:
                     Sprite.CurrentAnimation = AnimationKey.Down;
@@ -222,12 +222,12 @@ namespace Final_Bomber.Core.Players
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
             {
-                if (this.CurrentBombNumber > 0)
+                if (this.CurrentBombAmount > 0)
                 {
                     var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                     if (bo == null)
                     {
-                        this.CurrentBombNumber--;
+                        this.CurrentBombAmount--;
                         var bomb = new Bomb(this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
 
                         FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);

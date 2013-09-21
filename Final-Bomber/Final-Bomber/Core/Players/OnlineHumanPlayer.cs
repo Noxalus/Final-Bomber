@@ -40,7 +40,7 @@ namespace Final_Bomber.Core.Players
                 InputHandler.KeyDown(Keys[0]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
-                CurrentLookDirection = LookDirection.Up;
+                CurrentDirection = LookDirection.Up;
                 _motionVector.Y = -1;
             }
                 // Down
@@ -48,7 +48,7 @@ namespace Final_Bomber.Core.Players
                      InputHandler.KeyDown(Keys[1]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
-                CurrentLookDirection = LookDirection.Down;
+                CurrentDirection = LookDirection.Down;
                 _motionVector.Y = 1;
             }
                 // Left
@@ -56,7 +56,7 @@ namespace Final_Bomber.Core.Players
                      InputHandler.KeyDown(Keys[2]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
-                CurrentLookDirection = LookDirection.Left;
+                CurrentDirection = LookDirection.Left;
                 _motionVector.X = -1;
             }
                 // Right
@@ -64,12 +64,12 @@ namespace Final_Bomber.Core.Players
                      InputHandler.KeyDown(Keys[3]))
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
-                CurrentLookDirection = LookDirection.Right;
+                CurrentDirection = LookDirection.Right;
                 _motionVector.X = 1;
             }
             else
             {
-                CurrentLookDirection = LookDirection.Idle;
+                CurrentDirection = LookDirection.Idle;
             }
 
             #endregion
@@ -262,13 +262,13 @@ namespace Final_Bomber.Core.Players
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
             {
-                if (this.CurrentBombNumber > 0)
+                if (this.CurrentBombAmount > 0)
                 {
                     var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.Sprite.CellPosition == this.Sprite.CellPosition);
                     if (bo == null)
                     {
-                        this.CurrentBombNumber--;
-                        var bomb = new Bomb(this.Id, Sprite.CellPosition, this.Power, this.BombTimer, this.Sprite.Speed);
+                        this.CurrentBombAmount--;
+                        var bomb = new Bomb(this.Id, Sprite.CellPosition, this.BombPower, this.BombTimer, this.Sprite.Speed);
 
                         FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
                     }
@@ -368,7 +368,7 @@ namespace Final_Bomber.Core.Players
 
             #region Bombs => Edge gameplay
 
-            if (InputHandler.KeyDown(Keys[4]) && CurrentBombNumber > 0)
+            if (InputHandler.KeyDown(Keys[4]) && CurrentBombAmount > 0)
             {
                 // He can't put a bomb when he is on edges
                 if (
@@ -393,11 +393,11 @@ namespace Final_Bomber.Core.Players
                         bombPosition.Y = Sprite.CellPosition.Y + lag + 3;
                         if (bombPosition.Y < Config.MapSize.Y)
                         {
-                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombNumber--;
+                            CurrentBombAmount--;
                         }
                     }
                     // Down
@@ -411,11 +411,11 @@ namespace Final_Bomber.Core.Players
                         bombPosition.Y = Sprite.CellPosition.Y - lag - 3;
                         if (bombPosition.Y >= 0)
                         {
-                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombNumber--;
+                            CurrentBombAmount--;
                         }
                     }
                     // Left
@@ -429,11 +429,11 @@ namespace Final_Bomber.Core.Players
                         bombPosition.X = Sprite.CellPosition.X + lag + 3;
                         if (bombPosition.X < Config.MapSize.X)
                         {
-                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombNumber--;
+                            CurrentBombAmount--;
                         }
                     }
                     // Right
@@ -447,11 +447,11 @@ namespace Final_Bomber.Core.Players
                         bombPosition.X = Sprite.CellPosition.X - lag - 3;
                         if (bombPosition.X >= 0)
                         {
-                            var bomb = new Bomb(Id, bombPosition, Power, BombTimer, Config.BaseBombSpeed + Sprite.Speed);
+                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Sprite.Speed);
                             level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
                             FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
                             level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombNumber--;
+                            CurrentBombAmount--;
                         }
                     }
                 }
@@ -462,9 +462,9 @@ namespace Final_Bomber.Core.Players
 
         private void SendMovement()
         {
-            if (PreviousLookDirection != CurrentLookDirection)
+            if (PreviousLookDirection != CurrentDirection)
             {
-                switch (CurrentLookDirection)
+                switch (CurrentDirection)
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");

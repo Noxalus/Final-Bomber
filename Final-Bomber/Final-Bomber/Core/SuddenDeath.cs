@@ -104,7 +104,7 @@ namespace Final_Bomber.Core
                     if (!AllVisited())
                     {
                         _visited[_currentPosition.X, _currentPosition.Y] = true;
-                        Entity mapItem =
+                        IEntity mapItem =
                             _gameRef.GamePlayScreen.World.Levels[_gameRef.GamePlayScreen.World.CurrentLevel].
                                 Board[_currentPosition.X, _currentPosition.Y];
                         if (mapItem != null)

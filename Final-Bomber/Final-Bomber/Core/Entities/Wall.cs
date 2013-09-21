@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using FBLibrary.Core;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class Wall : StaticEntity
+    public class Wall : BaseEntity, IEntity
     {
         #region Field Region
 
         private bool _inDestruction;
         private bool _isAlive;
-        public override sealed AnimatedSprite Sprite { get; protected set; }
+        public AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
@@ -47,7 +48,7 @@ namespace Final_Bomber.Core.Entities
 
         #region XNA Method Region
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
 
@@ -67,13 +68,13 @@ namespace Final_Bomber.Core.Entities
 
         #region Method Region
 
-        public override void Destroy()
+        public void Destroy()
         {
             if (!_inDestruction)
                 _inDestruction = true;
         }
 
-        public override void Remove()
+        public void Remove()
         {
             _isAlive = false;
             _inDestruction = false;

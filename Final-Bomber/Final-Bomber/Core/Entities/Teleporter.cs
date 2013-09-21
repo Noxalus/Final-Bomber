@@ -1,4 +1,4 @@
-﻿using Final_Bomber.Entities;
+﻿using FBLibrary.Core;
 using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class Teleporter : StaticEntity
+    public class Teleporter : BaseEntity, IEntity
     {
         #region Field Region
 
         private bool _isAlive;
-        public override sealed AnimatedSprite Sprite { get; protected set; }
+        public AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace Final_Bomber.Core.Entities
 
         #region XNA Method Region
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
         }
@@ -54,15 +54,14 @@ namespace Final_Bomber.Core.Entities
 
         #region Public Method Region
 
-        public void ChangePosition(Entity mapItem)
+        public void ChangePosition(IEntity mapItem, Map map)
         {
             bool allTeleporterCellTaken = true;
-            Map level =
-                FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
-            foreach (Teleporter t in FinalBomber.Instance.GamePlayScreen.TeleporterList)
+         
+            foreach (Teleporter t in map.TeleporterList)
             {
                 Point position = t.Sprite.CellPosition;
-                if (position != Sprite.CellPosition && level.Board[position.X, position.Y] is Teleporter)
+                if (position != Sprite.CellPosition && map.Board[position.X, position.Y] is Teleporter)
                     allTeleporterCellTaken = false;
             }
 
@@ -79,12 +78,14 @@ namespace Final_Bomber.Core.Entities
                 var bomb = mapItem as Bomb;
                 if (bomb != null)
                 {
-                    bomb.ChangeSpeed(mapItem.Sprite.Speed + Config.BombSpeedIncrementeur);
+                    bomb.ChangeSpeed(bomb.Sprite.Speed + Config.BombSpeedIncrementeur);
                     bomb.ResetTimer();
                     bomb.Sprite.ChangePosition(position);
                 }
+                /* TODO: Fix this modelisation problem !
                 else
-                    mapItem.Sprite.ChangePosition(position);
+                    mapItem.ChangePosition(position);
+                */
             }
         }
 
@@ -92,11 +93,11 @@ namespace Final_Bomber.Core.Entities
 
         #region Override Method Region
 
-        public override void Destroy()
+        public void Destroy()
         {
         }
 
-        public override void Remove()
+        public void Remove()
         {
             _isAlive = false;
         }

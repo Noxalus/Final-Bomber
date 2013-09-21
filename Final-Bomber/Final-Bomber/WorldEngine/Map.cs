@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FBLibrary.Core;
+using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.TileEngine;
-using Final_Bomber.Entities;
 using System.Diagnostics;
 using System.IO;
 
@@ -24,7 +22,7 @@ namespace Final_Bomber.WorldEngine
         private TileMap _tileMap;
 
         private Point _size;
-        private Entity[,] _board;
+        private IEntity[,] _board;
         private bool[,] _collisionLayer;
 
         private List<EdgeWall> _edgeWallList;
@@ -46,7 +44,7 @@ namespace Final_Bomber.WorldEngine
             get { return _size; }
         }
 
-        public Entity[,] Board
+        public IEntity[,] Board
         {
             get { return _board; }
         }
@@ -54,6 +52,12 @@ namespace Final_Bomber.WorldEngine
         public bool[,] CollisionLayer
         {
             get { return _collisionLayer; }
+        }
+
+        public List<Teleporter> TeleporterList
+        {
+            get { return _teleporterList; }
+            set { _teleporterList = value; }
         }
 
         #endregion
@@ -64,14 +68,14 @@ namespace Final_Bomber.WorldEngine
         {
             _edgeWallList = new List<EdgeWall>();
             _unbreakableWallList = new List<UnbreakableWall>();
-            _teleporterList = new List<Teleporter>();
+            TeleporterList = new List<Teleporter>();
             _arrowList = new List<Arrow>();
 
             _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
             _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
         }
 
-        public Map(Point mSize, TileMap tMap, Entity[,] m, bool[,] cLayer)
+        public Map(Point mSize, TileMap tMap, IEntity[,] m, bool[,] cLayer)
             : this()
         {
             _size = mSize;
@@ -118,7 +122,7 @@ namespace Final_Bomber.WorldEngine
             foreach (var unbreakableWall in _unbreakableWallList)
                 unbreakableWall.Draw(gameTime);
 
-            foreach (var teleporter in _teleporterList)
+            foreach (var teleporter in TeleporterList)
                 teleporter.Draw(gameTime);
 
             foreach (var arrow in _arrowList)
@@ -156,7 +160,7 @@ namespace Final_Bomber.WorldEngine
 
                     var collisionLayer = new bool[mapSize.X, mapSize.Y];
                     var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                    var board = new Entity[mapSize.X, mapSize.Y];
+                    var board = new IEntity[mapSize.X, mapSize.Y];
                     var layer = new MapLayer(mapSize.X, mapSize.Y);
                     var voidPosition = new List<Point>();
                     var playerPositions = new Dictionary<int, Point>();
@@ -201,7 +205,7 @@ namespace Final_Bomber.WorldEngine
                                 case (int)EntityType.Teleporter:
                                     var teleporter = new Teleporter(currentPosition);
                                     board[i, j] = teleporter;
-                                    _teleporterList.Add(teleporter);
+                                    TeleporterList.Add(teleporter);
                                     break;
                                 case (int)EntityType.Arrow:
                                     var arrow = new Arrow(currentPosition, LookDirection.Down);

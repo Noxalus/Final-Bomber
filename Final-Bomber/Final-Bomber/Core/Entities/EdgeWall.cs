@@ -1,14 +1,15 @@
-﻿using Final_Bomber.Sprites;
+﻿using FBLibrary.Core;
+using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class EdgeWall : StaticEntity
+    public class EdgeWall : BaseEntity, IEntity
     {
         #region Field Region
 
-        public override sealed AnimatedSprite Sprite { get; protected set; }
+        public AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace Final_Bomber.Core.Entities
 
         #region XNA Method Region
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
         }
@@ -39,11 +40,11 @@ namespace Final_Bomber.Core.Entities
 
         #region Override Method Region
 
-        public override void Destroy()
+        public void Destroy()
         {
         }
 
-        public override void Remove()
+        public void Remove()
         {
         }
 
