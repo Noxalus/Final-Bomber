@@ -89,7 +89,7 @@ namespace Final_Bomber.Core.Players
 
                 // We move the player
                 Position += motion*Speed;
-
+                /*
                 // If the player want to go to top...
                 if (motion.Y == -1f)
                 {
@@ -219,7 +219,7 @@ namespace Final_Bomber.Core.Players
                         }
                     }
                 }
-
+                */
                 #endregion
 
                 ComputeWallCollision(map);

@@ -5,31 +5,53 @@ using System.Text;
 using System.Threading.Tasks;
 using FBLibrary.Core;
 using Final_BomberServer.Core.Entities;
+using Final_BomberServer.Core.WorldEngine;
 
 namespace Final_BomberServer.Core
 {
-    class GameManager : BaseGameManager
+    public class GameManager : BaseGameManager
     {
         // Collections
         private readonly List<Bomb> _bombList;
         private readonly List<PowerUp> _powerUpList;
         private readonly List<Wall> _wallList;
 
+        // Map
+        private Map _currentMap;
+        private int[,] _hazardMap;
+
         #region Properties
+
+        public Map CurrentMap
+        {
+            get { return _currentMap; }
+        }
 
         public List<Wall> WallList
         {
             get { return _wallList; }
         }
 
+        public List<Bomb> BombList
+        {
+            get { return _bombList; }
+        }
+
         #endregion
 
         public GameManager()
-            : base()
         {
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
+        }
+
+        public void LoadMap(string mapName)
+        {
+            _currentMap = new Map();
+            _currentMap.Parse(mapName, this);
+
+            _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core.Entities
 {
-    class Wall : BaseWall
+    public class Wall : BaseWall
     {
         public Wall(Point cellPosition)
             : base(cellPosition)

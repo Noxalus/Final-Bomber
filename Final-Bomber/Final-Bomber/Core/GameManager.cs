@@ -18,6 +18,7 @@ namespace Final_Bomber.Core
 
         // Players
         public PlayerCollection Players;
+        private int _deadPlayersNumber;
 
         // Collections
         private readonly List<Bomb> _bombList;
@@ -26,9 +27,8 @@ namespace Final_Bomber.Core
 
         private SoundEffect _bombExplosionSound;
 
-        // Dead Players number
+        // Map
         private Map _currentMap;
-        private int _deadPlayersNumber;
         private int[,] _hazardMap;
 
         // Songs & sounds effect

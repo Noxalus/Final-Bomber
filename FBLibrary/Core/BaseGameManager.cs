@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core
@@ -14,7 +12,7 @@ namespace FBLibrary.Core
 
         protected BaseGameManager()
         {
-            Random = new Random();
+            Random = new Random(Environment.TickCount);
 
             // Engine
             Engine = new Engine(32, 32, Vector2.Zero);

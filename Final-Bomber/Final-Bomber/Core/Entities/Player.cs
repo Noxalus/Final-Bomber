@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Entities
 {
-    public abstract class Player : BasePlayer, IEntity
+    public abstract class Player : BasePlayer
     {
         #region Field Region
 
@@ -363,120 +363,9 @@ namespace Final_Bomber.Entities
 
         #region Protected Method Region
 
-        protected bool WallAt(Point cell)
-        {
-            return false;
-            /*
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.X &&
-                cell.Y < FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].Size.Y)
-                return (this.FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].CollisionLayer[cell.X, cell.Y]);
-            else
-                return false;
-            */
-        }
-
-        protected bool IsMoreTopSide()
-        {
-            return Position.Y < ((CellPosition.Y * Engine.TileHeight) - (Speed / 2));
-        }
-
-        protected bool IsMoreBottomSide()
-        {
-            return Position.Y > ((CellPosition.Y * Engine.TileHeight) + (Speed / 2));
-        }
-
-        protected bool IsMoreLeftSide()
-        {
-            return Position.X < ((CellPosition.X * Engine.TileWidth) - (Speed / 2));
-        }
-
-        protected bool IsMoreRightSide()
-        {
-            return Position.X > ((CellPosition.X * Engine.TileWidth) + (Speed / 2));
-        }
-
-
         protected virtual void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
-        }
-
-        protected void ComputeWallCollision(Map map)
-        {
-            #region Wall collisions
-
-            //Sprite.LockToMap();
-
-            // -- Vertical check -- //
-            // Is there a wall on the top ?
-            if (WallAt(new Point(CellPosition.X, CellPosition.Y - 1)))
-            {
-                // Is there a wall on the bottom ?
-                if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
-                {
-                    // Top collision and Bottom collision
-                    if ((CurrentDirection == LookDirection.Up && IsMoreTopSide()) ||
-                        (CurrentDirection == LookDirection.Down && IsMoreBottomSide()))
-                        PositionY = CellPosition.Y * Engine.TileHeight;
-                }
-                // No wall at the bottom
-                else
-                {
-                    // Top collision
-                    if (CurrentDirection == LookDirection.Up && IsMoreTopSide())
-                        PositionY = CellPosition.Y * Engine.TileHeight;
-                }
-            }
-            // Wall only at the bottom
-            else if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1)))
-            {
-                // Bottom collision
-                if (CurrentDirection == LookDirection.Down && IsMoreBottomSide())
-                    PositionY = CellPosition.Y * Engine.TileHeight;
-                // To lag him
-                else if (CurrentDirection == LookDirection.Down)
-                {
-                    if (IsMoreLeftSide())
-                        PositionX += Speed;
-                    else if (IsMoreRightSide())
-                        PositionX -= Speed;
-                }
-            }
-
-            // -- Horizontal check -- //
-            // Is there a wall on the left ?
-            if (WallAt(new Point(CellPosition.X - 1, CellPosition.Y)))
-            {
-                // Is there a wall on the right ?
-                if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
-                {
-                    // Left and right collisions
-                    if ((CurrentDirection == LookDirection.Left && IsMoreLeftSide()) ||
-                        (CurrentDirection == LookDirection.Right && IsMoreRightSide()))
-                        PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 +
-                                           Engine.TileWidth / 2;
-                }
-                // Wall only at the left
-                else
-                {
-                    // Left collision
-                    if (CurrentDirection == LookDirection.Left && IsMoreLeftSide())
-                        PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 +
-                                           Engine.TileWidth / 2;
-                }
-            }
-            // Wall only at the right
-            else if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y)))
-            {
-                // Right collision
-                if (CurrentDirection == LookDirection.Right && IsMoreRightSide())
-                    PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
-            }
-
-            // The player must stay in the map
-            PositionX = MathHelper.Clamp(Position.X, Engine.TileWidth, (map.Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
-            PositionY = MathHelper.Clamp(Position.Y, Engine.TileHeight, (map.Size.Y * Engine.TileHeight) - 2 * Engine.TileHeight);
-
-            #endregion
+            ComputeWallCollision(map);
         }
 
         protected void UpdatePlayerPosition()

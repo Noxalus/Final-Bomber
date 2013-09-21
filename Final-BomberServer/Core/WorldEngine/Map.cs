@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core.WorldEngine
 {
-    class Map : BaseMap
+    public class Map : BaseMap
     {
         private List<EdgeWall> _edgeWallList;
         private List<UnbreakableWall> _unbreakableWallList;
@@ -130,6 +130,38 @@ namespace Final_BomberServer.Core.WorldEngine
             catch (Exception ex)
             {
                 Program.Log.Error(ex.Message);
+            }
+        }
+
+        public void DisplayMap()
+        {
+            for (int x = 0; x < Size.X; x++)
+            {
+                for (int y = 0; y < Size.Y; y++)
+                {
+                    if (Board[x, y] is EdgeWall)
+                    {
+                        Console.Write("E ");
+                    }
+                    else if (Board[x, y] is UnbreakableWall)
+                    {
+                        Console.Write("U ");
+                    }
+                    else if (Board[x, y] is Wall)
+                    {
+                        Console.Write("W ");
+                    }
+                    else if (Board[x, y] is Player)
+                    {
+                        Console.Write("P ");
+                    }
+                    else
+                    {
+                        Console.Write("N ");
+                    }
+                }
+
+                Console.WriteLine();
             }
         }
     }

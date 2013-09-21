@@ -2,6 +2,7 @@
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Final_BomberServer.Core.Entities;
+using Final_BomberServer.Core.WorldEngine;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace Final_BomberServer.Core
         }
 
 
-        public void MovePlayer()
+        public void MovePlayer(Map map)
         {
             if (IsAlive)
             {
@@ -147,7 +148,9 @@ namespace Final_BomberServer.Core
                         break;
                 }
 
-                //Program.Log.Info("[Client #" + this.PlayerId + "]Position: + " + Position.ToString());
+                ComputeWallCollision(map);
+
+                //Program.Log.Info("[Client #" + Id + "]Position: + " + Position.ToString());
             }
         }
 

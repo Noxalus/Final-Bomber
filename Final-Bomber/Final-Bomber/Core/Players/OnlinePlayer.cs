@@ -239,6 +239,8 @@ namespace Final_Bomber.Core.Players
             #endregion
 
             #endregion
+
+            base.Move(gameTime, map, hazardMap);
         }
     }
 }

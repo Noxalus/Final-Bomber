@@ -279,6 +279,8 @@ namespace Final_Bomber.Core.Players
             */
 
             #endregion
+
+            base.Move(gameTime, map, hazardMap);
         }
 
         public override void ApplyBadItem(BadItemEffect effect)
