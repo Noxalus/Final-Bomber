@@ -228,7 +228,7 @@ namespace Final_Bomber.Core.Players
                 Sprite.IsAnimating = false;
             }
 
-            UpdatePlayerPosition();
+            UpdatePlayerPosition(map);
 
             #region Bomb
 

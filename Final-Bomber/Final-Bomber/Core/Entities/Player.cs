@@ -32,6 +32,9 @@ namespace Final_Bomber.Entities
         private TimeSpan _invincibleBlinkTimer;
         private TimeSpan _invincibleTimer;
 
+        // Reference on GameTime
+        private GameTime _gameTime;
+
         public AnimatedSprite Sprite { get; protected set; }
 
         #endregion
@@ -100,6 +103,8 @@ namespace Final_Bomber.Entities
             HasBadItemEffect = false;
             BadItemTimer = TimeSpan.Zero;
             BadItemTimerLenght = TimeSpan.Zero;
+
+            _gameTime = new GameTime();
         }
 
         #endregion
@@ -108,6 +113,8 @@ namespace Final_Bomber.Entities
 
         public virtual void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
+            _gameTime = gameTime;
+
             if (IsAlive && !InDestruction)
             {
                 PreviousLookDirection = CurrentDirection;
@@ -371,19 +378,15 @@ namespace Final_Bomber.Entities
                 ComputeWallCollision(map);
         }
 
-        protected void UpdatePlayerPosition()
+        protected void UpdatePlayerPosition(Map map)
         {
             #region Update player's position
 
             if (IsChangingCell())
             {
-                if (FinalBomber.Instance.GamePlayScreen.World.Levels[
-                    FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Board[PreviousCellPosition.X, PreviousCellPosition.Y] == this)
+                if (map.Board[PreviousCellPosition.X, PreviousCellPosition.Y] == this)
                 {
-                    FinalBomber.Instance.GamePlayScreen.World.Levels[
-                        FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Board[PreviousCellPosition.X, PreviousCellPosition.Y] = null;
+                    map.Board[PreviousCellPosition.X, PreviousCellPosition.Y] = null;
                 }
 
                 if (_cellTeleporting)
@@ -391,17 +394,20 @@ namespace Final_Bomber.Entities
             }
             else
             {
-                if (FinalBomber.Instance.GamePlayScreen.World.Levels[
-                    FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Board[CellPosition.X, CellPosition.Y] == null)
+                if (map.Board[CellPosition.X, CellPosition.Y] == null)
                 {
-                    FinalBomber.Instance.GamePlayScreen.World.Levels[
-                        FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Board[CellPosition.X, CellPosition.Y] = this;
+                    map.Board[CellPosition.X, CellPosition.Y] = this;
                 }
             }
 
             #endregion
+        }
+
+        protected override float GetMovementSpeed()
+        {
+            var dt = (float) _gameTime.ElapsedGameTime.TotalSeconds;
+            float rtn = (Speed * dt);
+            return rtn;
         }
 
         #endregion

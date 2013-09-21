@@ -80,9 +80,7 @@ namespace Final_Bomber.Core.Players
             {
                 IsMoving = true;
 
-                var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
-
-                Position += _motionVector * (Speed * dt);
+                Position += _motionVector * GetMovementSpeed();
             }
             else
             {

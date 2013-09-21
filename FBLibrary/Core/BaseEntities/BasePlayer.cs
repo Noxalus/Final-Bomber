@@ -45,17 +45,145 @@ namespace FBLibrary.Core.BaseEntities
 
         protected void ComputeWallCollision(BaseMap map)
         {
-            #region Wall collisions
+            #region Smooth movement
+            // If the player want to go to top...
+            if (CurrentDirection == LookDirection.Up)
+            {
+                // ...  and that there is a wall
+                if (WallAt(new Point(CellPosition.X, CellPosition.Y - 1), map))
+                {
+                    // If he is more on the left side, we lag him to the left
+                    if (IsMoreLeftSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y - 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X - 1, CellPosition.Y), map))
+                            Position = new Vector2(Position.X - GetMovementSpeed(), Position.Y);
+                    }
+                    else if (IsMoreRightSide() &&
+                             !WallAt(new Point(CellPosition.X + 1, CellPosition.Y - 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X + 1, CellPosition.Y), map))
+                            Position = new Vector2(Position.X + GetMovementSpeed(), Position.Y);
+                    }
+                }
+                // ... and that there is no wall
+                else
+                {
+                    // If he is more on the left side
+                    if (IsMoreLeftSide())
+                    {
+                        Position = new Vector2(Position.X + GetMovementSpeed(), Position.Y);
+                    }
+                    // If he is more on the right side
+                    else if (IsMoreRightSide())
+                    {
+                        Position = new Vector2(Position.X - GetMovementSpeed(), Position.Y);
+                    }
+                }
+            }
+            // If the player want to go to bottom and that there is a wall
+            else if (CurrentDirection == LookDirection.Down)
+            {
+                // Wall at the bottom ?
+                if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
+                {
+                    // If he is more on the left side, we lag him to the left
+                    if (IsMoreLeftSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y + 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X - 1, CellPosition.Y), map))
+                            Position = new Vector2(Position.X - GetMovementSpeed(), Position.Y);
+                    }
+                    else if (IsMoreRightSide() &&
+                             !WallAt(new Point(CellPosition.X + 1, CellPosition.Y + 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X + 1, CellPosition.Y), map))
+                            Position = new Vector2(Position.X + GetMovementSpeed(), Position.Y);
+                    }
+                }
+                else
+                {
+                    // If he is more on the left side
+                    if (IsMoreLeftSide())
+                    {
+                        Position = new Vector2(Position.X + GetMovementSpeed(), Position.Y);
+                    }
+                    // If he is more on the right side
+                    else if (IsMoreRightSide())
+                    {
+                        Position = new Vector2(Position.X - GetMovementSpeed(), Position.Y);
+                    }
+                }
+            }
+            // If the player want to go to left and that there is a wall
+            else if (CurrentDirection == LookDirection.Left)
+            {
+                if (WallAt(new Point(CellPosition.X - 1, CellPosition.Y), map))
+                {
+                    // If he is more on the top side, we lag him to the top
+                    if (IsMoreTopSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y - 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X, CellPosition.Y - 1), map))
+                            Position = new Vector2(Position.X, Position.Y - GetMovementSpeed());
+                    }
+                    else if (IsMoreBottomSide() && !WallAt(new Point(CellPosition.X - 1, CellPosition.Y + 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
+                            Position = new Vector2(Position.X, Position.Y + GetMovementSpeed());
+                    }
+                }
+                else
+                {
+                    // If he is more on the top side, we lag him to the bottom
+                    if (IsMoreTopSide())
+                    {
+                        Position = new Vector2(Position.X, Position.Y + GetMovementSpeed());
+                    }
+                    else if (IsMoreBottomSide())
+                    {
+                        Position = new Vector2(Position.X, Position.Y - GetMovementSpeed());
+                    }
+                }
+            }
+            // If the player want to go to right and that there is a wall
+            else if (CurrentDirection == LookDirection.Right)
+            {
+                if (WallAt(new Point(CellPosition.X + 1, CellPosition.Y), map))
+                {
+                    // If he is more on the top side, we lag him to the top
+                    if (IsMoreTopSide() && !WallAt(new Point(CellPosition.X + 1, CellPosition.Y - 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X, CellPosition.Y - 1), map))
+                            Position = new Vector2(Position.X, Position.Y - GetMovementSpeed());
+                    }
+                    else if (IsMoreBottomSide() &&
+                             !WallAt(new Point(CellPosition.X + 1, CellPosition.Y + 1), map))
+                    {
+                        if (!WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
+                            Position = new Vector2(Position.X, Position.Y + GetMovementSpeed());
+                    }
+                }
+                else
+                {
+                    // If he is more on the top side, we lag him to the top
+                    if (IsMoreTopSide())
+                    {
+                        Position = new Vector2(Position.X, Position.Y + GetMovementSpeed());
+                    }
+                    else if (IsMoreBottomSide())
+                    {
+                        Position = new Vector2(Position.X, Position.Y - GetMovementSpeed());
+                    }
+                }
+            }
+            #endregion
+
+            #region Wall collision
             // -- Vertical check -- //
             // Is there a wall on the top ?
             if (WallAt(new Point(CellPosition.X, CellPosition.Y - 1), map))
             {
-                Console.WriteLine("Wall at top !");
-
                 // Is there a wall on the bottom ?
                 if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
                 {
-                    Console.WriteLine("Wall at bottom !");
                     // Top collision and Bottom collision
                     if ((CurrentDirection == LookDirection.Up && IsMoreTopSide()) ||
                         (CurrentDirection == LookDirection.Down && IsMoreBottomSide()))
@@ -72,19 +200,16 @@ namespace FBLibrary.Core.BaseEntities
             // Wall only at the bottom
             else if (WallAt(new Point(CellPosition.X, CellPosition.Y + 1), map))
             {
-                Console.WriteLine("Wall only at bottom !");
                 // Bottom collision
                 if (CurrentDirection == LookDirection.Down && IsMoreBottomSide())
-                {
-                    PositionY = CellPosition.Y*Engine.TileHeight;
-                }
+                    PositionY = CellPosition.Y * Engine.TileHeight;
                 // To lag him
                 else if (CurrentDirection == LookDirection.Down)
                 {
                     if (IsMoreLeftSide())
-                        PositionX += Speed;
+                        PositionX += GetMovementSpeed();
                     else if (IsMoreRightSide())
-                        PositionX -= Speed;
+                        PositionX -= GetMovementSpeed();
                 }
             }
 
@@ -117,12 +242,11 @@ namespace FBLibrary.Core.BaseEntities
                 if (CurrentDirection == LookDirection.Right && IsMoreRightSide())
                     PositionX = CellPosition.X * Engine.TileWidth - Engine.TileWidth / 2 + Engine.TileWidth / 2;
             }
+            #endregion
 
             // The player must stay in the map
             PositionX = MathHelper.Clamp(Position.X, Engine.TileWidth, (map.Size.X * Engine.TileWidth) - 2 * Engine.TileWidth);
             PositionY = MathHelper.Clamp(Position.Y, Engine.TileHeight, (map.Size.Y * Engine.TileHeight) - 2 * Engine.TileWidth);
-
-            #endregion
         }
 
         private bool WallAt(Point cell, BaseMap map)
@@ -135,22 +259,24 @@ namespace FBLibrary.Core.BaseEntities
 
         private bool IsMoreTopSide()
         {
-            return Position.Y < ((CellPosition.Y * Engine.TileHeight));
+            return Position.Y < ((CellPosition.Y * Engine.TileHeight) - (GetMovementSpeed() / 2));
         }
 
         private bool IsMoreBottomSide()
         {
-            return Position.Y > ((CellPosition.Y * Engine.TileHeight));
+            return Position.Y > ((CellPosition.Y * Engine.TileHeight) + (GetMovementSpeed() / 2));
         }
 
         private bool IsMoreLeftSide()
         {
-            return Position.X < ((CellPosition.X * Engine.TileWidth));
+            return Position.X < ((CellPosition.X * Engine.TileWidth) - (GetMovementSpeed() / 2));
         }
 
         private bool IsMoreRightSide()
         {
-            return Position.X > ((CellPosition.X * Engine.TileWidth));
+            return Position.X > ((CellPosition.X * Engine.TileWidth) + (GetMovementSpeed() / 2));
         }
+
+        protected abstract float GetMovementSpeed();
     }
 }

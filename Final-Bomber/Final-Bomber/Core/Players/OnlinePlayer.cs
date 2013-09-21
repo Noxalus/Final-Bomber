@@ -46,10 +46,9 @@ namespace Final_Bomber.Core.Players
 
             if (motionVector != Vector2.Zero)
             {
-                var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
                 IsMoving = true;
                 Sprite.IsAnimating = true;
-                Position += motionVector*(Speed*dt);
+                Position += motionVector * GetMovementSpeed();
             }
             else
             {

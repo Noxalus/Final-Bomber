@@ -184,7 +184,7 @@ namespace Final_BomberServer.Core
             }
         }
 
-        private float GetMovementSpeed()
+        protected override float GetMovementSpeed()
         {
             float rtn = (Speed * GameSettings.speed) / 1000f;
             return rtn;

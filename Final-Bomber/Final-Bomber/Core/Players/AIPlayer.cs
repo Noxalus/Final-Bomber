@@ -121,7 +121,7 @@ namespace Final_Bomber.Core.Players
 
             #endregion
 
-            UpdatePlayerPosition();
+            UpdatePlayerPosition(map);
         }
 
         private void Walk()
