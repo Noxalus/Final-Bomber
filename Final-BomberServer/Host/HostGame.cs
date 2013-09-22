@@ -99,6 +99,7 @@ namespace Final_BomberServer.Host
             GameSettings.PlayingClients = new ClientCollection();
             foreach (Client client in GameSettings.gameServer.Clients) //Skickar spelarna till varandra
             {
+                client.Player.ChangePosition(GameManager.CurrentMap.PlayerSpawnPoints[client.Player.Id]);
                 GameSettings.gameServer.SendStartGame(client, false); //Starta spelet alla Clienter!!
                 GameSettings.PlayingClients.Add(client);
             }

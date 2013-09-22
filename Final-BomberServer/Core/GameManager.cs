@@ -51,13 +51,6 @@ namespace Final_BomberServer.Core
         {
             _currentMap = new Map();
             _currentMap.Parse(mapName, this);
-
-            // We affect a position to all players
-            foreach (var player in GameSettings.gameServer.Clients.GetAlivePlayers())
-            {
-                player.ChangePosition(CurrentMap.PlayerSpawnPoints[player.Id]);
-            }
-
             
             // We generate wall
             GenerateWalls();
