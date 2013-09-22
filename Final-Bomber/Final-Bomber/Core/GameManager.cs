@@ -42,8 +42,6 @@ namespace Final_Bomber.Core
 
         #region Properties
 
-        public World World { get; set; }
-
         public Map CurrentMap
         {
             get { return _currentMap; }
@@ -63,8 +61,6 @@ namespace Final_Bomber.Core
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
-
-            World = new World(FinalBomber.Instance, FinalBomber.Instance.ScreenRectangle);
         }
 
         public void Initialize()
@@ -89,9 +85,6 @@ namespace Final_Bomber.Core
             _currentMap.Parse(mapName, this);
 
             _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
-
-            World.Levels.Add(_currentMap);
-            World.CurrentLevel++;
         }
 
         public void Update(GameTime gameTime)
@@ -104,7 +97,7 @@ namespace Final_Bomber.Core
 
         public void Draw(GameTime gameTime)
         {
-            World.DrawLevel(gameTime, FinalBomber.Instance.SpriteBatch, new Camera(FinalBomber.Instance.ScreenRectangle));
+            CurrentMap.Draw(gameTime, FinalBomber.Instance.SpriteBatch, new Camera(FinalBomber.Instance.ScreenRectangle));
 
             foreach (Wall wall in WallList)
                 wall.Draw(gameTime);
