@@ -18,6 +18,7 @@ namespace Final_Bomber.Screens
         TimeSpan timer;
         Timer tmr;
         Timer connectedTmr;
+        private Timer _tmrWaitUntilStart;
         public bool IsConnected;
         private bool _isReady;
         #endregion
@@ -49,11 +50,16 @@ namespace Final_Bomber.Screens
             base.Initialize();
         }
 
-        protected override void LoadContent()
+        protected override void UnloadContent()
         {
             GameSettings.GameServer.StartInfo -= new GameServer.StartInfoEventHandler(GameServer_StartInfo);
             GameSettings.GameServer.StartGame -= new GameServer.StartGameEventHandler(GameServer_StartGame);
 
+            base.UnloadContent();
+        }
+
+        protected override void LoadContent()
+        {
             base.LoadContent();
         }
 
@@ -75,12 +81,14 @@ namespace Final_Bomber.Screens
                     FinalBomber.Instance.Exit();
                 }
             }
-            else if (GameSettings.GameServer.HasStarted)
+            else
             {
-                GameSettings.GameServer.RunClientConnection();
+                if (GameSettings.GameServer.HasStarted)
+                    GameSettings.GameServer.RunClientConnection();
+
+                ProgramStepProccesing();
             }
-            
-            //ProgramStepProccesing();
+
 
             if (tmr.Each(1000))
             {
@@ -135,6 +143,43 @@ namespace Final_Bomber.Screens
         }
 
         #endregion
+
+        private void ProgramStepProccesing()
+        {
+            if (!GameSettings.GameServer.Connected)
+            {
+                DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
+            }
+            if (GameSettings.GameServer.Connected)
+            {
+                ConnectedGameProcessing();
+            }
+        }
+
+        private void DisplayStatusBeforeExiting(string status)
+        {
+            throw new Exception("Exit ! (not connected to the server !)");
+        }
+
+        private void ConnectedGameProcessing()
+        {
+            if (_isReady)
+            {
+                _isReady = false;
+
+                NetworkTestScreen.GameManager.LoadMap(GameSettings.CurrentMapName);
+
+                _tmrWaitUntilStart = new Timer();
+                _tmrWaitUntilStart.Start();
+            }
+
+            // Wait 5 seconds before to say to the server that we are ready
+            if (_tmrWaitUntilStart.Each(5000))
+            {
+                GameSettings.GameServer.SendIsReady();
+                _tmrWaitUntilStart.Stop();
+            }
+        }
 
         #region Server events
 

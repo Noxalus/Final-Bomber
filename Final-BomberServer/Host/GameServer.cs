@@ -13,7 +13,6 @@ namespace Final_BomberServer.Host
         bool hostStarted = false;
 
         NetServer server;
-        NetBuffer buffer;
 
         int clientId = 1;
         public ClientCollection Clients;
@@ -126,7 +125,7 @@ namespace Final_BomberServer.Host
                         {
                             try
                             {
-                                DataProcessing(message.ReadByte(), ref currentClient);
+                                DataProcessing(message, ref currentClient);
                             }
                             catch (Exception e)
                             {

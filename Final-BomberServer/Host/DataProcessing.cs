@@ -1,25 +1,20 @@
 ﻿using FBLibrary.Core;
-using Final_BomberServer.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Lidgren.Network;
 
 namespace Final_BomberServer.Host
 {
     partial class GameServer
     {
-        void DataProcessing(byte data, ref Client client)
+        void DataProcessing(NetIncomingMessage message, ref Client client)
         {
-            switch (data)
+            switch (message.ReadByte())
             {
                 case (byte)RMT.NeedMap:
                     ReceiveNeedMap(client);
                     break;
                 case (byte)RMT.Ready:
                     Program.Log.Info("[Client #" + client.ClientId + "]Ready !");
-                    ReceiveReady(client, buffer.ReadString(), buffer.ReadString());
+                    ReceiveReady(client, message.ReadString(), message.ReadString());
                     break;
                 case (byte)RMT.MoveDown:
                     Program.Log.Info("[Client #" + client.ClientId + "]Move down !");

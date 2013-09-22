@@ -19,8 +19,6 @@ namespace Final_Bomber.Network
         public bool IsConnected;
         public string PublicIp;
 
-        private bool _isReady = false;
-
         // Players
         public OnlineHumanPlayer Me;
 
@@ -30,19 +28,17 @@ namespace Final_Bomber.Network
         public NetworkManager(GameManager gameManager)
         {
             _gameManager = gameManager;
+
+            Me = new OnlineHumanPlayer(0) { Name = "Me" };
         }
 
         public void Initiliaze()
         {
-            Me = new OnlineHumanPlayer(0) { Name = "Me" };
 
             IsConnected = false;
             PublicIp = "?";
 
             // Server events
-            GameSettings.GameServer.StartInfo += GameServer_StartInfo;
-            GameSettings.GameServer.StartGame += GameServer_StartGame;
-
             GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer += GameServer_MovePlayer;
             GameSettings.GameServer.End += GameServer_End;
@@ -50,9 +46,6 @@ namespace Final_Bomber.Network
 
         public void Dispose()
         {
-            GameSettings.GameServer.StartInfo -= GameServer_StartInfo;
-            GameSettings.GameServer.StartGame -= GameServer_StartGame;
-
             GameSettings.GameServer.NewPlayer -= GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer -= GameServer_MovePlayer;
             GameSettings.GameServer.End -= GameServer_End;
@@ -60,116 +53,13 @@ namespace Final_Bomber.Network
 
         public void Update()
         {
-            if (!IsConnected)
-            {
-                GameSettings.GameServer.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
-
-                var connectedTmr = new Timer();
-                connectedTmr.Start();
-                while (!IsConnected)
-                {
-                    GameSettings.GameServer.RunClientConnection();
-                    if (GameSettings.GameServer.Connected)
-                    {
-                        IsConnected = true;
-                        //_publicIp = GetPublicIP();
-                    }
-                    else if (connectedTmr.Each(5000))
-                    {
-                        Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
-                        FinalBomber.Instance.Exit();
-                    }
-                }
-            }
-            else if (GameSettings.GameServer.HasStarted)
+            if (GameSettings.GameServer.HasStarted)
             {
                 GameSettings.GameServer.RunClientConnection();
             }
-
-            ProgramStepProccesing();
         }
 
-        private void ProgramStepProccesing()
-        {
-            if (!GameSettings.GameServer.Connected)
-            {
-                DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
-            }
-            if (GameSettings.GameServer.Connected)
-            {
-                ConnectedGameProcessing();
-            }
-        }  
-
-        private void ConnectedGameProcessing()
-        {
-            if (_isReady /*&& !mainGame.IsLoaded*/)
-            {
-                _isReady = false;
-                /*
-                if (!lobbyScreen.IsLoaded)
-                {
-                    lobbyScreen.Load();
-                    lobbyScreen.Start();
-                }
-
-                mainGame = new MainGame();
-                mainGame.Load(GameSettings.Maps.GetMapById(GameSettings.currentMap));
-                tmr_WaitUntilStart = new Timer();
-                tmr_WaitUntilStart.Start();
-                */
-                _gameManager.LoadMap(GameSettings.CurrentMapName);
-            }
-            if (true/*tmr_WaitUntilStart.Each(5000)*/) //Vänta 5 sekunder innan man skickar isready, för att man ska hinna hoppa ur matchen
-            {
-                GameSettings.GameServer.SendIsReady();
-                //tmr_WaitUntilStart.Stop();
-            }
-        }
-
-        private void DisplayStatusBeforeExiting(string status)
-        {
-            throw new Exception("Exit !");
-        }
-
-        #region Game Server events
-
-        private void GameServer_StartInfo()
-        {
-            _isReady = true;
-        }
-
-        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime)
-        {
-            if (true /*!mainGame.IsStarted*/)
-            {
-                /*
-                if (lobbyScreen.IsLoaded)
-                {
-                    lobbyScreen.End();
-                    lobbyScreen.Unload();
-                }
-                */
-                if (!gameInProgress)
-                {
-                    Me.Id = playerId;
-                    /*
-                    me.MoveSpeed = moveSpeed;
-                    suddenDeathTime = suddenDeathTime;
-                    */
-                }
-                else
-                {
-                    /*
-                    mainGame.me.Kill();
-                    mainGame.Spectator = true;
-                    */
-                }
-
-                //mainGame.Start();
-            }
-        }
-
+        #region Server events
 
         private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
         {
