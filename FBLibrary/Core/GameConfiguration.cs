@@ -11,7 +11,7 @@ namespace FBLibrary.Core
 
         // Base characteristics
         public const int BasePlayerBombPower = 1;
-        public const float BasePlayerSpeed = 1000f;
+        public const float BasePlayerSpeed = 150f;
         public const float BaseBombSpeed = 3f;
         public const int BasePlayerBombAmount = 1;
         // Initially => 2
@@ -25,7 +25,7 @@ namespace FBLibrary.Core
 
         // Game info
         public const float PlayerSpeedIncrementeur = 0.25f;
-        public static int WallPercentage = 0; // From 0% to 100%
+        public static int WallPercentage = 100; // From 0% to 100%
 
         // World
         public static Point BaseTileSize = new Point(32, 32);

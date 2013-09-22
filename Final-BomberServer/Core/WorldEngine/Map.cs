@@ -40,7 +40,6 @@ namespace Final_BomberServer.Core.WorldEngine
                     var collisionLayer = new bool[mapSize.X, mapSize.Y];
                     var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
                     var board = new IEntity[mapSize.X, mapSize.Y];
-                    var voidPosition = new List<Point>();
                     var playerPositions = new Dictionary<int, Point>();
 
                     Point currentPosition = Point.Zero;
@@ -67,15 +66,6 @@ namespace Final_BomberServer.Core.WorldEngine
                             switch (id)
                             {
                                 case (int)EntityType.Void:
-                                    // Do we put a Wall ?
-                                    if (board[i, j] == null &&
-                                        gameManager.Random.Next(0, 100) < GameConfiguration.WallPercentage)
-                                    {
-                                        var wall = new Wall(currentPosition);
-                                        gameManager.WallList.Add(wall);
-                                        board[i, j] = wall;
-                                        collisionLayer[i, j] = true;
-                                    }
                                     break;
                                 case (int)EntityType.UnbreakableWall:
                                     var unbreakableWall = new UnbreakableWall(currentPosition);
@@ -89,14 +79,12 @@ namespace Final_BomberServer.Core.WorldEngine
                                     _edgeWallList.Add(edgeWall);
                                     collisionLayer[i, j] = true;
                                     break;
-                                /*
-                                case (int)Entity.Type.Wall:
+                                case (int)EntityType.Wall:
                                     var wall = new Wall(currentPosition);
-                                    _wallList.Add(wall);
+                                    gameManager.WallList.Add(wall);
                                     board[i, j] = wall;
                                     collisionLayer[i, j] = true;
                                     break;
-                                */
                                 case (int)EntityType.Teleporter:
                                     var teleporter = new Teleporter(currentPosition);
                                     board[i, j] = teleporter;
@@ -110,7 +98,7 @@ namespace Final_BomberServer.Core.WorldEngine
                                 case (int)EntityType.Player:
                                     if (playerNumber <= 5)  // TODO: load max player from a map file
                                     {
-                                        playerPositions[playerNumber] = currentPosition;
+                                        PlayerSpawnPoints.Add(currentPosition);
                                         playerNumber++;
                                     }
                                     break;
@@ -136,9 +124,10 @@ namespace Final_BomberServer.Core.WorldEngine
         #region Displaying region
         public void DisplayBoard()
         {
-            for (int x = 0; x < Size.X; x++)
+
+            for (int y = 0; y < Size.Y; y++)
             {
-                for (int y = 0; y < Size.Y; y++)
+                for (int x = 0; x < Size.X; x++)
                 {
                     if (Board[x, y] is EdgeWall)
                     {
@@ -168,9 +157,9 @@ namespace Final_BomberServer.Core.WorldEngine
 
         public void DisplayCollisionLayer()
         {
-            for (int x = 0; x < Size.X; x++)
+            for (int y = 0; y < Size.Y; y++)
             {
-                for (int y = 0; y < Size.Y; y++)
+                for (int x = 0; x < Size.X; x++)
                 {
                     Console.Write(CollisionLayer[x, y] ? "1 " : "0 ");
                 }

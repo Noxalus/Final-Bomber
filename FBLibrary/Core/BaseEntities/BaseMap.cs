@@ -10,6 +10,7 @@ namespace FBLibrary.Core.BaseEntities
         public Point Size;
         public IEntity[,] Board;
         public bool[,] CollisionLayer;
+        public List<Point> PlayerSpawnPoints;
 
         #endregion
 
@@ -17,6 +18,7 @@ namespace FBLibrary.Core.BaseEntities
 
         protected BaseMap()
         {
+            PlayerSpawnPoints = new List<Point>();
         }
 
         #endregion

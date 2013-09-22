@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FBLibrary.Core;
 using Final_BomberServer.Core.Entities;
 using Final_BomberServer.Core.WorldEngine;
+using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core
 {
@@ -51,7 +52,34 @@ namespace Final_BomberServer.Core
             _currentMap = new Map();
             _currentMap.Parse(mapName, this);
 
+            // We affect a position to all players
+            foreach (var player in GameSettings.gameServer.Clients.GetAlivePlayers())
+            {
+                player.ChangePosition(CurrentMap.PlayerSpawnPoints[player.Id]);
+            }
+
+            
+            // We generate wall
+            GenerateWalls();
+
             _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
+        }
+
+        private void GenerateWalls()
+        {
+            for (int x = 0; x < CurrentMap.Size.X; x++)
+            {
+                for (int y = 0; y < CurrentMap.Size.Y; y++)
+                {
+                    if (CurrentMap.Board[x, y] == null && Random.Next(0, 100) < ServerSettings.WallPercentage)
+                    {
+                        var wall = new Wall(new Point(x ,y));
+                        WallList.Add(wall);
+                        CurrentMap.Board[x, y] = wall;
+                        CurrentMap.CollisionLayer[x, y] = true;
+                    }
+                }
+            }
         }
     }
 }

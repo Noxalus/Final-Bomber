@@ -150,15 +150,6 @@ namespace Final_Bomber.WorldEngine
                             switch (id)
                             {
                                 case (int)EntityType.Void:
-                                    // Do we put a Wall ?
-                                    if (board[i, j] == null &&
-                                        gameManager.Random.Next(0, 100) < GameConfiguration.WallPercentage)
-                                    {
-                                        var wall = new Wall(currentPosition);
-                                        gameManager.WallList.Add(wall);
-                                        board[i, j] = wall;
-                                        collisionLayer[i, j] = true;
-                                    }
                                     break;
                                 case (int)EntityType.UnbreakableWall:
                                     var unbreakableWall = new UnbreakableWall(currentPosition);
@@ -172,14 +163,12 @@ namespace Final_Bomber.WorldEngine
                                     _edgeWallList.Add(edgeWall);
                                     collisionLayer[i, j] = true;
                                     break;
-                                /*
-                                case (int)Entity.Type.Wall:
+                                case (int)EntityType.Wall:
                                     var wall = new Wall(currentPosition);
-                                    _wallList.Add(wall);
+                                    gameManager.WallList.Add(wall);
                                     board[i, j] = wall;
                                     collisionLayer[i, j] = true;
                                     break;
-                                */
                                 case (int)EntityType.Teleporter:
                                     var teleporter = new Teleporter(currentPosition);
                                     board[i, j] = teleporter;

@@ -312,10 +312,12 @@ namespace Final_BomberServer.Host
                 GameSettings.gameServer.SendGameInfo(sender);
                 if (StartedMatch)
                 {
+                    
                     sender.Player.IsAlive = false;
                     sender.Spectating = true;
                     sender.NewClient = true;
                 }
+
                 playerId++;
                 //MainServer.SendCurrentPlayerAmount();
             }
