@@ -52,23 +52,17 @@ namespace Final_Bomber.WorldEngine
             _unbreakableWallList = new List<UnbreakableWall>();
             _teleporterList = new List<Teleporter>();
             _arrowList = new List<Arrow>();
-
-            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
-            _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
-        }
-
-        public Map(Point mSize, TileMap tMap, IEntity[,] m, bool[,] cLayer)
-            : this()
-        {
-            Size = mSize;
-            Board = m;
-            _tileMap = tMap;
-            CollisionLayer = cLayer;
         }
 
         #endregion
 
-        #region Method Region
+        #region XNA Method Region
+
+        public void LoadContent()
+        {
+            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -137,6 +131,7 @@ namespace Final_Bomber.WorldEngine
 
                     Point currentPosition = Point.Zero;
                     int j = 0;
+
                     while (!streamReader.EndOfStream)
                     {
                         line = streamReader.ReadLine();
@@ -205,6 +200,7 @@ namespace Final_Bomber.WorldEngine
                     Board = board;
                     _tileMap = tileMap;
                     CollisionLayer = collisionLayer;
+                    Loaded = true;
                 }
             }
             catch (Exception ex)

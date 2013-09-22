@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using FBLibrary;
 using Final_BomberServer.Core;
 using Final_BomberServer.Core.Entities;
 using Final_BomberServer.Core.WorldEngine;
 using Lidgren.Network;
+using Lidgren.Network.Xna;
 using Microsoft.Xna.Framework;
 using System.Linq;
 
@@ -63,7 +65,15 @@ namespace Final_BomberServer.Host
                 send.Write(client.Player.Id);
                 send.Write(client.Player.Speed);
                 send.Write(999/*GameSettings.GetCurrentMap().suddenDeathTime*/);
+
+                List<Wall> walls = HostGame.GameManager.WallList;
+                send.Write(walls.Count);
+                foreach (var wall in walls)
+                {
+                    send.Write(wall.CellPosition);
+                }
             }
+
             server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
         }
 

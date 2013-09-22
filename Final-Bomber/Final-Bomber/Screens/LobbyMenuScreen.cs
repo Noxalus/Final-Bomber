@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using FBLibrary.Core;
+using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
@@ -188,7 +189,7 @@ namespace Final_Bomber.Screens
             _isReady = true;
         }
 
-        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime)
+        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
         {
             if (true /*!mainGame.IsStarted*/)
             {
@@ -214,6 +215,9 @@ namespace Final_Bomber.Screens
                     mainGame.Spectator = true;
                     */
                 }
+
+                NetworkTestScreen.GameManager.LoadMap(GameSettings.CurrentMapName);
+                NetworkTestScreen.GameManager.AddWalls(wallPositions);
 
                 //mainGame.Start();
             }

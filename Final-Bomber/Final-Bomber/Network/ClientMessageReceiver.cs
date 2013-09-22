@@ -1,9 +1,11 @@
 ﻿using FBLibrary;
 using Final_Bomber.Core;
+using Final_Bomber.Core.Entities;
 using Final_Bomber.Screens;
 using Final_Bomber.Utils;
 using Final_Bomber.WorldEngine;
 using Lidgren.Network;
+using Lidgren.Network.Xna;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,8 +28,9 @@ namespace Final_Bomber.Network
         public void RecieveGameInfo(string mapMd5)
         {
             // Check that you have the map
-            if (MapLoader.MapFileDictionary.ContainsValue(mapMd5)) 
+            if (MapLoader.MapFileDictionary.ContainsValue(mapMd5))
             {
+                GameSettings.CurrentMapName = MapLoader.MapFileDictionary.FirstOrDefault(x => x.Value == mapMd5).Key;
                 OnStartInfo();
             }
             else
@@ -62,34 +65,15 @@ namespace Final_Bomber.Network
             MapLoader.LoadMapFiles();
 
             RecieveGameInfo(md5);
-
-            /*
-            db_FileIO db = new db_FileIO();
-            string mapName = buffer.ReadString();
-            int mapBytes = buffer.ReadInt32();
-            List<byte> data = new List<byte>();
-            for (int i = 0; i < mapBytes; i++)
-            {
-                data.Add(buffer.ReadByte());
-            }
-            GameSettings.Maps.NewMap(mapName, data);
-            #region debug
-            if (GameSettings.Maps.GetMapById(GameSettings.currentMap) == null) //kollar så att man har banan
-            {
-                throw new Exception("SendMap funkade inte!");
-            }
-            #endregion
-            RecieveGameInfo(GameSettings.currentMap);
-            */
         }
 
         #region StartGame
-        public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime);
+        public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions);
         public event StartGameEventHandler StartGame;
-        protected virtual void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime)
+        protected virtual void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
         {
             if (StartGame != null)
-                StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime);
+                StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime, wallPositions);
         }
         #endregion
 
@@ -101,12 +85,19 @@ namespace Final_Bomber.Network
                 int playerId = message.ReadInt32();
                 float moveSpeed = message.ReadFloat();
                 int suddenDeathTime = message.ReadInt32();
+                int wallNumber = message.ReadInt32();
+                var wallPositions = new List<Point>();
 
-                OnStartGame(false, playerId, moveSpeed, suddenDeathTime);
+                for (int i = 0; i < wallNumber; i++)
+                {
+                    wallPositions.Add(message.ReadPoint());
+                }
+
+                OnStartGame(false, playerId, moveSpeed, suddenDeathTime, wallPositions);
             }
             else
             {
-                OnStartGame(true, 0, 0, 0);
+                OnStartGame(true, 0, 0, 0, null);
             }
         }
 

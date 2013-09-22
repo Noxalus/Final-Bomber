@@ -88,11 +88,7 @@ namespace Final_Bomber.Screens
             ControlManager.Update(gameTime, PlayerIndex.One);
 
             NetworkManager.Update();
-
-            if (NetworkManager.IsConnected && GameSettings.GameServer.HasStarted)
-            {
-                GameManager.Update(gameTime);
-            }
+            GameManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -103,11 +99,8 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            if (NetworkManager.IsConnected)
-            {
-                GameManager.Draw(gameTime);
-            }
-
+            //GameManager.Draw(gameTime);
+            
             const string str = "Networking Tests";
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                     new Vector2(

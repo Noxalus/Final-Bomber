@@ -114,6 +114,9 @@ namespace Final_Bomber.Core
 
         public void Reset()
         {
+            // Song
+            MediaPlayer.Play(_mapSong);
+
             //_timer = TimeSpan.Zero;
             _deadPlayersNumber = 0;
 
@@ -146,6 +149,17 @@ namespace Final_Bomber.Core
                 }
             }
             */
+        }
+
+        public void AddWalls(IEnumerable<Point> wallPositions)
+        {
+            foreach (var position in wallPositions)
+            {
+                var wall = new Wall(position);
+                _wallList.Add(wall);
+                CurrentMap.Board[position.X, position.Y] = wall;
+                CurrentMap.CollisionLayer[position.X, position.Y] = true;
+            }
         }
     }
 }

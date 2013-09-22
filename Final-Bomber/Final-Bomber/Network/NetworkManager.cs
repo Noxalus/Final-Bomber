@@ -16,7 +16,6 @@ namespace Final_Bomber.Network
 {
     public class NetworkManager
     {
-        public bool IsConnected;
         public string PublicIp;
 
         // Players
@@ -35,7 +34,6 @@ namespace Final_Bomber.Network
         public void Initiliaze()
         {
 
-            IsConnected = false;
             PublicIp = "?";
 
             // Server events

@@ -1177,7 +1177,7 @@ namespace Final_Bomber.Screens
             var mapLayers = new List<MapLayer> { layer };
 
             var tileMap = new TileMap(tilesets, mapLayers);
-            var level = new Map(Config.MapSize, tileMap, map, collisionLayer);
+            Map level = null;//new Map(Config.MapSize, tileMap, map, collisionLayer);
 
             World = new World(FinalBomber.Instance, FinalBomber.Instance.ScreenRectangle);
             World.Levels.Add(level);
@@ -1272,7 +1272,7 @@ namespace Final_Bomber.Screens
                 var mapLayers = new List<MapLayer> { layer };
 
                 var tileMap = new TileMap(tilesets, mapLayers);
-                var level = new Map(mapSize, tileMap, map, collisionLayer);
+                Map level = null;//new Map(mapSize, tileMap, map, collisionLayer);
 
                 World = new World(FinalBomber.Instance, FinalBomber.Instance.ScreenRectangle);
                 World.Levels.Add(level);

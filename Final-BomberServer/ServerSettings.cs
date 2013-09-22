@@ -11,6 +11,6 @@ namespace Final_BomberServer
         public static int SendPlayerPositionTime = 5000; // milliseconds
 
         // Gameplay
-        public static int WallPercentage = 10; // From 0% to 100%
+        public static int WallPercentage = 80; // From 0% to 100%
     }
 }
