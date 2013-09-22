@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using FBLibrary;
+using FBLibrary.Core;
 using Final_BomberServer.Core;
 using Final_BomberServer.Core.Entities;
 using Final_BomberServer.Core.WorldEngine;
@@ -148,30 +149,37 @@ namespace Final_BomberServer.Host
         }
 
         // Send to all players that this player has placed a bomb
-        public void SendPlayerPlacingBomb(Player player, float xPos, float yPos)
+        public void SendPlayerPlacingBomb(Player player, Point position)
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.PlayerPlacingBomb);
             send.Write(player.Id);
-            send.Write(xPos);
-            send.Write(yPos);
+            send.Write(position);
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendBombExploded(OldBomb bomb)//Skickar till alla spelare att bomben på denna position har exploderat och hur den exploderar
+        // Send to all players that a bomb has blow up
+        public void SendBombExploded(Bomb bomb)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.BombExploded);
-            send.Write(bomb.Position.GetMapPos().X);
-            send.Write(bomb.Position.GetMapPos().Y);
+            send.Write(bomb.CellPosition);
+
+            /*
             send.Write(bomb.Explosion.Count);
+
             foreach (Explosion ex in bomb.Explosion)
             {
                 send.Write(ex.Position.GetMapPos().X);
                 send.Write(ex.Position.GetMapPos().Y);
                 send.Write((byte)ex.explosionType);
             }
+            */
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("Send bomb exploded to everyone !");
         }
 
         public void SendPlayerGotBurned(Player player)

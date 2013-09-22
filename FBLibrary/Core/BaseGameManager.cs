@@ -12,6 +12,8 @@ namespace FBLibrary.Core
         // Engine
         protected Engine Engine;
 
+        public int[,] HazardMap;
+
         public Random Random;
 
         protected BaseGameManager()

@@ -8,9 +8,11 @@ using System.Net.Sockets;
 using System.Text;
 using FBLibrary.Core;
 using Final_Bomber.Core;
+using Final_Bomber.Core.Entities;
 using Final_Bomber.Core.Players;
 using Final_Bomber.Entities;
 using Final_Bomber.Screens;
+using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Network
 {
@@ -37,6 +39,8 @@ namespace Final_Bomber.Network
             // Server events
             GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer += GameServer_MovePlayer;
+            GameSettings.GameServer.PlacingBomb += GameServer_PlacingBomb;
+            GameSettings.GameServer.BombExploded += GameServer_BombExploded;
             GameSettings.GameServer.End += GameServer_End;
         }
 
@@ -49,6 +53,8 @@ namespace Final_Bomber.Network
         {
             GameSettings.GameServer.NewPlayer -= GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer -= GameServer_MovePlayer;
+            GameSettings.GameServer.PlacingBomb -= GameServer_PlacingBomb;
+            GameSettings.GameServer.BombExploded -= GameServer_BombExploded;
             GameSettings.GameServer.End -= GameServer_End;
         }
 
@@ -93,6 +99,50 @@ namespace Final_Bomber.Network
                 player.UpdateAnimation();
                 */
             }
+        }
+
+        private void GameServer_PlacingBomb(int playerId, Point position)
+        {
+            Player player = _gameManager.Players.GetPlayerByID(playerId);
+
+            if (player != null)
+            {
+                var bomb = new Bomb(playerId, position, player.BombPower, player.BombTimer, player.Speed);
+                bomb.Initialize(_gameManager.CurrentMap, _gameManager.HazardMap);
+
+                _gameManager.AddBomb(bomb);
+            }
+        }
+
+        private void GameServer_BombExploded(Point position)
+        {
+            Bomb bomb = _gameManager.BombList.Find(b => b.CellPosition == position);
+
+            bomb.Destroy();
+            /*
+            foreach (Explosion ex in explosions)
+            {
+                //Ser till att explosionerna smällter ihop på ett snyggt sätt
+                if (ex.Type == Explosion.ExplosionType.Down || ex.Type == Explosion.ExplosionType.Left
+                        || ex.Type == Explosion.ExplosionType.Right || ex.Type == Explosion.ExplosionType.Up)
+                {
+                    Explosion temp_ex = Explosions.GetExplosionAtPosition(ex.originalPos, true);
+                    if (temp_ex != null)
+                    {
+                        if (temp_ex.Type != ex.Type && Explosion.ConvertToOpposit(temp_ex.Type) != ex.Type)
+                        {
+                            Explosion temp_ex2 = new Explosion(ex.originalPos, Explosion.ExplosionType.Mid, true);
+                            temp_ex2.explosionExistanceTime -= (int)temp_ex.tmrEnd.ElapsedMilliseconds;
+                            Explosions.Add(temp_ex2);
+                            Entities.Add(temp_ex2);
+                        }
+                    }
+                }
+                //Lägger till explosionerna till listorna
+                Explosions.Add(ex);
+                Entities.Add(ex);
+            }
+            */
         }
 
         private void GameServer_End(bool won)

@@ -4,6 +4,7 @@ using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Controls;
 using Final_Bomber.Entities;
+using Final_Bomber.Screens;
 using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
@@ -19,13 +20,12 @@ namespace Final_Bomber.Core.Entities
 
         private readonly Animation[] _explosionAnimations;
         private readonly Dictionary<Point, ExplosionDirection> _explosionAnimationsDirection;
-        private readonly SoundEffect _explosionSound;
         private readonly Texture2D _explosionSpriteTexture;
 
         private bool _cellTeleporting;
 
         private int _lastPlayerThatPushIt;
-        private LookDirection _lookDirection;
+        private LookDirection CurrentDirection;
 
         public AnimatedSprite Sprite { get; protected set; }
 
@@ -77,9 +77,6 @@ namespace Final_Bomber.Core.Entities
             };
             _explosionAnimationsDirection = new Dictionary<Point, ExplosionDirection>();
 
-            // Sound Effect
-            _explosionSound = FinalBomber.Instance.GamePlayScreen.BombExplosionSound;
-
             // Bomb's states
             InDestruction = false;
             _cellTeleporting = false;
@@ -97,7 +94,7 @@ namespace Final_Bomber.Core.Entities
             Sprite.Update(gameTime);
 
             #region Is moving ?
-
+            /*
             if (IsChangingCell())
             {
                 if (Map.Board[PreviousCellPosition.X, PreviousCellPosition.Y] == this)
@@ -118,7 +115,7 @@ namespace Final_Bomber.Core.Entities
 
                 Position = Engine.CellToVector(CellPosition);
             }
-
+            */
             #endregion
 
             #region Timer
@@ -126,14 +123,14 @@ namespace Final_Bomber.Core.Entities
             if (Timer >= TimerLenght)
             {
                 Timer = TimeSpan.FromSeconds(-1);
-                Destroy();
+                //Destroy();
             }
             else if (Timer >= TimeSpan.Zero)
             {
                 Timer += gameTime.ElapsedGameTime;
 
                 // The bomb will explode soon
-                if (_lookDirection == LookDirection.Idle &&
+                if (CurrentDirection == LookDirection.Idle &&
                     !WillExplode && TimerLenght.TotalSeconds - Timer.TotalSeconds < 1)
                 {
                     ComputeActionField(2);
@@ -156,35 +153,35 @@ namespace Final_Bomber.Core.Entities
             #endregion
 
             #region When the bomb moves
-
+            /*
             // Control
             if (InputHandler.KeyDown(Keys.NumPad8))
-                _lookDirection = LookDirection.Up;
+                CurrentDirection = LookDirection.Up;
             else if (InputHandler.KeyDown(Keys.NumPad5))
-                _lookDirection = LookDirection.Down;
+                CurrentDirection = LookDirection.Down;
             else if (InputHandler.KeyDown(Keys.NumPad4))
-                _lookDirection = LookDirection.Left;
+                CurrentDirection = LookDirection.Left;
             else if (InputHandler.KeyDown(Keys.NumPad6))
-                _lookDirection = LookDirection.Right;
+                CurrentDirection = LookDirection.Right;
 
-            if (_lookDirection != LookDirection.Idle)
+            if (CurrentDirection != LookDirection.Idle)
             {
-                switch (_lookDirection)
+                switch (CurrentDirection)
                 {
                     case LookDirection.Up:
                         if (Position.Y > Engine.TileHeight)
                             PositionY = Position.Y - Speed;
                         else
-                            _lookDirection = LookDirection.Idle;
+                            CurrentDirection = LookDirection.Idle;
 
                         var upCell = new Point(CellPosition.X, CellPosition.Y - 1);
                         if (Map.Board[upCell.X, upCell.Y] is Player || WallAt(upCell))
                         {
                             // Top collision
-                            if (_lookDirection == LookDirection.Up && MoreTopSide())
+                            if (CurrentDirection == LookDirection.Up && MoreTopSide())
                             {
                                 PositionY = CellPosition.Y*Engine.TileHeight;
-                                _lookDirection = LookDirection.Idle;
+                                CurrentDirection = LookDirection.Idle;
                             }
                         }
 
@@ -193,16 +190,16 @@ namespace Final_Bomber.Core.Entities
                         if (Position.Y < (Map.Size.Y - 2)*Engine.TileHeight)
                             PositionY = Position.Y + Speed;
                         else
-                            _lookDirection = LookDirection.Idle;
+                            CurrentDirection = LookDirection.Idle;
 
                         var bottomCell = new Point(CellPosition.X, CellPosition.Y + 1);
                         if (Map.Board[bottomCell.X, bottomCell.Y] is Player || WallAt(bottomCell))
                         {
                             // Bottom collision
-                            if (_lookDirection == LookDirection.Down && MoreBottomSide())
+                            if (CurrentDirection == LookDirection.Down && MoreBottomSide())
                             {
                                 PositionY = CellPosition.Y*Engine.TileHeight;
-                                _lookDirection = LookDirection.Idle;
+                                CurrentDirection = LookDirection.Idle;
                             }
                         }
 
@@ -211,17 +208,17 @@ namespace Final_Bomber.Core.Entities
                         if (Position.X > Engine.TileWidth)
                             PositionX = Position.X - Speed;
                         else
-                            _lookDirection = LookDirection.Idle;
+                            CurrentDirection = LookDirection.Idle;
 
                         var leftCell = new Point(CellPosition.X - 1, CellPosition.Y);
                         if (Map.Board[leftCell.X, leftCell.Y] is Player || WallAt(leftCell))
                         {
                             // Left collision
-                            if (_lookDirection == LookDirection.Left && MoreLeftSide())
+                            if (CurrentDirection == LookDirection.Left && MoreLeftSide())
                             {
                                 PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                                    Engine.TileWidth/2;
-                                _lookDirection = LookDirection.Idle;
+                                CurrentDirection = LookDirection.Idle;
                             }
                         }
                         break;
@@ -229,25 +226,25 @@ namespace Final_Bomber.Core.Entities
                         if (Position.X < (Map.Size.X - 2)*Engine.TileWidth)
                             PositionX = Position.X + Speed;
                         else
-                            _lookDirection = LookDirection.Idle;
+                            CurrentDirection = LookDirection.Idle;
 
                         var rightCell = new Point(CellPosition.X + 1, CellPosition.Y);
                         if (Map.Board[rightCell.X, rightCell.Y] is Player || WallAt(rightCell))
                         {
                             // Right collision
-                            if (_lookDirection == LookDirection.Right && MoreRightSide())
+                            if (CurrentDirection == LookDirection.Right && MoreRightSide())
                             {
                                 PositionX = CellPosition.X*Engine.TileWidth - Engine.TileWidth/2 +
                                                    Engine.TileWidth/2;
-                                _lookDirection = LookDirection.Idle;
+                                CurrentDirection = LookDirection.Idle;
                             }
                         }
                         break;
                 }
-                if (_lookDirection == LookDirection.Idle)
+                if (CurrentDirection == LookDirection.Idle)
                     Position = Engine.CellToVector(CellPosition);
             }
-
+            */
             #endregion
 
             #region Teleporter
@@ -265,7 +262,7 @@ namespace Final_Bomber.Core.Entities
             #endregion
 
             #region Arrow
-
+            /*
             if (!_cellTeleporting && Map.
                 Board[CellPosition.X, CellPosition.Y] is Arrow)
             {
@@ -273,7 +270,7 @@ namespace Final_Bomber.Core.Entities
 
                 arrow.ChangeDirection(this);
             }
-
+            */
             #endregion
 
             // Call Update method of DynamicEntity class
@@ -316,6 +313,8 @@ namespace Final_Bomber.Core.Entities
 
         #region Private Method Region
 
+        #region Moving utils methods
+
         private bool WallAt(Point cell)
         {
             if (cell.X >= 0 && cell.Y >= 0 && cell.X < Map.Size.X &&
@@ -343,6 +342,8 @@ namespace Final_Bomber.Core.Entities
         {
             return Position.X > ((CellPosition.X * Engine.TileWidth) + (Speed / 2));
         }
+
+        #endregion
 
         // 0 => Down, 1 => Left, 2 => Right, 3 => Up, 4 => Middle, 5 => Horizontal, 6 => Vertical 
         private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, BaseMap map, int[,] hazardMap)
@@ -448,7 +449,7 @@ namespace Final_Bomber.Core.Entities
 
             if (!Map.CollisionLayer[pos.X, pos.Y])
             {
-                _lookDirection = lD;
+                CurrentDirection = lD;
                 _lastPlayerThatPushIt = playerId;
                 foreach (Point p in ActionField)
                 {
@@ -456,14 +457,14 @@ namespace Final_Bomber.Core.Entities
                 }
             }
             else
-                _lookDirection = LookDirection.Idle;
+                CurrentDirection = LookDirection.Idle;
         }
 
         public override void Destroy()
         {
             if (InDestruction) return;
 
-            _explosionSound.Play();
+            NetworkTestScreen.GameManager.BombExplosionSound.Play();
             InDestruction = true;
             ComputeActionField(3);
         }

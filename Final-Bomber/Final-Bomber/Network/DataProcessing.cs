@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Lidgren.Network.Xna;
 
 namespace Final_Bomber.Network
 {
@@ -42,10 +43,10 @@ namespace Final_Bomber.Network
                     break;
                 case (byte)RMT.PlayerPlacingBomb:
                     Debug.Print("A message type 'PlayerPlacingBomb' have been received from server !");
-                    RecievePlacingBomb(message.ReadInt32(), message.ReadFloat(), message.ReadFloat());
+                    RecievePlacingBomb(message.ReadInt32(), message.ReadPoint());
                     break;
                 case (byte)RMT.BombExploded:
-                    //RecieveBombExploded(); //Mkt info, läser från buffern i funktionen
+                    RecieveBombExploded(message);
                     break;
                 case (byte)RMT.Burn:
                     //RecieveBurn(buffer.ReadInt32());

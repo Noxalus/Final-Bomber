@@ -34,7 +34,7 @@ namespace FBLibrary.Core
             PreviousCellPosition = Point.Zero;
         }
 
-        protected DynamicEntity(Point cellPosition)
+        protected DynamicEntity(Point cellPosition) : base(cellPosition)
         {
             PreviousCellPosition = Point.Zero;
         }

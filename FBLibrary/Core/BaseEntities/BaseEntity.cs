@@ -55,6 +55,7 @@ namespace FBLibrary.Core
         protected BaseEntity()
         {
             Dimension = GameConfiguration.BaseTileSize;
+            IsAlive = true;
         }
 
         protected BaseEntity(Point cellPosition) : this()

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
@@ -14,7 +10,6 @@ namespace Final_BomberServer.Core.Entities
         public Bomb(int playerId, Point cellPosition, int power, TimeSpan timer, float speed)
             : base(playerId, cellPosition, power, timer, speed)
         {
-
         }
 
         public override void Update()
@@ -46,12 +41,15 @@ namespace Final_BomberServer.Core.Entities
 
         public override void Destroy()
         {
-            throw new NotImplementedException();
+            GameSettings.gameServer.SendBombExploded(this);
+            ComputeActionField(3);
+
+            Remove();
         }
 
         public override void Remove()
         {
-            throw new NotImplementedException();
+            IsAlive = false;
         }
     }
 }

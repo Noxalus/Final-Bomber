@@ -37,7 +37,7 @@ namespace FBLibrary.Core.BaseEntities
             ActionField = new List<Point>();
         }
 
-        private void Initialize(BaseMap map, int[,] hazardMap)
+        public void Initialize(BaseMap map, int[,] hazardMap)
         {
             Map = map;
             HazardMap = hazardMap;

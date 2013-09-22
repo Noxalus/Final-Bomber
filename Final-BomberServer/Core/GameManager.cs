@@ -19,7 +19,6 @@ namespace Final_BomberServer.Core
 
         // Map
         private Map _currentMap;
-        private int[,] _hazardMap;
 
         #region Properties
 
@@ -55,7 +54,7 @@ namespace Final_BomberServer.Core
             // We generate wall
             GenerateWalls();
 
-            _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
+            HazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
         }
 
         private void GenerateWalls()

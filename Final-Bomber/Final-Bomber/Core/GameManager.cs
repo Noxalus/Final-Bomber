@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Core.Entities;
@@ -25,15 +26,13 @@ namespace Final_Bomber.Core
         private readonly List<PowerUp> _powerUpList;
         private readonly List<Wall> _wallList;
 
-        private SoundEffect _bombExplosionSound;
-
         // Map
         private Map _currentMap;
-        private int[,] _hazardMap;
 
         // Songs & sounds effect
         private Song _mapHurrySong;
         private Song _mapSong;
+        public SoundEffect BombExplosionSound;
         private SoundEffect _itemPickUpSound;
         private SoundEffect _playerDeathSound;
 
@@ -81,10 +80,9 @@ namespace Final_Bomber.Core
             _mapHurrySong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map1_hurry");
 
             // Sounds effects
-            _bombExplosionSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/boom");
+            BombExplosionSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/boom");
             _itemPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
             _playerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
-
 
             CurrentMap.LoadContent();
         }
@@ -92,15 +90,63 @@ namespace Final_Bomber.Core
         public void ParseMap(string mapName)
         {
             _currentMap.Parse(mapName, this);
-            _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
+            HazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
         }
 
         public void Update(GameTime gameTime)
         {
             foreach (Player p in Players)
             {
-                p.Update(gameTime, _currentMap, _hazardMap);
+                p.Update(gameTime, _currentMap, HazardMap);
             }
+
+            #region Bombs
+            for (int i = 0; i < BombList.Count; i++)
+            {
+                BombList[i].Update(gameTime, CurrentMap, HazardMap);
+
+                // Is it die ?
+                /*
+                if (HazardMap[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] == 3 &&
+                    !BombList[i].InDestruction)
+                {
+                    BombList[i].Destroy();
+                }
+                */
+
+                // We clean the obsolete elements
+                if (!BombList[i].IsAlive)
+                {
+                    if (CurrentMap.Board[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] is Bomb)
+                        CurrentMap.Board[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] = null;
+                    CurrentMap.CollisionLayer[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] = false;
+
+                    // We don't forget to give it back to its owner
+                    if (BombList[i].PlayerId >= 0)
+                    {
+                        Player pl = Players.Find(p => p.Id == BombList[i].PlayerId);
+                        if (pl != null && pl.CurrentBombAmount < pl.TotalBombAmount)
+                            pl.CurrentBombAmount++;
+                    }
+
+                    // Update the hazard map
+                    List<Bomb> bL = BombList.FindAll(b => !b.InDestruction);
+                    foreach (Point p in BombList[i].ActionField)
+                    {
+                        bool sameCellThanAnOther = false;
+                        if (BombList.Where(b => !(b.CellPosition.X == BombList[i].CellPosition.X &&
+                                                  b.CellPosition.Y == BombList[i].CellPosition.Y)).Any(b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
+                        {
+                            HazardMap[p.X, p.Y] = 2;
+                            sameCellThanAnOther = true;
+                        }
+                        if (!sameCellThanAnOther)
+                            HazardMap[p.X, p.Y] = 0;
+                    }
+                    BombList.Remove(BombList[i]);
+                }
+            }
+            #endregion
         }
 
         public void Draw(GameTime gameTime)
@@ -109,7 +155,7 @@ namespace Final_Bomber.Core
 
             foreach (Wall wall in WallList)
                 wall.Draw(gameTime);
-            
+
             foreach (PowerUp powerUp in _powerUpList)
                 powerUp.Draw(gameTime);
 
@@ -172,11 +218,8 @@ namespace Final_Bomber.Core
 
         public void AddBomb(Bomb bomb)
         {
-            if (CurrentMap.Board[bomb.CellPositionX, bomb.CellPositionY] is Player)
-            {
-                CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
-                CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
-            }
+            CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
+            CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
 
             BombList.Add(bomb);
         }

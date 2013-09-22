@@ -163,12 +163,15 @@ namespace Final_BomberServer.Host
             {
                 GameManager.BombList[i].Update();
                 // Do we delete the bomb
-                if (GameManager.BombList[i].IsAlive)
+                if (!GameManager.BombList[i].IsAlive)
                 {
                     // TODO: Finish this part !
                     //_gameManager._gameManager.CurrentMap.CheckToRemoveExplodedTiles(_gameManager.BombList[i]); //Kollar om den spränger bort någon tile
                     // The player get back his bomb
                     GameSettings.gameServer.Clients.GetPlayerFromId(GameManager.BombList[i].PlayerId).CurrentBombAmount++;
+                    GameManager.CurrentMap.CollisionLayer[GameManager.BombList[i].CellPositionX, GameManager.BombList[i].CellPositionY] = false;
+                    GameManager.CurrentMap.Board[
+                        GameManager.BombList[i].CellPositionX, GameManager.BombList[i].CellPositionY] = null;
                     GameManager.BombList.RemoveAt(i);
                 }
             }
@@ -365,11 +368,17 @@ namespace Final_BomberServer.Host
                         var bomb = new Bomb(player.Id, player.CellPosition, player.BombPower, player.BombTimer,
                             player.Speed);
 
+                        bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);
+
                         //bomb.IsExploded += new Bomb.IsExplodedEventHandler(bomb_IsExploded);
+
+                        GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
+                        GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
+
                         GameManager.BombList.Add(bomb);
                         player.CurrentBombAmount--;
 
-                        GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPositionX, bomb.CellPositionY);
+                        GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);
                     }
                 }
                 /*

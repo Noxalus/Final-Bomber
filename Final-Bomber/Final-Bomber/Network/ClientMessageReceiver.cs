@@ -152,42 +152,44 @@ namespace Final_Bomber.Network
         }
 
         #region PlacingBomb
-        public delegate void PlacingBombEventHandler(int playerId, float xPos, float yPos);
+        public delegate void PlacingBombEventHandler(int playerId, Point position);
         public event PlacingBombEventHandler PlacingBomb;
-        protected virtual void OnPlacingBomb(int playerId, float xPos, float yPos)
+        protected virtual void OnPlacingBomb(int playerId, Point position)
         {
             if (PlacingBomb != null)
-                PlacingBomb(playerId, xPos, yPos);
+                PlacingBomb(playerId, position);
         }
         #endregion
-        public void RecievePlacingBomb(int playerId, float xPos, float yPos)
+        public void RecievePlacingBomb(int playerId, Point position)
         {
-            OnPlacingBomb(playerId, xPos, yPos);
+            OnPlacingBomb(playerId, position);
         }
 
-        /*
         #region BombExploded
-        public delegate void BombExplodedEventHandler(float xPos, float yPos, List<Explosion> explosions);
+        public delegate void BombExplodedEventHandler(Point position);
         public event BombExplodedEventHandler BombExploded;
-        protected virtual void OnBombExploded(float xPos, float yPos, List<Explosion> explosions)
+        protected virtual void OnBombExploded(Point position)
         {
             if (BombExploded != null)
-                BombExploded(xPos, yPos, explosions);
+                BombExploded(position);
         }
         #endregion
-        public void RecieveBombExploded()
+        public void RecieveBombExploded(NetIncomingMessage message)
         {
-            float xPos = buffer.ReadFloat();
-            float yPos = buffer.ReadFloat();
+            Point position = message.ReadPoint();
+
+            /*
             int count = buffer.ReadInt32();
             List<Explosion> explosions = new List<Explosion>();
             for (int i = 0; i < count; i++)
             {
                 explosions.Add(new Explosion(new Vector2(buffer.ReadFloat(), buffer.ReadFloat()), (Explosion.ExplosionType)buffer.ReadByte(), true));
             }
-            OnBombExploded(xPos, yPos, explosions);
-        }
+            */
 
+            OnBombExploded(position);
+        }
+        /*
         #region Burn
         public delegate void BurnEventHandler(int playerId);
         public event BurnEventHandler Burn;
