@@ -95,24 +95,23 @@ namespace Final_Bomber.Core.Players
 
             #region Bomb
 
-            /*
             if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
             {
                 if (this.CurrentBombAmount > 0)
                 {
-                    var bo = FinalBomber.Instance.GamePlayScreen.BombList.Find(b => b.CellPosition == this.CellPosition);
+                    var bo = NetworkTestScreen.GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
                     if (bo == null)
                     {
                         this.CurrentBombAmount--;
-                        var bomb = new Bomb(this.Id, CellPosition, this.BombPower, this.BombTimer, this.Speed);
+                        var bomb = new Bomb(Id, CellPosition, BombPower, BombTimer, Speed);
 
-                        FinalBomber.Instance.GamePlayScreen.AddBomb(bomb);
+                        // Send to server that we want to plant a bomb
+                        GameSettings.GameServer.SendBombPlacing();
                     }
                 }
             }
-            */
 
             #endregion
 

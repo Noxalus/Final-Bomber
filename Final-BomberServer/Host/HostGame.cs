@@ -26,7 +26,7 @@ namespace Final_BomberServer.Host
         int suddenDeathTileY;
         //H.U.D.Timer tmr_UntilSuddenDeath;
         //H.U.D.Timer tmr_ExplosionSuddenDeath;
-        Bomb suddenDeathBomb;
+        OldBomb suddenDeathBomb;
         Vector2 suddenDeathMovement;
 
         public static GameManager GameManager; 
@@ -137,8 +137,8 @@ namespace Final_BomberServer.Host
             if (gameHasBegun)
             {
                 MovePlayers();
-                /*
                 CheckBombTimer();
+                /*
                 CheckPlayerGettingBurned();
                 CheckPlayerGettingPowerup();
                 CheckSuddenDeath();
@@ -161,18 +161,22 @@ namespace Final_BomberServer.Host
         {
             for (int i = 0; i < GameManager.BombList.Count; i++)
             {
-                GameManager.BombList[i].CheckTick();
-                if (GameManager.BombList[i]._remove)//När den ska tas bort
+                GameManager.BombList[i].Update();
+                // Do we delete the bomb
+                if (GameManager.BombList[i].IsAlive)
                 {
+                    // TODO: Finish this part !
                     //_gameManager._gameManager.CurrentMap.CheckToRemoveExplodedTiles(_gameManager.BombList[i]); //Kollar om den spränger bort någon tile
-                    GameManager.BombList[i].player.CurrentBombAmount--; //Så spelaren kan lägga en bomb igen
-                    GameManager.BombList.RemoveAt(i); //Ta bort bomben
+                    // The player get back his bomb
+                    GameSettings.gameServer.Clients.GetPlayerFromId(GameManager.BombList[i].PlayerId).CurrentBombAmount++;
+                    GameManager.BombList.RemoveAt(i);
                 }
             }
         }
 
         private void CheckPlayerGettingBurned()
         {
+            /*
             foreach (Bomb bomb in GameManager.BombList)
             {
                 if (bomb.Exploded)
@@ -187,6 +191,7 @@ namespace Final_BomberServer.Host
                     }
                 }
             }
+            */
         }
 
         private void CheckPlayerGettingPowerup()
@@ -255,7 +260,7 @@ namespace Final_BomberServer.Host
                     suddenDeath = true;
                     //tmr_UntilSuddenDeath.Stop();
                     //tmr_ExplosionSuddenDeath = new H.U.D.Timer(true);
-                    suddenDeathBomb = new Bomb(null, null);
+                    suddenDeathBomb = new OldBomb(null, null);
                     suddenDeathBomb.Exploded = true;
                     suddenDeathBomb.IsSuddenDeath = true;
                     suddenDeathTileX = 0;
@@ -263,7 +268,7 @@ namespace Final_BomberServer.Host
                     suddenDeathMovement = new Vector2(1, 0);
                     //Säger till clienterna att det är sudden death
                     GameSettings.gameServer.SendSuddenDeath();
-                    GameManager.BombList.Add(suddenDeathBomb);
+                    //GameManager.BombList.Add(suddenDeathBomb);
                     //Lägger till första explosionen
                     Explosion ex = new Explosion(Explosion.ExplosionType.Mid, null/*_gameManager.CurrentMap.GetTileByTilePosition(0, 0)*/);
                     suddenDeathBomb.Explosion.Add(ex);
@@ -344,34 +349,57 @@ namespace Final_BomberServer.Host
             //MainServer.SendCurrentPlayerAmount();
         }
 
-        private void gameServer_BombPlacing(Client sender) //En client vill lägga en bomb
+        // An evil player wants to plant a bomb
+        private void gameServer_BombPlacing(Client sender)
         {
             if (gameHasBegun)
             {
+                var player = sender.Player;
+
+                if (player.CurrentBombAmount > 0)
+                {
+                    var bo = GameManager.BombList.Find(b => b.CellPosition == player.CellPosition);
+
+                    if (bo == null)
+                    {
+                        var bomb = new Bomb(player.Id, player.CellPosition, player.BombPower, player.BombTimer,
+                            player.Speed);
+
+                        //bomb.IsExploded += new Bomb.IsExplodedEventHandler(bomb_IsExploded);
+                        GameManager.BombList.Add(bomb);
+                        player.CurrentBombAmount--;
+
+                        GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPositionX, bomb.CellPositionY);
+                    }
+                }
+                /*
                 if (sender.Player.CurrentBombAmount < sender.Player.TotalBombAmount)
                 {
                     Vector2 cpos = sender.Player.GetCenterPosition();
-                    MapTile pos = null;/*_gameManager.CurrentMap.GetTileByPosition(cpos.X, cpos.Y);*/
+                    MapTile pos = null;
                     List<Player> players = GameSettings.gameServer.Clients.GetPlayersFromTile(pos, true);
                     if (players.Count < 2)
                     {
                         if (pos.Bombed == null && pos.walkable)
                         {
-                            Bomb bomb = new Bomb(pos, sender.Player);
+                            var bomb = new Bomb(pos, sender.Player);
                             bomb.IsExploded += new Bomb.IsExplodedEventHandler(bomb_IsExploded);
                             GameManager.BombList.Add(bomb);
                             sender.Player.CurrentBombAmount++;
                             pos.Bombed = bomb;
+
                             GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, pos.GetMapPos().X, pos.GetMapPos().Y);
                         }
                     }
                 }
+                */
             }
         }
 
-        private void bomb_IsExploded(Bomb bomb)
+        private void bomb_IsExploded(OldBomb bomb)
         //Bombs har precis exploderat, skickar till clienterna att den har exploderat och hur
         {
+            /*
             //_gameManager.CurrentMap.CalcBombExplosion(bomb);
             GameSettings.gameServer.SendBombExploded(bomb);
             bomb.Position.Bombed = null;
@@ -391,6 +419,7 @@ namespace Final_BomberServer.Host
                     }
                 }
             }
+            */
         }
         #endregion
     }

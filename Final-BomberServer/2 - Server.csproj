@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Core\Entities\Arrow.cs" />
     <Compile Include="Core\Entities\Bomb.cs" />
+    <Compile Include="Core\Entities\OldBomb.cs" />
     <Compile Include="Core\Entities\EdgeWall.cs" />
     <Compile Include="Core\Entities\Teleporter.cs" />
     <Compile Include="Core\Entities\UnbreakableWall.cs" />

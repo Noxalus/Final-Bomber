@@ -142,7 +142,7 @@ namespace Final_BomberServer.Core
             return GameSettings.GetCurrentMap().GetTileByPosition(pos.X, pos.Y);
         }
 
-        public void Burn(Bomb bomb)
+        public void Burn(OldBomb bomb)
         {
             if (true /*invurnable.Each(INVURNABLETIME)*/)
             {
@@ -165,7 +165,7 @@ namespace Final_BomberServer.Core
             }
         }
 
-        public void Kill(Bomb bomb)
+        public void Kill(OldBomb bomb)
         {
             if (IsAlive)
             {
@@ -186,7 +186,7 @@ namespace Final_BomberServer.Core
 
         protected override float GetMovementSpeed()
         {
-            float rtn = (Speed * GameSettings.speed) / 1000f;
+            float rtn = (Speed * GameSettings.Speed) / 1000f;
             return rtn;
         }
 

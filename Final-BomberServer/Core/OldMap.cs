@@ -344,7 +344,7 @@ namespace Final_BomberServer.Core
         #endregion
 
         #region Explosions
-        public void CalcBombExplosion(Bomb bomb) //Räknar ut hur explosionen ser ut
+        public void CalcBombExplosion(OldBomb bomb) //Räknar ut hur explosionen ser ut
         {
             bomb.Explosion.Add(new Explosion(Explosion.ExplosionType.Mid, bomb.Position));
             for (int i = 0; i < 4; i++)
@@ -405,7 +405,7 @@ namespace Final_BomberServer.Core
             }
         }
 
-        private void AddExplosion(Bomb bomb, MapTile tile, int dir, int nr, bool end)
+        private void AddExplosion(OldBomb bomb, MapTile tile, int dir, int nr, bool end)
         {
             switch (dir)
             {
@@ -452,7 +452,7 @@ namespace Final_BomberServer.Core
             }
         }
 
-        public void CheckToRemoveExplodedTiles(Bomb bomb) //Kollar om bomben tar sönder någon tile
+        public void CheckToRemoveExplodedTiles(OldBomb bomb) //Kollar om bomben tar sönder någon tile
         {
             foreach (Explosion ex in bomb.Explosion)
             {

@@ -158,7 +158,7 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendBombExploded(Bomb bomb)//Skickar till alla spelare att bomben på denna position har exploderat och hur den exploderar
+        public void SendBombExploded(OldBomb bomb)//Skickar till alla spelare att bomben på denna position har exploderat och hur den exploderar
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.BombExploded);

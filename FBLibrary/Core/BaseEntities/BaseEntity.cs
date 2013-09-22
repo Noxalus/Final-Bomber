@@ -7,6 +7,8 @@ namespace FBLibrary.Core
         private Vector2 _position;
         private Point _cellPosition;
 
+        public bool IsAlive;
+
         #region Properties
 
         public Vector2 Position

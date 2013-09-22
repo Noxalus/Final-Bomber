@@ -8,6 +8,8 @@ namespace FBLibrary.Core
         private float _speed;
         private Vector2 _velocity;
 
+        protected LookDirection CurrentDirection;
+
         protected bool IsMoving;
 
         public float Speed
@@ -36,8 +38,8 @@ namespace FBLibrary.Core
         {
             PreviousCellPosition = Point.Zero;
         }
-        
-        protected virtual void Update()
+
+        public virtual void Update()
         {
             PreviousCellPosition = CellPosition;
             CellPosition = Engine.VectorToCell(Position, Dimension);

@@ -105,6 +105,18 @@ namespace Final_BomberServer.Host
             return false;
         }
         #endregion
+
+        public Player GetPlayerFromId(int playerId)
+        {
+            foreach (var client in this)
+            {
+                if (client.Player.Id == playerId)
+                    return client.Player;
+            }
+
+            return null;
+        }
+
         public List<Player> GetPlayersFromTile(MapTile tile, bool onlyAlive)
         {
             List<Player> rtn = new List<Player>();

@@ -1,117 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
+using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core.Entities
 {
     public class Bomb : BaseBomb
     {
-        #region Exploded
-        public delegate void IsExplodedEventHandler(Bomb sender);
-        public event IsExplodedEventHandler IsExploded;
-        protected virtual void OnIsExploded()
+        public Bomb(int playerId, Point cellPosition, int power, TimeSpan timer, float speed)
+            : base(playerId, cellPosition, power, timer, speed)
         {
-            if (IsExploded != null)
-                IsExploded(this);
-        }
-        #endregion
-        public MapTile Position;
-        public bool Exploded = false;
-        public Player player;
-        public ExplosionCollection Explosion = new ExplosionCollection();
-        public bool _remove = false; //När bomben har gjort det den kan och ska tas bort
-        public bool IsSuddenDeath = false;
 
-        float tickCount = 5;
-
-        public Bomb(MapTile pos, Player player)
-        {
-            Position = pos;
-            this.player = player;
         }
 
-        public void CheckTick() //Kollar när den sprängs resp när den tas bort (den brinner 1 sek efter den har sprängs ocksp)
+        public override void Update()
         {
-            if (!Exploded)
+            #region Timer
+
+            if (Timer >= TimerLenght)
             {
-                tickCount -= GetTickSpeed();
-                if (tickCount <= 0)
+                Timer = TimeSpan.FromSeconds(-1);
+                Destroy();
+            }
+            else if (Timer >= TimeSpan.Zero)
+            {
+                Timer += new TimeSpan(0, 0, 0, 0, GameSettings.Speed);
+
+                // The bomb will explode soon
+                if (CurrentDirection == LookDirection.Idle &&
+                    !WillExplode && TimerLenght.TotalSeconds - Timer.TotalSeconds < 1)
                 {
-                    Exploded = true;
-                    OnIsExploded();
-                    //ExplosionTmr.Start();
+                    ComputeActionField(2);
+                    WillExplode = true;
                 }
             }
-            else
-            {
-                if (!IsSuddenDeath)
-                {
-                    if (true /*ExplosionTmr.Each(1000)*/)
-                    {
-                        _remove = true;
-                    }
-                }
-            }
-        }
 
-        public void Explode()
-        {
-            Exploded = true;
-            OnIsExploded();
-            //ExplosionTmr.Start();
-        }
+            #endregion
 
-        private float GetTickSpeed()
-        {
-            float rtn = 0f;//((float)player.BombTickPerSek * (float)GameSettings.speed) / 1000;
-            return rtn;
+            base.Update();
         }
 
         public override void Destroy()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Remove()
         {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    public class Explosion
-    {
-        public enum ExplosionType
-        {
-            Up,
-            Right,
-            Down,
-            Left,
-            UpEnd,
-            RightEnd,
-            DownEnd,
-            LeftEnd,
-            Mid
-        }
-
-        public Explosion(ExplosionType explosionType, MapTile position)
-        {
-            this.explosionType = explosionType;
-            this.Position = position;
-        }
-        public ExplosionType explosionType;
-        public MapTile Position;
-    }
-
-
-    public class ExplosionCollection : List<Explosion>
-    {
-        public Explosion GetExplosionByTile(MapTile tile)
-        {
-            foreach (Explosion ex in this)
-            {
-                if (ex.Position == tile)
-                    return ex;
-            }
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

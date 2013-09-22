@@ -8,15 +8,12 @@ namespace FBLibrary.Core.BaseEntities
     {
         public int Id;
         public string Name;
-        public bool IsAlive;
         public bool OnEdge;
-        public LookDirection CurrentDirection;
         public TimeSpan InvincibleTime;
         public int CurrentBombAmount;
         public int TotalBombAmount;
         public int BombPower;
         public TimeSpan BombTimer;
-
 
         protected BasePlayer(int id)
         {

@@ -52,6 +52,11 @@ namespace Final_Bomber.Core
             get { return _wallList; }
         }
 
+        public List<Bomb> BombList
+        {
+            get { return _bombList; }
+        }
+
         #endregion
 
         public GameManager()
@@ -163,6 +168,17 @@ namespace Final_Bomber.Core
                 CurrentMap.Board[position.X, position.Y] = wall;
                 CurrentMap.CollisionLayer[position.X, position.Y] = true;
             }
+        }
+
+        public void AddBomb(Bomb bomb)
+        {
+            if (CurrentMap.Board[bomb.CellPositionX, bomb.CellPositionY] is Player)
+            {
+                CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
+                CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
+            }
+
+            BombList.Add(bomb);
         }
     }
 }
