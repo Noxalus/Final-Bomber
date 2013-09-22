@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using FBLibrary;
 using FBLibrary.Core;
 using Final_BomberServer.Core;
 using Final_BomberServer.Core.Entities;
@@ -47,7 +48,7 @@ namespace Final_BomberServer.Host
 
             GameManager = new GameManager();
 
-            GameManager.LoadMap(GameManager.MapDictionary.Keys.First());
+            GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
 
             // Display info
             GameManager.CurrentMap.DisplayBoard();

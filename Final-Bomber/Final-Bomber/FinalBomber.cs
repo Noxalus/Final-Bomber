@@ -1,3 +1,4 @@
+using FBLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -119,6 +120,9 @@ namespace Final_Bomber
 
         protected override void Initialize()
         {
+            // We get all map files to store name + md5 checksum in a dictionary 
+            MapLoader.LoadMapFiles();
+
             base.Initialize();
         }
 

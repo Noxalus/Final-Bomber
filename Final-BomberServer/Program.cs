@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using FBLibrary;
 using Final_BomberServer.Core;
 using System;
 using System.Threading;
+using Final_BomberServer.Core.WorldEngine;
 using log4net;
 using log4net.Config;
 
@@ -14,6 +16,9 @@ namespace Final_BomberServer
         static void Main(string[] args)
         {
             XmlConfigurator.Configure();
+
+            // We get all map files to store name + md5 checksum in a dictionary 
+            MapLoader.LoadMapFiles();
 
             if (args.Length > 0)
             {

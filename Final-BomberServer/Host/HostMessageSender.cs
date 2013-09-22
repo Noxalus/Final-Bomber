@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using FBLibrary;
 using Final_BomberServer.Core;
 using Final_BomberServer.Core.Entities;
+using Final_BomberServer.Core.WorldEngine;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using System.Linq;
@@ -17,8 +19,8 @@ namespace Final_BomberServer.Host
                 {
                     NetOutgoingMessage send = server.CreateMessage();
                     send.Write((byte)SMT.GameStartInfo);
-                    send.Write(HostGame.GameManager.MapDictionary.Values.First());
-                    Program.Log.Info("Sended game info map [" + HostGame.GameManager.MapDictionary.Values.First() + "]");
+                    send.Write(MapLoader.MapFileDictionary.Values.First());
+                    Program.Log.Info("Sended game info map [" + MapLoader.MapFileDictionary.Values.First() + "]");
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 }
             }

@@ -1,4 +1,5 @@
-﻿using Final_Bomber.Core;
+﻿using FBLibrary;
+using Final_Bomber.Core;
 using Final_Bomber.Screens;
 using Final_Bomber.Utils;
 using Final_Bomber.WorldEngine;
@@ -25,7 +26,7 @@ namespace Final_Bomber.Network
         public void RecieveGameInfo(string mapMd5)
         {
             // Check that you have the map
-            if (NetworkTestScreen.GameManager.MapDictionary.ContainsValue(mapMd5)) 
+            if (MapLoader.MapFileDictionary.ContainsValue(mapMd5)) 
             {
                 OnStartInfo();
             }
@@ -58,7 +59,7 @@ namespace Final_Bomber.Network
                 throw new Exception("Map sended by the server is not the same !");
             }
 
-            NetworkTestScreen.GameManager.LoadMaps();
+            MapLoader.LoadMapFiles();
 
             RecieveGameInfo(md5);
 
