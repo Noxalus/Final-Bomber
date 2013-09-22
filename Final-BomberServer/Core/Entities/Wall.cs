@@ -9,17 +9,16 @@ namespace Final_BomberServer.Core.Entities
         public Wall(Point cellPosition)
             : base(cellPosition)
         {
-
         }
 
         public override void Destroy()
         {
-            throw new NotImplementedException();
+            Remove();
         }
 
         public override void Remove()
         {
-            throw new NotImplementedException();
+            IsAlive = false;
         }
     }
 }

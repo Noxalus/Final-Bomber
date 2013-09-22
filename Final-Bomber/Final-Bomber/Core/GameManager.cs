@@ -95,10 +95,40 @@ namespace Final_Bomber.Core
 
         public void Update(GameTime gameTime)
         {
-            foreach (Player p in Players)
+            #region Walls
+
+            for (int i = 0; i < _wallList.Count; i++)
             {
-                p.Update(gameTime, _currentMap, HazardMap);
+                _wallList[i].Update(gameTime);
+
+                // Is it die ?
+                if (HazardMap[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] == 3)
+                {
+                    HazardMap[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = 0;
+                    _wallList[i].Destroy();
+                }
+
+                // We clean the obsolete elements
+                if (!_wallList[i].IsAlive)
+                {
+                    CurrentMap.CollisionLayer[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = false;
+                    /*
+                    if (Random.Next(0, 100) < MathHelper.Clamp(Config.ItemNumber, 0, 100))
+                    {
+                        var powerUp = new PowerUp(_wallList[i].CellPosition);
+                        _powerUpList.Add(powerUp);
+                        CurrentMap.Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = powerUp;
+                    }
+                    else
+                    {*/
+                        CurrentMap.Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = null;
+                    //}
+
+                    _wallList.Remove(_wallList[i]);
+                }
             }
+
+            #endregion
 
             #region Bombs
             for (int i = 0; i < BombList.Count; i++)
@@ -119,6 +149,7 @@ namespace Final_Bomber.Core
                 {
                     if (CurrentMap.Board[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] is Bomb)
                         CurrentMap.Board[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] = null;
+
                     CurrentMap.CollisionLayer[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] = false;
 
                     // We don't forget to give it back to its owner
@@ -143,10 +174,16 @@ namespace Final_Bomber.Core
                         if (!sameCellThanAnOther)
                             HazardMap[p.X, p.Y] = 0;
                     }
+
                     BombList.Remove(BombList[i]);
                 }
             }
             #endregion
+
+            foreach (Player p in Players)
+            {
+                p.Update(gameTime, _currentMap, HazardMap);
+            }
         }
 
         public void Draw(GameTime gameTime)

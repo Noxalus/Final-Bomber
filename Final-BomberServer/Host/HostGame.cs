@@ -138,6 +138,7 @@ namespace Final_BomberServer.Host
             {
                 MovePlayers();
                 CheckBombTimer();
+                CheckWalls();
                 /*
                 CheckPlayerGettingBurned();
                 CheckPlayerGettingPowerup();
@@ -175,6 +176,42 @@ namespace Final_BomberServer.Host
                     GameManager.BombList.RemoveAt(i);
                 }
             }
+        }
+
+        private void CheckWalls()
+        {
+            #region Walls
+
+            for (int i = 0; i < GameManager.WallList.Count; i++)
+            {
+                // Is it die ?
+                if (GameManager.HazardMap[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] == 3)
+                {
+                    GameManager.HazardMap[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = 0;
+                    GameManager.WallList[i].Destroy();
+                }
+
+                // We clean the obsolete elements
+                if (!GameManager.WallList[i].IsAlive)
+                {
+                    GameManager.CurrentMap.CollisionLayer[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = false;
+                    /*
+                    if (Random.Next(0, 100) < MathHelper.Clamp(Config.ItemNumber, 0, 100))
+                    {
+                        var powerUp = new PowerUp(_wallList[i].CellPosition);
+                        _powerUpList.Add(powerUp);
+                        CurrentMap.Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = powerUp;
+                    }
+                    else
+                    {*/
+                    GameManager.CurrentMap.Board[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = null;
+                    //}
+
+                    GameManager.WallList.Remove(GameManager.WallList[i]);
+                }
+            }
+
+            #endregion
         }
 
         private void CheckPlayerGettingBurned()

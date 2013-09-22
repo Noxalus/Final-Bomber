@@ -11,17 +11,11 @@ namespace Final_Bomber.Core.Entities
         #region Field Region
 
         private bool _inDestruction;
-        private bool _isAlive;
         public AnimatedSprite Sprite { get; protected set; }
 
         #endregion
 
         #region Property Region
-
-        public bool IsAlive
-        {
-            get { return _isAlive; }
-        }
 
         public bool InDestruction
         {
@@ -41,7 +35,6 @@ namespace Final_Bomber.Core.Entities
 
             Sprite = new AnimatedSprite(spriteTexture, animation);
             _inDestruction = false;
-            _isAlive = true;
         }
 
         #endregion
@@ -76,7 +69,7 @@ namespace Final_Bomber.Core.Entities
 
         public override void Remove()
         {
-            _isAlive = false;
+            IsAlive = false;
             _inDestruction = false;
         }
 
