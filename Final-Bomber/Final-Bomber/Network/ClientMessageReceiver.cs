@@ -1,5 +1,7 @@
 ﻿using Final_Bomber.Core;
 using Final_Bomber.Screens;
+using Final_Bomber.Utils;
+using Final_Bomber.WorldEngine;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using System;
@@ -33,8 +35,33 @@ namespace Final_Bomber.Network
             }
         }
         
-        public void RecieveMap()
+        public void RecieveMap(NetIncomingMessage message)
         {
+            string mapName = message.ReadString();
+            string md5 = message.ReadString();
+
+            int mapBytes = message.ReadInt32();
+
+            var data = new List<byte>();
+            for (int i = 0; i < mapBytes; i++)
+            {
+                data.Add(message.ReadByte());
+            }
+
+            string localMapName = MapLoader.NewMap(mapName, data);
+
+            var map = new Map();
+            map.Parse(localMapName, NetworkTestScreen.GameManager);
+
+            if (map.GetMd5() != md5)
+            {
+                throw new Exception("Map sended by the server is not the same !");
+            }
+
+            NetworkTestScreen.GameManager.LoadMaps();
+
+            RecieveGameInfo(md5);
+
             /*
             db_FileIO db = new db_FileIO();
             string mapName = buffer.ReadString();

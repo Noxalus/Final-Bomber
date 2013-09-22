@@ -37,6 +37,7 @@ namespace Final_BomberServer.Core
             originalMapTiles = new List<MapTile>();
             if (Loaded)
                 throw new Exception("Already loaded map!");
+            /*
             db_FileIO db = new db_FileIO();
             db.OpenToRead(path);
             id = db.ReadInt64();
@@ -50,7 +51,7 @@ namespace Final_BomberServer.Core
                 }
             }
             db.Close();
-
+            
             #region LoadData
             db.OpenToRead(path);
             while (!db.FileEnd())
@@ -59,7 +60,7 @@ namespace Final_BomberServer.Core
             }
             db.Close();
             #endregion
-
+            */
             playerAmount = startPositions.Count; //Räknar ut hur många spelare som kan köra max
             suddenDeathTime = (mapWidth * 3 + mapHeight * 3) * 2 * 1000; //Räknar ut timern till suddenDeath
             Loaded = true;

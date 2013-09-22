@@ -22,7 +22,7 @@ namespace Final_Bomber.Network
                     break;
                 case (byte)RMT.Map:
                     Debug.Print("A message type 'Map' have been received from server !");
-                    RecieveMap(); //Mkt info, read from the buffer in the function
+                    RecieveMap(message);
                     break;
                 case (byte)RMT.StartGame:
                     Debug.Print("A message type 'StartGame' have been received from server !");

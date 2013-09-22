@@ -61,6 +61,8 @@ namespace Final_Bomber.Core
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
+
+            _currentMap = new Map();
         }
 
         public void Initialize()
@@ -81,9 +83,7 @@ namespace Final_Bomber.Core
 
         public void LoadMap(string mapName)
         {
-            _currentMap = new Map();
             _currentMap.Parse(mapName, this);
-
             _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
         }
 

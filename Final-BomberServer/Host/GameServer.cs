@@ -10,7 +10,6 @@ namespace Final_BomberServer.Host
         const int MAXCONNECTION = 50;
         const int PORT = 2643;
 
-        db_FileIO db = new db_FileIO();
         bool hostStarted = false;
 
         NetServer server;
@@ -77,7 +76,7 @@ namespace Final_BomberServer.Host
             Clients = new ClientCollection();
 
             hostStarted = true;
-            WriteOutput("[START]Game has started");
+            WriteOutput("[START]Game server has started");
             WriteOutput("[PORT]: " + config.Port);
         }
 

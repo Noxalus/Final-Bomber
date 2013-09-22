@@ -40,17 +40,17 @@ namespace Final_Bomber.Screens
 
             // Net
             /*
-            if (GameRef.Server == null || !GameRef.Server.HasStarted)
+            if (FinalBomber.Instance.Server == null || !FinalBomber.Instance.Server.HasStarted)
             {
                 hasLoggedIn = false;
                 hasConnected = false;
                 tick = TimeSpan.FromSeconds(5);
 
-                GameRef.Server = new MainServer();
+                FinalBomber.Instance.Server = new MainServer();
 
                 try
                 {
-                    GameRef.Server.StartMainConnection();
+                    FinalBomber.Instance.Server.StartMainConnection();
                 }
                 catch (TypeInitializationException)
                 {
@@ -73,8 +73,8 @@ namespace Final_Bomber.Screens
             /*
             if(!hasConnected)
             {
-                GameRef.Server.RunMainConnection();
-                if (GameRef.Server.Connected)
+                FinalBomber.Instance.Server.RunMainConnection();
+                if (FinalBomber.Instance.Server.Connected)
                     hasConnected = true;
                 else
                 {
@@ -92,10 +92,10 @@ namespace Final_Bomber.Screens
                 switch (indexMenu)
                 {
                     case 0:
-                        StateManager.ChangeState(GameRef.UserLoginMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.UserLoginMenuScreen);
                         break;
                     case 1:
-                        StateManager.ChangeState(GameRef.UserRegistrationMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.UserRegistrationMenuScreen);
                         break;
                     case 2:
                         Exit();
@@ -120,14 +120,14 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin();
+            FinalBomber.Instance.SpriteBatch.Begin();
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             if(hasConnected)
-                GameRef.SpriteBatch.DrawString(this.BigFont, "Connecté au serveur !", Vector2.Zero, Color.Red);
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, "Connecté au serveur !", Vector2.Zero, Color.Red);
 
             for (int i = 0; i < menuString.Length; i++)
             {
@@ -135,12 +135,12 @@ namespace Final_Bomber.Screens
                 if (i == indexMenu)
                     textColor = Color.Green;
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
                     new Vector2(menuPosition.X - this.BigFont.MeasureString(menuString[i]).X / 2,
                         menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i - this.BigFont.MeasureString(menuString[i]).Y / 2), textColor);
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion
@@ -150,9 +150,9 @@ namespace Final_Bomber.Screens
         private void Exit()
         {
             /*
-            StateManager.ChangeState(GameRef.MultiplayerGameModeMenuScreen);
-            if (GameRef.Server.HasStarted)
-                GameRef.Server.EndMainConnection("Bye");
+            StateManager.ChangeState(FinalBomber.Instance.MultiplayerGameModeMenuScreen);
+            if (FinalBomber.Instance.Server.HasStarted)
+                FinalBomber.Instance.Server.EndMainConnection("Bye");
             */
         }
 

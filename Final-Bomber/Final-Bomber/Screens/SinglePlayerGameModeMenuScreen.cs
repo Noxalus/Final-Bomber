@@ -48,10 +48,10 @@ namespace Final_Bomber.Screens
                 switch (indexMenu)
                 {
                     case 2:
-                        StateManager.ChangeState(GameRef.BattleMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.BattleMenuScreen);
                         break;
                     case 3:
-                        StateManager.ChangeState(GameRef.TitleScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.TitleScreen);
                         break;
                 }
             }
@@ -73,11 +73,11 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin();
+            FinalBomber.Instance.SpriteBatch.Begin();
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             for (int i = 0; i < menuString.Length; i++)
             {
@@ -85,12 +85,12 @@ namespace Final_Bomber.Screens
                 if (i == indexMenu)
                     textColor = Color.Green;
 
-                GameRef.SpriteBatch.DrawString(BigFont, menuString[i],
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, menuString[i],
                     new Vector2(menuPosition.X - BigFont.MeasureString(menuString[i]).X / 2,
                         menuPosition.Y + BigFont.MeasureString(menuString[i]).Y * i - BigFont.MeasureString(menuString[i]).Y / 2), textColor);
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion

@@ -39,7 +39,7 @@ namespace Final_Bomber.Screens
         {
             menuString = new string[] { "Changer les touches", "Résolution", "Plein écran", "Retour" };
             indexMenu = 0;
-            menuPosition = new Vector2(GameRef.GraphicsDevice.Viewport.Width / 4, GameRef.GraphicsDevice.Viewport.Height / 2);
+            menuPosition = new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 4, FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2);
             base.Initialize();
         }
         
@@ -55,15 +55,15 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyDown(Keys.Escape))
             {
-                StateManager.PushState(GameRef.TitleScreen);
-                GameRef.graphics.ApplyChanges();
+                StateManager.PushState(FinalBomber.Instance.TitleScreen);
+                FinalBomber.Instance.graphics.ApplyChanges();
             }
 
             switch (indexMenu)
             {
                 case 0:
                     if(InputHandler.KeyPressed(Keys.Enter))
-                        StateManager.ChangeState(GameRef.KeysMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.KeysMenuScreen);
                     break;
                 case 1:
                     bool changes = false;
@@ -86,10 +86,10 @@ namespace Final_Bomber.Screens
 
                     if (changes)
                     {
-                        GameRef.graphics.PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0];
-                        GameRef.graphics.PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1];
+                        FinalBomber.Instance.graphics.PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0];
+                        FinalBomber.Instance.graphics.PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1];
 
-                        GameRef.ScreenRectangle = new Rectangle(0, 0, Config.Resolutions[Config.IndexResolution, 0], 
+                        FinalBomber.Instance.ScreenRectangle = new Rectangle(0, 0, Config.Resolutions[Config.IndexResolution, 0], 
                             Config.Resolutions[Config.IndexResolution, 1]);
                     }
                     break;
@@ -99,14 +99,14 @@ namespace Final_Bomber.Screens
                         InputHandler.KeyPressed(Keys.Right))
                     {
                         Config.FullScreen = !Config.FullScreen;
-                        GameRef.graphics.IsFullScreen = Config.FullScreen;
+                        FinalBomber.Instance.graphics.IsFullScreen = Config.FullScreen;
                     }
                     break;
                 case 3:
                     if (InputHandler.KeyPressed(Keys.Enter))
                     {
-                        StateManager.ChangeState(GameRef.TitleScreen);
-                        GameRef.graphics.ApplyChanges();
+                        StateManager.ChangeState(FinalBomber.Instance.TitleScreen);
+                        FinalBomber.Instance.graphics.ApplyChanges();
                     }
                     break;
             }
@@ -128,11 +128,11 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             for (int i = 0; i < menuString.Length; i++)
             {
@@ -140,25 +140,25 @@ namespace Final_Bomber.Screens
                 if (i == indexMenu)
                     textColor = Color.Green;
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
                     new Vector2(menuPosition.X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), textColor);
 
                 if (i == 1)
                 {
-                    GameRef.SpriteBatch.DrawString(this.BigFont, ": " + 
+                    FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + 
                         Config.Resolutions[Config.IndexResolution, 0] + "x" + Config.Resolutions[Config.IndexResolution, 1],
                     new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i]).X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), 
                     textColor);
                 }
                 else if (i == 2)
                 {
-                    GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Config.FullScreen,
+                    FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + Config.FullScreen,
                     new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i]).X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i),
                     textColor);
                 }
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion

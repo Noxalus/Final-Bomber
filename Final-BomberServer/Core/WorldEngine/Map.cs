@@ -26,7 +26,7 @@ namespace Final_BomberServer.Core.WorldEngine
 
         public void Parse(string file, GameManager gameManager)
         {
-            MapName = file;
+            Name = file;
 
             try
             {

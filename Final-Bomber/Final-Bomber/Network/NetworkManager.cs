@@ -10,13 +10,16 @@ using FBLibrary.Core;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Players;
 using Final_Bomber.Entities;
+using Final_Bomber.Screens;
 
 namespace Final_Bomber.Network
 {
-    class NetworkManager
+    public class NetworkManager
     {
         public bool IsConnected;
         public string PublicIp;
+
+        private bool _isReady = false;
 
         // Players
         public OnlineHumanPlayer Me;
@@ -82,11 +85,55 @@ namespace Final_Bomber.Network
             {
                 GameSettings.GameServer.RunClientConnection();
             }
+
+            ProgramStepProccesing();
+        }
+
+        private void ProgramStepProccesing()
+        {
+            if (!GameSettings.GameServer.Connected)
+            {
+                DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
+            }
+            if (GameSettings.GameServer.Connected)
+            {
+                ConnectedGameProcessing();
+            }
+        }  
+
+        private void ConnectedGameProcessing()
+        {
+            if (_isReady /*&& !mainGame.IsLoaded*/)
+            {
+                _isReady = false;
+                /*
+                if (!lobbyScreen.IsLoaded)
+                {
+                    lobbyScreen.Load();
+                    lobbyScreen.Start();
+                }
+
+                mainGame = new MainGame();
+                mainGame.Load(GameSettings.Maps.GetMapById(GameSettings.currentMap));
+                tmr_WaitUntilStart = new Timer();
+                tmr_WaitUntilStart.Start();
+                */
+                _gameManager.LoadMap(GameSettings.CurrentMapName);
+            }
+            if (true/*tmr_WaitUntilStart.Each(5000)*/) //Vänta 5 sekunder innan man skickar isready, för att man ska hinna hoppa ur matchen
+            {
+                GameSettings.GameServer.SendIsReady();
+                //tmr_WaitUntilStart.Stop();
+            }
+        }
+
+        private void DisplayStatusBeforeExiting(string status)
+        {
+            throw new Exception("Exit !");
         }
 
         #region Game Server events
 
-        private bool _isReady = false;
         private void GameServer_StartInfo()
         {
             _isReady = true;

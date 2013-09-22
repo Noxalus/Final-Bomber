@@ -68,7 +68,7 @@ namespace Final_Bomber.Screens
             ControlManager.Update(gameTime, PlayerIndex.One);
 
             if (InputHandler.KeyPressed(Keys.Escape))
-                StateManager.PushState(GameRef.TitleScreen);
+                StateManager.PushState(FinalBomber.Instance.TitleScreen);
 
             switch (indexMenu)
             {
@@ -203,11 +203,11 @@ namespace Final_Bomber.Screens
                     break;
                 case 8:
                     if(InputHandler.KeyPressed(Keys.Enter))
-                        StateManager.ChangeState(GameRef.SuddenDeathMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.SuddenDeathMenuScreen);
                     break;
                 case 9:
                     if (InputHandler.KeyPressed(Keys.Enter))
-                        StateManager.ChangeState(GameRef.ItemMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.ItemMenuScreen);
                     break;
                 case 10:
                     if (InputHandler.KeyPressed(Keys.Enter))
@@ -221,7 +221,7 @@ namespace Final_Bomber.Screens
                             new Point((int)Math.Ceiling((double)(Config.MapSize.X - 2)/(double)2), 
                                 (int)Math.Ceiling((double)(Config.MapSize.Y - 2)/(double)2))
                         };
-                        StateManager.ChangeState(GameRef.GamePlayScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.GamePlayScreen);
                     }
                     break;
             }
@@ -251,11 +251,11 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             int xLag = 0;
             int yLag = 0;
@@ -305,53 +305,53 @@ namespace Final_Bomber.Screens
                 else if (i == 5 && disabledArrows)
                     textColor = Color.Gray;
 
-                GameRef.SpriteBatch.DrawString(BigFont, text,
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, text,
                     new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag,
                         menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                 
                 switch(i)
                 {
                     case 0:
-                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.PlayersNumber,
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.PlayersNumber,
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 1:
-                        GameRef.SpriteBatch.DrawString(BigFont, ": ",
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": ",
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 2:
-                        GameRef.SpriteBatch.DrawString(BigFont, "x",
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, "x",
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 4:
-                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveTeleporters,
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveTeleporters,
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 5:
                         if(!disabledArrows)
                             textColor = Color.Black;
-                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveArrows,
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveArrows,
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                         break;
                     case 6:
-                        GameRef.SpriteBatch.DrawString(BigFont, ": " + GameConfiguration.WallPercentage + "%",
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + GameConfiguration.WallPercentage + "%",
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 7:
-                        GameRef.SpriteBatch.DrawString(BigFont, ": " + Config.ItemNumber + "%",
+                        FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.ItemNumber + "%",
                         new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
                             menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                 }
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion

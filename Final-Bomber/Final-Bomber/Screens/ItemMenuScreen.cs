@@ -49,7 +49,7 @@ namespace Final_Bomber.Screens
 
         protected override void LoadContent()
         {
-            _itemsTexture = GameRef.Content.Load<Texture2D>("Graphics/Characters/item");
+            _itemsTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/item");
             base.LoadContent();
         }
 
@@ -58,7 +58,7 @@ namespace Final_Bomber.Screens
             ControlManager.Update(gameTime, PlayerIndex.One);
 
             if (InputHandler.KeyDown(Keys.Escape))
-                StateManager.PushState(GameRef.BattleMenuScreen);
+                StateManager.PushState(FinalBomber.Instance.BattleMenuScreen);
 
             if (InputHandler.KeyPressed(Keys.Enter))
             {
@@ -89,11 +89,11 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             int totalWidth = 40 * Config.ItemTypeArray.Length;
             for (int i = 0; i < Config.ItemTypeArray.Length; i++)
@@ -111,16 +111,16 @@ namespace Final_Bomber.Screens
                 else
                     textColor = Color.White;
 
-                GameRef.SpriteBatch.Draw(_itemsTexture,
-                                         new Vector2(40*i + GameRef.ScreenRectangle.Width/2 - totalWidth/2,
-                                                     GameRef.ScreenRectangle.Height/2 - 32/2),
+                FinalBomber.Instance.SpriteBatch.Draw(_itemsTexture,
+                                         new Vector2(40*i + FinalBomber.Instance.ScreenRectangle.Width/2 - totalWidth/2,
+                                                     FinalBomber.Instance.ScreenRectangle.Height/2 - 32/2),
                                          Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[i])
                                              ? new Rectangle(0, i*32, 32, 32)
                                              : new Rectangle(32, i*32, 32, 32),
                                          textColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion

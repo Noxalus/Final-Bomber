@@ -51,7 +51,7 @@ namespace Final_Bomber.Screens
         public override void Initialize()
         {
             menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, Config.Resolutions[Config.IndexResolution, 1] / 4);
-            //GameRef.Server.CreatedAccount += new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
+            //FinalBomber.Instance.Server.CreatedAccount += new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
 
             prevPressedKeys = new Keys[50];
             pressedKeys = new Keys[50];
@@ -139,7 +139,7 @@ namespace Final_Bomber.Screens
                             {
                                 if (login[0].Length < 20)
                                 {
-                                    //GameRef.Server.SendCreateAccount(login[0], login[1]);
+                                    //FinalBomber.Instance.Server.SendCreateAccount(login[0], login[1]);
                                 }
                                 else
                                 {
@@ -175,21 +175,21 @@ namespace Final_Bomber.Screens
                 IndexMenuGoDown();
             }
 
-            //GameRef.Server.RunMainConnection();
+            //FinalBomber.Instance.Server.RunMainConnection();
 
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin();
+            FinalBomber.Instance.SpriteBatch.Begin();
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             if (statusMsg != "")
-                GameRef.SpriteBatch.DrawString(this.BigFont, statusMsg, Vector2.Zero, Color.Red);
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, statusMsg, Vector2.Zero, Color.Red);
 
             if (pseudoCreated)
                 Thread.Sleep(1000);
@@ -200,14 +200,14 @@ namespace Final_Bomber.Screens
                 if (i == indexMenu)
                     textColor = Color.Green;
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
                     new Vector2(menuPosition.X - this.BigFont.MeasureString(menuString[i]).X / 2,
                         menuPosition.Y + 2 * (this.BigFont.MeasureString(menuString[i]).Y * i) -
                         this.BigFont.MeasureString(menuString[i]).Y / 2), textColor);
 
                 if (i == 0 || i == 1)
                 {
-                    GameRef.SpriteBatch.DrawString(this.BigFont, ": ",
+                    FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": ",
                     new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i]).X / 2,
                     menuPosition.Y + 2 * (this.BigFont.MeasureString(menuString[i]).Y * i) -
                     this.BigFont.MeasureString(menuString[i]).Y / 2), Color.White);
@@ -221,29 +221,29 @@ namespace Final_Bomber.Screens
                 if (indexMenu == 1 || indexMenu == 2)
                     logins = Functions.HidePassword(logins);
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, "|",
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, "|",
                 new Vector2(menuPosition.X + this.BigFont.MeasureString(logins).X / 2,
                 menuPosition.Y + 2 * (this.BigFont.MeasureString(menuString[indexMenu]).Y * indexMenu) -
                 this.BigFont.MeasureString(menuString[indexMenu]).Y / 2 +
                 this.BigFont.MeasureString(menuString[indexMenu]).Y), Color.White);
             }
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, login[0],
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, login[0],
             new Vector2(menuPosition.X - this.BigFont.MeasureString(login[0]).X / 2,
             menuPosition.Y - this.BigFont.MeasureString(menuString[0]).Y / 2 +
             this.BigFont.MeasureString(menuString[0]).Y), Color.White);
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, Functions.HidePassword(login[1]),
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Functions.HidePassword(login[1]),
             new Vector2(menuPosition.X - this.BigFont.MeasureString(Functions.HidePassword(login[1])).X / 2,
             menuPosition.Y - this.BigFont.MeasureString(menuString[1]).Y / 2 +
             3 * this.BigFont.MeasureString(menuString[1]).Y), Color.White);
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, Functions.HidePassword(login[2]),
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Functions.HidePassword(login[2]),
             new Vector2(menuPosition.X - this.BigFont.MeasureString(Functions.HidePassword(login[2])).X / 2,
             menuPosition.Y - this.BigFont.MeasureString(menuString[2]).Y / 2 +
             5 * this.BigFont.MeasureString(menuString[2]).Y), Color.White);
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, login[3],
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, login[3],
             new Vector2(menuPosition.X - this.BigFont.MeasureString(login[3]).X / 2,
             menuPosition.Y - this.BigFont.MeasureString(menuString[3]).Y / 2 +
             7 * this.BigFont.MeasureString(menuString[3]).Y), Color.White);
@@ -256,31 +256,31 @@ namespace Final_Bomber.Screens
                 if (i == indexMenu)
                     textColor = Color.Green;
 
-                GameRef.SpriteBatch.DrawString(this.BigFont, menuString[i],
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
                     new Vector2(menuPosition.X - this.BigFont.MeasureString(menuString[i]).X / 2,
                         menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i - this.BigFont.MeasureString(menuString[i]).Y / 2), textColor);
             }
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, ": " + login[0],
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + login[0],
             new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[0]).X / 2,
                 menuPosition.Y - this.BigFont.MeasureString(menuString[0]).Y / 2), Color.White);
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Functions.HidePassword(login[1]),
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + Functions.HidePassword(login[1]),
             new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[1]).X / 2,
                 menuPosition.Y + this.BigFont.MeasureString(menuString[1]).Y -
                 this.BigFont.MeasureString(menuString[1]).Y / 2), Color.White);
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, ": " + Functions.HidePassword(login[2]),
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + Functions.HidePassword(login[2]),
             new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[2]).X / 2,
                 menuPosition.Y + (this.BigFont.MeasureString(menuString[2]).Y / 2) * 2 + 
                 this.BigFont.MeasureString(menuString[2]).Y / 2), Color.White);
 
-            GameRef.SpriteBatch.DrawString(this.BigFont, ": " + login[3],
+            FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + login[3],
             new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[3]).X / 2,
             menuPosition.Y + this.BigFont.MeasureString(menuString[3]).Y * 3 - this.BigFont.MeasureString(menuString[3]).Y / 2), Color.White);
             */
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion
@@ -294,7 +294,7 @@ namespace Final_Bomber.Screens
                 case 0:
                     this.statusMsg = "Votre compte a été créé !";
                     pseudoCreated = true;
-                    StateManager.ChangeState(GameRef.UserMenuScreen);
+                    StateManager.ChangeState(FinalBomber.Instance.UserMenuScreen);
                     break;
                 case 1:
                     this.statusMsg = "Ce pseudo est déjà pris !";
@@ -307,8 +307,8 @@ namespace Final_Bomber.Screens
 
         private void Exit()
         {
-            //GameRef.Server.CreatedAccount -= new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
-            StateManager.ChangeState(GameRef.UserMenuScreen);
+            //FinalBomber.Instance.Server.CreatedAccount -= new MainServer.CreatedAccountEventHandler(ServerReceiveCreateAccount);
+            StateManager.ChangeState(FinalBomber.Instance.UserMenuScreen);
         }
 
         private void IndexMenuGoUp()

@@ -50,7 +50,7 @@ namespace Final_Bomber.Screens
 
             indexMenu = 0;
             indexPlayer = -1;
-            menuPosition = new Vector2(GameRef.GraphicsDevice.Viewport.Width / 2.5f, GameRef.GraphicsDevice.Viewport.Height / 2.5f);
+            menuPosition = new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 2.5f, FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2.5f);
 
             counter = 0;
             keysNames = new string[] { "Haut", "Bas", "Gauche", "Droite", "Poser une bombe" };
@@ -72,7 +72,7 @@ namespace Final_Bomber.Screens
             ControlManager.Update(gameTime, PlayerIndex.One);
 
             if (InputHandler.KeyDown(Keys.Escape))
-                StateManager.PushState(GameRef.TitleScreen);
+                StateManager.PushState(FinalBomber.Instance.TitleScreen);
 
             
             if (indexPlayer >= 0)
@@ -120,7 +120,7 @@ namespace Final_Bomber.Screens
                     if (indexMenu >= 0 && indexMenu <= Config.PlayersName.Length - 1)
                         indexPlayer = indexMenu;
                     else if (indexMenu == Config.PlayersName.Length)
-                        StateManager.ChangeState(GameRef.OptionMenuScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.OptionMenuScreen);
                 }
             }
             
@@ -142,23 +142,23 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.Identity);
 
             base.Draw(gameTime);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             Color textColor = Color.Black;
 
             if (indexPlayer >= 0)
             {
                 string text = "Changement des touches\n     de " + Config.PlayersName[indexPlayer];
-                GameRef.SpriteBatch.DrawString(BigFont, text,
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, text,
                         new Vector2(menuPosition.X / 1.5f, (BigFont.MeasureString(text).Y) / 2), textColor);
 
-                GameRef.SpriteBatch.DrawString(BigFont, instructions[0], 
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, instructions[0], 
                     new Vector2(menuPosition.X/1.5f, 2 * (BigFont.MeasureString(instructions[0]).Y)), Color.Black);
-                GameRef.SpriteBatch.DrawString(BigFont, instructions[1],
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, instructions[1],
                     new Vector2(menuPosition.X / 1.5f + 250 - BigFont.MeasureString(instructions[1]).X / 2, 
                         6 * (BigFont.MeasureString(instructions[1]).Y)), Color.Black);
             }
@@ -168,12 +168,12 @@ namespace Final_Bomber.Screens
                 {
                     textColor = i == indexMenu ? Color.Green : Color.Black;
 
-                    GameRef.SpriteBatch.DrawString(BigFont, menuString[i],
+                    FinalBomber.Instance.SpriteBatch.DrawString(BigFont, menuString[i],
                         new Vector2(menuPosition.X, menuPosition.Y + (BigFont.MeasureString(menuString[i]).Y) * i), textColor);
                 }
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion

@@ -1,18 +1,15 @@
-﻿using Final_BomberServer.Core;
+﻿using System.IO;
+using Final_BomberServer.Core;
 using Final_BomberServer.Core.Entities;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Final_BomberServer.Host
 {
     partial class GameServer
     {
-        public void SendGameInfo(Client client) // skickar kartans namn till clienterna
+        public void SendGameInfo(Client client)
         {
             try
             {
@@ -27,7 +24,7 @@ namespace Final_BomberServer.Host
             }
             catch (NetException e)
             {
-                WriteOutput("EXCEPTION: " + e.ToString());
+                WriteOutput("NET EXCEPTION: " + e.ToString());
             }
         }
 
@@ -37,15 +34,19 @@ namespace Final_BomberServer.Host
             {
                 NetOutgoingMessage send = server.CreateMessage();
                 send.Write((byte)SMT.Map);
-                /*
-                send.Write(GameSettings.GetCurrentMap().mapName);
-                send.Write(GameSettings.GetCurrentMap().mapData.Count);
+
+                send.Write(HostGame.GameManager.CurrentMap.Name);
+                send.Write(HostGame.GameManager.CurrentMap.GetMd5());
+
+                string path = "Content/Maps/" + HostGame.GameManager.CurrentMap.Name;
+                byte[] mapData = File.ReadAllBytes(path);
                 
-                foreach (byte bt in GameSettings.GetCurrentMap().mapData)
+                send.Write(mapData.Length);
+                foreach (var bt in mapData)
                 {
                     send.Write(bt);
                 }
-                */
+
                 server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
             }
         }

@@ -38,8 +38,6 @@ namespace Final_Bomber.Network
             _client.Start();
             _client.Connect(ip, int.Parse(port));
 
-            //buffer = client.CreateBuffer();
-
             _hasStarted = true;
             _connected = false;
             _disconnected = false;

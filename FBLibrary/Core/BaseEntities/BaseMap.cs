@@ -10,7 +10,8 @@ namespace FBLibrary.Core.BaseEntities
     {
         #region Field Region
 
-        public string MapName;
+        public string Name;
+        public bool Loaded;
         public Point Size;
         public IEntity[,] Board;
         public bool[,] CollisionLayer;
@@ -24,6 +25,7 @@ namespace FBLibrary.Core.BaseEntities
         protected BaseMap()
         {
             PlayerSpawnPoints = new List<Point>();
+            Loaded = false;
         }
 
         #endregion
@@ -51,11 +53,11 @@ namespace FBLibrary.Core.BaseEntities
             if (_md5 != null)
                 return _md5;
 
-            if (MapName != null)
+            if (Name != null)
             {
-                string path = "Content/Maps/" + MapName;
+                string path = "Content/Maps/" + Name;
 
-                if (Directory.Exists(path))
+                if (File.Exists(path))
                 {
                     using (var md5 = MD5.Create())
                     {
@@ -66,6 +68,10 @@ namespace FBLibrary.Core.BaseEntities
                             return _md5;
                         }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("This map doesn't exist ! (" + path + ")");
                 }
             }
 

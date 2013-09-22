@@ -27,8 +27,10 @@ namespace FBLibrary.Core
             LoadMaps();
         }
 
-        private void LoadMaps()
+        public void LoadMaps()
         {
+            MapDictionary.Clear();
+
             using (var md5 = MD5.Create())
             {
                 //Get all the map files

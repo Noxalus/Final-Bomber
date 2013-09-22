@@ -14,8 +14,6 @@ namespace Final_Bomber.Screens
     {
         #region Fields region
 
-        protected FinalBomber GameRef;
-
         protected ControlManager ControlManager;
 
         protected SpriteFont BigFont;
@@ -32,7 +30,7 @@ namespace Final_Bomber.Screens
         public BaseGameState(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            GameRef = (FinalBomber)game;
+            FinalBomber.Instance = (FinalBomber)game;
 
             playerIndexInControl = PlayerIndex.One;
         }

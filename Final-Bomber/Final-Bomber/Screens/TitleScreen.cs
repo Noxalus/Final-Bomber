@@ -41,19 +41,19 @@ namespace Final_Bomber.Screens
         {
             menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, 3 * Config.Resolutions[Config.IndexResolution, 1] / 4 - 80);
             base.Initialize();
-            MediaPlayer.Play(GameRef.Content.Load<Song>("Audio/Musics/Title"));
+            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/Title"));
             _title.Play();
         }
 
         protected override void LoadContent()
         {
             // Graphics
-            ContentManager Content = GameRef.Content;
-            backgroundImage = Content.Load<Texture2D>("Graphics/Titles/Title");
+            ContentManager content = FinalBomber.Instance.Content;
+            backgroundImage = content.Load<Texture2D>("Graphics/Titles/Title");
 
             // Music
             MediaPlayer.IsRepeating = true;
-            _title = Content.Load<SoundEffect>("Audio/Sounds/title");
+            _title = content.Load<SoundEffect>("Audio/Sounds/title");
 
             base.LoadContent();
         }
@@ -71,19 +71,19 @@ namespace Final_Bomber.Screens
                     switch (menuString[indexMenu])
                     {
                         case "Single player":
-                            StateManager.ChangeState(GameRef.SinglePlayerGameModeMenuScreen);
+                            StateManager.ChangeState(FinalBomber.Instance.SinglePlayerGameModeMenuScreen);
                             break;
                         case "Multiplayer":
-                            StateManager.ChangeState(GameRef.MultiplayerGameModeMenuScreen);
+                            StateManager.ChangeState(FinalBomber.Instance.MultiplayerGameModeMenuScreen);
                             break;
                         case "Options":
-                            StateManager.ChangeState(GameRef.OptionMenuScreen);
+                            StateManager.ChangeState(FinalBomber.Instance.OptionMenuScreen);
                             break;
                         case "Credits":
-                            StateManager.ChangeState(GameRef.CreditMenuScreen);
+                            StateManager.ChangeState(FinalBomber.Instance.CreditMenuScreen);
                             break;
                         case "Quit":
-                            GameRef.Exit();
+                            FinalBomber.Instance.Exit();
                             break;
                     }
                 }
@@ -91,7 +91,7 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyPressed(Keys.F1))
             {
-                StateManager.ChangeState(GameRef.NetworkTestScreen);
+                StateManager.ChangeState(FinalBomber.Instance.LobbyMenuScreen);
             }
 
             if (InputHandler.KeyPressed(Keys.Up))
@@ -111,13 +111,13 @@ namespace Final_Bomber.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GameRef.SpriteBatch.Begin();
+            FinalBomber.Instance.SpriteBatch.Begin();
 
             base.Draw(gameTime);
 
-            GameRef.SpriteBatch.Draw(backgroundImage, GameRef.ScreenRectangle, Color.White);
+            FinalBomber.Instance.SpriteBatch.Draw(backgroundImage, FinalBomber.Instance.ScreenRectangle, Color.White);
 
-            ControlManager.Draw(GameRef.SpriteBatch);
+            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             if (enableMenu)
             {
@@ -126,13 +126,13 @@ namespace Final_Bomber.Screens
                     Color textColor = Color.Black;
                     if (i == indexMenu)
                         textColor = Color.Green;
-                    GameRef.SpriteBatch.DrawString(BigFont, menuString[i],
+                    FinalBomber.Instance.SpriteBatch.DrawString(BigFont, menuString[i],
                         new Vector2(menuPosition.X - BigFont.MeasureString(menuString[i]).X / 2,
                             menuPosition.Y + BigFont.MeasureString(menuString[i]).Y * i - BigFont.MeasureString(menuString[i]).Y / 2), textColor);
                 }
             }
 
-            GameRef.SpriteBatch.End();
+            FinalBomber.Instance.SpriteBatch.End();
         }
 
         #endregion

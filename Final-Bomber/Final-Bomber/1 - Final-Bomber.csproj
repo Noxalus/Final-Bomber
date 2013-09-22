@@ -216,6 +216,7 @@
     <Compile Include="TileEngine\TileMap.cs" />
     <Compile Include="TileEngine\Tileset.cs" />
     <Compile Include="Utils\FrameRateCounter.cs" />
+    <Compile Include="Utils\MapLoader.cs" />
     <Compile Include="WorldEngine\Map.cs" />
     <Compile Include="WorldEngine\World.cs" />
   </ItemGroup>

@@ -47,6 +47,7 @@ namespace Final_Bomber
         public ItemMenuScreen ItemMenuScreen;
 
         // Network
+        public LobbyMenuScreen LobbyMenuScreen;
         public OnlineGameMenuScreen OnlineGameMenuScreen;
         public MultiplayerGameModeMenuScreen MultiplayerGameModeMenuScreen;
         public UserMenuScreen UserMenuScreen;
@@ -96,6 +97,7 @@ namespace Final_Bomber
             CreditMenuScreen = new CreditMenuScreen(this, stateManager);
 
             SinglePlayerGameModeMenuScreen = new SinglePlayerGameModeMenuScreen(this, stateManager);
+            LobbyMenuScreen = new LobbyMenuScreen(this, stateManager);
             OnlineGameMenuScreen = new OnlineGameMenuScreen(this, stateManager);
             MultiplayerGameModeMenuScreen = new MultiplayerGameModeMenuScreen(this, stateManager);
             UserMenuScreen = new UserMenuScreen(this, stateManager);

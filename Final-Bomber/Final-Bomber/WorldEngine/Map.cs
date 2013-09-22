@@ -95,6 +95,7 @@ namespace Final_Bomber.WorldEngine
                 }
             }
 
+            if (_tileMap != null)
             _tileMap.Draw(spriteBatch, camera, CollisionLayer);
 
             // Draw entities
@@ -113,7 +114,7 @@ namespace Final_Bomber.WorldEngine
 
         public void Parse(string file, GameManager gameManager)
         {
-            MapName = file;
+            Name = file;
 
             try
             {

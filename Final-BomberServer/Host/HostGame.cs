@@ -47,6 +47,12 @@ namespace Final_BomberServer.Host
 
             GameManager = new GameManager();
 
+            GameManager.LoadMap(GameManager.MapDictionary.Keys.First());
+
+            // Display info
+            GameManager.CurrentMap.DisplayBoard();
+            GameManager.CurrentMap.DisplayCollisionLayer();
+
             hasStarted = true;
         }
 
@@ -84,11 +90,6 @@ namespace Final_BomberServer.Host
             tmr_BeginGame = new Timer(true);
             //GameSettings.Get_gameManager.CurrentMap().CreateMap();
             //_gameManager.CurrentMap = GameSettings.Get_gameManager.CurrentMap();
-            GameManager.LoadMap(GameManager.MapDictionary.Keys.First());
-
-            // Display info
-            GameManager.CurrentMap.DisplayBoard();
-            GameManager.CurrentMap.DisplayCollisionLayer();
 
             suddenDeath = false;
             //suddenDeathTPE = 1000 / ((_gameManager.CurrentMap.mapWidth * _gameManager.CurrentMap.mapHeight) / 30); //Räknar ut tiden mellan varje explosion (i ms)

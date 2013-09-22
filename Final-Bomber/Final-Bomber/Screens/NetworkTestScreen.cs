@@ -21,7 +21,7 @@ namespace Final_Bomber.Screens
         public static GameManager GameManager;
 
         // Network
-        private readonly NetworkManager _networkManager;
+        public static NetworkManager NetworkManager;
 
         // HUD
         Point _hudOrigin;
@@ -33,7 +33,7 @@ namespace Final_Bomber.Screens
             : base(game, manager)
         {
             GameManager = new GameManager();
-            _networkManager = new NetworkManager(GameManager);
+            NetworkManager = new NetworkManager(GameManager);
         }
         #endregion
 
@@ -57,18 +57,17 @@ namespace Final_Bomber.Screens
             //_serverProcess.Start();
 
             GameManager.Initialize();
-            _networkManager.Initiliaze();
+            NetworkManager.Initiliaze();
 
             base.Initialize();
 
             GameManager.Reset();
-            GameManager.Players.Add(_networkManager.Me);
+            GameManager.Players.Add(NetworkManager.Me);
         }
 
         protected override void LoadContent()
         {
             GameManager.LoadContent();
-            GameManager.LoadMap("classic.map");
 
             base.LoadContent();
         }
@@ -79,7 +78,7 @@ namespace Final_Bomber.Screens
 
             //_serverProcess.Kill();
 
-            _networkManager.Dispose();
+            NetworkManager.Dispose();
 
             base.UnloadContent();
         }
@@ -88,9 +87,9 @@ namespace Final_Bomber.Screens
         {
             ControlManager.Update(gameTime, PlayerIndex.One);
 
-            _networkManager.Update();
+            NetworkManager.Update();
 
-            if (_networkManager.IsConnected && GameSettings.GameServer.HasStarted)
+            if (NetworkManager.IsConnected && GameSettings.GameServer.HasStarted)
             {
                 GameManager.Update(gameTime);
             }
@@ -104,7 +103,7 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            if (_networkManager.IsConnected)
+            if (NetworkManager.IsConnected)
             {
                 GameManager.Draw(gameTime);
             }
