@@ -73,13 +73,30 @@ namespace Final_BomberServer.Core
                 {
                     if (CurrentMap.Board[x, y] == null && Random.Next(0, 100) < ServerSettings.WallPercentage)
                     {
-                        var wall = new Wall(new Point(x ,y));
-                        WallList.Add(wall);
-                        CurrentMap.Board[x, y] = wall;
-                        CurrentMap.CollisionLayer[x, y] = true;
+                        if (!NearPlayer(x, y))
+                        {
+                            var wall = new Wall(new Point(x, y));
+                            WallList.Add(wall);
+                            CurrentMap.Board[x, y] = wall;
+                            CurrentMap.CollisionLayer[x, y] = true;
+                        }
                     }
                 }
             }
+        }
+
+        private bool NearPlayer(int x, int y)
+        {
+            return
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x, y)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x, y - 1)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1)) ||
+                CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
         }
     }
 }

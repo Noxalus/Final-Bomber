@@ -68,6 +68,7 @@ namespace Final_Bomber.Screens
         protected override void LoadContent()
         {
             GameManager.LoadContent();
+            NetworkManager.LoadContent();
 
             base.LoadContent();
         }
@@ -99,7 +100,7 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            //GameManager.Draw(gameTime);
+            GameManager.Draw(gameTime);
             
             const string str = "Networking Tests";
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,

@@ -62,6 +62,12 @@ namespace Final_Bomber.WorldEngine
         {
             _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
             _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
+
+            var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
+            var layer = new MapLayer(Size.X, Size.Y);
+            var mapLayers = new List<MapLayer> { layer };
+            _tileMap = new TileMap(tilesets, mapLayers);
+
         }
 
         public void Update(GameTime gameTime)
@@ -120,12 +126,10 @@ namespace Final_Bomber.WorldEngine
                     var parsedMapSize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
 
                     var mapSize = new Point(parsedMapSize[0], parsedMapSize[1]);
-                    var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
 
                     var collisionLayer = new bool[mapSize.X, mapSize.Y];
                     var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
                     var board = new IEntity[mapSize.X, mapSize.Y];
-                    var layer = new MapLayer(mapSize.X, mapSize.Y);
                     var voidPosition = new List<Point>();
                     var playerPositions = new Dictionary<int, Point>();
 
@@ -192,13 +196,8 @@ namespace Final_Bomber.WorldEngine
                         j++;
                     }
 
-                    var mapLayers = new List<MapLayer> { layer };
-
-                    var tileMap = new TileMap(tilesets, mapLayers);
-
                     Size = mapSize;
                     Board = board;
-                    _tileMap = tileMap;
                     CollisionLayer = collisionLayer;
                     Loaded = true;
                 }

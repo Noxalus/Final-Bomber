@@ -168,8 +168,6 @@ namespace Final_Bomber.Screens
             {
                 _isReady = false;
 
-                NetworkTestScreen.GameManager.LoadMap(GameSettings.CurrentMapName);
-
                 _tmrWaitUntilStart = new Timer();
                 _tmrWaitUntilStart.Start();
             }
@@ -216,7 +214,7 @@ namespace Final_Bomber.Screens
                     */
                 }
 
-                NetworkTestScreen.GameManager.LoadMap(GameSettings.CurrentMapName);
+                NetworkTestScreen.GameManager.ParseMap(GameSettings.CurrentMapName);
                 NetworkTestScreen.GameManager.AddWalls(wallPositions);
 
                 //mainGame.Start();

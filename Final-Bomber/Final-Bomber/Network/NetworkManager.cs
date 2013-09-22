@@ -27,19 +27,22 @@ namespace Final_Bomber.Network
         public NetworkManager(GameManager gameManager)
         {
             _gameManager = gameManager;
-
             Me = new OnlineHumanPlayer(0) { Name = "Me" };
         }
 
         public void Initiliaze()
         {
-
             PublicIp = "?";
 
             // Server events
             GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer += GameServer_MovePlayer;
             GameSettings.GameServer.End += GameServer_End;
+        }
+
+        public void LoadContent()
+        {
+            Me.LoadContent();
         }
 
         public void Dispose()
@@ -67,6 +70,7 @@ namespace Final_Bomber.Network
                 {
                     Name = "Online Player"
                 };
+                player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);
                 _gameManager.Players.Add(player);

@@ -79,9 +79,12 @@ namespace Final_Bomber.Core
             _bombExplosionSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/boom");
             _itemPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
             _playerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
+
+
+            CurrentMap.LoadContent();
         }
 
-        public void LoadMap(string mapName)
+        public void ParseMap(string mapName)
         {
             _currentMap.Parse(mapName, this);
             _hazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
@@ -101,7 +104,7 @@ namespace Final_Bomber.Core
 
             foreach (Wall wall in WallList)
                 wall.Draw(gameTime);
-
+            
             foreach (PowerUp powerUp in _powerUpList)
                 powerUp.Draw(gameTime);
 

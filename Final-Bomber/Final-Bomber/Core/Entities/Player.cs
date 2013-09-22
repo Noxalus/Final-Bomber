@@ -20,7 +20,7 @@ namespace Final_Bomber.Entities
     {
         #region Field Region
 
-        private readonly AnimatedSprite _playerDeathAnimation;
+        private AnimatedSprite _playerDeathAnimation;
         protected TimeSpan BombTimerSaved;
 
         protected LookDirection PreviousLookDirection;
@@ -62,6 +62,30 @@ namespace Final_Bomber.Entities
         protected Player(int id)
             : base(id)
         {
+            IsMoving = false;
+            InDestruction = false;
+            IsInvincible = true;
+
+            _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
+            _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
+            _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
+
+            PreviousLookDirection = CurrentDirection;
+
+            // Bad item
+            HasBadItemEffect = false;
+            BadItemTimer = TimeSpan.Zero;
+            BadItemTimerLenght = TimeSpan.Zero;
+
+            _gameTime = new GameTime();
+        }
+
+        #endregion
+
+        #region XNA Method Region
+
+        public void LoadContent()
+        {
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
 
@@ -88,28 +112,7 @@ namespace Final_Bomber.Entities
             {
                 IsAnimating = false
             };
-
-            IsMoving = false;
-            InDestruction = false;
-            IsInvincible = true;
-
-            _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
-            _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
-            _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-
-            PreviousLookDirection = CurrentDirection;
-
-            // Bad item
-            HasBadItemEffect = false;
-            BadItemTimer = TimeSpan.Zero;
-            BadItemTimerLenght = TimeSpan.Zero;
-
-            _gameTime = new GameTime();
         }
-
-        #endregion
-
-        #region XNA Method Region
 
         public virtual void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
@@ -319,7 +322,8 @@ namespace Final_Bomber.Entities
                     if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency * 0.5f))
                     {
                         Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
-                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name,
+                            playerNamePosition,
                             Color.Black);
                     }
                 }
@@ -405,7 +409,7 @@ namespace Final_Bomber.Entities
 
         protected override float GetMovementSpeed()
         {
-            var dt = (float) _gameTime.ElapsedGameTime.TotalSeconds;
+            var dt = (float)_gameTime.ElapsedGameTime.TotalSeconds;
             float rtn = (Speed * dt);
             return rtn;
         }
