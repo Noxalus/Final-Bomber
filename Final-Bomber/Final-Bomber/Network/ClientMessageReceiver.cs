@@ -1,4 +1,6 @@
-﻿using Lidgren.Network;
+﻿using Final_Bomber.Core;
+using Final_Bomber.Screens;
+using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,10 @@ namespace Final_Bomber.Network
                 StartInfo();
         }
         #endregion
-        public void RecieveGameInfo(Int64 mapId)
+        public void RecieveGameInfo(string mapMd5)
         {
-            GameSettings.currentMap = mapId;
-            // Check that you have the path
-            if (true /*GameSettings.Maps.GetMapById(GameSettings.currentMap) != null*/) 
+            // Check that you have the map
+            if (NetworkTestScreen.GameManager.MapDictionary.ContainsValue(mapMd5)) 
             {
                 OnStartInfo();
             }

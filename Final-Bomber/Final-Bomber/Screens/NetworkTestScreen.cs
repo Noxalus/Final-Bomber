@@ -18,7 +18,7 @@ namespace Final_Bomber.Screens
         Process _serverProcess;
 
         // Game manager
-        private readonly GameManager _gameManager;
+        public static GameManager GameManager;
 
         // Network
         private readonly NetworkManager _networkManager;
@@ -32,8 +32,8 @@ namespace Final_Bomber.Screens
         public NetworkTestScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            _gameManager = new GameManager();
-            _networkManager = new NetworkManager(_gameManager);
+            GameManager = new GameManager();
+            _networkManager = new NetworkManager(GameManager);
         }
         #endregion
 
@@ -56,19 +56,19 @@ namespace Final_Bomber.Screens
 
             //_serverProcess.Start();
 
-            _gameManager.Initialize();
+            GameManager.Initialize();
             _networkManager.Initiliaze();
 
             base.Initialize();
 
-            _gameManager.Reset();
-            _gameManager.Players.Add(_networkManager.Me);
+            GameManager.Reset();
+            GameManager.Players.Add(_networkManager.Me);
         }
 
         protected override void LoadContent()
         {
-            _gameManager.LoadContent();
-            _gameManager.LoadMap("classic.map");
+            GameManager.LoadContent();
+            GameManager.LoadMap("classic.map");
 
             base.LoadContent();
         }
@@ -92,7 +92,7 @@ namespace Final_Bomber.Screens
 
             if (_networkManager.IsConnected && GameSettings.GameServer.HasStarted)
             {
-                _gameManager.Update(gameTime);
+                GameManager.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -106,7 +106,7 @@ namespace Final_Bomber.Screens
 
             if (_networkManager.IsConnected)
             {
-                _gameManager.Draw(gameTime);
+                GameManager.Draw(gameTime);
             }
 
             const string str = "Networking Tests";
@@ -126,7 +126,7 @@ namespace Final_Bomber.Screens
             */
 
             int counter = 0;
-            foreach (var player in _gameManager.Players)
+            foreach (var player in GameManager.Players)
             {
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player #" + player.Id + ": (" + player.IsChangingCell() + 
                     ")\nR: " + player.Position + 

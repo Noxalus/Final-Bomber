@@ -18,7 +18,7 @@ namespace Final_Bomber.Network
             {
                 case (byte)RMT.GameStartInfo:
                     Debug.Print("A message type 'GameStartInfo' have been received from server !");
-                    RecieveGameInfo(message.ReadInt64());
+                    RecieveGameInfo(message.ReadString());
                     break;
                 case (byte)RMT.Map:
                     Debug.Print("A message type 'Map' have been received from server !");

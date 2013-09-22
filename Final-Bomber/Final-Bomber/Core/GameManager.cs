@@ -44,6 +44,11 @@ namespace Final_Bomber.Core
 
         public World World { get; set; }
 
+        public Map CurrentMap
+        {
+            get { return _currentMap; }
+        }
+
         public List<Wall> WallList
         {
             get { return _wallList; }

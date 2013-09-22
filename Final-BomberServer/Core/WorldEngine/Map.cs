@@ -26,6 +26,8 @@ namespace Final_BomberServer.Core.WorldEngine
 
         public void Parse(string file, GameManager gameManager)
         {
+            MapName = file;
+
             try
             {
                 var streamReader = new StreamReader("Content/Maps/" + file);

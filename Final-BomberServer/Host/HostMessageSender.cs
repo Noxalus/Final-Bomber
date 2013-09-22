@@ -20,8 +20,8 @@ namespace Final_BomberServer.Host
                 {
                     NetOutgoingMessage send = server.CreateMessage();
                     send.Write((byte)SMT.GameStartInfo);
-                    send.Write(42L /*GameSettings.GetCurrentMap().id*/);
-                    Program.Log.Info("Sended game info map id "/* + GameSettings.GetCurrentMap().id.ToString()*/);
+                    send.Write(HostGame.GameManager.MapDictionary.Values.First());
+                    Program.Log.Info("Sended game info map [" + HostGame.GameManager.MapDictionary.Values.First() + "]");
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 }
             }
