@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2 - Server", "Final-BomberS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3 - FBLibrary", "FBLibrary\3 - FBLibrary.csproj", "{3AF57B97-6BF8-4B50-847B-C42B003A2471}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5 - Updater", "Updater\5 - Updater.csproj", "{5026973C-6DAF-42B6-809A-E785CD5D6031}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,16 @@ Global
 		{3AF57B97-6BF8-4B50-847B-C42B003A2471}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3AF57B97-6BF8-4B50-847B-C42B003A2471}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3AF57B97-6BF8-4B50-847B-C42B003A2471}.Release|x86.ActiveCfg = Release|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5026973C-6DAF-42B6-809A-E785CD5D6031}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
