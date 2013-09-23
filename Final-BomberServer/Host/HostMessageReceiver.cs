@@ -13,6 +13,7 @@ namespace Final_BomberServer.Host
         void ReceiveReady(Client client, string username, string password)
         {
             client.Username = username;
+            client.isReady = true;
             //MainServer.SendCheckIfOnline(username, password);
             Program.Log.Info("Client " + client.ClientId + " is ready to play");
         }

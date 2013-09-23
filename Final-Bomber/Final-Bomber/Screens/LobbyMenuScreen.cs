@@ -47,6 +47,7 @@ namespace Final_Bomber.Screens
             GameSettings.GameServer.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
 
             tmr.Start();
+            _tmrWaitUntilStart = new Timer();
             connectedTmr.Start();
 
             base.Initialize();
@@ -216,6 +217,7 @@ namespace Final_Bomber.Screens
                 }
 
                 NetworkTestScreen.GameManager.ParseMap(GameSettings.CurrentMapName);
+
                 NetworkTestScreen.GameManager.AddWalls(wallPositions);
 
                 //mainGame.Start();

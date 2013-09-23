@@ -67,7 +67,8 @@ namespace Final_Bomber.Network
             RecieveGameInfo(md5);
         }
 
-        #region StartGame
+        #region 
+
         public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions);
         public event StartGameEventHandler StartGame;
         protected virtual void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)

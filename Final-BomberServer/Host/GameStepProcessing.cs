@@ -11,7 +11,7 @@ namespace Final_BomberServer.Host
         private void GameStepProccesing()
         {
             if (GameSettings.gameServer.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
-                && !StartedMatch /*&& GameSettings.gameServer.clients.IsClientsReady()*/)
+                && !StartedMatch && GameSettings.gameServer.Clients.IsClientsReady())
             {
                 GameInitialize();
             }

@@ -16,18 +16,25 @@ namespace FBLibrary
 
             using (var md5 = MD5.Create())
             {
-                //Get all the map files
-                foreach (var source in Directory.GetFiles(@"Content\Maps\", "*.map", SearchOption.AllDirectories))
+                try
                 {
-                    using (var stream = File.OpenRead(source))
+                    //Get all the map files
+                    foreach (var source in Directory.GetFiles(@"Content\Maps\", "*.map", SearchOption.AllDirectories))
                     {
-                        // Compute the MD5 hash of the file
-                        string md5Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
-                        string fileName = Path.GetFileName(source);
+                        using (var stream = File.OpenRead(source))
+                        {
+                            // Compute the MD5 hash of the file
+                            string md5Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                            string fileName = Path.GetFileName(source);
 
-                        if (fileName != null)
-                            MapFileDictionary.Add(fileName, md5Hash);
+                            if (fileName != null)
+                                MapFileDictionary.Add(fileName, md5Hash);
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
                 }
             }
         }
@@ -41,9 +48,13 @@ namespace FBLibrary
                 mapNr = " ~ " + counter;
                 counter++;
             }
-            
+
             var enumerable = data as byte[] ?? data.ToArray();
-            File.WriteAllBytes("Content\\Maps\\" + mapName + mapNr + ".map", enumerable.ToArray());
+
+            if (!Directory.Exists("Content/Maps"))
+                Directory.CreateDirectory("Content/Maps");
+
+            File.WriteAllBytes("Content/Maps/" + mapName + mapNr + ".map", enumerable.ToArray());
 
             return mapName + mapNr + ".map";
         }
