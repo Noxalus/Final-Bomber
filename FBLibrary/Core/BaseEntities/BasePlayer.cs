@@ -14,6 +14,10 @@ namespace FBLibrary.Core.BaseEntities
         public int TotalBombAmount;
         public int BombPower;
         public TimeSpan BombTimer;
+        public PlayerStats Stats;
+        public bool IsInvincible;
+
+        protected TimeSpan InvincibleTimer;
 
         protected BasePlayer(int id)
         {
@@ -28,11 +32,13 @@ namespace FBLibrary.Core.BaseEntities
             BombPower = GameConfiguration.BasePlayerBombPower;
             BombTimer = GameConfiguration.BaseBombTimer;
             Speed = GameConfiguration.BasePlayerSpeed;
-            // etc...
 
-            // TO DELETE
-            PositionY = Engine.TileWidth;
-            PositionX = Engine.TileHeight;
+            IsInvincible = true;
+
+            Stats = new PlayerStats();
+
+            // Protected
+            InvincibleTimer = GameConfiguration.PlayerInvincibleTimer;
         }
 
         public void Update()

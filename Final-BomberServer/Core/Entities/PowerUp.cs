@@ -13,7 +13,7 @@ namespace Final_BomberServer.Core.Entities
 
         public void GetPowerup(Player player)
         {
-            player.Stats.PowerupsPicked++;
+            player.Stats.PowerUpsPicked++;
             switch (Type)
             {
                 /*

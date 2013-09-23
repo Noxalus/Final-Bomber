@@ -41,9 +41,9 @@ namespace Final_BomberServer.Host
         public void Initialize()
         {
             GameSettings.gameServer = new GameServer();
-            GameSettings.gameServer.ConnectedClient += new GameServer.ConnectedClientEventHandler(gameServer_ConnectedClient);
-            GameSettings.gameServer.DisconnectedClient += new GameServer.DisconnectedClientEventHandler(gameServer_DisconnectedClient);
-            GameSettings.gameServer.BombPlacing += new GameServer.BombPlacingEventHandler(gameServer_BombPlacing);
+            GameSettings.gameServer.ConnectedClient += gameServer_ConnectedClient;
+            GameSettings.gameServer.DisconnectedClient += gameServer_DisconnectedClient;
+            GameSettings.gameServer.BombPlacing += gameServer_BombPlacing;
             GameSettings.gameServer.StartServer();
 
             GameManager = new GameManager();
@@ -139,8 +139,8 @@ namespace Final_BomberServer.Host
                 MovePlayers();
                 CheckBombTimer();
                 CheckWalls();
+                UpdatePlayers();
                 /*
-                CheckPlayerGettingBurned();
                 CheckPlayerGettingPowerup();
                 CheckSuddenDeath();
                 */
@@ -214,8 +214,72 @@ namespace Final_BomberServer.Host
             #endregion
         }
 
-        private void CheckPlayerGettingBurned()
+        private void UpdatePlayers()
         {
+            #region Player
+
+            List<Player> players = GameSettings.gameServer.Clients.GetAlivePlayers();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].Update();
+
+                // Is it die ?
+                if (!players[i].InDestruction && !players[i].IsInvincible && 
+                    GameManager.HazardMap[players[i].CellPosition.X, players[i].CellPosition.Y] == 3)
+                {
+                    int bombId = -42;
+                    List<Bomb> bl = GameManager.BombList.FindAll(b => b.InDestruction);
+                    foreach (Bomb b in bl)
+                    {
+                        if (b.ActionField.Any(po => po == players[i].CellPosition))
+                        {
+                            bombId = b.PlayerId;
+                        }
+                    }
+                    // Suicide
+                    if (bombId == players[i].Id)
+                        players[i].Stats.Suicides++;
+                    else if (bombId >= 0 && bombId < players.Count)
+                    {
+                        players[i].Stats.Kills++;
+                        Player player = players.Find(p => p.Id == bombId);
+                        /*
+                        if (player.OnEdge)
+                        {
+                            player.Rebirth(players[i].Position);
+                            _deadPlayersNumber--;
+                        }
+                        */
+                    }
+                    players[i].Destroy();
+                }
+                
+                // We clean the obsolete players
+                if (!players[i].IsAlive)
+                {
+                    /*
+                    if (!players[i].OnEdge)
+                    {
+                        if (CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y] is Player)
+                        {
+                            var p = (Player)CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y];
+                            if (p.Id == players[i].Id)
+                                CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y] = null;
+                        }
+                        _deadPlayersNumber++;
+                    }
+                                        
+                    if (true) //(Config.ActiveSuddenDeath && SuddenDeath.HasStarted))
+                        players.Remove(players[i]);
+                    else
+                        players[i].OnEdge = true;
+                    */
+                }
+            }
+
+            #endregion
+
             /*
             foreach (Bomb bomb in GameManager.BombList)
             {

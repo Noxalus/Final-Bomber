@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core
 {
@@ -8,6 +9,8 @@ namespace FBLibrary.Core
         private Point _cellPosition;
 
         public bool IsAlive;
+        public bool InDestruction;
+        public TimeSpan DestructionTime;
 
         #region Properties
 
@@ -56,6 +59,8 @@ namespace FBLibrary.Core
         {
             Dimension = GameConfiguration.BaseTileSize;
             IsAlive = true;
+            InDestruction = false;
+            DestructionTime = TimeSpan.Zero;
         }
 
         protected BaseEntity(Point cellPosition) : this()

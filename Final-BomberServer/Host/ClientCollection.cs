@@ -150,6 +150,17 @@ namespace Final_BomberServer.Host
             return rtn;
         }
 
+        public List<Player> GetPlayers()
+        {
+            var players = new List<Player>();
+            foreach (Client client in this)
+            {
+                if (!client.Spectating)
+                    players.Add(client.Player);
+            }
+            return players;
+        }
+
     }
 
     public class ClientRandomSorter : Comparer<Client>

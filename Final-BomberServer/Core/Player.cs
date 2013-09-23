@@ -19,7 +19,8 @@ namespace Final_BomberServer.Core
         public MapTile NextTile;
         public MapTile CurrentTile;
         public Vector2 SizeOffset = new Vector2(15, 30);
-        public PlayerStats Stats = new PlayerStats();
+
+        private TimeSpan _destructionTimer;
 
         private readonly Timer _tmrSendPos = new Timer(true);
 
@@ -27,6 +28,7 @@ namespace Final_BomberServer.Core
             : base(id)
         {
             nextDirection = LookDirection.Idle;
+            _destructionTimer = DestructionTime;
         }
 
         public void SetMovement(LookDirection direction)
@@ -100,15 +102,27 @@ namespace Final_BomberServer.Core
 
                 //Program.Log.Info("[Client #" + Id + "]Position: + " + Position.ToString());
 
+                if (InDestruction)
+                {
+                    _destructionTimer -= new TimeSpan(0, 0, 0, 0, GameSettings.Speed);
+
+                    if (_destructionTimer <= TimeSpan.Zero)
+                    {
+                        Remove();
+                    }
+                }
+
                 // Call Update method of DynamicEntity class
                 Update();
             }
         }
 
-        public void SendPosition()
+        private void SendPosition()
         {
             GameSettings.gameServer.SendPlayerPosition(this, false);
         }
+
+        /*
 
         public Vector2 GetCenterPosition()
         {
@@ -120,10 +134,8 @@ namespace Final_BomberServer.Core
             CurrentTile = tile;
             NextTile = tile;
             Vector2 pos = GetCenteredTilePos(tile);
-            /*
             Position.X = pos.X;
             Position.Y = pos.Y;
-            */
         }
 
         public Vector2 GetCenteredTilePos(MapTile tile)
@@ -144,7 +156,7 @@ namespace Final_BomberServer.Core
 
         public void Burn(OldBomb bomb)
         {
-            if (true /*invurnable.Each(INVURNABLETIME)*/)
+            if (true) //invurnable.Each(INVURNABLETIME))
             {
                 if (bomb != null)
                 {
@@ -183,7 +195,7 @@ namespace Final_BomberServer.Core
                 GameSettings.gameServer.SendRemovePlayer(this);
             }
         }
-
+        */
         protected override float GetMovementSpeed()
         {
             float rtn = (Speed * GameSettings.Speed) / 1000f;
@@ -192,18 +204,12 @@ namespace Final_BomberServer.Core
 
         public override void Destroy()
         {
-            throw new NotImplementedException();
+            InDestruction = true;
         }
 
         public override void Remove()
         {
-            throw new NotImplementedException();
+            IsAlive = false;
         }
-    }
-
-    public class PlayerStats
-    {
-        public int Kills, ExplodeHits, Burns, SelfExplodeHits, SelfKills, TilesBlowned, PowerupsPicked, TileWalkDistance;
-        //Fixad - PowerupsPicked, TileWalkDistance, Selfkills, kills, selfexplodehits, explodehits, death
     }
 }

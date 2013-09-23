@@ -31,7 +31,7 @@ namespace FBLibrary
         public static Point BaseTileSize = new Point(32, 32);
 
         // TO DELETE
-        public static int PlayerNumber = 2;
+        public static int PlayerNumber = 1;
         public static string ServerIp = "localhost";
         public static string ServerPort = "2643";
     }

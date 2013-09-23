@@ -58,6 +58,7 @@
     <Compile Include="Core\DynamicEntity.cs" />
     <Compile Include="Core\IEntity.cs" />
     <Compile Include="Core\Engine.cs" />
+    <Compile Include="Core\PlayerStats.cs" />
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="Core\StaticEntity.cs" />
     <Compile Include="MapLoader.cs" />

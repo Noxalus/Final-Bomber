@@ -41,8 +41,8 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            GameSettings.GameServer.StartInfo += new GameServer.StartInfoEventHandler(GameServer_StartInfo);
-            GameSettings.GameServer.StartGame += new GameServer.StartGameEventHandler(GameServer_StartGame);
+            GameSettings.GameServer.StartInfo += GameServer_StartInfo;
+            GameSettings.GameServer.StartGame += GameServer_StartGame;
 
             GameSettings.GameServer.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
 
@@ -55,8 +55,8 @@ namespace Final_Bomber.Screens
 
         protected override void UnloadContent()
         {
-            GameSettings.GameServer.StartInfo -= new GameServer.StartInfoEventHandler(GameServer_StartInfo);
-            GameSettings.GameServer.StartGame -= new GameServer.StartGameEventHandler(GameServer_StartGame);
+            GameSettings.GameServer.StartInfo -= GameServer_StartInfo;
+            GameSettings.GameServer.StartGame -= GameServer_StartGame;
 
             base.UnloadContent();
         }
@@ -175,7 +175,7 @@ namespace Final_Bomber.Screens
             }
 
             // Wait 5 seconds before to say to the server that we are ready
-            if (_tmrWaitUntilStart.Each(5000))
+            if (_tmrWaitUntilStart.Each(1))
             {
                 GameSettings.GameServer.SendIsReady();
                 _tmrWaitUntilStart.Stop();

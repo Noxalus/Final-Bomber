@@ -31,7 +31,6 @@ namespace Final_Bomber.Entities
         private bool _cellTeleporting;
         private float _invincibleBlinkFrequency;
         private TimeSpan _invincibleBlinkTimer;
-        private TimeSpan _invincibleTimer;
 
         // Reference on GameTime
         private GameTime _gameTime;
@@ -43,10 +42,6 @@ namespace Final_Bomber.Entities
         #region Property Region
 
         public Camera Camera { get; private set; }
-
-        public bool InDestruction { get; private set; }
-
-        public bool IsInvincible { get; private set; }
 
         public bool HasBadItemEffect { get; private set; }
 
@@ -64,10 +59,7 @@ namespace Final_Bomber.Entities
             : base(id)
         {
             IsMoving = false;
-            InDestruction = false;
-            IsInvincible = true;
 
-            _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
 
@@ -129,9 +121,9 @@ namespace Final_Bomber.Entities
 
                 if (!GameConfiguration.Invincible && IsInvincible)
                 {
-                    if (_invincibleTimer >= TimeSpan.Zero)
+                    if (InvincibleTimer >= TimeSpan.Zero)
                     {
-                        _invincibleTimer -= gameTime.ElapsedGameTime;
+                        InvincibleTimer -= gameTime.ElapsedGameTime;
                         if (_invincibleBlinkTimer >= TimeSpan.Zero)
                             _invincibleBlinkTimer -= gameTime.ElapsedGameTime;
                         else
@@ -139,7 +131,7 @@ namespace Final_Bomber.Entities
                     }
                     else
                     {
-                        _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
+                        InvincibleTimer = GameConfiguration.PlayerInvincibleTimer;
                         IsInvincible = false;
                     }
                 }
@@ -368,7 +360,6 @@ namespace Final_Bomber.Entities
         private void Invincibility()
         {
             IsInvincible = true;
-            _invincibleTimer = GameConfiguration.PlayerInvincibleTimer;
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
         }
@@ -497,7 +488,7 @@ namespace Final_Bomber.Entities
             {
                 Sprite.IsAnimating = false;
                 InDestruction = true;
-                FinalBomber.Instance.GamePlayScreen.PlayerDeathSound.Play();
+                NetworkTestScreen.GameManager.PlayerDeathSound.Play();
                 _playerDeathAnimation.IsAnimating = true;
             }
         }

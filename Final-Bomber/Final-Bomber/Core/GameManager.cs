@@ -33,8 +33,8 @@ namespace Final_Bomber.Core
         private Song _mapHurrySong;
         private Song _mapSong;
         public SoundEffect BombExplosionSound;
-        private SoundEffect _itemPickUpSound;
-        private SoundEffect _playerDeathSound;
+        public SoundEffect ItemPickUpSound;
+        public SoundEffect PlayerDeathSound;
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
@@ -81,8 +81,8 @@ namespace Final_Bomber.Core
 
             // Sounds effects
             BombExplosionSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/boom");
-            _itemPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
-            _playerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
+            ItemPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
+            PlayerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
 
             CurrentMap.LoadContent();
         }
@@ -180,10 +180,62 @@ namespace Final_Bomber.Core
             }
             #endregion
 
-            foreach (Player p in Players)
+            #region Player
+
+            for (int i = 0; i < Players.Count; i++)
             {
-                p.Update(gameTime, _currentMap, HazardMap);
+                Players[i].Update(gameTime, CurrentMap, HazardMap);
+
+                // Is it die ?
+                if (!Players[i].InDestruction && !Players[i].IsInvincible && HazardMap[Players[i].CellPosition.X, Players[i].CellPosition.Y] == 3)
+                {
+                    int bombId = -42;
+                    List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
+                    foreach (Bomb b in bl)
+                    {
+                        if (b.ActionField.Any(po => po == Players[i].CellPosition))
+                        {
+                            bombId = b.PlayerId;
+                        }
+                    }
+                    // Suicide
+                    if (bombId == Players[i].Id)
+                        Players[i].Stats.Suicides++;
+                    else if (bombId >= 0 && bombId < Config.PlayersNumber)
+                    {
+                        Players[i].Stats.Kills++;
+                        Player player = Players.Find(p => p.Id == bombId);
+                        if (player.OnEdge)
+                        {
+                            player.Rebirth(Players[i].Position);
+                            _deadPlayersNumber--;
+                        }
+                    }
+                    Players[i].Destroy();
+                }
+
+                // We clean the obsolete players
+                if (!Players[i].IsAlive)
+                {
+                    if (!Players[i].OnEdge)
+                    {
+                        if (CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] is Player)
+                        {
+                            var p = (Player)CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y];
+                            if (p.Id == Players[i].Id)
+                                CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] = null;
+                        }
+                        _deadPlayersNumber++;
+                    }
+
+                    if (true /*(Config.ActiveSuddenDeath && SuddenDeath.HasStarted)*/)
+                        Players.Remove(Players[i]);
+                    else
+                        Players[i].OnEdge = true;
+                }
             }
+
+            #endregion
         }
 
         public void Draw(GameTime gameTime)
@@ -229,13 +281,13 @@ namespace Final_Bomber.Core
                 if (Config.AIPlayers[playerID])
                 {
                     var player = new AIPlayer(Math.Abs(playerID));
-                    PlayerList.Add(player);
+                    Players.Add(player);
                     board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                 }
                 else
                 {
                     var player = new HumanPlayer(Math.Abs(playerID));
-                    PlayerList.Add(player);
+                    Players.Add(player);
                     board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                 }
             }
