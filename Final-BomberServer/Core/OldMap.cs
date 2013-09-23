@@ -259,7 +259,7 @@ namespace Final_BomberServer.Core
                     int type = rnd.Next(100) + 1;
                     if (type <= GameSettings.GameValues.PowerupDrop.MovementSpeed)
                     {
-                        tile.Poweruped = new PowerUp(PowerUpType.Speed);
+                        tile.Poweruped = new OldPowerUp(PowerUpType.Speed);
                     }
                     else
                     {
@@ -277,13 +277,13 @@ namespace Final_BomberServer.Core
                             {
                                 if (type <= GameSettings.GameValues.PowerupDrop.BombRange)
                                 {
-                                    tile.Poweruped = new PowerUp(PowerUpType.Power);
+                                    tile.Poweruped = new OldPowerUp(PowerUpType.Power);
                                 }
                                 else
                                 {
                                     if (type <= GameSettings.GameValues.PowerupDrop.BombAmount)
                                     {
-                                        tile.Poweruped = new PowerUp(PowerUpType.Bomb);
+                                        tile.Poweruped = new OldPowerUp(PowerUpType.Bomb);
                                     }
                                 }
                             }
@@ -292,7 +292,7 @@ namespace Final_BomberServer.Core
                 }
                 if (tile.Poweruped != null)
                 {
-                    GameSettings.gameServer.SendPowerupDrop(tile);
+                    //GameSettings.gameServer.SendPowerUpDrop(tile);
                 }
             }
         }

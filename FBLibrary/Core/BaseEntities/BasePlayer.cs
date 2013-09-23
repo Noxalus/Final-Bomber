@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core.BaseEntities
@@ -16,6 +17,10 @@ namespace FBLibrary.Core.BaseEntities
         public TimeSpan BombTimer;
         public PlayerStats Stats;
         public bool IsInvincible;
+        public bool HasBadEffect;
+        public BadEffect BadEffect;
+        public TimeSpan BadEffectTimer;
+        public TimeSpan BadEffectTimerLenght;
 
         protected TimeSpan InvincibleTimer;
 
@@ -37,12 +42,27 @@ namespace FBLibrary.Core.BaseEntities
 
             Stats = new PlayerStats();
 
+            // Bad power up
+            HasBadEffect = false;
+            BadEffectTimer = TimeSpan.Zero;
+            BadEffectTimerLenght = TimeSpan.Zero;
+
             // Protected
             InvincibleTimer = GameConfiguration.PlayerInvincibleTimer;
         }
 
-        public void Update()
+        public override void Update()
         {
+            // Have caught a bad item
+            if (HasBadEffect)
+            {
+                BadEffectTimer += TimeSpan.FromMilliseconds(GetTime());
+                if (BadEffectTimer >= BadEffectTimerLenght)
+                {
+                    RemoveBadItem();
+                }
+            }
+
             base.Update();
         }
 
@@ -281,5 +301,62 @@ namespace FBLibrary.Core.BaseEntities
         }
 
         protected abstract float GetMovementSpeed();
+
+        #region Public Method Region
+
+        public void IncreaseTotalBombNumber(int incr)
+        {
+            if (TotalBombAmount + incr > GameConfiguration.MaxBombAmount)
+            {
+                TotalBombAmount = GameConfiguration.MaxBombAmount;
+                CurrentBombAmount = TotalBombAmount;
+            }
+            else if (TotalBombAmount + incr < GameConfiguration.MinBombAmount)
+            {
+                TotalBombAmount = GameConfiguration.MinBombAmount;
+                CurrentBombAmount = TotalBombAmount;
+            }
+            else
+            {
+                TotalBombAmount += incr;
+                CurrentBombAmount += incr;
+            }
+        }
+
+        public void IncreasePower(int incr)
+        {
+            if (BombPower + incr > GameConfiguration.MaxBombPower)
+                BombPower = GameConfiguration.MaxBombPower;
+            else if (BombPower + incr < GameConfiguration.MinBombPower)
+                BombPower = GameConfiguration.MinBombPower;
+            else
+                BombPower += incr;
+        }
+
+        public void IncreaseSpeed(float incr)
+        {
+            Speed += incr;
+        }
+
+        public virtual void ApplyBadItem(BadEffect effect)
+        {
+            HasBadEffect = true;
+            BadEffect = effect;
+            BadEffectTimerLenght = TimeSpan.FromSeconds(15);
+            //BadEffectTimerLenght = TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
+        }
+
+        protected virtual void RemoveBadItem()
+        {
+            HasBadEffect = false;
+            BadEffectTimer = TimeSpan.Zero;
+            BadEffectTimerLenght = TimeSpan.Zero;
+        }
+
+
+        #endregion
+
+        protected abstract int GetTime();
+
     }
 }

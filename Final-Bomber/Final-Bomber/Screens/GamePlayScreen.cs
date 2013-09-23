@@ -805,7 +805,7 @@ namespace Final_Bomber.Screens
                         finalCounter = i;
                     }
 
-                    if (p.HasBadItemEffect && p.BadItemEffect == BadItemEffect.NoBomb)
+                    if (p.HasBadEffect && p.BadEffect == BadEffect.NoBomb)
                     {
                         FinalBomber.Instance.SpriteBatch.Draw(_cross, new Rectangle(_hudOrigin.X + _hudMarginLeft,
                             _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50,
@@ -834,15 +834,15 @@ namespace Final_Bomber.Screens
                             new Rectangle(56, 0, 14, 14), Color.White);
 
                     // Player's bad item timer
-                    if (p.HasBadItemEffect)
+                    if (p.HasBadEffect)
                     {
                         FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft,
                             _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
                                     new Rectangle(98, 0, 14, 14), Color.White);
 
-                        int lenght = 200 - (int)((200 / p.BadItemTimerLenght.TotalSeconds) * p.BadItemTimer.TotalSeconds);
-                        string badItemTimer = ((int)Math.Round(p.BadItemTimerLenght.TotalSeconds - p.BadItemTimer.TotalSeconds) + 1).ToString();
-                        if (p.BadItemEffect == BadItemEffect.BombTimerChanged)
+                        int lenght = 200 - (int)((200 / p.BadEffectTimerLenght.TotalSeconds) * p.BadEffectTimer.TotalSeconds);
+                        string badItemTimer = ((int)Math.Round(p.BadEffectTimerLenght.TotalSeconds - p.BadEffectTimer.TotalSeconds) + 1).ToString();
+                        if (p.BadEffect == BadEffect.BombTimerChanged)
                             badItemTimer += " (" + p.BombTimer.TotalSeconds.ToString() + ")";
 
                         for (int i = 0; i < lenght; i++)

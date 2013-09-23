@@ -29,7 +29,7 @@ namespace Final_BomberServer.Host
         OldBomb suddenDeathBomb;
         Vector2 suddenDeathMovement;
 
-        public static GameManager GameManager; 
+        public static GameManager GameManager;
 
         public bool HasStarted
         {
@@ -62,7 +62,7 @@ namespace Final_BomberServer.Host
             GameSettings.gameServer.RunServer();
 
             GameStepProccesing();
-            
+
             if (tmr_BeginGame != null)
             {
                 // Game really starts after 3 seconds
@@ -118,7 +118,7 @@ namespace Final_BomberServer.Host
             }
 
             Program.Log.Info("[INITIALIZED GAME]");
-            
+
             StartedMatch = true;
         }
 
@@ -140,10 +140,9 @@ namespace Final_BomberServer.Host
                 CheckBombTimer();
                 CheckWalls();
                 UpdatePlayers();
-                /*
                 CheckPlayerGettingPowerup();
-                CheckSuddenDeath();
-                */
+
+                //CheckSuddenDeath();
             }
         }
 
@@ -154,7 +153,7 @@ namespace Final_BomberServer.Host
             {
                 // Move the player to the next position
                 //Program.Log.Info("Player position: " + client.Player.Position);                
-                client.Player.MovePlayer(GameManager.CurrentMap); 
+                client.Player.MovePlayer(GameManager.CurrentMap);
             }
         }
 
@@ -195,17 +194,13 @@ namespace Final_BomberServer.Host
                 if (!GameManager.WallList[i].IsAlive)
                 {
                     GameManager.CurrentMap.CollisionLayer[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = false;
-                    /*
-                    if (Random.Next(0, 100) < MathHelper.Clamp(Config.ItemNumber, 0, 100))
+
+                    if (GameManager.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
                     {
-                        var powerUp = new PowerUp(_wallList[i].CellPosition);
-                        _powerUpList.Add(powerUp);
-                        CurrentMap.Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = powerUp;
+                        GameManager.AddPowerUp(GameManager.WallList[i].CellPosition);
                     }
                     else
-                    {*/
-                    GameManager.CurrentMap.Board[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = null;
-                    //}
+                        GameManager.CurrentMap.Board[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = null;
 
                     GameManager.WallList.Remove(GameManager.WallList[i]);
                 }
@@ -225,7 +220,7 @@ namespace Final_BomberServer.Host
                 players[i].Update();
 
                 // Is it die ?
-                if (!players[i].InDestruction && !players[i].IsInvincible && 
+                if (!players[i].InDestruction && !players[i].IsInvincible &&
                     GameManager.HazardMap[players[i].CellPosition.X, players[i].CellPosition.Y] == 3)
                 {
                     int bombId = -42;
@@ -254,7 +249,7 @@ namespace Final_BomberServer.Host
                     }
                     players[i].Destroy();
                 }
-                
+
                 // We clean the obsolete players
                 if (!players[i].IsAlive)
                 {
@@ -426,7 +421,7 @@ namespace Final_BomberServer.Host
                 GameSettings.gameServer.SendGameInfo(sender);
                 if (StartedMatch)
                 {
-                    
+
                     sender.Player.IsAlive = false;
                     sender.Spectating = true;
                     sender.NewClient = true;

@@ -198,14 +198,15 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendPowerupDrop(MapTile tile)
+        public void SendPowerUpDrop(PowerUp powerUp)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.PowerupDrop);
-            send.Write((byte)tile.Poweruped.Type);
-            Vector2 pos = tile.GetMapPos();
-            send.Write(pos.X);
-            send.Write(pos.Y);
+
+            send.Write((byte)powerUp.Type);
+            send.Write(powerUp.CellPosition);
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 

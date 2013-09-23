@@ -55,7 +55,7 @@ namespace Final_Bomber.Core.Players
 
                 // Try to put a bomb
                 // Put a bomb
-                if (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))
+                if (!HasBadEffect || (HasBadEffect && BadEffect != BadEffect.NoBomb))
                 {
                     if (AIFunction.TryToPutBomb(CellPosition, BombPower, map.Board, map.CollisionLayer, hazardMap,
                         Config.MapSize))
@@ -176,21 +176,21 @@ namespace Final_Bomber.Core.Players
         {
         }
 
-        public override void ApplyBadItem(BadItemEffect effect)
+        public override void ApplyBadItem(BadEffect effect)
         {
             base.ApplyBadItem(effect);
 
             switch (effect)
             {
-                case BadItemEffect.TooSlow:
+                case BadEffect.TooSlow:
                     SpeedSaved = Speed;
                     Speed = Config.MinSpeed;
                     break;
-                case BadItemEffect.TooSpeed:
+                case BadEffect.TooSpeed:
                     SpeedSaved = Speed;
                     Speed = Config.MaxSpeed;
                     break;
-                case BadItemEffect.BombTimerChanged:
+                case BadEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
                     int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin,
                         Config.BadItemTimerChangedMax);
@@ -203,15 +203,15 @@ namespace Final_Bomber.Core.Players
         {
             base.RemoveBadItem();
 
-            switch (BadItemEffect)
+            switch (BadEffect)
             {
-                case BadItemEffect.TooSlow:
+                case BadEffect.TooSlow:
                     Speed = SpeedSaved;
                     break;
-                case BadItemEffect.TooSpeed:
+                case BadEffect.TooSpeed:
                     Speed = SpeedSaved;
                     break;
-                case BadItemEffect.BombTimerChanged:
+                case BadEffect.BombTimerChanged:
                     BombTimer = BombTimerSaved;
                     break;
             }

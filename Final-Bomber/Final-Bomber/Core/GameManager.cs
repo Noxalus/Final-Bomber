@@ -312,5 +312,12 @@ namespace Final_Bomber.Core
 
             BombList.Add(bomb);
         }
+
+        public void AddPowerUp(PowerUpType type, Point position)
+        {
+            var powerUp = new PowerUp(position, type);
+            _powerUpList.Add(powerUp);
+            CurrentMap.Board[position.X, position.Y] = powerUp;
+        }
     }
 }

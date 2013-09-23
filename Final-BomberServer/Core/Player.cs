@@ -104,7 +104,7 @@ namespace Final_BomberServer.Core
 
                 if (InDestruction)
                 {
-                    _destructionTimer -= new TimeSpan(0, 0, 0, 0, GameSettings.Speed);
+                    _destructionTimer -= TimeSpan.FromMilliseconds(GameSettings.Speed);
 
                     if (_destructionTimer <= TimeSpan.Zero)
                     {
@@ -200,6 +200,11 @@ namespace Final_BomberServer.Core
         {
             float rtn = (Speed * GameSettings.Speed) / 1000f;
             return rtn;
+        }
+
+        protected override int GetTime()
+        {
+            return GameSettings.Speed;
         }
 
         public override void Destroy()

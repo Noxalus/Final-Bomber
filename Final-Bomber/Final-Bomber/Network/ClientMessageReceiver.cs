@@ -1,4 +1,5 @@
 ﻿using FBLibrary;
+using FBLibrary.Core;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Screens;
@@ -218,22 +219,23 @@ namespace Final_Bomber.Network
         {
             OnExplodeTile(tilePos);
         }
+        */
 
-        #region PowerupDrop
-        public delegate void PowerupDropEventHandler(Powerup.PowerupType type, float xPos, float yPos);
-        public event PowerupDropEventHandler PowerupDrop;
-        protected virtual void OnPowerupDrop(Powerup.PowerupType type, float xPos, float yPos)
+        #region PowerUpDrop
+        public delegate void PowerUpDropEventHandler(PowerUpType type, Point position);
+        public event PowerUpDropEventHandler PowerUpDrop;
+        protected virtual void OnPowerUpDrop(PowerUpType type, Point position)
         {
-            if (PowerupDrop != null)
-                PowerupDrop(type, xPos, yPos);
+            if (PowerUpDrop != null)
+                PowerUpDrop(type, position);
         }
         #endregion
-        
-        public void RecievePowerupDrop(Powerup.PowerupType type, float xPos, float yPos)
+        public void RecievePowerupDrop(PowerUpType type, Point position)
         {
-            OnPowerupDrop(type, xPos, yPos);
+            OnPowerUpDrop(type, position);
         }
 
+        /*
         #region PowerupPick
         public delegate void PowerupPickEventHandler(float xPos, float yPos, int playerId, float amount);
         public event PowerupPickEventHandler PowerupPick;

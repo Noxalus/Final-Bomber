@@ -233,10 +233,10 @@ namespace Final_Bomber.Core.Players
 
             #region Bomb
 
-            if ((HasBadItemEffect && BadItemEffect == BadItemEffect.BombDrop) ||
+            if ((HasBadEffect && BadEffect == BadEffect.BombDrop) ||
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) ||
                  InputHandler.KeyPressed(Keys[4]) &&
-                 (!HasBadItemEffect || (HasBadItemEffect && BadItemEffect != BadItemEffect.NoBomb))))
+                 (!HasBadEffect || (HasBadEffect && BadEffect != BadEffect.NoBomb))))
             {
                 if (CurrentBombAmount > 0)
                 {
@@ -260,27 +260,27 @@ namespace Final_Bomber.Core.Players
             base.Move(gameTime, map, hazardMap);
         }
 
-        public override void ApplyBadItem(BadItemEffect effect)
+        public override void ApplyBadItem(BadEffect effect)
         {
             base.ApplyBadItem(effect);
 
             switch (effect)
             {
-                case BadItemEffect.TooSlow:
+                case BadEffect.TooSlow:
                     SpeedSaved = Speed;
                     Speed = Config.MinSpeed;
                     break;
-                case BadItemEffect.TooSpeed:
+                case BadEffect.TooSpeed:
                     SpeedSaved = Speed;
                     Speed = Config.MaxSpeed;
                     break;
-                case BadItemEffect.KeysInversion:
+                case BadEffect.KeysInversion:
                     _keysSaved = (Keys[]) Keys.Clone();
                     var inversedKeysArray = new[] {1, 0, 3, 2};
                     for (int i = 0; i < inversedKeysArray.Length; i++)
                         Keys[i] = _keysSaved[inversedKeysArray[i]];
                     break;
-                case BadItemEffect.BombTimerChanged:
+                case BadEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
                     int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin,
                         Config.BadItemTimerChangedMax);
@@ -293,18 +293,18 @@ namespace Final_Bomber.Core.Players
         {
             base.RemoveBadItem();
 
-            switch (BadItemEffect)
+            switch (BadEffect)
             {
-                case BadItemEffect.TooSlow:
+                case BadEffect.TooSlow:
                     Speed = SpeedSaved;
                     break;
-                case BadItemEffect.TooSpeed:
+                case BadEffect.TooSpeed:
                     Speed = SpeedSaved;
                     break;
-                case BadItemEffect.KeysInversion:
+                case BadEffect.KeysInversion:
                     Keys = _keysSaved;
                     break;
-                case BadItemEffect.BombTimerChanged:
+                case BadEffect.BombTimerChanged:
                     BombTimer = BombTimerSaved;
                     break;
             }

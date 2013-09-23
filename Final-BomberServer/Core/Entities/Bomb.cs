@@ -23,7 +23,7 @@ namespace Final_BomberServer.Core.Entities
             }
             else if (Timer >= TimeSpan.Zero)
             {
-                Timer += new TimeSpan(0, 0, 0, 0, GameSettings.Speed);
+                Timer += TimeSpan.FromMilliseconds(GameSettings.Speed);
 
                 // The bomb will explode soon
                 if (CurrentDirection == LookDirection.Idle &&

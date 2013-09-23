@@ -1,26 +1,17 @@
 ﻿using System.Collections.Generic;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class Wall : BaseEntity, IEntity
+    public class Wall : BaseWall
     {
         #region Field Region
 
-        private bool _inDestruction;
         public AnimatedSprite Sprite { get; protected set; }
-
-        #endregion
-
-        #region Property Region
-
-        public bool InDestruction
-        {
-            get { return _inDestruction; }
-        }
 
         #endregion
 
@@ -34,7 +25,6 @@ namespace Final_Bomber.Core.Entities
             var animation = new Animation(6, 32, 32, 0, 0, 20);
 
             Sprite = new AnimatedSprite(spriteTexture, animation);
-            _inDestruction = false;
         }
 
         #endregion
@@ -48,7 +38,7 @@ namespace Final_Bomber.Core.Entities
             if (Sprite.Animation.CurrentFrame == Sprite.Animation.FrameCount - 1)
                 Remove();
 
-            if (_inDestruction)
+            if (InDestruction)
                 Sprite.IsAnimating = true;
         }
 
@@ -63,14 +53,14 @@ namespace Final_Bomber.Core.Entities
 
         public override void Destroy()
         {
-            if (!_inDestruction)
-                _inDestruction = true;
+            if (!InDestruction)
+                InDestruction = true;
         }
 
         public override void Remove()
         {
             IsAlive = false;
-            _inDestruction = false;
+            InDestruction = false;
         }
 
         #endregion

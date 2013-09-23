@@ -1,4 +1,5 @@
-﻿using Lidgren.Network;
+﻿using FBLibrary.Core;
+using Lidgren.Network;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,7 +56,7 @@ namespace Final_Bomber.Network
                     //RecieveExplodeTile(buffer.ReadInt32());
                     break;
                 case (byte)RMT.PowerupDrop:
-                    //RecievePowerupDrop((Powerup.PowerupType)buffer.ReadByte(), buffer.ReadFloat(), buffer.ReadFloat());
+                    RecievePowerupDrop((PowerUpType)message.ReadByte(), message.ReadPoint());
                     break;
                 case (byte)RMT.PowerupPick:
                     //RecievePowerupPick(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadInt32(), buffer.ReadFloat());

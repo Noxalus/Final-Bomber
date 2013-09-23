@@ -24,7 +24,7 @@ namespace FBLibrary.Core
         Left = 4
     }
 
-    public enum BadItemEffect
+    public enum BadEffect
     {
         NoBomb,
         BombDrop,

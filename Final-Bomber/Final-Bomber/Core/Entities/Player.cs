@@ -43,14 +43,6 @@ namespace Final_Bomber.Entities
 
         public Camera Camera { get; private set; }
 
-        public bool HasBadItemEffect { get; private set; }
-
-        public BadItemEffect BadItemEffect { get; private set; }
-
-        public TimeSpan BadItemTimer { get; private set; }
-
-        public TimeSpan BadItemTimerLenght { get; private set; }
-
         #endregion
 
         #region Constructor Region
@@ -64,11 +56,6 @@ namespace Final_Bomber.Entities
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
 
             PreviousLookDirection = CurrentDirection;
-
-            // Bad item
-            HasBadItemEffect = false;
-            BadItemTimer = TimeSpan.Zero;
-            BadItemTimerLenght = TimeSpan.Zero;
 
             _gameTime = new GameTime();
         }
@@ -197,15 +184,7 @@ namespace Final_Bomber.Entities
                     }
                 }
                 */
-                // Have caught a bad item
-                if (HasBadItemEffect)
-                {
-                    BadItemTimer += gameTime.ElapsedGameTime;
-                    if (BadItemTimer >= BadItemTimerLenght)
-                    {
-                        RemoveBadItem();
-                    }
-                }
+
 
                 #endregion
 
@@ -408,78 +387,6 @@ namespace Final_Bomber.Entities
 
         #endregion
 
-        #region Public Method Region
-
-        public void IncreaseTotalBombNumber(int incr)
-        {
-            if (TotalBombAmount + incr > Config.MaxBombNumber)
-            {
-                TotalBombAmount = Config.MaxBombNumber;
-                CurrentBombAmount = TotalBombAmount;
-            }
-            else if (TotalBombAmount + incr < Config.MinBombNumber)
-            {
-                TotalBombAmount = Config.MinBombNumber;
-                CurrentBombAmount = TotalBombAmount;
-            }
-            else
-            {
-                TotalBombAmount += incr;
-                CurrentBombAmount += incr;
-            }
-        }
-
-        public void IncreasePower(int incr)
-        {
-            if (BombPower + incr > Config.MaxBombPower)
-                BombPower = Config.MaxBombPower;
-            else if (BombPower + incr < Config.MinBombPower)
-                BombPower = Config.MinBombPower;
-            else
-                BombPower += incr;
-        }
-
-        public void IncreaseSpeed(float incr)
-        {
-            Speed += incr;
-        }
-
-        public virtual void ApplyBadItem(BadItemEffect effect)
-        {
-            HasBadItemEffect = true;
-            BadItemEffect = effect;
-            BadItemTimerLenght =
-                TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
-        }
-
-        protected virtual void RemoveBadItem()
-        {
-            HasBadItemEffect = false;
-            BadItemTimer = TimeSpan.Zero;
-            BadItemTimerLenght = TimeSpan.Zero;
-        }
-
-        public void Rebirth(Vector2 position)
-        {
-            IsAlive = true;
-            Sprite.IsAnimating = true;
-            InDestruction = false;
-            Position = position;
-            Sprite.CurrentAnimation = AnimationKey.Down;
-            _playerDeathAnimation.IsAnimating = false;
-
-            Invincibility();
-        }
-
-        public virtual void ChangeLookDirection(byte newLookDirection)
-        {
-            PreviousLookDirection = CurrentDirection;
-            CurrentDirection = (LookDirection)newLookDirection;
-            Debug.Print("New look direction: " + (LookDirection)newLookDirection);
-        }
-
-        #endregion
-
         #region Override Method Region
 
         public override void Destroy()
@@ -521,6 +428,31 @@ namespace Final_Bomber.Entities
         #endregion
 
         #endregion
+
+
+        public void Rebirth(Vector2 position)
+        {
+            IsAlive = true;
+            Sprite.IsAnimating = true;
+            InDestruction = false;
+            Position = position;
+            Sprite.CurrentAnimation = AnimationKey.Down;
+            _playerDeathAnimation.IsAnimating = false;
+
+            Invincibility();
+        }
+
+        public virtual void ChangeLookDirection(byte newLookDirection)
+        {
+            PreviousLookDirection = CurrentDirection;
+            CurrentDirection = (LookDirection)newLookDirection;
+            Debug.Print("New look direction: " + (LookDirection)newLookDirection);
+        }
+
+        protected override int GetTime()
+        {
+            return _gameTime.ElapsedGameTime.Milliseconds;
+        }
     }
 }
 

@@ -190,16 +190,6 @@ namespace Final_Bomber
         public const int BadItemTimerChangedMin = 3; // Seconds
         public const int BadItemTimerChangedMax = 8; // Seconds
 
-        public static readonly List<BadItemEffect> BadItemEffectList = new List<BadItemEffect>()
-        {
-            BadItemEffect.BombDrop,
-            BadItemEffect.BombTimerChanged,
-            BadItemEffect.KeysInversion,
-            BadItemEffect.NoBomb,
-            BadItemEffect.TooSlow,
-            BadItemEffect.TooSpeed
-        };
-
         // HUD
         public const int HUDPlayerInfoSpace = 105;
 

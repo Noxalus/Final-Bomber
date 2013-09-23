@@ -37,6 +37,11 @@ namespace Final_BomberServer.Core
             get { return _bombList; }
         }
 
+        public List<PowerUp> PowerUpList
+        {
+            get { return _powerUpList; }
+        }
+
         #endregion
 
         public GameManager()
@@ -89,6 +94,15 @@ namespace Final_BomberServer.Core
                 CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1)) ||
                 CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1)) ||
                 CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
+        }
+
+        public void AddPowerUp(Point position)
+        {
+            var powerUp = new PowerUp(position);
+            _powerUpList.Add(powerUp);
+            _currentMap.Board[position.X, position.Y] = powerUp;
+
+            GameSettings.gameServer.SendPowerUpDrop(powerUp);
         }
     }
 }

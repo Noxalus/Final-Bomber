@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary
@@ -19,13 +21,27 @@ namespace FBLibrary
 
         // Characteristics minimum and maximum
         public const float MaxSpeed = 300f;
+        public const int MaxBombPower = 1;
+        public const int MaxBombAmount = 1;
+
         public const float MinSpeed = 1f;
         public const int MinBombPower = 1;
         public const int MinBombAmount = 1;
 
         // Game info
-        public const float PlayerSpeedIncrementeur = 0.25f;
+        public static float PlayerSpeedIncrementeur = 0.25f;
         public static int WallPercentage = 100; // From 0% to 100%
+        public static int PowerUpPercentage = 100;
+
+        public static readonly List<BadEffect> BadEffectList = new List<BadEffect>()
+        {
+            BadEffect.BombDrop,
+            BadEffect.BombTimerChanged,
+            BadEffect.KeysInversion,
+            BadEffect.NoBomb,
+            BadEffect.TooSlow,
+            BadEffect.TooSpeed
+        };
 
         // World
         public static Point BaseTileSize = new Point(32, 32);

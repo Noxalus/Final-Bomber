@@ -19,7 +19,7 @@ namespace Final_BomberServer.Core
         public const string DIR = "Tiles\\";
         public bool walkable = true;
         public OldBomb Bombed = null;
-        public PowerUp Poweruped = null;
+        public OldPowerUp Poweruped = null;
         public bool stopExplosion = false; //Om den stoppar explosionen eller om denlåter explosionen gå igenom
         public bool canExplode = false; //Om den kan explodera, så blir tilen en floor piece
 
