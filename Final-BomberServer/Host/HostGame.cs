@@ -219,6 +219,21 @@ namespace Final_BomberServer.Host
             {
                 players[i].Update();
 
+                // Pick up a power up ?
+                var powerUp = GameManager.CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y] as PowerUp;
+                if (powerUp != null)
+                {
+                    if (!powerUp.InDestruction)
+                    {
+                        if (!players[i].HasBadEffect || (players[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
+                        {
+                            powerUp.ApplyEffect(players[i]);
+                            powerUp.Remove();
+                            //GameSettings.gameServer.SendPowerUpPick(players[i], powerUp);
+                        }
+                    }
+                }
+
                 // Is it die ?
                 if (!players[i].InDestruction && !players[i].IsInvincible &&
                     GameManager.HazardMap[players[i].CellPosition.X, players[i].CellPosition.Y] == 3)
@@ -295,11 +310,32 @@ namespace Final_BomberServer.Host
 
         private void CheckPlayerGettingPowerup()
         {
+            #region Items
+
+            for (int i = 0; i < GameManager.PowerUpList.Count; i++)
+            {
+                //GameManager.PowerUpList[i].Update();
+
+                // Is it die ?
+                if (GameManager.HazardMap[GameManager.PowerUpList[i].CellPosition.X, GameManager.PowerUpList[i].CellPosition.Y] == 3)
+                    GameManager.PowerUpList[i].Destroy();
+
+                // We clean the obsolete elements
+                if (!GameManager.PowerUpList[i].IsAlive)
+                {
+                    if (GameManager.CurrentMap.Board[GameManager.PowerUpList[i].CellPosition.X, GameManager.PowerUpList[i].CellPosition.Y] is PowerUp)
+                        GameManager.CurrentMap.Board[GameManager.PowerUpList[i].CellPosition.X, GameManager.PowerUpList[i].CellPosition.Y] = null;
+
+                    GameManager.PowerUpList.Remove(GameManager.PowerUpList[i]);
+                }
+            }
+
+            #endregion
+            /*
             Vector2 pos;
             MapTile tile;
             foreach (Client client in GameSettings.gameServer.Clients)
             {
-                /*
                 pos = client.Player.GetCenterPosition();
                 tile = GameSettings.Get_gameManager.CurrentMap().GetTileByPosition(pos.X, pos.Y);
                 if (tile != null) //Om spelaren är död så kommer tilen att vara null
@@ -311,8 +347,8 @@ namespace Final_BomberServer.Host
                         tile.Poweruped = null;
                     }
                 }
-                */
             }
+            */
         }
 
         private void SuddenDeath_ChangeDirection()

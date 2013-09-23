@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using FBLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -62,10 +62,10 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyPressed(Keys.Enter))
             {
-                if (Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[_indexMenu]))
-                    Config.ItemTypeAvaible.Remove(Config.ItemTypeArray[_indexMenu]);
+                if (GameConfiguration.PowerUpTypeAvailable.Exists(t => t == Config.ItemTypeArray[_indexMenu]))
+                    GameConfiguration.PowerUpTypeAvailable.Remove(Config.ItemTypeArray[_indexMenu]);
                 else
-                    Config.ItemTypeAvaible.Add(Config.ItemTypeArray[_indexMenu]);
+                    GameConfiguration.PowerUpTypeAvailable.Add(Config.ItemTypeArray[_indexMenu]);
             }
 
             if (InputHandler.KeyPressed(Keys.Left))
@@ -114,7 +114,7 @@ namespace Final_Bomber.Screens
                 FinalBomber.Instance.SpriteBatch.Draw(_itemsTexture,
                                          new Vector2(40*i + FinalBomber.Instance.ScreenRectangle.Width/2 - totalWidth/2,
                                                      FinalBomber.Instance.ScreenRectangle.Height/2 - 32/2),
-                                         Config.ItemTypeAvaible.Exists(t => t == Config.ItemTypeArray[i])
+                                         GameConfiguration.PowerUpTypeAvailable.Exists(t => t == Config.ItemTypeArray[i])
                                              ? new Rectangle(0, i*32, 32, 32)
                                              : new Rectangle(32, i*32, 32, 32),
                                          textColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);

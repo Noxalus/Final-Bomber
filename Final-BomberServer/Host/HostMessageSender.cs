@@ -202,7 +202,7 @@ namespace Final_BomberServer.Host
         {
             NetOutgoingMessage send = server.CreateMessage();
 
-            send.Write((byte)SMT.PowerupDrop);
+            send.Write((byte)SMT.PowerUpDrop);
 
             send.Write((byte)powerUp.Type);
             send.Write(powerUp.CellPosition);
@@ -210,15 +210,15 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendPowerupPick(Player player, MapTile tile)
+        public void SendPowerUpPick(Player player, PowerUp powerUp)
         {
             NetOutgoingMessage send = server.CreateMessage();
-            send.Write((byte)SMT.PowerupPick);
-            Vector2 pos = tile.GetMapPos();
-            send.Write(pos.X);
-            send.Write(pos.Y);
+
+            send.Write((byte)SMT.PowerUpPick);
+
             send.Write(player.Id);
-            send.Write(tile.Poweruped.GetPowerupValue());
+            send.Write(powerUp.CellPosition);
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 

@@ -114,21 +114,12 @@ namespace Final_Bomber
         // Bomb's animation's frames par second
         public const int BombLatency = 10;
 
-        // Item
-        public static readonly List<PowerUpType> ItemTypeAvaible = new List<PowerUpType>() 
-        { 
-            PowerUpType.Power,
-            PowerUpType.Bomb,
-            PowerUpType.Speed,
-            //PowerUpType.BadItem,
-            PowerUpType.Score 
-        };
         public static readonly PowerUpType[] ItemTypeArray = new PowerUpType[]
         {
             PowerUpType.Power,
             PowerUpType.Bomb,
             PowerUpType.Speed,
-            PowerUpType.BadItem,
+            PowerUpType.BadEffect,
             PowerUpType.Score
         };
         // 0 => Power, 1 => Bomb, 2 => Speed, 3 => Bad item, 4 => Point
@@ -137,7 +128,7 @@ namespace Final_Bomber
             {PowerUpType.Power, 0},
             {PowerUpType.Bomb, 1},
             {PowerUpType.Speed, 2},
-            {PowerUpType.BadItem, 3},
+            {PowerUpType.BadEffect, 3},
             {PowerUpType.Score, 4}
         };
 

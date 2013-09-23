@@ -165,29 +165,6 @@ namespace Final_Bomber.Entities
 
                 #endregion
 
-                #region Item
-
-                /*
-                if (FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                    Map[CellPosition.X, CellPosition.Y] is Item)
-                {
-                    var item = (Item)(FinalBomber.Instance.GamePlayScreen.World.Levels[FinalBomber.Instance.GamePlayScreen.World.CurrentLevel].
-                        Map[CellPosition.X, CellPosition.Y]);
-                    if (!item.InDestruction)
-                    {
-                        if (!HasBadItemEffect || (HasBadItemEffect && item.Type != PowerUpType.BadItem))
-                        {
-                            item.ApplyItem(this);
-                            FinalBomber.Instance.GamePlayScreen.ItemPickUpSound.Play();
-                            item.Remove();
-                        }
-                    }
-                }
-                */
-
-
-                #endregion
-
                 #region Teleporter
 
                 /*

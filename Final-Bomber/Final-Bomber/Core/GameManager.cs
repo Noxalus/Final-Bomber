@@ -33,7 +33,7 @@ namespace Final_Bomber.Core
         private Song _mapHurrySong;
         private Song _mapSong;
         public SoundEffect BombExplosionSound;
-        public SoundEffect ItemPickUpSound;
+        public SoundEffect PowerUpPickUpSound;
         public SoundEffect PlayerDeathSound;
 
         // Sudden Death
@@ -81,7 +81,7 @@ namespace Final_Bomber.Core
 
             // Sounds effects
             BombExplosionSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/boom");
-            ItemPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
+            PowerUpPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
             PlayerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
 
             CurrentMap.LoadContent();
@@ -121,6 +121,8 @@ namespace Final_Bomber.Core
                     }
                     else
                     {*/
+                    var powerUp = CurrentMap.Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] as PowerUp;
+                    if (powerUp == null)
                         CurrentMap.Board[_wallList[i].CellPosition.X, _wallList[i].CellPosition.Y] = null;
                     //}
 
@@ -180,15 +182,53 @@ namespace Final_Bomber.Core
             }
             #endregion
 
+            #region Items
+
+            for (int i = 0; i < _powerUpList.Count; i++)
+            {
+                _powerUpList[i].Update(gameTime);
+
+                // Is it die ?
+                if (HazardMap[_powerUpList[i].CellPosition.X, _powerUpList[i].CellPosition.Y] == 3)
+                    _powerUpList[i].Destroy();
+
+                // We clean the obsolete elements
+                if (!_powerUpList[i].IsAlive)
+                {
+                    if (CurrentMap.Board[_powerUpList[i].CellPosition.X, _powerUpList[i].CellPosition.Y] is PowerUp)
+                        CurrentMap.Board[_powerUpList[i].CellPosition.X, _powerUpList[i].CellPosition.Y] = null;
+
+                    _powerUpList.Remove(_powerUpList[i]);
+                }
+            }
+
+            #endregion
+
             #region Player
 
             for (int i = 0; i < Players.Count; i++)
             {
                 Players[i].Update(gameTime, CurrentMap, HazardMap);
 
+                // Pick up a power up ?
+                var powerUp = CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] as PowerUp;
+                if (powerUp != null)
+                {
+                    if (!powerUp.InDestruction)
+                    {
+                        if (!Players[i].HasBadEffect || (Players[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
+                        {
+                            powerUp.ApplyEffect(Players[i]);
+                            PowerUpPickUpSound.Play();
+                            powerUp.Remove();
+                        }
+                    }
+                }
+
                 // Is it die ?
                 if (!Players[i].InDestruction && !Players[i].IsInvincible && HazardMap[Players[i].CellPosition.X, Players[i].CellPosition.Y] == 3)
                 {
+                    // Bomb
                     int bombId = -42;
                     List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
                     foreach (Bomb b in bl)
@@ -198,9 +238,11 @@ namespace Final_Bomber.Core
                             bombId = b.PlayerId;
                         }
                     }
+
                     // Suicide
                     if (bombId == Players[i].Id)
                         Players[i].Stats.Suicides++;
+
                     else if (bombId >= 0 && bombId < Config.PlayersNumber)
                     {
                         Players[i].Stats.Kills++;
@@ -316,8 +358,8 @@ namespace Final_Bomber.Core
         public void AddPowerUp(PowerUpType type, Point position)
         {
             var powerUp = new PowerUp(position, type);
-            _powerUpList.Add(powerUp);
             CurrentMap.Board[position.X, position.Y] = powerUp;
+            _powerUpList.Add(powerUp);
         }
     }
 }

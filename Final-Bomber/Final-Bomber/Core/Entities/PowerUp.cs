@@ -22,12 +22,6 @@ namespace Final_Bomber.Core.Entities
         
         #region Constructor Region
 
-        public PowerUp(Point cellPosition) : base(cellPosition)
-        {
-            Type = Config.ItemTypeAvaible[GamePlayScreen.Random.Next(Config.ItemTypeAvaible.Count)];
-            Initialize();
-        }
-
         public PowerUp(Point cellPosition, PowerUpType type) : base(cellPosition)
         {
             Type = type;

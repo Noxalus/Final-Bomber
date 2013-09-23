@@ -7,6 +7,9 @@ namespace FBLibrary
 {
     public static class GameConfiguration
     {
+        // Random
+        public static Random Random = new Random();
+
         // Invincibility
         public const bool Invincible = false;
         public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
@@ -21,8 +24,8 @@ namespace FBLibrary
 
         // Characteristics minimum and maximum
         public const float MaxSpeed = 300f;
-        public const int MaxBombPower = 1;
-        public const int MaxBombAmount = 1;
+        public const int MaxBombPower = 30;
+        public const int MaxBombAmount = 30;
 
         public const float MinSpeed = 1f;
         public const int MinBombPower = 1;
@@ -32,6 +35,16 @@ namespace FBLibrary
         public static float PlayerSpeedIncrementeur = 0.25f;
         public static int WallPercentage = 100; // From 0% to 100%
         public static int PowerUpPercentage = 100;
+
+        // Power up
+        public static readonly List<PowerUpType> PowerUpTypeAvailable = new List<PowerUpType>() 
+        { 
+            PowerUpType.Power,
+            PowerUpType.Bomb,
+            PowerUpType.Speed,
+            //PowerUpType.BadItem,
+            PowerUpType.Score 
+        };
 
         public static readonly List<BadEffect> BadEffectList = new List<BadEffect>()
         {

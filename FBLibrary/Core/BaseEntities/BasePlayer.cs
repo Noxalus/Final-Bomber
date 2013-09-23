@@ -53,6 +53,8 @@ namespace FBLibrary.Core.BaseEntities
 
         public override void Update()
         {
+            #region Item
+
             // Have caught a bad item
             if (HasBadEffect)
             {
@@ -62,6 +64,8 @@ namespace FBLibrary.Core.BaseEntities
                     RemoveBadItem();
                 }
             }
+
+            #endregion
 
             base.Update();
         }

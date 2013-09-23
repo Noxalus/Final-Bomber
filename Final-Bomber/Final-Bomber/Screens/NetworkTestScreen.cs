@@ -9,6 +9,7 @@ using Final_Bomber.Entities;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Screens
 {
@@ -127,6 +128,65 @@ namespace Final_Bomber.Screens
 
                 counter++;
             }
+
+            #region Debug
+
+            if (Config.Debug && InputHandler.KeyDown(Keys.O))
+            {
+                for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
+                {
+                    for (int y = 0; y < GameManager.CurrentMap.Size.Y; y++)
+                    {
+                        string itemMapType = "";
+                        Color colorMapItem = Color.White;
+                        if (GameManager.CurrentMap.Board[x, y] != null)
+                        {
+                            switch (GameManager.CurrentMap.Board[x, y].GetType().Name)
+                            {
+                                case "Wall":
+                                    itemMapType = "W";
+                                    colorMapItem = Color.Pink;
+                                    break;
+                                case "Bomb":
+                                    itemMapType = "B";
+                                    colorMapItem = Color.Red;
+                                    break;
+                                case "Player":
+                                    itemMapType = "P";
+                                    colorMapItem = Color.Green;
+                                    break;
+                                case "Item":
+                                    itemMapType = "I";
+                                    colorMapItem = Color.Yellow;
+                                    break;
+                                case "EdgeWall":
+                                    itemMapType = "E";
+                                    colorMapItem = Color.Black;
+                                    break;
+                                case "UnbreakableWall":
+                                    itemMapType = "U";
+                                    colorMapItem = Color.Black;
+                                    break;
+                                case "Teleporter":
+                                    itemMapType = "T";
+                                    colorMapItem = Color.Blue;
+                                    break;
+                                case "Arrow":
+                                    itemMapType = "A";
+                                    colorMapItem = Color.DarkViolet;
+                                    break;
+                            }
+                        }
+                        else
+                            itemMapType = ".";
+
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, itemMapType,
+                            new Vector2(x * 20, 80 + 20 * y), colorMapItem);
+                    }
+                }
+            }
+
+            #endregion
 
             FinalBomber.Instance.SpriteBatch.End();
 

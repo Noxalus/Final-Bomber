@@ -8,9 +8,12 @@ namespace FBLibrary.Core.BaseEntities
 
         protected BasePowerUp(Point position) : base(position)
         {
+            Type = GameConfiguration.PowerUpTypeAvailable[
+                GameConfiguration.Random.Next(
+                GameConfiguration.PowerUpTypeAvailable.Count)];
         }
 
-        public void ApplyItem(BasePlayer p)
+        public void ApplyEffect(BasePlayer p)
         {
             switch (Type)
             {
@@ -27,9 +30,8 @@ namespace FBLibrary.Core.BaseEntities
                     p.IncreaseSpeed(GameConfiguration.PlayerSpeedIncrementeur);
                     break;
                 // Skeleton ! => Bad items
-                case PowerUpType.BadItem:
-                    //int randomBadEffect = GamePlayScreen.Random.Next(GameConfiguration.BadEffectList.Count);
-                    int randomBadEffect = 0;
+                case PowerUpType.BadEffect:
+                    int randomBadEffect = GameConfiguration.Random.Next(GameConfiguration.BadEffectList.Count);
                     p.ApplyBadItem(GameConfiguration.BadEffectList[randomBadEffect]);
                     break;
                 // More points

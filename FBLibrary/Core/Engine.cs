@@ -40,7 +40,7 @@ namespace FBLibrary.Core
         Bomb,
         Speed,
         Score,
-        BadItem
+        BadEffect
     }
 
     #endregion

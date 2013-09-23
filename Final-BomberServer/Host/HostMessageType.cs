@@ -32,8 +32,8 @@ namespace Final_BomberServer.Host
             BombExploded = 6, //Säger att en bomb har exploderat
             Burn = 7, //Säger att spelaren blev bränd på en bomb
             ExplodeTile = 8, //Säger till spelarna att en tile har exploderat
-            PowerupDrop = 11, //Säger till spelarna att en powerup har droppats
-            PowerupPick = 12, //Säger till spelarna att en powerup har plockats upp
+            PowerUpDrop = 11, //Säger till spelarna att en powerup har droppats
+            PowerUpPick = 12, //Säger till spelarna att en powerup har plockats upp
             SuddenDeath = 13, //Säger till spelarna när sudden death börjar
             SDExplosion = 14, //Säger till spelarna vart sudden death explosionen sker
             End = 10, //Säger till att banan är slut och berättar vem som vann
