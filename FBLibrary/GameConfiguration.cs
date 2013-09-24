@@ -66,7 +66,7 @@ namespace FBLibrary
         public static int DeltaTime = 0; // milliseconds
 
         // TO DELETE
-        public static int PlayerNumber = 1;
+        public static int PlayerNumber = 2;
         public static string ServerIp = "localhost";
         public static string ServerPort = "2643";
     }
