@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="Core\Entities\Arrow.cs" />
     <Compile Include="Core\Entities\Bomb.cs" />
-    <Compile Include="Core\Entities\OldBomb.cs" />
     <Compile Include="Core\Entities\EdgeWall.cs" />
     <Compile Include="Core\Entities\Teleporter.cs" />
     <Compile Include="Core\Entities\UnbreakableWall.cs" />
@@ -70,10 +69,7 @@
     <Compile Include="Core\GameServerHandler.cs" />
     <Compile Include="Core\Entities\PowerUp.cs" />
     <Compile Include="Core\WorldEngine\Map.cs" />
-    <Compile Include="Core\OldMap.cs" />
-    <Compile Include="Core\MapTile.cs" />
     <Compile Include="Core\Player.cs" />
-    <Compile Include="Core\Entities\OldPowerUp.cs" />
     <Compile Include="Core\ProgramStepProcessing.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Host\Client.cs" />

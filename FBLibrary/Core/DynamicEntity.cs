@@ -8,7 +8,8 @@ namespace FBLibrary.Core
         private float _speed;
         private Vector2 _velocity;
 
-        protected LookDirection CurrentDirection;
+        public LookDirection CurrentDirection;
+        protected LookDirection PreviousDirection;
 
         protected bool IsMoving;
 
@@ -32,6 +33,8 @@ namespace FBLibrary.Core
         protected DynamicEntity()
         {
             PreviousCellPosition = Point.Zero;
+            CurrentDirection = LookDirection.Idle;
+            PreviousDirection = CurrentDirection;
         }
 
         protected DynamicEntity(Point cellPosition) : base(cellPosition)

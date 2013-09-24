@@ -41,7 +41,7 @@ namespace Final_BomberServer.Core.Entities
 
         public override void Destroy()
         {
-            GameSettings.gameServer.SendBombExploded(this);
+            //GameSettings.gameServer.SendBombExploded(this);
             ComputeActionField(3);
 
             Remove();

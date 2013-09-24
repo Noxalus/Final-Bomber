@@ -24,8 +24,6 @@ namespace Final_Bomber.Entities
         private AnimatedSprite _playerDeathAnimation;
         protected TimeSpan BombTimerSaved;
 
-        protected LookDirection PreviousLookDirection;
-
         // Bad item
         protected float SpeedSaved;
         private bool _cellTeleporting;
@@ -54,9 +52,7 @@ namespace Final_Bomber.Entities
 
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-
-            PreviousLookDirection = CurrentDirection;
-
+            
             _gameTime = new GameTime();
         }
 
@@ -100,7 +96,7 @@ namespace Final_Bomber.Entities
 
             if (IsAlive && !InDestruction)
             {
-                PreviousLookDirection = CurrentDirection;
+                PreviousDirection = CurrentDirection;
 
                 Sprite.Update(gameTime);
 
@@ -421,7 +417,7 @@ namespace Final_Bomber.Entities
 
         public virtual void ChangeLookDirection(byte newLookDirection)
         {
-            PreviousLookDirection = CurrentDirection;
+            PreviousDirection = CurrentDirection;
             CurrentDirection = (LookDirection)newLookDirection;
             Debug.Print("New look direction: " + (LookDirection)newLookDirection);
         }

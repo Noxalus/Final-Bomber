@@ -302,7 +302,7 @@ namespace Final_Bomber.Core.Players
 
         private void SendMovement()
         {
-            if (PreviousLookDirection != CurrentDirection)
+            if (PreviousDirection != CurrentDirection)
             {
                 switch (CurrentDirection)
                 {

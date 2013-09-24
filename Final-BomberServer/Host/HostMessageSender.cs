@@ -135,7 +135,7 @@ namespace Final_BomberServer.Host
 
             if (!notDir)
             {
-                send.Write((byte)player.nextDirection);
+                send.Write((byte)player.CurrentDirection);
             }
             else
             {
@@ -229,7 +229,7 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
             WriteOutput("SUDDEN DEATH!");
         }
-
+        /*
         public void SendSDExplosion(Explosion ex)
         {
             NetOutgoingMessage send = server.CreateMessage();
@@ -237,7 +237,7 @@ namespace Final_BomberServer.Host
             send.Write(ex.Position.GetListPos());
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
-
+        */
         public void SendEnd(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)

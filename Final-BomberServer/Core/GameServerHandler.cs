@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Final_BomberServer.Core.WorldEngine;
 using Final_BomberServer.Host;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace Final_BomberServer.Core
             //MainServer.EndMainConnection("byebye");
             Running = false;
             GameSettings.CurrentMap = 0;
-            GameSettings.mapPlayList = new List<OldMap>();
+            GameSettings.mapPlayList = new List<Map>();
         }
     }
 }

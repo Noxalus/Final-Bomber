@@ -28,7 +28,7 @@ namespace Final_BomberServer.Host
 
             // End of game
             _alivePlayers = GameSettings.gameServer.Clients.GetAlivePlayers();
-            if (StartedMatch && false /*_alivePlayers.Count < 2*/)
+            if (StartedMatch && _alivePlayers.Count < 1)
             {
                 //MainServer.SendPlayerStats();
                 GameSettings.CurrentMap++;

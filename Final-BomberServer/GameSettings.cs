@@ -1,4 +1,5 @@
 ﻿using Final_BomberServer.Core;
+using Final_BomberServer.Core.WorldEngine;
 using Final_BomberServer.Host;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace Final_BomberServer
         public static ClientCollection PlayingClients;
         public static GameValues GameValues = new GameValues();
 
-        public static List<OldMap> mapPlayList = new List<OldMap>();
-        public static List<OldMap> Maps = new List<OldMap>();
+        public static List<Map> mapPlayList = new List<Map>();
+        public static List<Map> Maps = new List<Map>();
         static int currentMap = 0;
         public static int CurrentMap
         {
@@ -34,7 +35,7 @@ namespace Final_BomberServer
             }
         }
 
-        public static OldMap GetCurrentMap()
+        public static Map GetCurrentMap()
         {
             if (GameSettings.mapPlayList.Count > 0)
                 return GameSettings.mapPlayList[GameSettings.currentMap];

@@ -94,18 +94,6 @@ namespace Final_BomberServer.Host
             return null;
         }
 
-        #region GetPlayersFromTile_Methods
-        private bool PlayerCollideWithTile(Player player, MapTile tile)
-        {
-            foreach (MapTile tile2 in GameSettings.GetCurrentMap().GetTilesCollisionWithPlayer(player))
-            {
-                if (tile == tile2)
-                    return true;
-            }
-            return false;
-        }
-        #endregion
-
         public Player GetPlayerFromId(int playerId)
         {
             foreach (var client in this)
@@ -116,32 +104,10 @@ namespace Final_BomberServer.Host
 
             return null;
         }
-
-        public List<Player> GetPlayersFromTile(MapTile tile, bool onlyAlive)
-        {
-            List<Player> rtn = new List<Player>();
-            if (onlyAlive)
-            {
-                foreach (Player player in GetAlivePlayers())
-                {
-                    if (PlayerCollideWithTile(player, tile))
-                        rtn.Add(player);
-                }
-            }
-            else
-            {
-                foreach (Client client in this)
-                {
-                    if (PlayerCollideWithTile(client.Player, tile))
-                        rtn.Add(client.Player);
-                }
-            }
-            return rtn;
-        }
-
+        
         public List<Player> GetAlivePlayers()
         {
-            List<Player> rtn = new List<Player>();
+            var rtn = new List<Player>();
             foreach (Client client in this)
             {
                 if (client.Player.IsAlive && !client.Spectating)

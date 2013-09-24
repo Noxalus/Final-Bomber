@@ -26,7 +26,7 @@ namespace Final_BomberServer.Host
         int suddenDeathTileY;
         //H.U.D.Timer tmr_UntilSuddenDeath;
         //H.U.D.Timer tmr_ExplosionSuddenDeath;
-        OldBomb suddenDeathBomb;
+        Bomb suddenDeathBomb;
         Vector2 suddenDeathMovement;
 
         public static GameManager GameManager;
@@ -97,6 +97,7 @@ namespace Final_BomberServer.Host
             //tmr_UntilSuddenDeath = new H.U.D.Timer(false);
             GameSettings.gameServer.Clients.Sort(new ClientRandomSorter());
             GameSettings.PlayingClients = new ClientCollection();
+
             foreach (Client client in GameSettings.gameServer.Clients) //Skickar spelarna till varandra
             {
                 client.Player.ChangePosition(GameManager.CurrentMap.PlayerSpawnPoints[client.Player.Id]);
@@ -112,7 +113,8 @@ namespace Final_BomberServer.Host
                 GameSettings.gameServer.Clients[i].Spectating = false;
             }
 
-            foreach (Client client in GameSettings.gameServer.Clients) //Skickar spelarna till varandra
+            // Send players info to everyone
+            foreach (Client client in GameSettings.gameServer.Clients) 
             {
                 GameSettings.gameServer.SendPlayerInfo(client);
             }
@@ -127,7 +129,7 @@ namespace Final_BomberServer.Host
             StartedMatch = false;
             foreach (Client client in GameSettings.gameServer.Clients)
             {
-                client.Player.nextDirection = LookDirection.Idle;
+                //client.Player.nextDirection = LookDirection.Idle;
                 GameSettings.gameServer.SendPlayerPosition(client.Player, false);
             }
         }
@@ -140,7 +142,7 @@ namespace Final_BomberServer.Host
                 CheckBombTimer();
                 CheckWalls();
                 UpdatePlayers();
-                CheckPlayerGettingPowerup();
+                CheckPlayerGettingPowerUp();
 
                 //CheckSuddenDeath();
             }
@@ -166,7 +168,6 @@ namespace Final_BomberServer.Host
                 if (!GameManager.BombList[i].IsAlive)
                 {
                     // TODO: Finish this part !
-                    //_gameManager._gameManager.CurrentMap.CheckToRemoveExplodedTiles(_gameManager.BombList[i]); //Kollar om den spränger bort någon tile
                     // The player get back his bomb
                     GameSettings.gameServer.Clients.GetPlayerFromId(GameManager.BombList[i].PlayerId).CurrentBombAmount++;
                     GameManager.CurrentMap.CollisionLayer[GameManager.BombList[i].CellPositionX, GameManager.BombList[i].CellPositionY] = false;
@@ -308,7 +309,7 @@ namespace Final_BomberServer.Host
             */
         }
 
-        private void CheckPlayerGettingPowerup()
+        private void CheckPlayerGettingPowerUp()
         {
             #region Items
 
@@ -387,10 +388,11 @@ namespace Final_BomberServer.Host
         }
         private void CheckSuddenDeath()//Kollar när sudden death startar och skapar explosionerna som vandrar runt banan
         {
+            /*
             #region BeforeSuddenDeath
             if (!suddenDeath)
             {
-                if (false /*tmr_UntilSuddenDeath.Each(_gameManager.CurrentMap.suddenDeathTime)*/)
+                if (tmr_UntilSuddenDeath.Each(_gameManager.CurrentMap.suddenDeathTime))
                 {
                     suddenDeath = true;
                     //tmr_UntilSuddenDeath.Stop();
@@ -405,7 +407,7 @@ namespace Final_BomberServer.Host
                     GameSettings.gameServer.SendSuddenDeath();
                     //GameManager.BombList.Add(suddenDeathBomb);
                     //Lägger till första explosionen
-                    Explosion ex = new Explosion(Explosion.ExplosionType.Mid, null/*_gameManager.CurrentMap.GetTileByTilePosition(0, 0)*/);
+                    Explosion ex = new Explosion(Explosion.ExplosionType.Mid, _gameManager.CurrentMap.GetTileByTilePosition(0, 0));
                     suddenDeathBomb.Explosion.Add(ex);
                     GameSettings.gameServer.SendSDExplosion(ex);
                     //Sätter allas liv till 1
@@ -420,10 +422,10 @@ namespace Final_BomberServer.Host
             #region AfterSuddenDeath
             if (suddenDeath)
             {
-                if (true /*tmr_ExplosionSuddenDeath.Each(suddenDeathTPE)*/)
+                if (tmr_ExplosionSuddenDeath.Each(suddenDeathTPE))
                 {
-                    MapTile tile = null /*_gameManager.CurrentMap.GetTileByTilePosition(suddenDeathTileX + (int)suddenDeathMovement.X,
-                        suddenDeathTileY + (int)suddenDeathMovement.Y)*/;
+                    MapTile tile = _gameManager.CurrentMap.GetTileByTilePosition(suddenDeathTileX + (int)suddenDeathMovement.X,
+                        suddenDeathTileY + (int)suddenDeathMovement.Y);
                     if (tile != null)
                     {
                         if (suddenDeathBomb.Explosion.GetExplosionByTile(tile) != null)
@@ -437,13 +439,14 @@ namespace Final_BomberServer.Host
                     }
                     suddenDeathTileX += (int)suddenDeathMovement.X;
                     suddenDeathTileY += (int)suddenDeathMovement.Y;
-                    Explosion ex = new Explosion(Explosion.ExplosionType.Mid, null /*_gameManager.CurrentMap.GetTileByTilePosition(suddenDeathTileX, suddenDeathTileY)*/);
+                    Explosion ex = new Explosion(Explosion.ExplosionType.Mid, _gameManager.CurrentMap.GetTileByTilePosition(suddenDeathTileX, suddenDeathTileY));
                     suddenDeathBomb.Explosion.Add(ex);
                     ex.Position.walkable = true;
                     GameSettings.gameServer.SendSDExplosion(ex);
                 }
             }
             #endregion
+            */
         }
 
         #endregion
@@ -537,7 +540,7 @@ namespace Final_BomberServer.Host
             }
         }
 
-        private void bomb_IsExploded(OldBomb bomb)
+        private void bomb_IsExploded(Bomb bomb)
         //Bombs har precis exploderat, skickar till clienterna att den har exploderat och hur
         {
             /*

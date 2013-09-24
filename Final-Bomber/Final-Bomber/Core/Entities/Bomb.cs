@@ -123,7 +123,7 @@ namespace Final_Bomber.Core.Entities
             if (Timer >= TimerLenght)
             {
                 Timer = TimeSpan.FromSeconds(-1);
-                //Destroy();
+                Destroy();
             }
             else if (Timer >= TimeSpan.Zero)
             {

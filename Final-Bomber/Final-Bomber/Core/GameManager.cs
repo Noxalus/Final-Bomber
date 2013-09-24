@@ -150,13 +150,11 @@ namespace Final_Bomber.Core
                 BombList[i].Update(gameTime, CurrentMap, HazardMap);
 
                 // Is it die ?
-                /*
                 if (HazardMap[BombList[i].CellPosition.X, BombList[i].CellPosition.Y] == 3 &&
                     !BombList[i].InDestruction)
                 {
                     BombList[i].Destroy();
                 }
-                */
 
                 // We clean the obsolete elements
                 if (!BombList[i].IsAlive)

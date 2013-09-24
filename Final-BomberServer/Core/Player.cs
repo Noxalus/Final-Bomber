@@ -14,12 +14,6 @@ namespace Final_BomberServer.Core
 {
     public class Player : BasePlayer
     {
-        public LookDirection nextDirection;
-        public MapTile AfterNextTile;
-        public MapTile NextTile;
-        public MapTile CurrentTile;
-        public Vector2 SizeOffset = new Vector2(15, 30);
-
         private TimeSpan _destructionTimer;
 
         private readonly Timer _tmrSendPos = new Timer(true);
@@ -27,30 +21,16 @@ namespace Final_BomberServer.Core
         public Player(int id)
             : base(id)
         {
-            nextDirection = LookDirection.Idle;
             _destructionTimer = DestructionTime;
         }
 
         public void SetMovement(LookDirection direction)
         {
-            MapTile nextTile = null;
-            if (NextTile != null) // Got an error that this fixes
+            CurrentDirection = direction;
+            if (PreviousDirection == LookDirection.Idle && direction != LookDirection.Idle)
             {
-                nextTile = GameSettings.GetCurrentMap().GetTileByPlayerDirection(this, direction);
-            }
-
-            if (true /*nextTile != null*/)
-            {
-                nextDirection = direction;
-                if (CurrentDirection == LookDirection.Idle && direction != LookDirection.Idle)
-                {
-                    CurrentDirection = direction;
-                    SendPosition();
-                }
-            }
-            else
-            {
-                nextDirection = LookDirection.Idle;
+                PreviousDirection = direction;
+                SendPosition();
             }
         }
 
@@ -86,9 +66,8 @@ namespace Final_BomberServer.Core
                     ComputeWallCollision(map);
                 }
 
-                if (CurrentDirection != nextDirection)
+                if (CurrentDirection != PreviousDirection)
                 {
-                    CurrentDirection = nextDirection;
                     SendPosition();
                 }
                 else
@@ -96,9 +75,6 @@ namespace Final_BomberServer.Core
                     if (_tmrSendPos.Each(ServerSettings.SendPlayerPositionTime))
                         SendPosition();
                 }
-
-                CurrentTile = NextTile;
-                SetMovement(CurrentDirection);
 
                 //Program.Log.Info("[Client #" + Id + "]Position: + " + Position.ToString());
 
@@ -114,6 +90,8 @@ namespace Final_BomberServer.Core
 
                 // Call Update method of DynamicEntity class
                 Update();
+
+                PreviousDirection = CurrentDirection;
             }
         }
 

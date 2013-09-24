@@ -178,11 +178,10 @@ namespace Final_Bomber.Screens
                      + p.Stats.PointPicked + " pt(s)",
                     new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
-                if (Config.Debug)
-                {
+#if DEBUG
                     FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.CellPosition).ToString(),
                         new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
-                }
+#endif
 
                 // To space the red icons and the "normal color" icons
                 int iconLag = 0;
@@ -243,7 +242,7 @@ namespace Final_Bomber.Screens
 
                 // Player's speed
                 int counterRedShoes = 0;
-                var counterIncrementeur = (int)((p.Speed - GameConfiguration.BasePlayerSpeed)/(GameConfiguration.BasePlayerSpeed * (GameConfiguration.PlayerSpeedIncrementeurPercentage/100))) + 1;
+                var counterIncrementeur = (int)((p.Speed - GameConfiguration.BasePlayerSpeed) / (GameConfiguration.BasePlayerSpeed * (GameConfiguration.PlayerSpeedIncrementeurPercentage / 100))) + 1;
                 if (counterIncrementeur >= 10)
                 {
                     iconLag = 10;
@@ -298,15 +297,16 @@ namespace Final_Bomber.Screens
                     _hudOrigin.X + _hudMarginLeft +
                     (ControlManager.SpriteFont.MeasureString(GameManager.Timer.ToString("mm") + ":" +
                                                              GameManager.Timer.ToString("ss")).X) + 25,
-                    _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace*GameManager.Players.Count + 22);
+                    _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 22);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.Timer.ToString("mm") + ":" + GameManager.Timer.ToString("ss"),
                 pos, Color.Black);
 
             #endregion
 
+#if DEBUG
             #region Debug
 
-            if (Config.Debug && InputHandler.KeyDown(Keys.O))
+            if (InputHandler.KeyDown(Keys.O))
             {
                 for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
                 {
@@ -360,8 +360,38 @@ namespace Final_Bomber.Screens
                     }
                 }
             }
-
+            else if (InputHandler.KeyDown(Keys.C))
+            {
+                for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
+                {
+                    for (int y = 0; y < GameManager.CurrentMap.Size.Y; y++)
+                    {
+                        if (!GameManager.CurrentMap.CollisionLayer[x, y])
+                        {
+                            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "0",
+                                new Vector2(x * 20, 80 + 20 * y), Color.ForestGreen);
+                        }
+                        else
+                        {
+                            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "1",
+                            new Vector2(x * 20, 80 + 20 * y), Color.Purple);
+                        }
+                    }
+                }
+            }
+            else if (InputHandler.KeyDown(Keys.H))
+            {
+                for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
+                {
+                    for (int y = 0; y < GameManager.CurrentMap.Size.Y; y++)
+                    {
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.HazardMap[x, y].ToString(),
+                            new Vector2(x * 30, 80 + 20 * y), Color.Black);
+                    }
+                }
+            }
             #endregion
+#endif
 
             FinalBomber.Instance.SpriteBatch.End();
 
