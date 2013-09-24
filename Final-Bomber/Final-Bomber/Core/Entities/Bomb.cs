@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Controls;
@@ -57,7 +59,7 @@ namespace Final_Bomber.Core.Entities
 
             // Bomb's explosion animations
             _explosionSpriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/explosion");
-            const int explosionAnimationsFramesPerSecond = Config.BombLatency;
+            var explosionAnimationsFramesPerSecond = 10;
             _explosionAnimations = new[]
             {
                 new Animation(4, 32, 32, 0, 0, explosionAnimationsFramesPerSecond),
@@ -68,6 +70,7 @@ namespace Final_Bomber.Core.Entities
                 new Animation(4, 32, 32, 0, 160, explosionAnimationsFramesPerSecond),
                 new Animation(4, 32, 32, 0, 192, explosionAnimationsFramesPerSecond)
             };
+
             _explosionAnimationsDirection = new Dictionary<Point, ExplosionDirection>();
 
             // Bomb's states
@@ -114,9 +117,9 @@ namespace Final_Bomber.Core.Entities
             {
                 foreach (Animation a in _explosionAnimations)
                     a.Update(gameTime);
-                if (_explosionAnimations[4].CurrentFrame == _explosionAnimations[4].FrameCount - 1)
-                    Remove();
             }
+
+            Debug.Print(Timer.ToString());
 
             #endregion
 
@@ -434,6 +437,7 @@ namespace Final_Bomber.Core.Entities
 
             NetworkTestScreen.GameManager.BombExplosionSound.Play();
             InDestruction = true;
+
             ComputeActionField(3);
         }
 

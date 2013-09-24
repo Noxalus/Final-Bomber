@@ -63,6 +63,19 @@ namespace FBLibrary.Core
             DestructionTime = TimeSpan.Zero;
         }
 
+        public virtual void Update()
+        {
+            if (InDestruction)
+            {
+                DestructionTime -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+
+                Console.WriteLine(DestructionTime.ToString());
+
+                if (DestructionTime < TimeSpan.Zero)
+                    Remove();
+            }
+        }
+
         protected BaseEntity(Point cellPosition) : this()
         {
             _cellPosition = cellPosition;

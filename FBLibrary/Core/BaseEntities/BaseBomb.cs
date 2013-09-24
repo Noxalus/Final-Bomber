@@ -43,6 +43,8 @@ namespace FBLibrary.Core.BaseEntities
             HazardMap = hazardMap;
 
             ComputeActionField(1);
+
+            DestructionTime = GameConfiguration.BombDestructionTime;
         }
 
         public override void Update()
@@ -57,6 +59,8 @@ namespace FBLibrary.Core.BaseEntities
             else if (Timer >= TimeSpan.Zero)
             {
                 Timer += TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+
+                Console.WriteLine("Bomb timer: " + Timer.ToString());
 
                 // The bomb will explode soon
                 if (CurrentDirection == LookDirection.Idle &&

@@ -7,7 +7,10 @@ namespace FBLibrary.Core.BaseEntities
         protected BaseWall(Point cellPosition)
             : base(cellPosition)
         {
+        }
 
+        public void Update()
+        {
         }
     }
 }

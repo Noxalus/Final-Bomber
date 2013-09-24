@@ -18,7 +18,7 @@ namespace FBLibrary.Core
 
         protected readonly List<BaseBomb> BaseBombList;
         protected readonly List<BasePlayer> BasePlayerList;
-        protected readonly List<BaseWall> BaseWallList; 
+        protected readonly List<BaseWall> BaseWallList;
 
         protected BaseGameManager()
         {
@@ -32,62 +32,24 @@ namespace FBLibrary.Core
 
         public virtual void Update()
         {
+            UpdateWalls();
             UpdateBombs();
         }
 
-        private void UpdateBombs()
+        private void UpdateWalls()
         {
-            for (int i = 0; i < BaseBombList.Count; i++)
+            for (int i = 0; i < BaseWallList.Count; i++)
             {
-                BaseBombList[i].Update();
-
-                // Do we delete the bomb
-                if (!BaseBombList[i].IsAlive)
+                if (HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] == 3)
                 {
-                    if (BaseCurrentMap.Board[BaseBombList[i].CellPosition.X, BaseBombList[i].CellPosition.Y] is BaseBomb)
-                        BaseCurrentMap.Board[BaseBombList[i].CellPosition.X, BaseBombList[i].CellPosition.Y] = null;
-
-                    BaseCurrentMap.CollisionLayer[BaseBombList[i].CellPosition.X, BaseBombList[i].CellPosition.Y] = false;
-
-                    // We don't forget to give it back to its owner
-                    if (BaseBombList[i].PlayerId >= 0)
-                    {
-                        BasePlayer player = BasePlayerList.Find(p => p.Id == BaseBombList[i].PlayerId);
-
-                        if (player != null && player.CurrentBombAmount < player.TotalBombAmount)
-                            player.CurrentBombAmount++;
-                    }
-
-                    // Update the hazard map
-                    List<BaseBomb> bL = BaseBombList.FindAll(b => !b.InDestruction);
-                    foreach (Point p in BaseBombList[i].ActionField)
-                    {
-                        bool sameCellThanAnOther = false;
-                        if (BaseBombList.Where(
-                            b => !(b.CellPosition.X == BaseBombList[i].CellPosition.X &&
-                            b.CellPosition.Y == BaseBombList[i].CellPosition.Y)).Any(
-                            b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
-                        {
-                            HazardMap[p.X, p.Y] = 2;
-                            sameCellThanAnOther = true;
-                        }
-                        if (!sameCellThanAnOther)
-                            HazardMap[p.X, p.Y] = 0;
-                    }
-
-                    RemoveBomb(BaseBombList[i]);
+                    DestroyWall(BaseWallList[i].CellPosition);
+                    HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] = 0;
                 }
             }
         }
 
-
-        public abstract void AddWall(Point position);
-        protected virtual void AddWall(BaseWall baseWall)
+        private void UpdateBombs()
         {
-            BaseCurrentMap.Board[baseWall.CellPositionX, baseWall.CellPositionY] = baseWall;
-            BaseCurrentMap.CollisionLayer[baseWall.CellPositionX, baseWall.CellPositionY] = true;
-
-            BaseWallList.Add(baseWall);
         }
 
         protected virtual void AddPlayer(BasePlayer player)
@@ -100,6 +62,38 @@ namespace FBLibrary.Core
             BasePlayerList.Remove(player);
         }
 
+        #region Wall methods
+
+        public abstract void AddWall(Point position);
+        protected virtual void AddWall(BaseWall baseWall)
+        {
+            BaseCurrentMap.Board[baseWall.CellPositionX, baseWall.CellPositionY] = baseWall;
+            BaseCurrentMap.CollisionLayer[baseWall.CellPositionX, baseWall.CellPositionY] = true;
+
+            BaseWallList.Add(baseWall);
+        }
+
+        protected abstract void DestroyWall(Point position); 
+        protected virtual void DestroyWall(BaseWall baseWall)
+        {
+            if (baseWall != null)
+                baseWall.Destroy();
+        }
+
+        protected virtual void RemoveWall(BaseWall wall)
+        {
+            if (BaseCurrentMap.Board[wall.CellPosition.X, wall.CellPosition.Y] is BaseWall)
+                BaseCurrentMap.Board[wall.CellPosition.X, wall.CellPosition.Y] = null;
+
+            BaseCurrentMap.CollisionLayer[wall.CellPosition.X, wall.CellPosition.Y] = false;
+
+            BaseWallList.Remove(wall);
+        }
+
+        #endregion
+
+        #region Bomb methods
+
         protected virtual void AddBomb(BaseBomb bomb)
         {
             BaseCurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
@@ -110,13 +104,58 @@ namespace FBLibrary.Core
 
         protected virtual void RemoveBomb(BaseBomb bomb)
         {
+            if (BaseCurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] is BaseBomb)
+                BaseCurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = null;
+
+            BaseCurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = false;
+
+            DisplayHazardMap();
+
+            // Update the hazard map
+            List<BaseBomb> bL = BaseBombList.FindAll(b => !b.InDestruction);
+            foreach (Point p in bomb.ActionField)
+            {
+                bool sameCellThanAnOther = false;
+                if (BaseBombList.Where(
+                    b => !(b.CellPosition.X == bomb.CellPosition.X &&
+                    b.CellPosition.Y == bomb.CellPosition.Y)).Any(
+                    b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
+                {
+                    HazardMap[p.X, p.Y] = 2;
+                    sameCellThanAnOther = true;
+                }
+                if (!sameCellThanAnOther)
+                    HazardMap[p.X, p.Y] = 0;
+            }
+
             BaseBombList.Remove(bomb);
         }
+
+        #endregion
 
         public virtual void LoadMap(string mapName)
         {
             BaseCurrentMap.Parse(mapName, this);
             HazardMap = new int[BaseCurrentMap.Size.X, BaseCurrentMap.Size.Y];
         }
+
+        #region Displaying region
+
+        public void DisplayHazardMap()
+        {
+
+            for (int y = 0; y < BaseCurrentMap.Size.Y; y++)
+            {
+                for (int x = 0; x < BaseCurrentMap.Size.X; x++)
+                {
+                    Console.Write("{0} ", HazardMap[x, y]);
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+
+        #endregion
     }
 }

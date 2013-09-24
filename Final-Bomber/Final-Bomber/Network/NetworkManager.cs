@@ -112,6 +112,7 @@ namespace Final_Bomber.Network
             if (player != null)
             {
                 var bomb = new Bomb(playerId, position, player.BombPower, player.BombTimer, player.Speed);
+                player.CurrentBombAmount--;
                 bomb.Initialize(_gameManager.CurrentMap, _gameManager.HazardMap);
 
                 _gameManager.AddBomb(bomb);
@@ -122,7 +123,7 @@ namespace Final_Bomber.Network
         {
             Bomb bomb = _gameManager.BombList.Find(b => b.CellPosition == position);
 
-            bomb.Destroy();
+            //bomb.Destroy();
             /*
             foreach (Explosion ex in explosions)
             {

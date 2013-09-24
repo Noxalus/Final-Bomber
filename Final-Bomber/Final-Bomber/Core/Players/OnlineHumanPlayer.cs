@@ -105,9 +105,6 @@ namespace Final_Bomber.Core.Players
                     var bo = NetworkTestScreen.GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
                     if (bo == null)
                     {
-                        this.CurrentBombAmount--;
-                        var bomb = new Bomb(Id, CellPosition, BombPower, BombTimer, Speed);
-
                         // Send to server that we want to plant a bomb
                         GameSettings.GameServer.SendBombPlacing();
                     }

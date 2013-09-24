@@ -57,6 +57,46 @@ namespace Final_BomberServer.Core
             BaseCurrentMap = _currentMap;
         }
 
+        public override void Update()
+        {
+            UpdateWalls();
+
+            UpdateBombs();
+
+            base.Update();
+        }
+
+        private void UpdateWalls()
+        {
+            for (int i = 0; i < _wallList.Count; i++)
+            {
+                // We clean the obsolete elements
+                if (!_wallList[i].IsAlive)
+                {
+                    if (GameConfiguration.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
+                    {
+                        AddPowerUp(_wallList[i].CellPosition);
+                    }
+
+                    RemoveWall(_wallList[i]);
+                }
+            }
+        }
+
+        private void UpdateBombs()
+        {
+            for (int i = 0; i < _bombList.Count; i++)
+            {
+                _bombList[i].Update();
+
+                // Do we delete the bomb
+                if (!_bombList[i].IsAlive)
+                {
+                    RemoveBomb(_bombList[i]);
+                }
+            } 
+        }
+
         public override void LoadMap(string mapName)
         {
             base.LoadMap(mapName);
@@ -75,10 +115,7 @@ namespace Final_BomberServer.Core
                     {
                         if (!NearPlayer(x, y))
                         {
-                            var wall = new Wall(new Point(x, y));
-                            WallList.Add(wall);
-                            CurrentMap.Board[x, y] = wall;
-                            CurrentMap.CollisionLayer[x, y] = true;
+                            AddWall(new Point(x, y));
                         }
                     }
                 }
@@ -99,14 +136,6 @@ namespace Final_BomberServer.Core
                 CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
         }
 
-        public override void AddWall(Point position)
-        {
-            var wall = new Wall(position);
-            _wallList.Add(wall);
-
-            base.AddWall(wall);
-        }
-
         public void AddPlayer(Client client, Player player)
         {
             client.Player = player;
@@ -121,12 +150,66 @@ namespace Final_BomberServer.Core
             base.RemovePlayer(player);
         }
 
+        #region Wall methods
+
+        public override void AddWall(Point position)
+        {
+            var wall = new Wall(position);
+            _wallList.Add(wall);
+
+            base.AddWall(wall);
+        }
+
+        public void AddWall(Wall wall)
+        {
+            _wallList.Add(wall);
+
+            base.AddWall(wall);
+        }
+
+
+        protected override void DestroyWall(Point position)
+        {
+            var wall = _wallList.Find(w => w.CellPosition == position);
+
+            base.DestroyWall(wall);
+        }
+
+        private void RemoveWall(Wall wall)
+        {
+            _wallList.Remove(wall);
+
+            base.RemoveWall(wall);
+        }
+
+        #endregion
+
+        #region Bomb methods
+
         public void AddBomb(Bomb bomb)
         {
             _bombList.Add(bomb);
 
             base.AddBomb(bomb);
         }
+
+        private void RemoveBomb(Bomb bomb)
+        {
+            _bombList.Remove(bomb);
+
+            // We don't forget to give it back to its owner
+            if (bomb.PlayerId >= 0)
+            {
+                BasePlayer player = BasePlayerList.Find(p => p.Id == bomb.PlayerId);
+
+                if (player != null && player.CurrentBombAmount < player.TotalBombAmount)
+                    player.CurrentBombAmount++;
+            }
+
+            base.RemoveBomb(bomb);
+        }
+
+        #endregion
 
         public void AddPowerUp(Point position)
         {
@@ -136,24 +219,5 @@ namespace Final_BomberServer.Core
 
             GameSettings.gameServer.SendPowerUpDrop(powerUp);
         }
-
-        #region Displaying region
-
-        public void DisplayHazardMap()
-        {
-
-            for (int y = 0; y < CurrentMap.Size.Y; y++)
-            {
-                for (int x = 0; x < CurrentMap.Size.X; x++)
-                {
-                    Console.Write("{0} ", HazardMap[x, y]);
-                }
-
-                Console.WriteLine();
-            }
-        }
-
-
-        #endregion
     }
 }

@@ -36,6 +36,9 @@ namespace FBLibrary
         public static int WallPercentage = 100; // From 0% to 100%
         public static int PowerUpPercentage = 100;
 
+        // Bomb animation's frames par second
+        public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
+
         // Power up
         public static readonly List<PowerUpType> PowerUpTypeAvailable = new List<PowerUpType>() 
         { 

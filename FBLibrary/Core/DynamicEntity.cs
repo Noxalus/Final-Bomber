@@ -46,6 +46,8 @@ namespace FBLibrary.Core
         {
             PreviousCellPosition = CellPosition;
             CellPosition = Engine.VectorToCell(Position, Dimension);
+
+            base.Update();
         }
 
         public bool IsChangingCell()

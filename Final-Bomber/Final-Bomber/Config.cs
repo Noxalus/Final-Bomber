@@ -111,8 +111,6 @@ namespace Final_Bomber
         // Bombs
         public static bool BombCollision = true;
         public static bool ExplosionThroughWall = true;
-        // Bomb's animation's frames par second
-        public const int BombLatency = 10;
 
         public static readonly PowerUpType[] ItemTypeArray = new PowerUpType[]
         {

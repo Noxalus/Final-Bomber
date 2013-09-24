@@ -143,7 +143,6 @@ namespace Final_BomberServer.Host
                 GameManager.Update();
 
                 MovePlayers();
-                CheckWalls();
                 //CheckBombTimer();
                 UpdatePlayers();
                 CheckPlayerGettingPowerUp();
@@ -161,38 +160,6 @@ namespace Final_BomberServer.Host
                 //Program.Log.Info("Player position: " + client.Player.Position);                
                 client.Player.MovePlayer(GameManager.CurrentMap);
             }
-        }
-        
-        private void CheckWalls()
-        {
-            #region Walls
-
-            for (int i = 0; i < GameManager.WallList.Count; i++)
-            {
-                // Is it die ?
-                if (GameManager.HazardMap[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] == 3)
-                {
-                    GameManager.HazardMap[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = 0;
-                    GameManager.WallList[i].Destroy();
-                }
-
-                // We clean the obsolete elements
-                if (!GameManager.WallList[i].IsAlive)
-                {
-                    GameManager.CurrentMap.CollisionLayer[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = false;
-
-                    if (GameConfiguration.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
-                    {
-                        GameManager.AddPowerUp(GameManager.WallList[i].CellPosition);
-                    }
-                    else
-                        GameManager.CurrentMap.Board[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = null;
-
-                    GameManager.WallList.Remove(GameManager.WallList[i]);
-                }
-            }
-
-            #endregion
         }
 
         private void UpdatePlayers()

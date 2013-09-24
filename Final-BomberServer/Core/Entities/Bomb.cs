@@ -1,7 +1,5 @@
 ﻿using System;
-using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_BomberServer.Host;
 using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core.Entities
@@ -15,16 +13,14 @@ namespace Final_BomberServer.Core.Entities
 
         public override void Update()
         {
-
             base.Update();
         }
 
         public override void Destroy()
         {
-            //GameSettings.gameServer.SendBombExploded(this);
             ComputeActionField(3);
 
-            Remove();
+            InDestruction = true;
         }
 
         public override void Remove()

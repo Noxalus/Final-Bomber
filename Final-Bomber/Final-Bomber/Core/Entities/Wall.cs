@@ -17,7 +17,8 @@ namespace Final_Bomber.Core.Entities
 
         #region Constructor Region
 
-        public Wall(Point cellPosition) : base(cellPosition)
+        public Wall(Point cellPosition)
+            : base(cellPosition)
         {
             var animations = new Dictionary<AnimationKey, Animation>();
 
@@ -53,8 +54,7 @@ namespace Final_Bomber.Core.Entities
 
         public override void Destroy()
         {
-            if (!InDestruction)
-                InDestruction = true;
+            InDestruction = true;
         }
 
         public override void Remove()
