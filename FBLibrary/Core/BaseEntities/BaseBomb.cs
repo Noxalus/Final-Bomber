@@ -45,6 +45,33 @@ namespace FBLibrary.Core.BaseEntities
             ComputeActionField(1);
         }
 
+        public override void Update()
+        {
+            #region Timer
+
+            if (Timer >= TimerLenght)
+            {
+                Timer = TimeSpan.FromSeconds(-1);
+                Destroy();
+            }
+            else if (Timer >= TimeSpan.Zero)
+            {
+                Timer += TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+
+                // The bomb will explode soon
+                if (CurrentDirection == LookDirection.Idle &&
+                    !WillExplode && TimerLenght.TotalSeconds - Timer.TotalSeconds < 1)
+                {
+                    ComputeActionField(2);
+                    WillExplode = true;
+                }
+            }
+
+            #endregion
+
+            base.Update();
+        }
+
         // Compute bomb's effect field: 1 => just planted, 2 => will explode soon, 3 => deathly
         protected void ComputeActionField(int dangerType)
         {

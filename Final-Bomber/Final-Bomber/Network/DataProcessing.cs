@@ -67,6 +67,10 @@ namespace Final_Bomber.Network
                 case (byte)RMT.SDExplosion:
                     //RecieveSDExplosion(buffer.ReadInt32());
                     break;
+                case (byte)RMT.RoundEnd:
+                    Debug.Print("A message type 'RoundEnd' have been received from server !");
+                    RecieveRoundEnd();
+                    break;
                 case (byte)RMT.End:
                     Debug.Print("A message type 'End' have been received from server !");
                     RecieveEnd(message.ReadBoolean());

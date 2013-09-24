@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FBLibrary;
 using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_BomberServer.Core.Entities;
 using Final_BomberServer.Core.WorldEngine;
+using Final_BomberServer.Host;
 using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core
@@ -22,9 +25,9 @@ namespace Final_BomberServer.Core
 
         #region Properties
 
-        public Map CurrentMap
+        public BaseMap CurrentMap
         {
-            get { return _currentMap; }
+            get { return BaseCurrentMap; }
         }
 
         public List<Wall> WallList
@@ -49,17 +52,17 @@ namespace Final_BomberServer.Core
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
+
+            _currentMap = new Map();
+            BaseCurrentMap = _currentMap;
         }
 
-        public void LoadMap(string mapName)
+        public override void LoadMap(string mapName)
         {
-            _currentMap = new Map();
-            _currentMap.Parse(mapName, this);
-            
+            base.LoadMap(mapName);
+
             // We generate wall
             GenerateWalls();
-
-            HazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
         }
 
         private void GenerateWalls()
@@ -68,7 +71,7 @@ namespace Final_BomberServer.Core
             {
                 for (int y = 0; y < CurrentMap.Size.Y; y++)
                 {
-                    if (CurrentMap.Board[x, y] == null && Random.Next(0, 100) < ServerSettings.WallPercentage)
+                    if (CurrentMap.Board[x, y] == null && GameConfiguration.Random.Next(0, 100) < ServerSettings.WallPercentage)
                     {
                         if (!NearPlayer(x, y))
                         {
@@ -96,6 +99,35 @@ namespace Final_BomberServer.Core
                 CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
         }
 
+        public override void AddWall(Point position)
+        {
+            var wall = new Wall(position);
+            _wallList.Add(wall);
+
+            base.AddWall(wall);
+        }
+
+        public void AddPlayer(Client client, Player player)
+        {
+            client.Player = player;
+
+            base.AddPlayer(player);
+        }
+
+        public void RemovePlayer(Client client, Player player)
+        {
+            client.Player = null;
+
+            base.RemovePlayer(player);
+        }
+
+        public void AddBomb(Bomb bomb)
+        {
+            _bombList.Add(bomb);
+
+            base.AddBomb(bomb);
+        }
+
         public void AddPowerUp(Point position)
         {
             var powerUp = new PowerUp(position);
@@ -104,5 +136,24 @@ namespace Final_BomberServer.Core
 
             GameSettings.gameServer.SendPowerUpDrop(powerUp);
         }
+
+        #region Displaying region
+
+        public void DisplayHazardMap()
+        {
+
+            for (int y = 0; y < CurrentMap.Size.Y; y++)
+            {
+                for (int x = 0; x < CurrentMap.Size.X; x++)
+                {
+                    Console.Write("{0} ", HazardMap[x, y]);
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+
+        #endregion
     }
 }

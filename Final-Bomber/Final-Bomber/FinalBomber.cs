@@ -143,6 +143,9 @@ namespace Final_Bomber
 
         protected override void Update(GameTime gameTime)
         {
+            // Delta time
+            GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Milliseconds;
+
             if (InputHandler.KeyPressed(Keys.F) && _password == "")
                 _password += "F";
             else if (InputHandler.KeyPressed(Keys.I) && _password == "F")

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using FBLibrary;
 using FBLibrary.Core;
@@ -238,14 +239,32 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
         */
+
+        public void SendRoundEnd(Client client)
+        {
+            if (client.ClientConnection.Status == NetConnectionStatus.Connected)
+            {
+                NetOutgoingMessage send = server.CreateMessage();
+
+                send.Write((byte)SMT.RoundEnd);
+                
+                server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                Program.Log.Info("Send 'RoundEnd' to player #" + client.Player.Id);
+            }
+        }
+
         public void SendEnd(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = server.CreateMessage();
+
                 send.Write((byte)SMT.End);
+
                 send.Write(client.Player.IsAlive);
+
                 server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                Program.Log.Info("Send 'End' to player #" + client.Player.Id);
             }
         }
     }

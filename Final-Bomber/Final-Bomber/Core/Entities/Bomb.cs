@@ -22,12 +22,11 @@ namespace Final_Bomber.Core.Entities
         private readonly Dictionary<Point, ExplosionDirection> _explosionAnimationsDirection;
         private readonly Texture2D _explosionSpriteTexture;
 
-        private bool _cellTeleporting;
-
-        private int _lastPlayerThatPushIt;
-        private LookDirection CurrentDirection;
-
         public AnimatedSprite Sprite { get; protected set; }
+
+        // TODO: Move to base bomb
+        private bool _cellTeleporting;
+        private int _lastPlayerThatPushIt;
 
         private enum ExplosionDirection
         {
@@ -41,19 +40,13 @@ namespace Final_Bomber.Core.Entities
         };
 
         #endregion
-
-        #region Propery Region
-
-        public bool InDestruction { get; private set; }
-
-        #endregion
-
+        
         #region Constructor Region
 
         public Bomb(int playerId, Point cellPosition, int pow, TimeSpan timerLenght, float playerSpeed)
             : base(playerId, cellPosition, pow, timerLenght, playerSpeed)
         {
-            // TODO: Move all loading of content into LoadContent XNA method
+            // TODO: Move all loading of content into a LoadContent XNA method like
             // Bomb Sprite
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/bomb");
             var animation = new Animation(3, 32, 32, 0, 0, 3);
@@ -78,11 +71,8 @@ namespace Final_Bomber.Core.Entities
             _explosionAnimationsDirection = new Dictionary<Point, ExplosionDirection>();
 
             // Bomb's states
-            InDestruction = false;
             _cellTeleporting = false;
-
             _lastPlayerThatPushIt = -1;
-
         }
 
         #endregion
@@ -116,28 +106,6 @@ namespace Final_Bomber.Core.Entities
                 Position = Engine.CellToVector(CellPosition);
             }
             */
-            #endregion
-
-            #region Timer
-
-            if (Timer >= TimerLenght)
-            {
-                Timer = TimeSpan.FromSeconds(-1);
-                Destroy();
-            }
-            else if (Timer >= TimeSpan.Zero)
-            {
-                Timer += gameTime.ElapsedGameTime;
-
-                // The bomb will explode soon
-                if (CurrentDirection == LookDirection.Idle &&
-                    !WillExplode && TimerLenght.TotalSeconds - Timer.TotalSeconds < 1)
-                {
-                    ComputeActionField(2);
-                    WillExplode = true;
-                }
-            }
-
             #endregion
 
             #region Destruction
@@ -274,7 +242,7 @@ namespace Final_Bomber.Core.Entities
             #endregion
 
             // Call Update method of DynamicEntity class
-            Update();
+            base.Update();
         }
 
         public void Draw(GameTime gameTime)

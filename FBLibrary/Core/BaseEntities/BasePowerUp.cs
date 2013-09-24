@@ -36,7 +36,7 @@ namespace FBLibrary.Core.BaseEntities
                     break;
                 // More points
                 case PowerUpType.Score:
-                    p.Stats.PointPicked++;
+                    p.Stats.Score++;
                     break;
             }
         }

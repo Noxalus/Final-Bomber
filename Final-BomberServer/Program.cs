@@ -42,6 +42,9 @@ namespace Final_BomberServer
                 timer.Start();
                 while(server.Running)
                 {
+                    // Delta time
+                    GameConfiguration.DeltaTime = timer.Elapsed.Milliseconds;
+
                     server.Update();
                     //Program.Log.Info(timer.Elapsed.Milliseconds);
                     timer.Restart();

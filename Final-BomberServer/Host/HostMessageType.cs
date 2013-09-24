@@ -37,6 +37,7 @@ namespace Final_BomberServer.Host
             SuddenDeath = 13, //Säger till spelarna när sudden death börjar
             SDExplosion = 14, //Säger till spelarna vart sudden death explosionen sker
             End = 10, //Säger till att banan är slut och berättar vem som vann
+            RoundEnd = 15
         }
     }
 }

@@ -75,6 +75,7 @@ namespace Final_Bomber.Core
             _bombList = new List<Bomb>();
 
             _currentMap = new Map();
+            BaseCurrentMap = _currentMap;
 
             _timer = TimeSpan.Zero;
         }
@@ -95,12 +96,6 @@ namespace Final_Bomber.Core
             PlayerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
 
             CurrentMap.LoadContent();
-        }
-
-        public void ParseMap(string mapName)
-        {
-            _currentMap.Parse(mapName, this);
-            HazardMap = new int[_currentMap.Size.X, _currentMap.Size.Y];
         }
 
         public void Update(GameTime gameTime)
@@ -192,7 +187,7 @@ namespace Final_Bomber.Core
             }
             #endregion
 
-            #region Items
+            #region Power Up
 
             for (int i = 0; i < _powerUpList.Count; i++)
             {
@@ -229,6 +224,7 @@ namespace Final_Bomber.Core
                             if (p.Id == Players[i].Id)
                                 CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] = null;
                         }
+
                         _deadPlayersNumber++;
                     }
 
@@ -297,6 +293,8 @@ namespace Final_Bomber.Core
             }
 
             #endregion
+
+            base.Update();
         }
 
         public void Draw(GameTime gameTime)
@@ -369,12 +367,25 @@ namespace Final_Bomber.Core
             }
         }
 
+        public void AddPlayer(Player player)
+        {
+            Players.Add(player);
+
+            base.AddPlayer(player);
+        }
+
+        public void RemovePlayer(Player player)
+        {
+            Players.Remove(player);
+
+            base.RemovePlayer(player);
+        }
+
         public void AddBomb(Bomb bomb)
         {
-            CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
-            CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
+            _bombList.Add(bomb);
 
-            BombList.Add(bomb);
+            base.AddBomb(bomb);
         }
 
         public void AddPowerUp(PowerUpType type, Point position)
@@ -382,6 +393,14 @@ namespace Final_Bomber.Core
             var powerUp = new PowerUp(position, type);
             CurrentMap.Board[position.X, position.Y] = powerUp;
             _powerUpList.Add(powerUp);
+        }
+
+        public override void AddWall(Point position)
+        {
+            var wall = new Wall(position);
+            _wallList.Add(wall);
+
+            base.AddWall(wall);
         }
     }
 }

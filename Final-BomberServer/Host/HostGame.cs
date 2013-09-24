@@ -51,8 +51,10 @@ namespace Final_BomberServer.Host
             GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
 
             // Display info
+            /*
             GameManager.CurrentMap.DisplayBoard();
             GameManager.CurrentMap.DisplayCollisionLayer();
+            */
 
             hasStarted = true;
         }
@@ -138,9 +140,11 @@ namespace Final_BomberServer.Host
         {
             if (gameHasBegun)
             {
+                GameManager.Update();
+
                 MovePlayers();
-                CheckBombTimer();
                 CheckWalls();
+                //CheckBombTimer();
                 UpdatePlayers();
                 CheckPlayerGettingPowerUp();
 
@@ -158,26 +162,7 @@ namespace Final_BomberServer.Host
                 client.Player.MovePlayer(GameManager.CurrentMap);
             }
         }
-
-        private void CheckBombTimer()
-        {
-            for (int i = 0; i < GameManager.BombList.Count; i++)
-            {
-                GameManager.BombList[i].Update();
-                // Do we delete the bomb
-                if (!GameManager.BombList[i].IsAlive)
-                {
-                    // TODO: Finish this part !
-                    // The player get back his bomb
-                    GameSettings.gameServer.Clients.GetPlayerFromId(GameManager.BombList[i].PlayerId).CurrentBombAmount++;
-                    GameManager.CurrentMap.CollisionLayer[GameManager.BombList[i].CellPositionX, GameManager.BombList[i].CellPositionY] = false;
-                    GameManager.CurrentMap.Board[
-                        GameManager.BombList[i].CellPositionX, GameManager.BombList[i].CellPositionY] = null;
-                    GameManager.BombList.RemoveAt(i);
-                }
-            }
-        }
-
+        
         private void CheckWalls()
         {
             #region Walls
@@ -196,7 +181,7 @@ namespace Final_BomberServer.Host
                 {
                     GameManager.CurrentMap.CollisionLayer[GameManager.WallList[i].CellPosition.X, GameManager.WallList[i].CellPosition.Y] = false;
 
-                    if (GameManager.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
+                    if (GameConfiguration.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
                     {
                         GameManager.AddPowerUp(GameManager.WallList[i].CellPosition);
                     }
@@ -263,12 +248,14 @@ namespace Final_BomberServer.Host
                         }
                         */
                     }
+
                     players[i].Destroy();
                 }
 
                 // We clean the obsolete players
                 if (!players[i].IsAlive)
                 {
+                    players.Remove(players[i]);
                     /*
                     if (!players[i].OnEdge)
                     {
@@ -456,7 +443,9 @@ namespace Final_BomberServer.Host
         {
             if (true /*GameSettings.gameServer.clients.Count <= GameSettings.Get_gameManager.CurrentMap().playerAmount*/)
             {
-                sender.Player = new Player(playerId);
+                var player = new Player(playerId);
+                GameManager.AddPlayer(sender, player);
+
                 GameSettings.gameServer.SendGameInfo(sender);
                 if (StartedMatch)
                 {

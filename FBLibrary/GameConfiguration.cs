@@ -59,6 +59,9 @@ namespace FBLibrary
         // World
         public static Point BaseTileSize = new Point(32, 32);
 
+        // Time
+        public static int DeltaTime = 0; // milliseconds
+
         // TO DELETE
         public static int PlayerNumber = 1;
         public static string ServerIp = "localhost";

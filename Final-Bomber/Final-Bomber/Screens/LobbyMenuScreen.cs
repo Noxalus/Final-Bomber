@@ -216,8 +216,7 @@ namespace Final_Bomber.Screens
                     */
                 }
 
-                NetworkTestScreen.GameManager.ParseMap(GameSettings.CurrentMapName);
-
+                NetworkTestScreen.GameManager.LoadMap(GameSettings.CurrentMapName);
                 NetworkTestScreen.GameManager.AddWalls(wallPositions);
 
                 //mainGame.Start();

@@ -12,5 +12,6 @@ namespace Final_BomberServer
 
         // Gameplay
         public static int WallPercentage = 100; // From 0% to 100%
+        public static int ScoreToWin = 20;
     }
 }

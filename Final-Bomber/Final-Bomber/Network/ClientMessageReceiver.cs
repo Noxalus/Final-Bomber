@@ -279,7 +279,22 @@ namespace Final_Bomber.Network
             OnSDExplosion(tilePos);
         }
 
-        #region EndTile
+        #region Round End
+        public delegate void RoundEndEventHandler();
+        public event RoundEndEventHandler RoundEnd;
+        protected virtual void OnRoundEnd()
+        {
+            if (RoundEnd != null)
+                RoundEnd();
+        }
+        #endregion
+
+        public void RecieveRoundEnd()
+        {
+            OnRoundEnd();
+        }
+
+        #region End
         public delegate void EndEventHandler(bool Won);
         public event EndEventHandler End;
         protected virtual void OnEnd(bool Won)
@@ -288,6 +303,7 @@ namespace Final_Bomber.Network
                 End(Won);
         }
         #endregion
+
         public void RecieveEnd(bool Won)
         {
             OnEnd(Won);

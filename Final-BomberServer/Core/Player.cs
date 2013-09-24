@@ -24,6 +24,13 @@ namespace Final_BomberServer.Core
             _destructionTimer = DestructionTime;
         }
 
+        public Player(int id, PlayerStats stats)
+            : base(id)
+        {
+            _destructionTimer = DestructionTime;
+            Stats = stats;
+        }
+
         public void SetMovement(LookDirection direction)
         {
             CurrentDirection = direction;
@@ -35,7 +42,7 @@ namespace Final_BomberServer.Core
         }
 
 
-        public void MovePlayer(Map map)
+        public void MovePlayer(BaseMap map)
         {
             if (IsAlive)
             {
@@ -188,6 +195,7 @@ namespace Final_BomberServer.Core
         public override void Destroy()
         {
             InDestruction = true;
+            Remove();
         }
 
         public override void Remove()

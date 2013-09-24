@@ -1,11 +1,12 @@
 ﻿using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class EdgeWall : BaseEntity, IEntity
+    public class EdgeWall : BaseEdgeWall
     {
         #region Field Region
 

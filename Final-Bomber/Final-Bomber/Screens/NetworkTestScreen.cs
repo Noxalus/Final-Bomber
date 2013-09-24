@@ -78,7 +78,7 @@ namespace Final_Bomber.Screens
             base.Initialize();
 
             GameManager.Reset();
-            GameManager.Players.Add(NetworkManager.Me);
+            GameManager.AddPlayer(NetworkManager.Me);
 
             _hudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
             _hudTopSpace = 15;
@@ -175,7 +175,7 @@ namespace Final_Bomber.Screens
             {
                 // HUD => Item Info
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[p.Id] + ": "
-                     + p.Stats.PointPicked + " pt(s)",
+                     + p.Stats.Score + " pt(s)",
                     new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
 #if DEBUG

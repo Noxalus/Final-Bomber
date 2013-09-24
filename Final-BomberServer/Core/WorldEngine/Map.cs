@@ -24,103 +24,20 @@ namespace Final_BomberServer.Core.WorldEngine
             _arrowList = new List<Arrow>();
         }
 
-        public void Parse(string file, GameManager gameManager)
+        protected override void AddUnbreakableWall(Point position)
         {
-            Name = file;
+            var unbreakableWall = new UnbreakableWall(position);
+            _unbreakableWallList.Add(unbreakableWall);
 
-            try
-            {
-                var streamReader = new StreamReader("Content/Maps/" + file);
-                string line = streamReader.ReadLine();
-                if (line != null)
-                {
-                    string[] lineSplit = line.Split(' ');
-                    var parsedMapSize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
+            base.AddUnbreakableWall(unbreakableWall);
+        }
 
-                    var mapSize = new Point(parsedMapSize[0], parsedMapSize[1]);
+        protected override void AddEdgeWall(Point position)
+        {
+            var edgeWall = new EdgeWall(position);
+            _edgeWallList.Add(edgeWall);
 
-                    var collisionLayer = new bool[mapSize.X, mapSize.Y];
-                    var mapPlayersPosition = new int[mapSize.X, mapSize.Y];
-                    var board = new IEntity[mapSize.X, mapSize.Y];
-                    var playerPositions = new Dictionary<int, Point>();
-
-                    Point currentPosition = Point.Zero;
-                    int j = 0;
-                    while (!streamReader.EndOfStream)
-                    {
-                        line = streamReader.ReadLine();
-
-                        if (line == null)
-                        {
-                            Program.Log.Error("Map parsing: line == null");
-                            break;
-                        }
-
-                        lineSplit = line.Split(' ');
-                        int playerNumber = 0;
-                        currentPosition.Y = j;
-                        for (int i = 0; i < lineSplit.Length; i++)
-                        {
-                            int id = int.Parse(lineSplit[i]);
-
-                            currentPosition.X = i;
-
-                            switch (id)
-                            {
-                                case (int)EntityType.Void:
-                                    break;
-                                case (int)EntityType.UnbreakableWall:
-                                    var unbreakableWall = new UnbreakableWall(currentPosition);
-                                    board[i, j] = unbreakableWall;
-                                    _unbreakableWallList.Add(unbreakableWall);
-                                    collisionLayer[i, j] = true;
-                                    break;
-                                case (int)EntityType.EdgeWall:
-                                    var edgeWall = new EdgeWall(currentPosition);
-                                    board[i, j] = edgeWall;
-                                    _edgeWallList.Add(edgeWall);
-                                    collisionLayer[i, j] = true;
-                                    break;
-                                case (int)EntityType.Wall:
-                                    var wall = new Wall(currentPosition);
-                                    gameManager.WallList.Add(wall);
-                                    board[i, j] = wall;
-                                    collisionLayer[i, j] = true;
-                                    break;
-                                case (int)EntityType.Teleporter:
-                                    var teleporter = new Teleporter(currentPosition);
-                                    board[i, j] = teleporter;
-                                    _teleporterList.Add(teleporter);
-                                    break;
-                                case (int)EntityType.Arrow:
-                                    var arrow = new Arrow(currentPosition, LookDirection.Down);
-                                    _arrowList.Add(arrow);
-                                    board[i, j] = arrow;
-                                    break;
-                                case (int)EntityType.Player:
-                                    if (playerNumber <= 5)  // TODO: load max player from a map file
-                                    {
-                                        PlayerSpawnPoints.Add(currentPosition);
-                                        playerNumber++;
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Size = mapSize;
-                    Board = board;
-                    CollisionLayer = collisionLayer;
-                }
-            }
-            catch (Exception ex)
-            {
-                Program.Log.Error(ex.Message);
-            }
+            base.AddEdgeWall(edgeWall);
         }
 
         #region Displaying region

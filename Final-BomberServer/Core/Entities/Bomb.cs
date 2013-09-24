@@ -1,6 +1,7 @@
 ﻿using System;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
+using Final_BomberServer.Host;
 using Microsoft.Xna.Framework;
 
 namespace Final_BomberServer.Core.Entities
@@ -14,27 +15,6 @@ namespace Final_BomberServer.Core.Entities
 
         public override void Update()
         {
-            #region Timer
-
-            if (Timer >= TimerLenght)
-            {
-                Timer = TimeSpan.FromSeconds(-1);
-                Destroy();
-            }
-            else if (Timer >= TimeSpan.Zero)
-            {
-                Timer += TimeSpan.FromMilliseconds(GameSettings.Speed);
-
-                // The bomb will explode soon
-                if (CurrentDirection == LookDirection.Idle &&
-                    !WillExplode && TimerLenght.TotalSeconds - Timer.TotalSeconds < 1)
-                {
-                    ComputeActionField(2);
-                    WillExplode = true;
-                }
-            }
-
-            #endregion
 
             base.Update();
         }

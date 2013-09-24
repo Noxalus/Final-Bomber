@@ -42,6 +42,7 @@ namespace Final_Bomber.Network
             GameSettings.GameServer.PlacingBomb += GameServer_PlacingBomb;
             GameSettings.GameServer.BombExploded += GameServer_BombExploded;
             GameSettings.GameServer.PowerUpDrop += GameServer_PowerUpDrop;
+            GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
             GameSettings.GameServer.End += GameServer_End;
         }
 
@@ -57,6 +58,7 @@ namespace Final_Bomber.Network
             GameSettings.GameServer.PlacingBomb -= GameServer_PlacingBomb;
             GameSettings.GameServer.BombExploded -= GameServer_BombExploded;
             GameSettings.GameServer.PowerUpDrop -= GameServer_PowerUpDrop;
+            GameSettings.GameServer.RoundEnd -= GameServer_RoundEnd;
             GameSettings.GameServer.End -= GameServer_End;
         }
 
@@ -81,7 +83,7 @@ namespace Final_Bomber.Network
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);
-                _gameManager.Players.Add(player);
+                _gameManager.AddPlayer(player);
             }
         }
 
@@ -150,6 +152,11 @@ namespace Final_Bomber.Network
         private void GameServer_PowerUpDrop(PowerUpType type, Point position)
         {
             _gameManager.AddPowerUp(type, position);
+        }
+
+        private void GameServer_RoundEnd()
+        {
+            _gameManager.Reset();
         }
 
         private void GameServer_End(bool won)

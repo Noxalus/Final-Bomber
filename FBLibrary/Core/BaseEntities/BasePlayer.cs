@@ -67,6 +67,23 @@ namespace FBLibrary.Core.BaseEntities
 
             #endregion
 
+            #region Invincibility
+
+            if (!GameConfiguration.Invincible && IsInvincible)
+            {
+                if (InvincibleTimer >= TimeSpan.Zero)
+                {
+                    InvincibleTimer -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+                }
+                else
+                {
+                    InvincibleTimer = GameConfiguration.PlayerInvincibleTimer;
+                    IsInvincible = false;
+                }
+            }
+
+            #endregion
+
             base.Update();
         }
 

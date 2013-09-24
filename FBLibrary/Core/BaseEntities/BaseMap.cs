@@ -16,7 +16,11 @@ namespace FBLibrary.Core.BaseEntities
         public IEntity[,] Board;
         public bool[,] CollisionLayer;
         public List<Point> PlayerSpawnPoints;
+        public int PlayerNumber;
+
         private string _md5;
+        private List<BaseEdgeWall> _baseEdgeWallList;
+        private List<BaseUnbreakableWall> _baseUnbreakableWallList;
 
         #endregion
 
@@ -26,11 +30,106 @@ namespace FBLibrary.Core.BaseEntities
         {
             PlayerSpawnPoints = new List<Point>();
             Loaded = false;
+            PlayerNumber = 0;
+
+            _baseEdgeWallList = new List<BaseEdgeWall>();
+            _baseUnbreakableWallList = new List<BaseUnbreakableWall>();
         }
 
         #endregion
 
         #region Method Region
+
+        public void Parse(string file, BaseGameManager gameManager)
+        {
+            Name = file;
+
+            try
+            {
+                var streamReader = new StreamReader("Content/Maps/" + file);
+                string line = streamReader.ReadLine();
+                if (line != null)
+                {
+                    string[] lineSplit = line.Split(' ');
+                    var parsedMapSize = new int[] { int.Parse(lineSplit[0]), int.Parse(lineSplit[1]) };
+
+                    Size = new Point(parsedMapSize[0], parsedMapSize[1]);
+                    CollisionLayer = new bool[Size.X, Size.Y];
+                    Board = new IEntity[Size.X, Size.Y];
+
+                    var mapPlayersPosition = new int[Size.X, Size.Y];
+                    var playerPositions = new Dictionary<int, Point>();
+
+                    Point currentPosition = Point.Zero;
+                    int j = 0;
+                    while (!streamReader.EndOfStream)
+                    {
+                        line = streamReader.ReadLine();
+
+                        if (line == null)
+                        {
+                            // TODO: better error management for the lib
+                            //Program.Log.Error("Map parsing: line == null");
+                            break;
+                        }
+
+                        lineSplit = line.Split(' ');
+                        currentPosition.Y = j;
+                        for (int i = 0; i < lineSplit.Length; i++)
+                        {
+                            int id = int.Parse(lineSplit[i]);
+
+                            currentPosition.X = i;
+
+                            switch (id)
+                            {
+                                case (int)EntityType.Void:
+                                    break;
+                                case (int)EntityType.UnbreakableWall:
+                                    AddUnbreakableWall(currentPosition);
+                                    break;
+                                case (int)EntityType.EdgeWall:
+                                    AddEdgeWall(currentPosition);
+                                    break;
+                                case (int)EntityType.Wall:
+                                    gameManager.AddWall(currentPosition);
+                                    /*
+                                    var wall = new BaseWall(currentPosition);
+                                    gameManager.WallList.Add(wall);
+                                    board[i, j] = wall;
+                                    collisionLayer[i, j] = true;*/
+                                    break;
+                                /*
+                            case (int)EntityType.Teleporter:
+                                var teleporter = new BaseTeleporter(currentPosition);
+                                board[i, j] = teleporter;
+                                _teleporterList.Add(teleporter);
+                                break;
+                            case (int)EntityType.Arrow:
+                                var arrow = new BaseArrow(currentPosition, LookDirection.Down);
+                                _arrowList.Add(arrow);
+                                board[i, j] = arrow;
+                                break;
+                                */
+                                case (int)EntityType.Player:
+                                    PlayerSpawnPoints.Add(currentPosition);
+                                    PlayerNumber++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        j++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //Program.Log.Error(ex.Message);
+            }
+        }
 
         public List<Point> FindEmptyCells()
         {
@@ -79,5 +178,23 @@ namespace FBLibrary.Core.BaseEntities
         }
 
         #endregion
+
+        protected abstract void AddUnbreakableWall(Point position);
+        protected virtual void AddUnbreakableWall(BaseUnbreakableWall unbreakableWall)
+        {
+            CollisionLayer[unbreakableWall.CellPositionX, unbreakableWall.CellPositionY] = true;
+            Board[unbreakableWall.CellPositionX, unbreakableWall.CellPositionY] = unbreakableWall;
+
+            _baseUnbreakableWallList.Add(unbreakableWall);
+        }
+
+        protected abstract void AddEdgeWall(Point position);
+        protected virtual void AddEdgeWall(BaseEdgeWall edgeWall)
+        {
+            CollisionLayer[edgeWall.CellPositionX, edgeWall.CellPositionY] = true;
+            Board[edgeWall.CellPositionX, edgeWall.CellPositionY] = edgeWall;
+
+            _baseEdgeWallList.Add(edgeWall);
+        }
     }
 }
