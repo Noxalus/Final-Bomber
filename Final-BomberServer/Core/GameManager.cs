@@ -59,14 +59,10 @@ namespace Final_BomberServer.Core
 
         public override void Update()
         {
-            UpdateWalls();
-
-            UpdateBombs();
-
             base.Update();
         }
 
-        private void UpdateWalls()
+        protected override void UpdateWalls()
         {
             for (int i = 0; i < _wallList.Count; i++)
             {
@@ -81,9 +77,11 @@ namespace Final_BomberServer.Core
                     RemoveWall(_wallList[i]);
                 }
             }
+
+            base.UpdateWalls();
         }
 
-        private void UpdateBombs()
+        protected override void UpdateBombs()
         {
             for (int i = 0; i < _bombList.Count; i++)
             {
@@ -94,7 +92,27 @@ namespace Final_BomberServer.Core
                 {
                     RemoveBomb(_bombList[i]);
                 }
-            } 
+            }
+
+            base.UpdateBombs();
+        }
+
+        protected override void UpdatePowerUps()
+        {
+            for (int i = 0; i < _powerUpList.Count; i++)
+            {
+                if (!_powerUpList[i].IsAlive)
+                {
+                    RemovePowerUp(_powerUpList[i]);
+                }
+            }
+
+            base.UpdatePowerUps();
+        }
+
+        protected override void UpdatePlayers()
+        {
+            base.UpdatePlayers();
         }
 
         public override void LoadMap(string mapName)
@@ -211,13 +229,40 @@ namespace Final_BomberServer.Core
 
         #endregion
 
-        public void AddPowerUp(Point position)
+        #region Power up methods
+
+        public override void AddPowerUp(Point position)
         {
             var powerUp = new PowerUp(position);
             _powerUpList.Add(powerUp);
-            _currentMap.Board[position.X, position.Y] = powerUp;
 
             GameSettings.gameServer.SendPowerUpDrop(powerUp);
+
+            base.AddPowerUp(powerUp);
         }
+
+        protected override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
+        {
+            powerUp.ApplyEffect(player);
+            powerUp.PickUp();
+
+            powerUp.Remove();
+        }
+
+        protected override void DestroyPowerUp(Point position)
+        {
+            var powerUp = _powerUpList.Find(pu => pu.CellPosition == position);
+
+            base.DestroyPowerUp(powerUp);
+        }
+
+        private void RemovePowerUp(PowerUp powerUp)
+        {
+            _powerUpList.Remove(powerUp);
+
+            base.RemovePowerUp(powerUp);
+        }
+
+        #endregion
     }
 }

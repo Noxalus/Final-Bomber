@@ -11,6 +11,17 @@ namespace FBLibrary.Core.BaseEntities
             Type = GameConfiguration.PowerUpTypeAvailable[
                 GameConfiguration.Random.Next(
                 GameConfiguration.PowerUpTypeAvailable.Count)];
+
+            DestructionTime = GameConfiguration.PowerUpDestructionTime;
+        }
+
+        public virtual void PickUp()
+        {
+        }
+
+        public override void Update()
+        {
+            base.Update();
         }
 
         public void ApplyEffect(BasePlayer p)

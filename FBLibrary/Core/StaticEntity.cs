@@ -17,5 +17,10 @@ namespace FBLibrary.Core
         {
             
         }
+
+        public override void Update()
+        {
+            base.Update();
+        }
     }
 }

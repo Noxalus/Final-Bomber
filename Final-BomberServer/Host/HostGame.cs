@@ -144,8 +144,8 @@ namespace Final_BomberServer.Host
 
                 MovePlayers();
                 //CheckBombTimer();
-                UpdatePlayers();
-                CheckPlayerGettingPowerUp();
+                //UpdatePlayers();
+                //CheckPlayerGettingPowerUp();
 
                 //CheckSuddenDeath();
             }

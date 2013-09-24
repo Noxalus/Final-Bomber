@@ -78,6 +78,7 @@ namespace Final_Bomber.Screens
             base.Initialize();
 
             GameManager.Reset();
+
             GameManager.AddPlayer(NetworkManager.Me);
 
             _hudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
@@ -90,6 +91,8 @@ namespace Final_Bomber.Screens
 
             _timerWindowBox = new WindowBox(_windowSkin, new Vector2(_hudOrigin.X, _scoresWindowBox.Size.Y),
                 new Point(GraphicsDevice.Viewport.Width - _hudOrigin.X, 40));
+
+            NetworkManager.AddPlayer += ResizeHud;
         }
 
         protected override void LoadContent()
@@ -117,6 +120,8 @@ namespace Final_Bomber.Screens
             //_serverProcess.Kill();
 
             NetworkManager.Dispose();
+
+            NetworkManager.AddPlayer -= ResizeHud;
 
             base.UnloadContent();
         }
@@ -179,8 +184,8 @@ namespace Final_Bomber.Screens
                     new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
 #if DEBUG
-                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.CellPosition).ToString(),
-                        new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.CellPosition).ToString(),
+                    new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
 #endif
 
                 // To space the red icons and the "normal color" icons
@@ -399,6 +404,14 @@ namespace Final_Bomber.Screens
         }
 
         #endregion
+
+        private void ResizeHud()
+        {
+            _scoresWindowBox.Size = new Point(GraphicsDevice.Viewport.Width - (_hudOrigin.X),
+                _hudTopSpace + GameManager.Players.Count*Config.HUDPlayerInfoSpace + 15);
+
+            _timerWindowBox.Position = new Vector2(_hudOrigin.X, _scoresWindowBox.Size.Y);
+        }
     }
 
 }

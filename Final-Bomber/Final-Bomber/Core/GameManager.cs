@@ -9,6 +9,7 @@ using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Core
@@ -38,6 +39,8 @@ namespace Final_Bomber.Core
 
         // Timer
         TimeSpan _timer;
+
+        private GameTime _gameTime;
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
@@ -78,6 +81,8 @@ namespace Final_Bomber.Core
             BaseCurrentMap = _currentMap;
 
             _timer = TimeSpan.Zero;
+
+            _gameTime = new GameTime();
         }
 
         public void Initialize()
@@ -102,125 +107,16 @@ namespace Final_Bomber.Core
         {
             _timer += gameTime.ElapsedGameTime;
 
-            UpdateWalls(gameTime);
-
-            UpdateBombs(gameTime);
-
-            #region Power Up
-
-            for (int i = 0; i < _powerUpList.Count; i++)
-            {
-                _powerUpList[i].Update(gameTime);
-
-                // Is it die ?
-                if (HazardMap[_powerUpList[i].CellPosition.X, _powerUpList[i].CellPosition.Y] == 3)
-                    _powerUpList[i].Destroy();
-
-                // We clean the obsolete elements
-                if (!_powerUpList[i].IsAlive)
-                {
-                    if (CurrentMap.Board[_powerUpList[i].CellPosition.X, _powerUpList[i].CellPosition.Y] is PowerUp)
-                        CurrentMap.Board[_powerUpList[i].CellPosition.X, _powerUpList[i].CellPosition.Y] = null;
-
-                    _powerUpList.Remove(_powerUpList[i]);
-                }
-            }
-
-            #endregion
-
-            #region Player
-
-            for (int i = 0; i < Players.Count; i++)
-            {
-                // We clean the obsolete players
-                if (!Players[i].IsAlive)
-                {
-                    if (!Players[i].OnEdge)
-                    {
-                        if (CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] is Player)
-                        {
-                            var p = (Player)CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y];
-                            if (p.Id == Players[i].Id)
-                                CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] = null;
-                        }
-
-                        _deadPlayersNumber++;
-                    }
-
-                    if (true /*(Config.ActiveSuddenDeath && SuddenDeath.HasStarted)*/)
-                    {
-                        //Players.Remove(Players[i]);
-                    }
-                    else
-                    {
-                        Players[i].OnEdge = true;
-                    }
-                }
-                else
-                {
-
-                    Players[i].Update(gameTime, CurrentMap, HazardMap);
-
-                    // Pick up a power up ?
-                    var powerUp = CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] as PowerUp;
-                    if (powerUp != null)
-                    {
-                        if (!powerUp.InDestruction)
-                        {
-                            if (!Players[i].HasBadEffect ||
-                                (Players[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
-                            {
-                                powerUp.ApplyEffect(Players[i]);
-                                PowerUpPickUpSound.Play();
-                                powerUp.Remove();
-                            }
-                        }
-                    }
-
-                    // Is it die ?
-                    if (!Players[i].InDestruction && !Players[i].IsInvincible &&
-                        HazardMap[Players[i].CellPosition.X, Players[i].CellPosition.Y] == 3)
-                    {
-                        // Bomb
-                        int bombId = -42;
-                        List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
-                        foreach (Bomb b in bl)
-                        {
-                            if (b.ActionField.Any(po => po == Players[i].CellPosition))
-                            {
-                                bombId = b.PlayerId;
-                            }
-                        }
-
-                        // Suicide
-                        if (bombId == Players[i].Id)
-                            Players[i].Stats.Suicides++;
-
-                        else if (bombId >= 0 && bombId < Config.PlayersNumber)
-                        {
-                            Players[i].Stats.Kills++;
-                            Player player = Players.Find(p => p.Id == bombId);
-                            if (player.OnEdge)
-                            {
-                                player.Rebirth(Players[i].Position);
-                                _deadPlayersNumber--;
-                            }
-                        }
-                        Players[i].Destroy();
-                    }
-                }
-            }
-
-            #endregion
+            _gameTime = gameTime;
 
             base.Update();
         }
 
-        private void UpdateWalls(GameTime gameTime)
+        protected override void UpdateWalls()
         {
             for (int i = 0; i < _wallList.Count; i++)
             {
-                _wallList[i].Update(gameTime);
+                _wallList[i].Update(_gameTime);
 
                 // We clean the obsolete elements
                 if (!_wallList[i].IsAlive)
@@ -228,13 +124,15 @@ namespace Final_Bomber.Core
                     RemoveWall(_wallList[i]);
                 }
             }
+
+            base.UpdateWalls();
         }
 
-        private void UpdateBombs(GameTime gameTime)
+        protected override void UpdateBombs()
         {
             for (int i = 0; i < _bombList.Count; i++)
             {
-                _bombList[i].Update(gameTime, CurrentMap, HazardMap);
+                _bombList[i].Update(_gameTime, CurrentMap, HazardMap);
 
                 // Do we delete the bomb
                 if (!_bombList[i].IsAlive)
@@ -242,6 +140,36 @@ namespace Final_Bomber.Core
                     RemoveBomb(_bombList[i]);
                 }
             }
+
+            base.UpdateBombs();
+        }
+
+        protected override void UpdatePowerUps()
+        {
+            for (int i = 0; i < _powerUpList.Count; i++)
+            {
+                _powerUpList[i].Update(_gameTime);
+
+                if (!_powerUpList[i].IsAlive)
+                {
+                    RemovePowerUp(_powerUpList[i]);
+                }
+            }
+
+            base.UpdatePowerUps();
+        }
+
+        protected override void UpdatePlayers()
+        {
+            for (int i = 0; i < Players.Count; i++)
+            {
+                if (Players[i].IsAlive)
+                {
+                    Players[i].Update(_gameTime, CurrentMap, HazardMap);
+                }
+            }
+
+            base.UpdatePlayers();
         }
 
         public void Draw(GameTime gameTime)
@@ -274,7 +202,7 @@ namespace Final_Bomber.Core
 
             CreateWorld();
 
-            var origin = new Vector2( /*_hudOrigin.X / 2 -*/ ((32 * _currentMap.Size.X) / 2f),
+            var origin = new Vector2((FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234) / 2f - ((32 * _currentMap.Size.X) / 2f),
                 FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - ((32 * _currentMap.Size.Y) / 2));
 
             Engine.Origin = origin;
@@ -385,11 +313,43 @@ namespace Final_Bomber.Core
 
         #endregion
 
+        #region Power up methods
+
+        public override void AddPowerUp(Point position)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
+        {
+            powerUp.ApplyEffect(player);
+            powerUp.PickUp();
+
+            powerUp.Remove();
+        }
+
+        protected override void DestroyPowerUp(Point position)
+        {
+            var powerUp = _powerUpList.Find(pu => pu.CellPosition == position);
+
+            base.DestroyPowerUp(powerUp);
+        }
+
+        private void RemovePowerUp(PowerUp powerUp)
+        {
+            _powerUpList.Remove(powerUp);
+
+            base.RemovePowerUp(powerUp);
+        }
+
+        #endregion
+
         public void AddPowerUp(PowerUpType type, Point position)
         {
             var powerUp = new PowerUp(position, type);
-            CurrentMap.Board[position.X, position.Y] = powerUp;
             _powerUpList.Add(powerUp);
+
+            base.AddPowerUp(powerUp);
         }
     }
 }

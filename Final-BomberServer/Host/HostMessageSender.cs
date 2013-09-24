@@ -46,7 +46,7 @@ namespace Final_BomberServer.Host
 
                 string path = "Content/Maps/" + HostGame.GameManager.CurrentMap.Name;
                 byte[] mapData = File.ReadAllBytes(path);
-                
+
                 send.Write(mapData.Length);
                 foreach (var bt in mapData)
                 {
@@ -80,7 +80,7 @@ namespace Final_BomberServer.Host
         }
 
         // Send all players to this player
-        public void SendPlayersToNew(Client client) 
+        public void SendPlayersToNew(Client client)
         {
             foreach (Client player in Clients)
             {
@@ -94,7 +94,7 @@ namespace Final_BomberServer.Host
         }
 
         // Send this player to all other available
-        public void SendPlayerInfo(Client client) 
+        public void SendPlayerInfo(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
@@ -134,19 +134,12 @@ namespace Final_BomberServer.Host
             send.Write(player.Position.X);
             send.Write(player.Position.Y);
 
-            if (!notDir)
-            {
-                send.Write((byte)player.CurrentDirection);
-            }
-            else
-            {
-                send.Write((byte)255);
-            }
+            send.Write((byte)player.CurrentDirection);
 
             send.Write(player.Id);
-            
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            Program.Log.Info("Send Position [Player ID: " + player.Id + " => " + player.Position + "]");
+            Program.Log.Info("Send Position of player #" + player.Id + " !");
         }
 
         // Send to all players that this player has placed a bomb
@@ -209,6 +202,7 @@ namespace Final_BomberServer.Host
             send.Write(powerUp.CellPosition);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            Program.Log.Info("Power up dropped !");
         }
 
         public void SendPowerUpPick(Player player, PowerUp powerUp)
@@ -221,6 +215,7 @@ namespace Final_BomberServer.Host
             send.Write(powerUp.CellPosition);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            Program.Log.Info("Power up pick by player #" + player.Id + " !");
         }
 
         public void SendSuddenDeath()
@@ -247,7 +242,7 @@ namespace Final_BomberServer.Host
                 NetOutgoingMessage send = server.CreateMessage();
 
                 send.Write((byte)SMT.RoundEnd);
-                
+
                 server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 Program.Log.Info("Send 'RoundEnd' to player #" + client.Player.Id);
             }

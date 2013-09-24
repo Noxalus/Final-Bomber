@@ -1,4 +1,5 @@
 ﻿using System;
+using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core

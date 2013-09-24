@@ -12,7 +12,7 @@ namespace Final_BomberServer.Core.Entities
 
         public override void Destroy()
         {
-            Remove();
+            InDestruction = true;
         }
 
         public override void Remove()

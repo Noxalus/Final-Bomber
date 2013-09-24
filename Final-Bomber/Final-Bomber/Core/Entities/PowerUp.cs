@@ -55,9 +55,9 @@ namespace Final_Bomber.Core.Entities
             if (InDestruction)
             {
                 _itemDestroyAnimation.Update(gameTime);
-                if (_itemDestroyAnimation.Animation.CurrentFrame == _itemDestroyAnimation.Animation.FrameCount - 1)
-                    Remove();
             }
+
+            base.Update();
         }
 
         public void Draw(GameTime gameTime)
@@ -71,6 +71,13 @@ namespace Final_Bomber.Core.Entities
         #endregion
 
         #region Method Region
+
+        public override void PickUp()
+        {
+            NetworkTestScreen.GameManager.PowerUpPickUpSound.Play();
+
+            base.PickUp();
+        }
 
         public override void Destroy()
         {

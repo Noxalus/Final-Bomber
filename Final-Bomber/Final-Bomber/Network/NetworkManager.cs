@@ -18,6 +18,20 @@ namespace Final_Bomber.Network
 {
     public class NetworkManager
     {
+        #region Events
+
+        #region NewPlayer
+        public delegate void AddPlayerEventHandler();
+        public event AddPlayerEventHandler AddPlayer;
+        protected virtual void OnAddPlayer()
+        {
+            if (AddPlayer != null)
+                AddPlayer();
+        }
+        #endregion
+
+        #endregion
+
         public string PublicIp;
 
         // Players
@@ -84,6 +98,8 @@ namespace Final_Bomber.Network
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);
                 _gameManager.AddPlayer(player);
+
+                OnAddPlayer();
             }
         }
 
