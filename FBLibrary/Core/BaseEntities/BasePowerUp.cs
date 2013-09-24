@@ -27,7 +27,7 @@ namespace FBLibrary.Core.BaseEntities
                     break;
                 // More speed
                 case PowerUpType.Speed:
-                    p.IncreaseSpeed(GameConfiguration.PlayerSpeedIncrementeur);
+                    p.IncreaseSpeed(GameConfiguration.BasePlayerSpeed * (GameConfiguration.PlayerSpeedIncrementeurPercentage/100));
                     break;
                 // Skeleton ! => Bad items
                 case PowerUpType.BadEffect:

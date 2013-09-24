@@ -23,8 +23,8 @@ namespace Final_Bomber.Controls
         Rectangle left;
         Rectangle right;
 
-        Point size;
-        Vector2 position;
+        Point _size;
+        Vector2 _position;
 
         #endregion
 
@@ -32,14 +32,14 @@ namespace Final_Bomber.Controls
 
         public Vector2 Position
         {
-            get { return position; }
-            set { position = value; }
+            get { return _position; }
+            set { _position = value; }
         }
 
         public Point Size
         {
-            get { return size; }
-            set { size = value; }
+            get { return _size; }
+            set { _size = value; }
         }
 
         #endregion
@@ -61,8 +61,8 @@ namespace Final_Bomber.Controls
             left = new Rectangle(0, 12, 10, 1);
             right = new Rectangle(15, 12, 10, 1);
 
-            size = size;
-            position = position;
+            _size = size;
+            _position = position;
         }
 
         #endregion
@@ -70,29 +70,29 @@ namespace Final_Bomber.Controls
         public void Draw(SpriteBatch spriteBatch)
         {
             // Top corners
-            spriteBatch.Draw(windowSkin, position, topLeft, Color.White);
-            spriteBatch.Draw(windowSkin, new Vector2(position.X + size.X - 12, position.Y), topRight, Color.White);
+            spriteBatch.Draw(windowSkin, _position, topLeft, Color.White);
+            spriteBatch.Draw(windowSkin, new Vector2(_position.X + _size.X - 12, _position.Y), topRight, Color.White);
 
             // Bottom corners
-            spriteBatch.Draw(windowSkin, new Vector2(position.X, position.Y + size.Y - 12), bottomLeft, Color.White);
-            spriteBatch.Draw(windowSkin, new Vector2(position.X + size.X - 12, position.Y + size.Y - 12), bottomRight, Color.White);
+            spriteBatch.Draw(windowSkin, new Vector2(_position.X, _position.Y + _size.Y - 12), bottomLeft, Color.White);
+            spriteBatch.Draw(windowSkin, new Vector2(_position.X + _size.X - 12, _position.Y + _size.Y - 12), bottomRight, Color.White);
 
-            for (int y = 12; y < size.Y - 12; y++)
+            for (int y = 12; y < _size.Y - 12; y++)
             {
-                spriteBatch.Draw(windowSkin, new Vector2(position.X, position.Y + y), left, Color.White);
-                spriteBatch.Draw(windowSkin, new Vector2(position.X + size.X - 10, position.Y + y), right, Color.White);
+                spriteBatch.Draw(windowSkin, new Vector2(_position.X, _position.Y + y), left, Color.White);
+                spriteBatch.Draw(windowSkin, new Vector2(_position.X + _size.X - 10, _position.Y + y), right, Color.White);
             }
 
-            for (int x = 12; x < size.X - 12; x++)
+            for (int x = 12; x < _size.X - 12; x++)
             {
-                spriteBatch.Draw(windowSkin, new Vector2(position.X + x, position.Y), top, Color.White);
-                spriteBatch.Draw(windowSkin, new Vector2(position.X + x, position.Y + size.Y - 10), bottom, Color.White);
+                spriteBatch.Draw(windowSkin, new Vector2(_position.X + x, _position.Y), top, Color.White);
+                spriteBatch.Draw(windowSkin, new Vector2(_position.X + x, _position.Y + _size.Y - 10), bottom, Color.White);
             }
 
 
-            for (int x = 10; x < size.X - 10; x++)
-                for (int y = 10; y < size.Y - 10; y++)
-                    spriteBatch.Draw(windowSkin, new Vector2(position.X + x, position.Y + y), back, Color.White);
+            for (int x = 10; x < _size.X - 10; x++)
+                for (int y = 10; y < _size.Y - 10; y++)
+                    spriteBatch.Draw(windowSkin, new Vector2(_position.X + x, _position.Y + y), back, Color.White);
         }
     }
 }

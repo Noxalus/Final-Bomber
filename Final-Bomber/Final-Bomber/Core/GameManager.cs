@@ -36,6 +36,9 @@ namespace Final_Bomber.Core
         public SoundEffect PowerUpPickUpSound;
         public SoundEffect PlayerDeathSound;
 
+        // Timer
+        TimeSpan _timer;
+
         // Sudden Death
         private SuddenDeath _suddenDeath;
 
@@ -56,6 +59,11 @@ namespace Final_Bomber.Core
             get { return _bombList; }
         }
 
+        public TimeSpan Timer
+        {
+            get { return _timer; }
+        }
+
         #endregion
 
         public GameManager()
@@ -67,6 +75,8 @@ namespace Final_Bomber.Core
             _bombList = new List<Bomb>();
 
             _currentMap = new Map();
+
+            _timer = TimeSpan.Zero;
         }
 
         public void Initialize()
@@ -95,6 +105,8 @@ namespace Final_Bomber.Core
 
         public void Update(GameTime gameTime)
         {
+            _timer += gameTime.ElapsedGameTime;
+
             #region Walls
 
             for (int i = 0; i < _wallList.Count; i++)
@@ -208,54 +220,6 @@ namespace Final_Bomber.Core
 
             for (int i = 0; i < Players.Count; i++)
             {
-                Players[i].Update(gameTime, CurrentMap, HazardMap);
-
-                // Pick up a power up ?
-                var powerUp = CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] as PowerUp;
-                if (powerUp != null)
-                {
-                    if (!powerUp.InDestruction)
-                    {
-                        if (!Players[i].HasBadEffect || (Players[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
-                        {
-                            powerUp.ApplyEffect(Players[i]);
-                            PowerUpPickUpSound.Play();
-                            powerUp.Remove();
-                        }
-                    }
-                }
-
-                // Is it die ?
-                if (!Players[i].InDestruction && !Players[i].IsInvincible && HazardMap[Players[i].CellPosition.X, Players[i].CellPosition.Y] == 3)
-                {
-                    // Bomb
-                    int bombId = -42;
-                    List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
-                    foreach (Bomb b in bl)
-                    {
-                        if (b.ActionField.Any(po => po == Players[i].CellPosition))
-                        {
-                            bombId = b.PlayerId;
-                        }
-                    }
-
-                    // Suicide
-                    if (bombId == Players[i].Id)
-                        Players[i].Stats.Suicides++;
-
-                    else if (bombId >= 0 && bombId < Config.PlayersNumber)
-                    {
-                        Players[i].Stats.Kills++;
-                        Player player = Players.Find(p => p.Id == bombId);
-                        if (player.OnEdge)
-                        {
-                            player.Rebirth(Players[i].Position);
-                            _deadPlayersNumber--;
-                        }
-                    }
-                    Players[i].Destroy();
-                }
-
                 // We clean the obsolete players
                 if (!Players[i].IsAlive)
                 {
@@ -263,7 +227,7 @@ namespace Final_Bomber.Core
                     {
                         if (CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] is Player)
                         {
-                            var p = (Player)CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y];
+                            var p = (Player) CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y];
                             if (p.Id == Players[i].Id)
                                 CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] = null;
                         }
@@ -271,9 +235,66 @@ namespace Final_Bomber.Core
                     }
 
                     if (true /*(Config.ActiveSuddenDeath && SuddenDeath.HasStarted)*/)
-                        Players.Remove(Players[i]);
+                    {
+                        //Players.Remove(Players[i]);
+                    }
                     else
+                    {
                         Players[i].OnEdge = true;
+                    }
+                }
+                else
+                {
+
+                    Players[i].Update(gameTime, CurrentMap, HazardMap);
+
+                    // Pick up a power up ?
+                    var powerUp = CurrentMap.Board[Players[i].CellPosition.X, Players[i].CellPosition.Y] as PowerUp;
+                    if (powerUp != null)
+                    {
+                        if (!powerUp.InDestruction)
+                        {
+                            if (!Players[i].HasBadEffect ||
+                                (Players[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
+                            {
+                                powerUp.ApplyEffect(Players[i]);
+                                PowerUpPickUpSound.Play();
+                                powerUp.Remove();
+                            }
+                        }
+                    }
+
+                    // Is it die ?
+                    if (!Players[i].InDestruction && !Players[i].IsInvincible &&
+                        HazardMap[Players[i].CellPosition.X, Players[i].CellPosition.Y] == 3)
+                    {
+                        // Bomb
+                        int bombId = -42;
+                        List<Bomb> bl = BombList.FindAll(b => b.InDestruction);
+                        foreach (Bomb b in bl)
+                        {
+                            if (b.ActionField.Any(po => po == Players[i].CellPosition))
+                            {
+                                bombId = b.PlayerId;
+                            }
+                        }
+
+                        // Suicide
+                        if (bombId == Players[i].Id)
+                            Players[i].Stats.Suicides++;
+
+                        else if (bombId >= 0 && bombId < Config.PlayersNumber)
+                        {
+                            Players[i].Stats.Kills++;
+                            Player player = Players.Find(p => p.Id == bombId);
+                            if (player.OnEdge)
+                            {
+                                player.Rebirth(Players[i].Position);
+                                _deadPlayersNumber--;
+                            }
+                        }
+                        Players[i].Destroy();
+                    }
                 }
             }
 
@@ -294,7 +315,10 @@ namespace Final_Bomber.Core
                 bomb.Draw(gameTime);
 
             foreach (Player player in Players)
+            {
+                if (player.IsAlive)
                 player.Draw(gameTime);
+            }
         }
 
         public void Reset()

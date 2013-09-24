@@ -15,7 +15,7 @@ namespace FBLibrary.Core
         public float Speed
         {
             get { return _speed; }
-            set { _speed = MathHelper.Clamp(value, GameConfiguration.PlayerSpeedIncrementeur, GameConfiguration.MaxSpeed); }
+            set { _speed = MathHelper.Clamp(value, GameConfiguration.PlayerSpeedIncrementeurPercentage, GameConfiguration.MaxSpeed); }
         }
 
         public Vector2 Velocity

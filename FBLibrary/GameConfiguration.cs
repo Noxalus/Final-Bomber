@@ -32,7 +32,7 @@ namespace FBLibrary
         public const int MinBombAmount = 1;
 
         // Game info
-        public static float PlayerSpeedIncrementeur = 0.25f;
+        public static float PlayerSpeedIncrementeurPercentage = 25; // Percentage of base player speed
         public static int WallPercentage = 100; // From 0% to 100%
         public static int PowerUpPercentage = 100;
 

@@ -891,7 +891,7 @@ namespace Final_Bomber.Screens
                     Color.Blue);
             }
 
-            // We draw a the path of each AI players
+            // We draw the path of each AI players
             foreach (Player player in PlayerList)
             {
                 var aiPlayer = player as AIPlayer;
