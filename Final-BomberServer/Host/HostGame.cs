@@ -140,13 +140,12 @@ namespace Final_BomberServer.Host
         {
             if (gameHasBegun)
             {
-                GameManager.Update();
-
                 MovePlayers();
+
+                GameManager.Update();
                 //CheckBombTimer();
                 //UpdatePlayers();
                 //CheckPlayerGettingPowerUp();
-
                 //CheckSuddenDeath();
             }
         }
@@ -160,150 +159,6 @@ namespace Final_BomberServer.Host
                 //Program.Log.Info("Player position: " + client.Player.Position);                
                 client.Player.MovePlayer(GameManager.CurrentMap);
             }
-        }
-
-        private void UpdatePlayers()
-        {
-            #region Player
-
-            List<Player> players = GameSettings.gameServer.Clients.GetAlivePlayers();
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                players[i].Update();
-
-                // Pick up a power up ?
-                var powerUp = GameManager.CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y] as PowerUp;
-                if (powerUp != null)
-                {
-                    if (!powerUp.InDestruction)
-                    {
-                        if (!players[i].HasBadEffect || (players[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
-                        {
-                            powerUp.ApplyEffect(players[i]);
-                            powerUp.Remove();
-                            //GameSettings.gameServer.SendPowerUpPick(players[i], powerUp);
-                        }
-                    }
-                }
-
-                // Is it die ?
-                if (!players[i].InDestruction && !players[i].IsInvincible &&
-                    GameManager.HazardMap[players[i].CellPosition.X, players[i].CellPosition.Y] == 3)
-                {
-                    int bombId = -42;
-                    List<Bomb> bl = GameManager.BombList.FindAll(b => b.InDestruction);
-                    foreach (Bomb b in bl)
-                    {
-                        if (b.ActionField.Any(po => po == players[i].CellPosition))
-                        {
-                            bombId = b.PlayerId;
-                        }
-                    }
-                    // Suicide
-                    if (bombId == players[i].Id)
-                        players[i].Stats.Suicides++;
-                    else if (bombId >= 0 && bombId < players.Count)
-                    {
-                        players[i].Stats.Kills++;
-                        Player player = players.Find(p => p.Id == bombId);
-                        /*
-                        if (player.OnEdge)
-                        {
-                            player.Rebirth(players[i].Position);
-                            _deadPlayersNumber--;
-                        }
-                        */
-                    }
-
-                    players[i].Destroy();
-                }
-
-                // We clean the obsolete players
-                if (!players[i].IsAlive)
-                {
-                    players.Remove(players[i]);
-                    /*
-                    if (!players[i].OnEdge)
-                    {
-                        if (CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y] is Player)
-                        {
-                            var p = (Player)CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y];
-                            if (p.Id == players[i].Id)
-                                CurrentMap.Board[players[i].CellPosition.X, players[i].CellPosition.Y] = null;
-                        }
-                        _deadPlayersNumber++;
-                    }
-                                        
-                    if (true) //(Config.ActiveSuddenDeath && SuddenDeath.HasStarted))
-                        players.Remove(players[i]);
-                    else
-                        players[i].OnEdge = true;
-                    */
-                }
-            }
-
-            #endregion
-
-            /*
-            foreach (Bomb bomb in GameManager.BombList)
-            {
-                if (bomb.Exploded)
-                {
-                    foreach (Explosion ex in bomb.Explosion)
-                    {
-                        List<Player> players = GameSettings.gameServer.Clients.GetPlayersFromTile(ex.Position, true);
-                        foreach (Player player in players)
-                        {
-                            player.Burn(bomb);
-                        }
-                    }
-                }
-            }
-            */
-        }
-
-        private void CheckPlayerGettingPowerUp()
-        {
-            #region Items
-
-            for (int i = 0; i < GameManager.PowerUpList.Count; i++)
-            {
-                //GameManager.PowerUpList[i].Update();
-
-                // Is it die ?
-                if (GameManager.HazardMap[GameManager.PowerUpList[i].CellPosition.X, GameManager.PowerUpList[i].CellPosition.Y] == 3)
-                    GameManager.PowerUpList[i].Destroy();
-
-                // We clean the obsolete elements
-                if (!GameManager.PowerUpList[i].IsAlive)
-                {
-                    if (GameManager.CurrentMap.Board[GameManager.PowerUpList[i].CellPosition.X, GameManager.PowerUpList[i].CellPosition.Y] is PowerUp)
-                        GameManager.CurrentMap.Board[GameManager.PowerUpList[i].CellPosition.X, GameManager.PowerUpList[i].CellPosition.Y] = null;
-
-                    GameManager.PowerUpList.Remove(GameManager.PowerUpList[i]);
-                }
-            }
-
-            #endregion
-            /*
-            Vector2 pos;
-            MapTile tile;
-            foreach (Client client in GameSettings.gameServer.Clients)
-            {
-                pos = client.Player.GetCenterPosition();
-                tile = GameSettings.Get_gameManager.CurrentMap().GetTileByPosition(pos.X, pos.Y);
-                if (tile != null) //Om spelaren är död så kommer tilen att vara null
-                {
-                    if (tile.Poweruped != null)
-                    {
-                        tile.Poweruped.GetPowerup(client.Player);
-                        GameSettings.gameServer.SendPowerupPick(client.Player, tile);
-                        tile.Poweruped = null;
-                    }
-                }
-            }
-            */
         }
 
         private void SuddenDeath_ChangeDirection()
@@ -454,50 +309,25 @@ namespace Final_BomberServer.Host
                 {
                     var bo = GameManager.BombList.Find(b => b.CellPosition == player.CellPosition);
 
-                    if (bo == null)
-                    {
-                        var bomb = new Bomb(player.Id, player.CellPosition, player.BombPower, player.BombTimer,
-                            player.Speed);
+                    if (bo != null) return;
 
-                        bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);
+                    var bomb = new Bomb(player.Id, player.CellPosition, player.BombPower, player.BombTimer,
+                        player.Speed);
 
-                        //bomb.IsExploded += new Bomb.IsExplodedEventHandler(bomb_IsExploded);
+                    bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);
 
-                        GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
-                        GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
+                    GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
+                    GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
 
-                        GameManager.AddBomb(bomb);
-                        player.CurrentBombAmount--;
+                    GameManager.AddBomb(bomb);
+                    player.CurrentBombAmount--;
 
-                        GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);
-                    }
+                    GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);
                 }
-                /*
-                if (sender.Player.CurrentBombAmount < sender.Player.TotalBombAmount)
-                {
-                    Vector2 cpos = sender.Player.GetCenterPosition();
-                    MapTile pos = null;
-                    List<Player> players = GameSettings.gameServer.Clients.GetPlayersFromTile(pos, true);
-                    if (players.Count < 2)
-                    {
-                        if (pos.Bombed == null && pos.walkable)
-                        {
-                            var bomb = new Bomb(pos, sender.Player);
-                            bomb.IsExploded += new Bomb.IsExplodedEventHandler(bomb_IsExploded);
-                            GameManager.BombList.Add(bomb);
-                            sender.Player.CurrentBombAmount++;
-                            pos.Bombed = bomb;
-
-                            GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, pos.GetMapPos().X, pos.GetMapPos().Y);
-                        }
-                    }
-                }
-                */
             }
         }
 
         private void bomb_IsExploded(Bomb bomb)
-        //Bombs har precis exploderat, skickar till clienterna att den har exploderat och hur
         {
             /*
             //_gameManager.CurrentMap.CalcBombExplosion(bomb);

@@ -82,30 +82,7 @@ namespace FBLibrary.Core
             for (int i = 0; i < BasePlayerList.Count; i++)
             {
                 // We clean the obsolete players
-                if (!BasePlayerList[i].IsAlive)
-                {
-                    if (!BasePlayerList[i].OnEdge)
-                    {
-                        if (BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] is BasePlayer)
-                        {
-                            var p = (BasePlayer)BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y];
-                            if (p.Id == BasePlayerList[i].Id)
-                                BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] = null;
-                        }
-
-                        //_deadBasePlayerListNumber++;
-                    }
-
-                    if (true)//(Config.ActiveSuddenDeath && SuddenDeath.HasStarted))
-                    {
-                        //BasePlayerList.Remove(BasePlayerList[i]);
-                    }
-                    else
-                    {
-                        BasePlayerList[i].OnEdge = true;
-                    }
-                }
-                else
+                if (BasePlayerList[i].IsAlive)
                 {
                     // Pick up a power up ?
                     var powerUp = BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] as BasePowerUp;
@@ -151,21 +128,32 @@ namespace FBLibrary.Core
                             }
                         }
 
-                        BasePlayerList[i].Destroy();
+                        DestroyPlayer(BasePlayerList[i].Id);
                     }
                 }
             }
         }
 
-        #region Player region
+        #region Player methods
 
         protected virtual void AddPlayer(BasePlayer player)
         {
             BasePlayerList.Add(player);
         }
 
+        protected abstract void DestroyPlayer(int playerId);
+        protected virtual void DestroyPlayer(BasePlayer basePlayer)
+        {
+            if (basePlayer != null)
+                basePlayer.Destroy();
+        }
+
         protected virtual void RemovePlayer(BasePlayer player)
         {
+            var p = (BasePlayer)BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y];
+            if (p.Id == player.Id)
+                BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y] = null;
+
             BasePlayerList.Remove(player);
         }
 

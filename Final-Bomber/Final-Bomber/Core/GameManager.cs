@@ -167,6 +167,25 @@ namespace Final_Bomber.Core
                 {
                     Players[i].Update(_gameTime, CurrentMap, HazardMap);
                 }
+                else
+                {
+                    if (!BasePlayerList[i].OnEdge)
+                    {
+                        if (BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] is BasePlayer)
+                        {
+                            RemovePlayer(BasePlayerList[i]);
+                        }
+                    }
+
+                    if (true)//(Config.ActiveSuddenDeath && SuddenDeath.HasStarted))
+                    {
+                        //BasePlayerList.Remove(BasePlayerList[i]);
+                    }
+                    else
+                    {
+                        BasePlayerList[i].OnEdge = true;
+                    }
+                }
             }
 
             base.UpdatePlayers();
@@ -237,6 +256,13 @@ namespace Final_Bomber.Core
             Players.Add(player);
 
             base.AddPlayer(player);
+        }
+
+        protected override void DestroyPlayer(int playerId)
+        {
+            var player = Players.Find(p => p.Id == playerId);
+
+            base.DestroyPlayer(player);
         }
 
         public void RemovePlayer(Player player)

@@ -47,6 +47,8 @@ namespace FBLibrary.Core.BaseEntities
             BadEffectTimer = TimeSpan.Zero;
             BadEffectTimerLenght = TimeSpan.Zero;
 
+            DestructionTime = GameConfiguration.PlayerDestructionTime;
+
             // Protected
             InvincibleTimer = GameConfiguration.PlayerInvincibleTimer;
         }
@@ -74,6 +76,7 @@ namespace FBLibrary.Core.BaseEntities
                 if (InvincibleTimer >= TimeSpan.Zero)
                 {
                     InvincibleTimer -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+                    Console.WriteLine(InvincibleTimer);
                 }
                 else
                 {

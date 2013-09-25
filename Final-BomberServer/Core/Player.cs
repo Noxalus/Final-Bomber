@@ -96,7 +96,7 @@ namespace Final_BomberServer.Core
                 }
 
                 // Call Update method of DynamicEntity class
-                Update();
+                base.Update();
 
                 PreviousDirection = CurrentDirection;
             }

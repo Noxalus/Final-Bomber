@@ -112,6 +112,23 @@ namespace Final_BomberServer.Core
 
         protected override void UpdatePlayers()
         {
+            var players = GameSettings.gameServer.Clients.GetPlayers();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (!players[i].IsAlive)
+                {
+                    if (!BasePlayerList[i].OnEdge)
+                    {
+                        if (BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] is BasePlayer)
+                        {
+                            RemovePlayer(BasePlayerList[i]);
+                        }
+                    }
+                }
+
+            }
+
             base.UpdatePlayers();
         }
 
@@ -154,6 +171,8 @@ namespace Final_BomberServer.Core
                 CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
         }
 
+        #region Player methods
+
         public void AddPlayer(Client client, Player player)
         {
             client.Player = player;
@@ -161,12 +180,25 @@ namespace Final_BomberServer.Core
             base.AddPlayer(player);
         }
 
+        protected override void DestroyPlayer(int playerId)
+        {
+            var player = GameSettings.gameServer.Clients.GetPlayerFromId(playerId);
+
+            base.DestroyPlayer(player);
+        }
+
         public void RemovePlayer(Client client, Player player)
         {
+            var p = (BasePlayer)BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y];
+            if (p.Id == player.Id)
+                BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y] = null;
+
             client.Player = null;
 
             base.RemovePlayer(player);
         }
+
+        #endregion
 
         #region Wall methods
 

@@ -180,12 +180,9 @@ namespace Final_Bomber.Entities
 
             #region Death
 
-            else if (_playerDeathAnimation.IsAnimating)
+            else if (InDestruction)
             {
                 _playerDeathAnimation.Update(gameTime);
-
-                if (_playerDeathAnimation.Animation.CurrentFrame == _playerDeathAnimation.Animation.FrameCount - 1)
-                    Remove();
             }
             #endregion
 
