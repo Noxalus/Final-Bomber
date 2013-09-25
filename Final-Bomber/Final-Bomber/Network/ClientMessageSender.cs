@@ -24,7 +24,7 @@ namespace Final_Bomber.Network
             {
                 NetOutgoingMessage send = _client.CreateMessage();
                 send.Write((byte)SMT.Ready);
-                send.Write(GameSettings.Username);
+                send.Write(PlayerInfo.Username);
                 send.Write(GameSettings.Password);
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }

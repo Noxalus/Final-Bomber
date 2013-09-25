@@ -43,7 +43,7 @@ namespace Final_Bomber.Network
         public NetworkManager(GameManager gameManager)
         {
             _gameManager = gameManager;
-            Me = new OnlineHumanPlayer(0) { Name = "Me" };
+            Me = new OnlineHumanPlayer(0) { Name = PlayerInfo.Username };
         }
 
         public void Initiliaze()
@@ -90,10 +90,21 @@ namespace Final_Bomber.Network
         {
             if (_gameManager.Players.GetPlayerByID(playerID) == null)
             {
-                var player = new OnlinePlayer(playerID)
+                var player = new OnlinePlayer(playerID);
+
+                var playerNames = _gameManager.Players.Select(p => p.Name).ToList();
+
+                player.Name = username;
+                if (playerNames.Contains(player.Name))
                 {
-                    Name = "Online Player"
-                };
+                    var concat = 1;
+                    while (playerNames.Contains(player.Name))
+                    {
+                        player.Name = player.Name + concat;
+                        concat++;
+                    }
+                }
+
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);

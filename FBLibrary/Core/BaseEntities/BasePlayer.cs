@@ -76,7 +76,6 @@ namespace FBLibrary.Core.BaseEntities
                 if (InvincibleTimer >= TimeSpan.Zero)
                 {
                     InvincibleTimer -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
-                    Console.WriteLine(InvincibleTimer);
                 }
                 else
                 {

@@ -179,7 +179,7 @@ namespace Final_Bomber.Screens
             foreach (var p in GameManager.Players)
             {
                 // HUD => Item Info
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Config.PlayersName[p.Id] + ": "
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, p.Name + ": "
                      + p.Stats.Score + " pt(s)",
                     new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 

@@ -123,6 +123,9 @@ namespace Final_Bomber
             // We get all map files to store name + md5 checksum in a dictionary 
             MapLoader.LoadMapFiles();
 
+            // We load player info
+            StaticClassSerializer.Load(typeof(PlayerInfo), "PlayerInfo.xml", false);
+
             base.Initialize();
         }
 
@@ -139,6 +142,8 @@ namespace Final_Bomber
             if (Server != null)
                 Server.client.Disconnect("Bye");
             */
+
+            StaticClassSerializer.Save(typeof(PlayerInfo), "PlayerInfo.xml", false);
         }
 
         protected override void Update(GameTime gameTime)
