@@ -90,6 +90,8 @@ namespace FBLibrary.Core.BaseEntities
             base.Update();
         }
 
+        #region Wall collision
+
         protected void ComputeWallCollision(BaseMap map)
         {
             #region Smooth movement
@@ -323,6 +325,8 @@ namespace FBLibrary.Core.BaseEntities
         {
             return Position.X > ((CellPosition.X * Engine.TileWidth) + (GetMovementSpeed() / 2));
         }
+
+        #endregion
 
         protected abstract float GetMovementSpeed();
 

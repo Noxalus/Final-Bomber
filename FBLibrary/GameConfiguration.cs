@@ -12,7 +12,7 @@ namespace FBLibrary
 
         // Invincibility
         public const bool Invincible = false;
-        public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(30);
+        public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
 
         // Base characteristics
         public const int BasePlayerBombPower = 1;

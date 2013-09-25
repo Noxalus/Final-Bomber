@@ -106,16 +106,10 @@ namespace Final_Bomber.Entities
                 {
                     if (InvincibleTimer >= TimeSpan.Zero)
                     {
-                        InvincibleTimer -= gameTime.ElapsedGameTime;
                         if (_invincibleBlinkTimer >= TimeSpan.Zero)
                             _invincibleBlinkTimer -= gameTime.ElapsedGameTime;
                         else
                             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-                    }
-                    else
-                    {
-                        InvincibleTimer = GameConfiguration.PlayerInvincibleTimer;
-                        IsInvincible = false;
                     }
                 }
 
@@ -187,7 +181,7 @@ namespace Final_Bomber.Entities
             #endregion
 
             #region Edge wall gameplay
-
+            /*
             else if (OnEdge &&
                      (!Config.ActiveSuddenDeath ||
                       (Config.ActiveSuddenDeath && !FinalBomber.Instance.GamePlayScreen.SuddenDeath.HasStarted)))
@@ -196,7 +190,7 @@ namespace Final_Bomber.Entities
 
                 MoveFromEdgeWall();
             }
-
+            */
             #endregion
 
             #region Camera
