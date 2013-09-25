@@ -34,6 +34,7 @@ namespace Final_BomberServer
             if (!server.Running)
             {
                 GameSettings.GameName = "Final-Server";
+                Log.Info("Player Number: " + GameConfiguration.PlayerNumber);
 
                 server = new GameServerHandler();
                 server.Initialize();

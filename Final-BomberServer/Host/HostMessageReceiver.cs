@@ -1,4 +1,6 @@
-﻿using FBLibrary.Core;
+﻿using System;
+using System.Linq;
+using FBLibrary.Core;
 
 namespace Final_BomberServer.Host
 {
@@ -12,10 +14,33 @@ namespace Final_BomberServer.Host
 
         void ReceiveReady(Client client, string username, string password)
         {
-            client.Username = username;
-            client.isReady = true;
-            //MainServer.SendCheckIfOnline(username, password);
-            Program.Log.Info("Client " + client.ClientId + " is ready to play");
+            if (!client.isReady)
+            {
+                var playerNames = GameSettings.gameServer.Clients.Select(c => c.Username).ToList();
+
+                client.Username = username;
+                if (playerNames.Contains(client.Username))
+                {
+                    var concat = 1;
+                    var playerName = client.Username;
+                    while (playerNames.Contains(client.Username + concat))
+                    {
+                        concat++;
+                    }
+
+                    client.Username = playerName + concat;
+                }
+
+                Console.WriteLine("COUCOU");
+
+                client.isReady = true;
+                //MainServer.SendCheckIfOnline(username, password);
+                Program.Log.Info("Client " + client.ClientId + " is ready to play");
+            }
+            else
+            {
+                Program.Log.Info("Client " + client.ClientId + " send again that he is ready !");
+            }
         }
 
         void ReceiveMovePlayer(Client client, LookDirection movement)
