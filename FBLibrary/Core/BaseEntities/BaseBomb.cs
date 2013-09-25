@@ -9,8 +9,8 @@ namespace FBLibrary.Core.BaseEntities
     {
         public int PlayerId;
         protected int Power;
-        protected TimeSpan Timer;
-        protected TimeSpan TimerLenght;
+        public TimeSpan Timer;
+        public TimeSpan TimerLenght;
         protected bool WillExplode;
 
         public List<Point> ActionField { get; private set; }
@@ -54,13 +54,10 @@ namespace FBLibrary.Core.BaseEntities
             if (Timer >= TimerLenght)
             {
                 Timer = TimeSpan.FromSeconds(-1);
-                Destroy();
             }
             else if (Timer >= TimeSpan.Zero)
             {
                 Timer += TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
-
-                Console.WriteLine("Bomb timer: " + Timer.ToString());
 
                 // The bomb will explode soon
                 if (CurrentDirection == LookDirection.Idle &&
@@ -188,5 +185,14 @@ namespace FBLibrary.Core.BaseEntities
         {
             Timer = TimeSpan.Zero;
         }
+
+        public override void Destroy()
+        {
+            InDestruction = true;
+
+            ComputeActionField(3);
+        }
+
+
     }
 }

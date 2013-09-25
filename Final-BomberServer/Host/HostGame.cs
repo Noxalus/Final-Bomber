@@ -466,7 +466,7 @@ namespace Final_BomberServer.Host
                         GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
                         GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
 
-                        GameManager.BombList.Add(bomb);
+                        GameManager.AddBomb(bomb);
                         player.CurrentBombAmount--;
 
                         GameSettings.gameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);

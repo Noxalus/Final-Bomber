@@ -433,12 +433,9 @@ namespace Final_Bomber.Core.Entities
 
         public override void Destroy()
         {
-            if (InDestruction) return;
-
             NetworkTestScreen.GameManager.BombExplosionSound.Play();
-            InDestruction = true;
 
-            ComputeActionField(3);
+            base.Destroy();
         }
 
         public override void Remove()

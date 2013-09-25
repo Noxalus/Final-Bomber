@@ -61,6 +61,11 @@ namespace Final_BomberServer.Host
                     foreach (Client client in GameSettings.gameServer.Clients)
                     {
                         GameSettings.gameServer.SendRoundEnd(client);
+
+                        var newPlayer = new Player(client.Player.Id);
+                        GameManager.AddPlayer(client, newPlayer);
+
+                        GameSettings.gameServer.SendGameInfo(client);
                     } 
                 }
             }

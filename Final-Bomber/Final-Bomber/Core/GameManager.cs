@@ -197,8 +197,7 @@ namespace Final_Bomber.Core
             // Song
             MediaPlayer.Play(_mapSong);
 
-            //_timer = TimeSpan.Zero;
-            _deadPlayersNumber = 0;
+            _timer = TimeSpan.Zero;
 
             CreateWorld();
 
@@ -231,6 +230,8 @@ namespace Final_Bomber.Core
             */
         }
 
+        #region Player methods
+
         public void AddPlayer(Player player)
         {
             Players.Add(player);
@@ -245,13 +246,7 @@ namespace Final_Bomber.Core
             base.RemovePlayer(player);
         }
 
-        public void AddWalls(IEnumerable<Point> wallPositions)
-        {
-            foreach (var position in wallPositions)
-            {
-                AddWall(position);
-            }
-        }
+        #endregion
 
         #region Wall methods
 
@@ -268,6 +263,14 @@ namespace Final_Bomber.Core
             _wallList.Add(wall);
 
             base.AddWall(wall);
+        }
+
+        public void AddWalls(IEnumerable<Point> wallPositions)
+        {
+            foreach (var position in wallPositions)
+            {
+                AddWall(position);
+            }
         }
 
         protected override void DestroyWall(Point position)
@@ -295,18 +298,16 @@ namespace Final_Bomber.Core
             base.AddBomb(bomb);
         }
 
+        protected override void DestroyBomb(Point position)
+        {
+            var bomb = _bombList.Find(b => b.CellPosition == position);
+
+            base.DestroyBomb(bomb);
+        }
+
         private void RemoveBomb(Bomb bomb)
         {
             _bombList.Remove(bomb);
-
-            // We don't forget to give it back to its owner
-            if (bomb.PlayerId >= 0)
-            {
-                BasePlayer player = BasePlayerList.Find(p => p.Id == bomb.PlayerId);
-
-                if (player != null && player.CurrentBombAmount < player.TotalBombAmount)
-                    player.CurrentBombAmount++;
-            }
 
             base.RemoveBomb(bomb);
         }
@@ -318,6 +319,14 @@ namespace Final_Bomber.Core
         public override void AddPowerUp(Point position)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddPowerUp(PowerUpType type, Point position)
+        {
+            var powerUp = new PowerUp(position, type);
+            _powerUpList.Add(powerUp);
+
+            base.AddPowerUp(powerUp);
         }
 
         protected override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
@@ -343,13 +352,5 @@ namespace Final_Bomber.Core
         }
 
         #endregion
-
-        public void AddPowerUp(PowerUpType type, Point position)
-        {
-            var powerUp = new PowerUp(position, type);
-            _powerUpList.Add(powerUp);
-
-            base.AddPowerUp(powerUp);
-        }
     }
 }

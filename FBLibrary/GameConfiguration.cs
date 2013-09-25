@@ -37,7 +37,7 @@ namespace FBLibrary
         public static int PowerUpPercentage = 100;
 
         public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
-        public static TimeSpan PowerUpDestructionTime = TimeSpan.FromMilliseconds(1500);
+        public static TimeSpan PowerUpDestructionTime = TimeSpan.FromMilliseconds(750);
 
         // Power up
         public static readonly List<PowerUpType> PowerUpTypeAvailable = new List<PowerUpType>() 
@@ -66,7 +66,7 @@ namespace FBLibrary
         public static int DeltaTime = 0; // milliseconds
 
         // TO DELETE
-        public static int PlayerNumber = 2;
+        public static int PlayerNumber = 1;
         public static string ServerIp = "localhost";
         public static string ServerPort = "2643";
     }

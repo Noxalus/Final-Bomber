@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 
@@ -44,7 +45,8 @@ namespace FBLibrary.Core
         {
             for (int i = 0; i < BaseWallList.Count; i++)
             {
-                if (HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] == 3)
+                if (HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] == 3 &&
+                    !BaseWallList[i].InDestruction)
                 {
                     DestroyWall(BaseWallList[i].CellPosition);
                     HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] = 0;
@@ -54,14 +56,21 @@ namespace FBLibrary.Core
 
         protected virtual void UpdateBombs()
         {
+            for (int i = 0; i < BaseBombList.Count; i++)
+            {
+                // Is it die ?
+                if ((HazardMap[BaseBombList[i].CellPosition.X, BaseBombList[i].CellPosition.Y] == 3 ||
+                    BaseBombList[i].Timer >= BaseBombList[i].TimerLenght) && !BaseBombList[i].InDestruction)
+                {
+                    DestroyBomb(BaseBombList[i].CellPosition);
+                }
+            }
         }
 
         protected virtual void UpdatePowerUps()
         {
             for (int i = 0; i < BasePowerUpList.Count; i++)
             {
-                BasePowerUpList[i].Update();
-
                 // Is it die ?
                 if (HazardMap[BasePowerUpList[i].CellPosition.X, BasePowerUpList[i].CellPosition.Y] == 3)
                     DestroyPowerUp(BasePowerUpList[i].CellPosition);
@@ -202,14 +211,30 @@ namespace FBLibrary.Core
             BaseBombList.Add(bomb);
         }
 
+        protected abstract void DestroyBomb(Point position);
+        protected virtual void DestroyBomb(BaseBomb baseBomb)
+        {
+            if (baseBomb != null)
+            {
+                // We don't forget to give it back to its owner
+                if (baseBomb.PlayerId >= 0)
+                {
+                    BasePlayer player = BasePlayerList.Find(p => p.Id == baseBomb.PlayerId);
+
+                    if (player != null && player.CurrentBombAmount < player.TotalBombAmount)
+                        player.CurrentBombAmount++;
+                }
+
+                baseBomb.Destroy();
+            }
+        }
+
         protected virtual void RemoveBomb(BaseBomb bomb)
         {
             if (BaseCurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] is BaseBomb)
                 BaseCurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = null;
 
             BaseCurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = false;
-
-            DisplayHazardMap();
 
             // Update the hazard map
             List<BaseBomb> bL = BaseBombList.FindAll(b => !b.InDestruction);

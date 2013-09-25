@@ -70,8 +70,6 @@ namespace FBLibrary.Core
             {
                 DestructionTime -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
 
-                Console.WriteLine(DestructionTime.ToString());
-
                 if (DestructionTime < TimeSpan.Zero)
                     Remove();
             }

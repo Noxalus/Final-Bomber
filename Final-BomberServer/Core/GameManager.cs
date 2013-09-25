@@ -211,18 +211,16 @@ namespace Final_BomberServer.Core
             base.AddBomb(bomb);
         }
 
+        protected override void DestroyBomb(Point position)
+        {
+            var bomb = _bombList.Find(b => b.CellPosition == position);
+
+            base.DestroyBomb(bomb);
+        }
+
         private void RemoveBomb(Bomb bomb)
         {
             _bombList.Remove(bomb);
-
-            // We don't forget to give it back to its owner
-            if (bomb.PlayerId >= 0)
-            {
-                BasePlayer player = BasePlayerList.Find(p => p.Id == bomb.PlayerId);
-
-                if (player != null && player.CurrentBombAmount < player.TotalBombAmount)
-                    player.CurrentBombAmount++;
-            }
 
             base.RemoveBomb(bomb);
         }

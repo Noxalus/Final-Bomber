@@ -18,9 +18,7 @@ namespace Final_BomberServer.Core.Entities
 
         public override void Destroy()
         {
-            ComputeActionField(3);
-
-            InDestruction = true;
+            base.Destroy();
         }
 
         public override void Remove()
