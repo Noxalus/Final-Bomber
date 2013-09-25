@@ -22,13 +22,12 @@ namespace Final_BomberServer.Host
                 if (playerNames.Contains(client.Username))
                 {
                     var concat = 1;
-                    var playerName = client.Username;
                     while (playerNames.Contains(client.Username + concat))
                     {
                         concat++;
                     }
 
-                    client.Username = playerName + concat;
+                    client.Username += concat;
                 }
 
                 Console.WriteLine("COUCOU");

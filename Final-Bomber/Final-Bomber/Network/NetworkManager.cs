@@ -92,6 +92,22 @@ namespace Final_Bomber.Network
             {
                 var player = new OnlinePlayer(playerID) { Name =  username };
 
+                if (username == Me.Name)
+                {
+                    var playerNames = _gameManager.Players.Select(p => p.Name).ToList();
+
+                    if (playerNames.Contains(Me.Name))
+                    {
+                        var concat = 1;
+                        while (playerNames.Contains(Me.Name + concat))
+                        {
+                            concat++;
+                        }
+
+                        Me.Name += concat;
+                    }
+                }
+
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);
