@@ -51,6 +51,12 @@ namespace Final_BomberServer.Host
                 Port = PORT
             };
 
+#if DEBUG
+            //config.SimulatedLoss = 0.02f; 
+#endif
+
+            config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
+
             bool checkPort;
             do
             {
@@ -135,6 +141,14 @@ namespace Final_BomberServer.Host
                                 sender.Disconnect("Caused server error");
                             }
                         }
+                        break;
+
+                    case NetIncomingMessageType.ConnectionLatencyUpdated:
+                        float ping = message.ReadFloat() * 1000;
+                        Program.Log.Info("Player #" + currentClient.Player.Id + " ping: " + ping + "ms");
+
+                        // TODO: Send this client's ping to everyone
+
                         break;
 
                 } //ENDSWITCH

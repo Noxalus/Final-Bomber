@@ -51,6 +51,7 @@ namespace Final_Bomber.Network
             PublicIp = "?";
 
             // Server events
+            GameSettings.GameServer.UpdatePing += GameServer_UpdatePing;
             GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer += GameServer_MovePlayer;
             GameSettings.GameServer.PlacingBomb += GameServer_PlacingBomb;
@@ -67,6 +68,8 @@ namespace Final_Bomber.Network
 
         public void Dispose()
         {
+            // Server events
+            GameSettings.GameServer.UpdatePing -= GameServer_UpdatePing;
             GameSettings.GameServer.NewPlayer -= GameServer_NewPlayer;
             GameSettings.GameServer.MovePlayer -= GameServer_MovePlayer;
             GameSettings.GameServer.PlacingBomb -= GameServer_PlacingBomb;
@@ -133,6 +136,11 @@ namespace Final_Bomber.Network
                 player.UpdateAnimation();
                 */
             }
+        }
+
+        private void GameServer_UpdatePing(float ping)
+        {
+            Me.Ping = ping;
         }
 
         private void GameServer_PlacingBomb(int playerId, Point position)

@@ -33,6 +33,8 @@ namespace Final_Bomber.Network
         public void StartClientConnection(string ip, string port)
         {
             var config = new NetPeerConfiguration("Final-Bomber");
+            config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
+
             _client = new NetClient(config);
 
             _client.Start();
@@ -60,11 +62,20 @@ namespace Final_Bomber.Network
             while ((message = _client.ReadMessage()) != null)
             {
                 Debug.Print("Packet received from server !");
+                byte type;
                 switch (message.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        byte type = message.ReadByte();
+                        type = message.ReadByte();
                         DataProcessing(type, message);
+                        break;
+                    case NetIncomingMessageType.ConnectionLatencyUpdated:
+                        float ping = message.ReadFloat() * 1000;
+                        RecievePing(ping);
+                        break;
+                    default:
+                        type = message.ReadByte();
+                        Debug.Print("Unhandle message type (" + type + ")");
                         break;
                 }
             }

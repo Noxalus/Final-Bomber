@@ -18,6 +18,7 @@ namespace Final_Bomber.Core.Players
     {
         private Keys[] _keysSaved;
         private Vector2 _motionVector;
+        public float Ping;
 
         public OnlineHumanPlayer(int id)
             : base(id)
@@ -25,6 +26,8 @@ namespace Final_Bomber.Core.Players
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
             _motionVector = Vector2.Zero;
+
+            Ping = 0f;
         }
 
         private Keys[] Keys { get; set; }

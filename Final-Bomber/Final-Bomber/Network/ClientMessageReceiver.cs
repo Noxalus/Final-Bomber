@@ -308,6 +308,22 @@ namespace Final_Bomber.Network
         {
             OnEnd(Won);
         }
+
+
+        #region Ping
+        public delegate void UpdatePingEventHandler(float ping);
+        public event UpdatePingEventHandler UpdatePing;
+        protected virtual void OnPing(float ping)
+        {
+            if (UpdatePing != null)
+                UpdatePing(ping);
+        }
+        #endregion
+
+        public void RecievePing(float ping)
+        {
+            OnPing(ping);
+        }
     }
 
     public class MovePlayerArgs

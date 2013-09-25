@@ -152,6 +152,11 @@ namespace Final_Bomber.Screens
                         0),
             Color.Black);
 
+            // Player's ping
+            string ping = "Ping: " + NetworkManager.Me.Ping;
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21), Color.Black);
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20), Color.White);
+
             /*
             // Draw IP adress
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, _networkManager.PublicIp, new Vector2(530, 60), Color.Black);
