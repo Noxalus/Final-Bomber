@@ -43,7 +43,7 @@ namespace Final_Bomber.Network
         public NetworkManager(GameManager gameManager)
         {
             _gameManager = gameManager;
-            Me = new OnlineHumanPlayer(0) { Name = PlayerInfo.Username };
+            Me = new OnlineHumanPlayer(0);
         }
 
         public void Initiliaze()
@@ -59,6 +59,8 @@ namespace Final_Bomber.Network
             GameSettings.GameServer.PowerUpDrop += GameServer_PowerUpDrop;
             GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
             GameSettings.GameServer.End += GameServer_End;
+
+            Me.Name = PlayerInfo.Username;
         }
 
         public void LoadContent()
@@ -94,7 +96,7 @@ namespace Final_Bomber.Network
             if (_gameManager.Players.GetPlayerByID(playerID) == null)
             {
                 var player = new OnlinePlayer(playerID) { Name =  username };
-
+                /*
                 if (username == Me.Name)
                 {
                     var playerNames = _gameManager.Players.Select(p => p.Name).ToList();
@@ -110,7 +112,7 @@ namespace Final_Bomber.Network
                         Me.Name += concat;
                     }
                 }
-
+                */
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
                 //Entities.Add(player);

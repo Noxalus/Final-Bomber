@@ -148,7 +148,7 @@ namespace Final_Bomber.Screens
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                     new Vector2(
                         Config.Resolutions[Config.IndexResolution, 0] / 2f -
-                        this.BigFont.MeasureString(str).X / 2,
+                        this.BigFont.MeasureString(str).X / 2 - 75,
                         0),
             Color.Black);
 

@@ -57,6 +57,7 @@ namespace Final_BomberServer.Host
                 else
                 {
                     // Reset
+                    StartedMatch = false;
                     //HostGame.GameManager.Reset();
                     foreach (Client client in GameSettings.gameServer.Clients)
                     {

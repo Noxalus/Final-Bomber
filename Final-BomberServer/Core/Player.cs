@@ -195,7 +195,6 @@ namespace Final_BomberServer.Core
         public override void Destroy()
         {
             InDestruction = true;
-            Remove();
         }
 
         public override void Remove()

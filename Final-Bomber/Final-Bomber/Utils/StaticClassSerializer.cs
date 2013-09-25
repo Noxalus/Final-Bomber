@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -23,7 +24,7 @@ namespace Final_Bomber.Utils
                     a[i, 0] = field.Name;
                     a[i, 1] = field.GetValue(null);
                     i++;
-                };
+                }
 
                 Stream f = File.Open(filename, FileMode.Create);
 
@@ -55,21 +56,28 @@ namespace Final_Bomber.Utils
                     formatter = new SoapFormatter();
 
                 a = formatter.Deserialize(f) as object[,];
+
                 f.Close();
-                if (a.GetLength(0) != fields.Length) return false;
+
+                if (a != null && a.GetLength(0) != fields.Length) return false;
+
                 int i = 0;
                 foreach (FieldInfo field in fields)
                 {
-                    if (field.Name == (a[i, 0] as string))
+                    if (a != null && field.Name == (a[i, 0] as string))
                     {
                         field.SetValue(null, a[i, 1]);
                     }
+
                     i++;
-                };
+                }
+
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                Debug.Print(ex.Message);
+                throw new Exception(ex.Message);
                 return false;
             }
         }

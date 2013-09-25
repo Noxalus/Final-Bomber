@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FBLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -123,8 +124,10 @@ namespace Final_Bomber
             // We get all map files to store name + md5 checksum in a dictionary 
             MapLoader.LoadMapFiles();
 
+            Debug.Print("Username: " + PlayerInfo.Username);
             // We load player info
             StaticClassSerializer.Load(typeof(PlayerInfo), "PlayerInfo.xml", false);
+            Debug.Print("Username: " + PlayerInfo.Username);
 
             base.Initialize();
         }
