@@ -22,7 +22,6 @@ namespace Final_Bomber.Core
 
         // Players
         public PlayerCollection Players;
-        private int _deadPlayersNumber;
 
         // Collections
         private readonly List<Bomb> _bombList;
@@ -89,18 +88,7 @@ namespace Final_Bomber.Core
 
         public void Initialize()
         {
-        }
-        
-        public override void Reset()
-        {
-            // Song
             MediaPlayer.Play(_mapSong);
-
-            Players.Clear();
-
-            _wallList.Clear();
-            _powerUpList.Clear();
-            _bombList.Clear();
 
             _timer = TimeSpan.Zero;
 
@@ -110,8 +98,21 @@ namespace Final_Bomber.Core
             Engine.Origin = origin;
 
             _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
+        }
+        
+        public override void Reset()
+        {
+            MediaPlayer.Play(_mapSong);
 
-            //base.Reset();
+            _timer = TimeSpan.Zero;
+
+            Players.Clear();
+
+            _wallList.Clear();
+            _powerUpList.Clear();
+            _bombList.Clear();
+
+            base.Reset();
         }
 
         public void LoadContent()

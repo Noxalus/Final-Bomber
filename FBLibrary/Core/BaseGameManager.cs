@@ -288,6 +288,11 @@ namespace FBLibrary.Core
         public virtual void Reset()
         {
             BaseCurrentMap.Reset();
+
+            BasePlayerList.Clear();
+            _baseBombList.Clear();
+            _basePowerUpList.Clear();
+            _baseWallList.Clear();
         }
 
         public virtual void LoadMap(string mapName)

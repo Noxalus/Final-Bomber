@@ -219,5 +219,53 @@ namespace FBLibrary.Core.BaseEntities
 
             _baseEdgeWallList.Add(edgeWall);
         }
+
+        #region Displaying region
+        public void DisplayBoard()
+        {
+
+            for (int y = 0; y < Size.Y; y++)
+            {
+                for (int x = 0; x < Size.X; x++)
+                {
+                    if (Board[x, y] is BaseEdgeWall)
+                    {
+                        Console.Write("E ");
+                    }
+                    else if (Board[x, y] is BaseUnbreakableWall)
+                    {
+                        Console.Write("U ");
+                    }
+                    else if (Board[x, y] is BaseWall)
+                    {
+                        Console.Write("W ");
+                    }
+                    else if (Board[x, y] is BasePlayer)
+                    {
+                        Console.Write("P ");
+                    }
+                    else
+                    {
+                        Console.Write("N ");
+                    }
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+        public void DisplayCollisionLayer()
+        {
+            for (int y = 0; y < Size.Y; y++)
+            {
+                for (int x = 0; x < Size.X; x++)
+                {
+                    Console.Write(CollisionLayer[x, y] ? "1 " : "0 ");
+                }
+
+                Console.WriteLine();
+            }
+        }
+        #endregion
     }
 }

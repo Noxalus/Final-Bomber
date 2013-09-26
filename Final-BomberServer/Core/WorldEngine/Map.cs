@@ -39,53 +39,5 @@ namespace Final_BomberServer.Core.WorldEngine
 
             base.AddEdgeWall(edgeWall);
         }
-
-        #region Displaying region
-        public void DisplayBoard()
-        {
-
-            for (int y = 0; y < Size.Y; y++)
-            {
-                for (int x = 0; x < Size.X; x++)
-                {
-                    if (Board[x, y] is EdgeWall)
-                    {
-                        Console.Write("E ");
-                    }
-                    else if (Board[x, y] is UnbreakableWall)
-                    {
-                        Console.Write("U ");
-                    }
-                    else if (Board[x, y] is Wall)
-                    {
-                        Console.Write("W ");
-                    }
-                    else if (Board[x, y] is Player)
-                    {
-                        Console.Write("P ");
-                    }
-                    else
-                    {
-                        Console.Write("N ");
-                    }
-                }
-
-                Console.WriteLine();
-            }
-        }
-
-        public void DisplayCollisionLayer()
-        {
-            for (int y = 0; y < Size.Y; y++)
-            {
-                for (int x = 0; x < Size.X; x++)
-                {
-                    Console.Write(CollisionLayer[x, y] ? "1 " : "0 ");
-                }
-
-                Console.WriteLine();
-            }
-        }
-        #endregion
     }
 }

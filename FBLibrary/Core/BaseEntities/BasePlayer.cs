@@ -26,6 +26,20 @@ namespace FBLibrary.Core.BaseEntities
 
         protected BasePlayer(int id)
         {
+            Stats = new PlayerStats();
+
+            Initiliaze(id);
+        }
+
+        protected BasePlayer(int id, PlayerStats stats)
+        {
+            Stats = stats;
+
+            Initiliaze(id);
+        }
+
+        private void Initiliaze(int id)
+        {
             Id = id;
             Name = "[UNKNOWN]";
             IsAlive = true;
@@ -39,8 +53,6 @@ namespace FBLibrary.Core.BaseEntities
             Speed = GameConfiguration.BasePlayerSpeed;
 
             IsInvincible = true;
-
-            Stats = new PlayerStats();
 
             // Bad power up
             HasBadEffect = false;

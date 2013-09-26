@@ -2,15 +2,10 @@
 using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core;
-using Final_Bomber.Core.Players;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Final_Bomber.Network;
 using System.Diagnostics;
-using Final_Bomber.Entities;
-using System.Net;
-using System.Net.Sockets;
-using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -72,17 +67,14 @@ namespace Final_Bomber.Screens
 
             //_serverProcess.Start();
 
-            GameManager.Initialize();
-            NetworkManager.Initiliaze();
-
             // Server events
             GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
             GameSettings.GameServer.End += GameServer_End;
 
             base.Initialize();
 
-            GameManager.Reset();
-            NetworkManager.Reset();
+            GameManager.Initialize();
+            NetworkManager.Initiliaze();
 
             GameManager.AddPlayer(NetworkManager.Me);
 
@@ -424,7 +416,10 @@ namespace Final_Bomber.Screens
 
         private void GameServer_RoundEnd()
         {
-            //_gameManager.Reset();
+            GameManager.Reset();
+            NetworkManager.Reset();
+
+            GameManager.AddPlayer(NetworkManager.Me);
         }
 
         private void GameServer_End(bool won)

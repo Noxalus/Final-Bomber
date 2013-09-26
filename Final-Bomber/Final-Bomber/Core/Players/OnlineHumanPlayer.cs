@@ -23,6 +23,17 @@ namespace Final_Bomber.Core.Players
         public OnlineHumanPlayer(int id)
             : base(id)
         {
+            Initialize();
+        }
+
+        public OnlineHumanPlayer(int id, PlayerStats stats)
+            : base(id, stats)
+        {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
             _motionVector = Vector2.Zero;

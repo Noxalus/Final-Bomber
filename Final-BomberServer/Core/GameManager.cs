@@ -57,6 +57,17 @@ namespace Final_BomberServer.Core
             BaseCurrentMap = _currentMap;
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+
+            _wallList.Clear();
+            _powerUpList.Clear();
+            _bombList.Clear();
+            
+            GenerateWalls();
+        }
+
         public override void Update()
         {
             base.Update();
@@ -155,6 +166,8 @@ namespace Final_BomberServer.Core
                     }
                 }
             }
+
+            CurrentMap.DisplayBoard();
         }
 
         private bool NearPlayer(int x, int y)

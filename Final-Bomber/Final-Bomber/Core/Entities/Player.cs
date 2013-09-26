@@ -48,15 +48,26 @@ namespace Final_Bomber.Entities
         protected Player(int id)
             : base(id)
         {
+            Initiliaze();
+        }
+
+        protected Player(int id, PlayerStats stats)
+            : base(id, stats)
+        {
+            Initiliaze();
+        }
+
+        #endregion
+
+        private void Initiliaze()
+        {
             IsMoving = false;
 
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-            
+
             _gameTime = new GameTime();
         }
-
-        #endregion
 
         #region XNA Method Region
 

@@ -109,9 +109,7 @@ namespace Final_BomberServer.Host
 
             for (int i = 0; i < GameSettings.GameServer.Clients.Count; i++)
             {
-                //GameSettings.gameServer.clients[i].Player.PositionOnTile(_gameManager.CurrentMap.startPositions[i]);//Placerar spelarna på start positioner...
-                //GameSettings.gameServer.clients[i].Player.invurnable.Start();//... och ser till att alla är invurnable i början av spelet
-                GameSettings.GameServer.Clients[i].NewClient = false; //Spelaren är inte nyconnectad längre
+                GameSettings.GameServer.Clients[i].NewClient = false;
                 GameSettings.GameServer.Clients[i].Spectating = false;
             }
 

@@ -48,9 +48,9 @@ namespace FBLibrary
 
 
         // Game info
-        public static float PlayerSpeedIncrementeurPercentage = 25; // Percentage of base player speed
-        public static int WallPercentage = 100; // From 0% to 100%
-        public static int PowerUpPercentage = 100;
+        public static float PlayerSpeedIncrementeurPercentage = 5; // Percentage of base player speed
+        public static int WallPercentage = 50; // From 0% to 100%
+        public static int PowerUpPercentage = 50;
 
         public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
         public static TimeSpan PowerUpDestructionTime = TimeSpan.FromMilliseconds(750);
@@ -80,10 +80,10 @@ namespace FBLibrary
         public static Point BaseTileSize = new Point(32, 32);
 
         // Time
-        public static int DeltaTime = 0; // milliseconds
+        public static int DeltaTime; // milliseconds
 
         // TO DELETE
-        public static int PlayerNumber = 1;
+        public static int PlayerNumber = 2;
         public static string ServerIp = "localhost";
         public static string ServerPort = "2643";
     }

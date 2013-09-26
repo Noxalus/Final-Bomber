@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
@@ -32,7 +33,15 @@ namespace Final_Bomber.Network
 
         #endregion
 
+        // Timers
+        TimeSpan timer;
+        Timer tmr;
+        Timer connectedTmr;
+        private Timer _tmrWaitUntilStart;
+
         public string PublicIp;
+        public bool IsConnected;
+        private bool _isReady;
 
         // Players
         public OnlineHumanPlayer Me;
@@ -44,11 +53,18 @@ namespace Final_Bomber.Network
         {
             _gameManager = gameManager;
             Me = new OnlineHumanPlayer(0);
+            IsConnected = true;
+
+            timer = new TimeSpan();
+            tmr = new Timer();
+            connectedTmr = new Timer();
         }
 
         public void Reset()
         {
-            
+            Me = new OnlineHumanPlayer(0, Me.Stats);
+            Me.Name = PlayerInfo.Username;
+            LoadContent();
         }
 
         public void Initiliaze()
@@ -56,6 +72,9 @@ namespace Final_Bomber.Network
             PublicIp = "?";
 
             // Server events
+            GameSettings.GameServer.StartInfo += GameServer_StartInfo;
+            GameSettings.GameServer.StartGame += GameServer_StartGame;
+
             GameSettings.GameServer.UpdatePing += GameServer_UpdatePing;
             GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
             GameSettings.GameServer.RemovePlayer += GameServer_RemovePlayer;
@@ -65,6 +84,10 @@ namespace Final_Bomber.Network
             GameSettings.GameServer.PowerUpDrop += GameServer_PowerUpDrop;
 
             Me.Name = PlayerInfo.Username;
+
+            tmr.Start();
+            _tmrWaitUntilStart = new Timer();
+            connectedTmr.Start();
         }
 
         public void LoadContent()
@@ -75,6 +98,9 @@ namespace Final_Bomber.Network
         public void Dispose()
         {
             // Server events
+            GameSettings.GameServer.StartInfo -= GameServer_StartInfo;
+            GameSettings.GameServer.StartGame -= GameServer_StartGame;
+
             GameSettings.GameServer.UpdatePing -= GameServer_UpdatePing;
             GameSettings.GameServer.NewPlayer -= GameServer_NewPlayer;
             GameSettings.GameServer.RemovePlayer -= GameServer_RemovePlayer;
@@ -86,20 +112,87 @@ namespace Final_Bomber.Network
 
         public void Update()
         {
-            if (GameSettings.GameServer.HasStarted)
+            if (!IsConnected)
             {
                 GameSettings.GameServer.RunClientConnection();
+                if (GameSettings.GameServer.Connected)
+                {
+                    IsConnected = true;
+                }
+                else if (connectedTmr.Each(5000))
+                {
+                    Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
+                    FinalBomber.Instance.Exit();
+                }
+            }
+            else
+            {
+                if (GameSettings.GameServer.HasStarted)
+                    GameSettings.GameServer.RunClientConnection();
+
+                if (_isReady)
+                    ProgramStepProccesing();
+            }
+        }
+
+        private void ProgramStepProccesing()
+        {
+            if (!GameSettings.GameServer.Connected)
+            {
+                DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
+            }
+            if (GameSettings.GameServer.Connected)
+            {
+                ConnectedGameProcessing();
+            }
+        }
+
+        private void DisplayStatusBeforeExiting(string status)
+        {
+            throw new Exception("Exit ! (not connected to the server !)");
+        }
+
+        private void ConnectedGameProcessing()
+        {
+            if (_isReady)
+            {
+                GameSettings.GameServer.SendIsReady();
+                _isReady = false;
             }
         }
 
         #region Server events
 
+        private void GameServer_StartInfo()
+        {
+            _isReady = true;
+        }
+
+        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
+        {
+            if (!gameInProgress)
+            {
+                NetworkTestScreen.NetworkManager.Me.Id = playerId;
+                //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
+                GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
+            }
+            else
+            {
+                /*
+                mainGame.me.Kill();
+                mainGame.Spectator = true;
+                */
+            }
+
+            _gameManager.AddWalls(wallPositions);
+        }
+
         private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
         {
             if (_gameManager.Players.GetPlayerByID(playerID) == null)
             {
-                var player = new OnlinePlayer(playerID) { Name =  username };
-                
+                var player = new OnlinePlayer(playerID) { Name = username };
+
                 if (username == Me.Name)
                 {
                     var playerNames = _gameManager.Players.Select(p => p.Name).ToList();
@@ -115,7 +208,7 @@ namespace Final_Bomber.Network
                         Me.Name += concat;
                     }
                 }
-                
+
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
                 _gameManager.AddPlayer(player);

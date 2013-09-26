@@ -57,13 +57,14 @@ namespace Final_BomberServer.Host
                 else
                 {
                     // Reset
-                    StartedMatch = false;
-                    //HostGame.GameManager.Reset();
+                    HostGame.GameManager.Reset();
+                    EndGame();
                     foreach (Client client in GameSettings.GameServer.Clients)
                     {
+                        client.isReady = false;
                         GameSettings.GameServer.SendRoundEnd(client);
 
-                        var newPlayer = new Player(client.Player.Id);
+                        var newPlayer = new Player(client.Player.Id, client.Player.Stats);
                         GameManager.AddPlayer(client, newPlayer);
 
                         GameSettings.GameServer.SendGameInfo(client);
