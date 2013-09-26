@@ -62,8 +62,9 @@ namespace Final_Bomber.Network
 
         public void Reset()
         {
+            string username = Me.Name;
             Me = new OnlineHumanPlayer(0, Me.Stats);
-            Me.Name = PlayerInfo.Username;
+            Me.Name = username;
             LoadContent();
         }
 

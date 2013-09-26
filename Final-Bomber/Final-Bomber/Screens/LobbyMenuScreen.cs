@@ -129,11 +129,12 @@ namespace Final_Bomber.Screens
                 _isReady = false;
 
                 _tmrWaitUntilStart = new Timer();
+                GameSettings.GameServer.SendIsReady();
                 _tmrWaitUntilStart.Start();
             }
 
             // Wait 5 seconds before to say to the server that we are ready
-            if (_tmrWaitUntilStart.Each(1))
+            if (_tmrWaitUntilStart.Each(5000))
             {
                 GameSettings.GameServer.SendIsReady();
                 _tmrWaitUntilStart.Stop();
@@ -213,7 +214,7 @@ namespace Final_Bomber.Screens
                 //mainGame.Start();
             }
 
-            
+
             StateManager.ChangeState(FinalBomber.Instance.NetworkTestScreen);
             UnloadContent();
         }

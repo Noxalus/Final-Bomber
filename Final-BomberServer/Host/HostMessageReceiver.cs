@@ -16,21 +16,22 @@ namespace Final_BomberServer.Host
         {
             if (!client.isReady)
             {
-                var playerNames = GameSettings.GameServer.Clients.Select(c => c.Username).ToList();
-
-                client.Username = username;
-                if (playerNames.Contains(client.Username))
+                if (!client.AlreadyPlayed)
                 {
-                    var concat = 1;
-                    while (playerNames.Contains(client.Username + concat))
+                    var playerNames = GameSettings.GameServer.Clients.Select(c => c.Username).ToList();
+
+                    client.Username = username;
+                    if (playerNames.Contains(client.Username))
                     {
-                        concat++;
+                        var concat = 1;
+                        while (playerNames.Contains(client.Username + concat))
+                        {
+                            concat++;
+                        }
+
+                        client.Username = username + concat;
                     }
-
-                    client.Username += concat;
                 }
-
-                Console.WriteLine("COUCOU");
 
                 client.isReady = true;
                 //MainServer.SendCheckIfOnline(username, password);

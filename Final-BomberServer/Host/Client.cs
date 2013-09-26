@@ -14,6 +14,7 @@ namespace Final_BomberServer.Host
         {
             this.client = client;
             this.clientId = clientId;
+            AlreadyPlayed = false;
         }
 
         int clientId;
@@ -23,6 +24,7 @@ namespace Final_BomberServer.Host
         public bool NewClient = true; //Om clienten har precis connectat
         public bool Spectating = false;
         public string Username;
+        public bool AlreadyPlayed;
 
         public int ClientId
         {
