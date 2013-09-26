@@ -56,6 +56,10 @@ namespace FBLibrary
         public static TimeSpan PowerUpDestructionTime = TimeSpan.FromMilliseconds(750);
         public static TimeSpan PlayerDestructionTime = TimeSpan.FromMilliseconds(1750);
 
+        // Score
+        public static int ScoreByKill = 3;
+        public static int ScoreBySuicide = 1;
+
         // Power up
         public static readonly List<PowerUpType> PowerUpTypeAvailable = new List<PowerUpType>() 
         { 

@@ -123,11 +123,15 @@ namespace FBLibrary.Core
 
                         // Suicide
                         if (bombId == BasePlayerList[i].Id)
+                        {
                             BasePlayerList[i].Stats.Suicides++;
-
+                            BasePlayerList[i].Stats.Score -= GameConfiguration.ScoreBySuicide;
+                        }
+                        // Kill
                         else if (bombId >= 0 && bombId < BasePlayerList.Count)
                         {
                             BasePlayerList[i].Stats.Kills++;
+                            BasePlayerList[i].Stats.Score += GameConfiguration.ScoreByKill;
                             BasePlayer player = BasePlayerList.Find(p => p.Id == bombId);
                             if (player.OnEdge)
                             {
