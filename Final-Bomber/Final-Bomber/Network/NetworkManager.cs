@@ -188,11 +188,11 @@ namespace Final_Bomber.Network
             _gameManager.AddWalls(wallPositions);
         }
 
-        private void GameServer_NewPlayer(int playerID, float moveSpeed, string username)
+        private void GameServer_NewPlayer(int playerID, float moveSpeed, string username, int score)
         {
             if (_gameManager.Players.GetPlayerByID(playerID) == null)
             {
-                var player = new OnlinePlayer(playerID) { Name = username };
+                var player = new OnlinePlayer(playerID) {Name = username, Stats = {Score = score}};
 
                 if (username == Me.Name)
                 {

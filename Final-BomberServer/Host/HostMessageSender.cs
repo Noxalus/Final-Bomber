@@ -118,10 +118,14 @@ namespace Final_BomberServer.Host
         private NetOutgoingMessage GetPlayerInfo(Client client)
         {
             NetOutgoingMessage rtn = server.CreateMessage();
+            
             rtn.Write((byte)SMT.PlayerInfo);
+
             rtn.Write(client.Player.Id);
             rtn.Write(client.Player.Speed);
             rtn.Write(client.Username);
+            rtn.Write(client.Player.Stats.Score);
+
             return rtn;
         }
         #endregion

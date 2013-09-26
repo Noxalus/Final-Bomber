@@ -104,17 +104,17 @@ namespace Final_Bomber.Network
         }
 
         #region NewPlayer
-        public delegate void NewPlayerEventHandler(int playerID, float moveSpeed, string username);
+        public delegate void NewPlayerEventHandler(int playerID, float moveSpeed, string username, int score);
         public event NewPlayerEventHandler NewPlayer;
-        protected virtual void OnNewPlayer(int playerID, float moveSpeed, string username)
+        protected virtual void OnNewPlayer(int playerID, float moveSpeed, string username, int score)
         {
             if (NewPlayer != null)
-                NewPlayer(playerID, moveSpeed, username);
+                NewPlayer(playerID, moveSpeed, username, score);
         }
         #endregion
-        public void RecievePlayerInfo(int playerID, float moveSpeed, string username)
+        public void RecievePlayerInfo(int playerID, float moveSpeed, string username, int score)
         {
-            OnNewPlayer(playerID, moveSpeed, username);
+            OnNewPlayer(playerID, moveSpeed, username, score);
         }
 
         #region RemovePlayer

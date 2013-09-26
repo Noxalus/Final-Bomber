@@ -36,7 +36,7 @@ namespace Final_Bomber.Network
                     break;
                 case (byte)RMT.PlayerInfo:
                     Debug.Print("A message type 'PlayerInfo' have been received from server !");
-                    RecievePlayerInfo(message.ReadInt32(), message.ReadFloat(), message.ReadString());
+                    RecievePlayerInfo(message.ReadInt32(), message.ReadFloat(), message.ReadString(), message.ReadInt32());
                     break;
                 case (byte)RMT.RemovePlayer:
                     Debug.Print("A message type 'RemovePlayer' have been received from server !");
