@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using FBLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -61,37 +61,37 @@ namespace Final_Bomber.Screens
             {
                 case 0:
                     if (InputHandler.KeyPressed(Keys.Left) || InputHandler.KeyPressed(Keys.Right) || InputHandler.KeyPressed(Keys.Enter))
-                        Config.ActiveSuddenDeath = !Config.ActiveSuddenDeath;
+                        GameConfiguration.ActiveSuddenDeath = !GameConfiguration.ActiveSuddenDeath;
                     break;
                 case 1:
                     if (InputHandler.KeyDown(Keys.Left))
                     {
-                        if (Config.SuddenDeathTimer <= TimeSpan.Zero)
-                            Config.SuddenDeathTimer = TimeSpan.Zero;
+                        if (GameConfiguration.SuddenDeathTimer <= TimeSpan.Zero)
+                            GameConfiguration.SuddenDeathTimer = TimeSpan.Zero;
                         else
-                            Config.SuddenDeathTimer -= TimeSpan.FromSeconds(1);
+                            GameConfiguration.SuddenDeathTimer -= TimeSpan.FromSeconds(1);
                     }
                     else if (InputHandler.KeyDown(Keys.Right))
                     {
-                        Config.SuddenDeathTimer += TimeSpan.FromSeconds(1);
+                        GameConfiguration.SuddenDeathTimer += TimeSpan.FromSeconds(1);
                     }
                     break;
                 case 2:
                     if (InputHandler.KeyDown(Keys.Right))
                     {
-                        if (Config.SuddenDeathWallSpeed <= 0.1f)
-                            Config.SuddenDeathWallSpeed = 0.1f;
+                        if (GameConfiguration.SuddenDeathWallSpeed <= 0.1f)
+                            GameConfiguration.SuddenDeathWallSpeed = 0.1f;
                         else
-                            Config.SuddenDeathWallSpeed -= 0.01f;
+                            GameConfiguration.SuddenDeathWallSpeed -= 0.01f;
                     }
                     else if (InputHandler.KeyDown(Keys.Left))
                     {
-                        if (Config.SuddenDeathWallSpeed >= Config.SuddenDeathMaxWallSpeed)
-                            Config.SuddenDeathWallSpeed = Config.SuddenDeathMaxWallSpeed;
+                        if (GameConfiguration.SuddenDeathWallSpeed >= GameConfiguration.SuddenDeathMaxWallSpeed)
+                            GameConfiguration.SuddenDeathWallSpeed = GameConfiguration.SuddenDeathMaxWallSpeed;
                         else
-                            Config.SuddenDeathWallSpeed += 0.01f;
+                            GameConfiguration.SuddenDeathWallSpeed += 0.01f;
                     }
-                    Config.SuddenDeathWallSpeed = (float)Math.Round(Config.SuddenDeathWallSpeed, 2);
+                    GameConfiguration.SuddenDeathWallSpeed = (float)Math.Round(GameConfiguration.SuddenDeathWallSpeed, 2);
                     break;
                 case 3:
                     if (InputHandler.KeyPressed(Keys.Left))
@@ -105,7 +105,7 @@ namespace Final_Bomber.Screens
                     {
                         suddenDeathTypeIndex = (suddenDeathTypeIndex + 1) % Config.SuddenDeathTypeArray.Length;
                     }
-                    Config.SuddenDeathType = Config.SuddenDeathTypeArray[suddenDeathTypeIndex];
+                    GameConfiguration.SuddenDeathType = Config.SuddenDeathTypeArray[suddenDeathTypeIndex];
                     break;
                 case 4:
                     if (InputHandler.KeyPressed(Keys.Enter))
@@ -153,25 +153,25 @@ namespace Final_Bomber.Screens
 
                     if (i == 0)
                     {
-                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Config.ActiveSuddenDeath.ToString(),
+                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, GameConfiguration.ActiveSuddenDeath.ToString(),
                         new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
                             menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
                     }
                     else if (i == 1)
                     {
-                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Config.SuddenDeathTimer.ToString(),
+                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, GameConfiguration.SuddenDeathTimer.ToString(),
                         new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
                             menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
                     }
                     else if (i == 2)
                     {
-                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, (100 - (Config.SuddenDeathWallSpeed - 0.1f) * 100).ToString() + "%",
+                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, (100 - (GameConfiguration.SuddenDeathWallSpeed - 0.1f) * 100).ToString() + "%",
                         new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
                             menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
                     }
                     else if (i == 3)
                     {
-                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Config.SuddenDeathTypeText[Config.SuddenDeathType],
+                        FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Config.SuddenDeathTypeText[GameConfiguration.SuddenDeathType],
                         new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
                             menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
                     }

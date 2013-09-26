@@ -12,26 +12,34 @@ namespace FBLibrary.Core
     public abstract class BaseGameManager
     {
         // Engine
-        protected Engine Engine;
+        private Engine _engine;
 
         public int[,] HazardMap;
-        public BaseMap BaseCurrentMap;
+        protected BaseMap BaseCurrentMap;
 
-        protected readonly List<BaseBomb> BaseBombList;
+        private readonly List<BaseBomb> _baseBombList;
         protected readonly List<BasePlayer> BasePlayerList;
-        protected readonly List<BaseWall> BaseWallList;
-        protected readonly List<BasePowerUp> BasePowerUpList;
+        private readonly List<BaseWall> _baseWallList;
+        private readonly List<BasePowerUp> _basePowerUpList;
+
+        public Engine Engine
+        {
+            get { return _engine; }
+            set { _engine = value; }
+        }
 
         protected BaseGameManager()
         {
             // Engine
             Engine = new Engine(32, 32, Vector2.Zero);
 
-            BaseBombList = new List<BaseBomb>();
+            _baseBombList = new List<BaseBomb>();
             BasePlayerList = new List<BasePlayer>();
-            BaseWallList = new List<BaseWall>();
-            BasePowerUpList = new List<BasePowerUp>();
+            _baseWallList = new List<BaseWall>();
+            _basePowerUpList = new List<BasePowerUp>();
         }
+
+        #region Updates
 
         public virtual void Update()
         {
@@ -43,37 +51,37 @@ namespace FBLibrary.Core
 
         protected virtual void UpdateWalls()
         {
-            for (int i = 0; i < BaseWallList.Count; i++)
+            for (int i = 0; i < _baseWallList.Count; i++)
             {
-                if (HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] == 3 &&
-                    !BaseWallList[i].InDestruction)
+                if (HazardMap[_baseWallList[i].CellPosition.X, _baseWallList[i].CellPosition.Y] == 3 &&
+                    !_baseWallList[i].InDestruction)
                 {
-                    DestroyWall(BaseWallList[i].CellPosition);
-                    HazardMap[BaseWallList[i].CellPosition.X, BaseWallList[i].CellPosition.Y] = 0;
+                    DestroyWall(_baseWallList[i].CellPosition);
+                    HazardMap[_baseWallList[i].CellPosition.X, _baseWallList[i].CellPosition.Y] = 0;
                 }
             }
         }
 
         protected virtual void UpdateBombs()
         {
-            for (int i = 0; i < BaseBombList.Count; i++)
+            for (int i = 0; i < _baseBombList.Count; i++)
             {
                 // Is it die ?
-                if ((HazardMap[BaseBombList[i].CellPosition.X, BaseBombList[i].CellPosition.Y] == 3 ||
-                    BaseBombList[i].Timer >= BaseBombList[i].TimerLenght) && !BaseBombList[i].InDestruction)
+                if ((HazardMap[_baseBombList[i].CellPosition.X, _baseBombList[i].CellPosition.Y] == 3 ||
+                    _baseBombList[i].Timer >= _baseBombList[i].TimerLenght) && !_baseBombList[i].InDestruction)
                 {
-                    DestroyBomb(BaseBombList[i].CellPosition);
+                    DestroyBomb(_baseBombList[i].CellPosition);
                 }
             }
         }
 
         protected virtual void UpdatePowerUps()
         {
-            for (int i = 0; i < BasePowerUpList.Count; i++)
+            for (int i = 0; i < _basePowerUpList.Count; i++)
             {
                 // Is it die ?
-                if (HazardMap[BasePowerUpList[i].CellPosition.X, BasePowerUpList[i].CellPosition.Y] == 3)
-                    DestroyPowerUp(BasePowerUpList[i].CellPosition);
+                if (HazardMap[_basePowerUpList[i].CellPosition.X, _basePowerUpList[i].CellPosition.Y] == 3)
+                    DestroyPowerUp(_basePowerUpList[i].CellPosition);
             }
         }
 
@@ -104,7 +112,7 @@ namespace FBLibrary.Core
                     {
                         // Bomb
                         int bombId = -42;
-                        List<BaseBomb> bl = BaseBombList.FindAll(b => b.InDestruction);
+                        List<BaseBomb> bl = _baseBombList.FindAll(b => b.InDestruction);
                         foreach (BaseBomb b in bl)
                         {
                             if (b.ActionField.Any(po => po == BasePlayerList[i].CellPosition))
@@ -133,6 +141,8 @@ namespace FBLibrary.Core
                 }
             }
         }
+
+        #endregion
 
         #region Player methods
 
@@ -167,7 +177,7 @@ namespace FBLibrary.Core
             BaseCurrentMap.Board[baseWall.CellPositionX, baseWall.CellPositionY] = baseWall;
             BaseCurrentMap.CollisionLayer[baseWall.CellPositionX, baseWall.CellPositionY] = true;
 
-            BaseWallList.Add(baseWall);
+            _baseWallList.Add(baseWall);
         }
 
         protected abstract void DestroyWall(Point position); 
@@ -184,7 +194,7 @@ namespace FBLibrary.Core
 
             BaseCurrentMap.CollisionLayer[wall.CellPosition.X, wall.CellPosition.Y] = false;
 
-            BaseWallList.Remove(wall);
+            _baseWallList.Remove(wall);
         }
 
         #endregion
@@ -196,7 +206,7 @@ namespace FBLibrary.Core
             BaseCurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
             BaseCurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
 
-            BaseBombList.Add(bomb);
+            _baseBombList.Add(bomb);
         }
 
         protected abstract void DestroyBomb(Point position);
@@ -225,11 +235,11 @@ namespace FBLibrary.Core
             BaseCurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = false;
 
             // Update the hazard map
-            List<BaseBomb> bL = BaseBombList.FindAll(b => !b.InDestruction);
+            List<BaseBomb> bL = _baseBombList.FindAll(b => !b.InDestruction);
             foreach (Point p in bomb.ActionField)
             {
                 bool sameCellThanAnOther = false;
-                if (BaseBombList.Where(
+                if (_baseBombList.Where(
                     b => !(b.CellPosition.X == bomb.CellPosition.X &&
                     b.CellPosition.Y == bomb.CellPosition.Y)).Any(
                     b => b.ActionField.Find(c => c.X == p.X && c.Y == p.Y) != Point.Zero))
@@ -241,7 +251,7 @@ namespace FBLibrary.Core
                     HazardMap[p.X, p.Y] = 0;
             }
 
-            BaseBombList.Remove(bomb);
+            _baseBombList.Remove(bomb);
         }
 
         #endregion
@@ -253,7 +263,7 @@ namespace FBLibrary.Core
         {
             BaseCurrentMap.Board[basePowerUp.CellPositionX, basePowerUp.CellPositionY] = basePowerUp;
 
-            BasePowerUpList.Add(basePowerUp);
+            _basePowerUpList.Add(basePowerUp);
         }
 
         protected abstract void DestroyPowerUp(Point position);
@@ -268,12 +278,17 @@ namespace FBLibrary.Core
             if (BaseCurrentMap.Board[basePowerUp.CellPosition.X, basePowerUp.CellPosition.Y] is BasePowerUp)
                 BaseCurrentMap.Board[basePowerUp.CellPosition.X, basePowerUp.CellPosition.Y] = null;
 
-            BasePowerUpList.Remove(basePowerUp);
+            _basePowerUpList.Remove(basePowerUp);
         }
 
         protected abstract void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp);
 
         #endregion
+
+        public virtual void Reset()
+        {
+            BaseCurrentMap.Reset();
+        }
 
         public virtual void LoadMap(string mapName)
         {
@@ -285,7 +300,6 @@ namespace FBLibrary.Core
 
         public void DisplayHazardMap()
         {
-
             for (int y = 0; y < BaseCurrentMap.Size.Y; y++)
             {
                 for (int x = 0; x < BaseCurrentMap.Size.X; x++)

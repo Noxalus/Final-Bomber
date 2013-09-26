@@ -193,20 +193,11 @@ namespace Final_Bomber.Screens
         {
             if (true /*!mainGame.IsStarted*/)
             {
-                /*
-                if (lobbyScreen.IsLoaded)
-                {
-                    lobbyScreen.End();
-                    lobbyScreen.Unload();
-                }
-                */
                 if (!gameInProgress)
                 {
                     NetworkTestScreen.NetworkManager.Me.Id = playerId;
-                    /*
-                    me.MoveSpeed = moveSpeed;
-                    suddenDeathTime = suddenDeathTime;
-                    */
+                    //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
+                    GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
                 }
                 else
                 {

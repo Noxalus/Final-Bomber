@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Entities;
@@ -57,7 +58,7 @@ namespace Final_Bomber.Core
             _previousPosition = Point.Zero;
 
             _timer = TimeSpan.Zero;
-            _moveTime = TimeSpan.FromSeconds(Config.SuddenDeathWallSpeed);
+            _moveTime = TimeSpan.FromSeconds(GameConfiguration.SuddenDeathWallSpeed);
             _lookDirection = LookDirection.Right;
 
             _mapSize = Config.MapSize;
@@ -87,7 +88,7 @@ namespace Final_Bomber.Core
         {
             _timer += gameTime.ElapsedGameTime;
 
-            if (!_hasStarted && _timer >= Config.SuddenDeathTimer)
+            if (!_hasStarted && _timer >= GameConfiguration.SuddenDeathTimer)
             {
                 MediaPlayer.Play(_gameRef.GamePlayScreen.MapSongHurry);
                 _hasStarted = true;

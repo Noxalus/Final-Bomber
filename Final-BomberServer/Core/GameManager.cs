@@ -112,7 +112,7 @@ namespace Final_BomberServer.Core
 
         protected override void UpdatePlayers()
         {
-            var players = GameSettings.gameServer.Clients.GetPlayers();
+            var players = GameSettings.GameServer.Clients.GetPlayers();
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -182,7 +182,7 @@ namespace Final_BomberServer.Core
 
         protected override void DestroyPlayer(int playerId)
         {
-            var player = GameSettings.gameServer.Clients.GetPlayerFromId(playerId);
+            var player = GameSettings.GameServer.Clients.GetPlayerFromId(playerId);
 
             base.DestroyPlayer(player);
         }
@@ -266,7 +266,7 @@ namespace Final_BomberServer.Core
             var powerUp = new PowerUp(position);
             _powerUpList.Add(powerUp);
 
-            GameSettings.gameServer.SendPowerUpDrop(powerUp);
+            GameSettings.GameServer.SendPowerUpDrop(powerUp);
 
             base.AddPowerUp(powerUp);
         }

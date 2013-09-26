@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Entities;
@@ -192,8 +193,8 @@ namespace Final_Bomber.Core.Players
                     break;
                 case BadEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(Config.BadItemTimerChangedMin,
-                        Config.BadItemTimerChangedMax);
+                    int randomBombTimer = GamePlayScreen.Random.Next(GameConfiguration.BadItemTimerChangedMin,
+                        GameConfiguration.BadItemTimerChangedMax);
                     BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;
             }

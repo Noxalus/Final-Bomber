@@ -104,7 +104,7 @@ namespace Final_BomberServer.Core
 
         private void SendPosition()
         {
-            GameSettings.gameServer.SendPlayerPosition(this, false);
+            GameSettings.GameServer.SendPlayerPosition(this, false);
         }
 
         /*

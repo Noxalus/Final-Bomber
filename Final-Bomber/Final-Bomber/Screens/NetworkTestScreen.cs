@@ -75,9 +75,14 @@ namespace Final_Bomber.Screens
             GameManager.Initialize();
             NetworkManager.Initiliaze();
 
+            // Server events
+            GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
+            GameSettings.GameServer.End += GameServer_End;
+
             base.Initialize();
 
             GameManager.Reset();
+            NetworkManager.Reset();
 
             GameManager.AddPlayer(NetworkManager.Me);
 
@@ -123,13 +128,14 @@ namespace Final_Bomber.Screens
 
             NetworkManager.AddPlayer -= ResizeHud;
 
+            GameSettings.GameServer.RoundEnd -= GameServer_RoundEnd;
+            GameSettings.GameServer.End -= GameServer_End;
+
             base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            ControlManager.Update(gameTime, PlayerIndex.One);
-
             NetworkManager.Update();
             GameManager.Update(gameTime);
 
@@ -139,8 +145,6 @@ namespace Final_Bomber.Screens
         public override void Draw(GameTime gameTime)
         {
             FinalBomber.Instance.SpriteBatch.Begin();
-
-            ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
             GameManager.Draw(gameTime);
 
@@ -416,6 +420,24 @@ namespace Final_Bomber.Screens
                 _hudTopSpace + GameManager.Players.Count*Config.HUDPlayerInfoSpace + 15);
 
             _timerWindowBox.Position = new Vector2(_hudOrigin.X, _scoresWindowBox.Size.Y);
+        }
+
+        private void GameServer_RoundEnd()
+        {
+            //_gameManager.Reset();
+        }
+
+        private void GameServer_End(bool won)
+        {
+            StateManager.ChangeState(FinalBomber.Instance.LobbyMenuScreen);
+            /*
+            endTmr.Start();
+            if (!Spectator)
+            {
+                shouldEnd = true;
+                haveWon = won;
+            }
+            */
         }
     }
 

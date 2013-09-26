@@ -126,6 +126,7 @@ namespace Final_Bomber.Network
                 RemovePlayer(playerID);
         }
         #endregion
+
         public void RecieveRemovePlayer(int playerID)
         {
             OnRemovePlayer(playerID);

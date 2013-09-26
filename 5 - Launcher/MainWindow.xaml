@@ -1,0 +1,10 @@
+﻿<Window x:Class="FBLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Button Content="Check for Update" HorizontalAlignment="Left" Margin="215,247,0,0" VerticalAlignment="Top" Width="123" Click="Button_Click" Height="33"/>
+        <Label Content="Label" Name="label" HorizontalAlignment="Left" Margin="215,88,0,0" VerticalAlignment="Top" Height="27" Width="123"/>
+
+    </Grid>
+</Window>

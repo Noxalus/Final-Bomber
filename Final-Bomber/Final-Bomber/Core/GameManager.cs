@@ -90,6 +90,29 @@ namespace Final_Bomber.Core
         public void Initialize()
         {
         }
+        
+        public override void Reset()
+        {
+            // Song
+            MediaPlayer.Play(_mapSong);
+
+            Players.Clear();
+
+            _wallList.Clear();
+            _powerUpList.Clear();
+            _bombList.Clear();
+
+            _timer = TimeSpan.Zero;
+
+            var origin = new Vector2((FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234) / 2f - ((32 * _currentMap.Size.X) / 2f),
+                FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - ((32 * _currentMap.Size.Y) / 2));
+
+            Engine.Origin = origin;
+
+            _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
+
+            //base.Reset();
+        }
 
         public void LoadContent()
         {
@@ -213,43 +236,7 @@ namespace Final_Bomber.Core
             }
         }
 
-        public void Reset()
-        {
-            // Song
-            MediaPlayer.Play(_mapSong);
-
-            _timer = TimeSpan.Zero;
-
-            CreateWorld();
-
-            var origin = new Vector2((FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234) / 2f - ((32 * _currentMap.Size.X) / 2f),
-                FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - ((32 * _currentMap.Size.Y) / 2));
-
-            Engine.Origin = origin;
-
-            _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
-        }
-
-        private void CreateWorld()
-        {
-            /*
-            foreach (int playerID in playerPositions.Keys)
-            {
-                if (Config.AIPlayers[playerID])
-                {
-                    var player = new AIPlayer(Math.Abs(playerID));
-                    Players.Add(player);
-                    board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
-                }
-                else
-                {
-                    var player = new HumanPlayer(Math.Abs(playerID));
-                    Players.Add(player);
-                    board[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
-                }
-            }
-            */
-        }
+        #region Entity methods
 
         #region Player methods
 
@@ -378,6 +365,8 @@ namespace Final_Bomber.Core
 
             base.RemovePowerUp(powerUp);
         }
+
+        #endregion
 
         #endregion
     }

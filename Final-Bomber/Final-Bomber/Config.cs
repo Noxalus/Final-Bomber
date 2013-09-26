@@ -12,11 +12,7 @@ using System.IO;
 using Final_Bomber.Entities;
 
 namespace Final_Bomber
-{
-    public enum SuddenDeathTypeEnum { OnlyWall, OnlyBomb, BombAndWall, Whole };
-    public enum TeleporterPositionTypeEnum { Randomly, PlusForm };
-    public enum ArrowPositionTypeEnum { Randomly, SquareForm };
-    
+{   
     [Serializable]
     static class Config
     {
@@ -143,14 +139,7 @@ namespace Final_Bomber
         public static int BonusTypeNumber = 5;
         public static bool ExitGame = false;
 
-        // Sudden Death
-        public static bool ActiveSuddenDeath = true;
-        public static TimeSpan SuddenDeathTimer = TimeSpan.FromSeconds(5);
-        public static SuddenDeathTypeEnum SuddenDeathType = SuddenDeathTypeEnum.OnlyWall;
-        public static float SuddenDeathCounterBombs = 0.3f;
-        public static float SuddenDeathCounterWalls = 0.3f;
-        public static float SuddenDeathWallSpeed = (float)Math.Round(0.25f, 2);
-        public const float SuddenDeathMaxWallSpeed = 1f;
+        
 
         public static readonly Dictionary<SuddenDeathTypeEnum, string> SuddenDeathTypeText = new Dictionary<SuddenDeathTypeEnum, string>
         {
@@ -172,12 +161,6 @@ namespace Final_Bomber
 
         // Map moving scale
         public const float MapMovingScale = 10f;
-
-        // Bad Item
-        public const int BadItemTimerMin = 10; // Seconds
-        public const int BadItemTimerMax = 30; // Seconds
-        public const int BadItemTimerChangedMin = 3; // Seconds
-        public const int BadItemTimerChangedMax = 8; // Seconds
 
         // HUD
         public const int HUDPlayerInfoSpace = 105;

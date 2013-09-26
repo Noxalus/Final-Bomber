@@ -46,6 +46,11 @@ namespace Final_Bomber.Network
             Me = new OnlineHumanPlayer(0);
         }
 
+        public void Reset()
+        {
+            
+        }
+
         public void Initiliaze()
         {
             PublicIp = "?";
@@ -53,12 +58,11 @@ namespace Final_Bomber.Network
             // Server events
             GameSettings.GameServer.UpdatePing += GameServer_UpdatePing;
             GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
+            GameSettings.GameServer.RemovePlayer += GameServer_RemovePlayer;
             GameSettings.GameServer.MovePlayer += GameServer_MovePlayer;
             GameSettings.GameServer.PlacingBomb += GameServer_PlacingBomb;
             GameSettings.GameServer.BombExploded += GameServer_BombExploded;
             GameSettings.GameServer.PowerUpDrop += GameServer_PowerUpDrop;
-            GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
-            GameSettings.GameServer.End += GameServer_End;
 
             Me.Name = PlayerInfo.Username;
         }
@@ -73,12 +77,11 @@ namespace Final_Bomber.Network
             // Server events
             GameSettings.GameServer.UpdatePing -= GameServer_UpdatePing;
             GameSettings.GameServer.NewPlayer -= GameServer_NewPlayer;
+            GameSettings.GameServer.RemovePlayer -= GameServer_RemovePlayer;
             GameSettings.GameServer.MovePlayer -= GameServer_MovePlayer;
             GameSettings.GameServer.PlacingBomb -= GameServer_PlacingBomb;
             GameSettings.GameServer.BombExploded -= GameServer_BombExploded;
             GameSettings.GameServer.PowerUpDrop -= GameServer_PowerUpDrop;
-            GameSettings.GameServer.RoundEnd -= GameServer_RoundEnd;
-            GameSettings.GameServer.End -= GameServer_End;
         }
 
         public void Update()
@@ -96,7 +99,7 @@ namespace Final_Bomber.Network
             if (_gameManager.Players.GetPlayerByID(playerID) == null)
             {
                 var player = new OnlinePlayer(playerID) { Name =  username };
-                /*
+                
                 if (username == Me.Name)
                 {
                     var playerNames = _gameManager.Players.Select(p => p.Name).ToList();
@@ -112,13 +115,22 @@ namespace Final_Bomber.Network
                         Me.Name += concat;
                     }
                 }
-                */
+                
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
-                //Entities.Add(player);
                 _gameManager.AddPlayer(player);
 
                 OnAddPlayer();
+            }
+        }
+
+        private void GameServer_RemovePlayer(int playerID)
+        {
+            Player player = _gameManager.Players.GetPlayerByID(playerID);
+
+            if (player != null && Me.Id != playerID)
+            {
+                _gameManager.RemovePlayer(player);
             }
         }
 
@@ -193,23 +205,6 @@ namespace Final_Bomber.Network
         private void GameServer_PowerUpDrop(PowerUpType type, Point position)
         {
             _gameManager.AddPowerUp(type, position);
-        }
-
-        private void GameServer_RoundEnd()
-        {
-            _gameManager.Reset();
-        }
-
-        private void GameServer_End(bool won)
-        {
-            /*
-            endTmr.Start();
-            if (!Spectator)
-            {
-                shouldEnd = true;
-                haveWon = won;
-            }
-            */
         }
 
         #endregion

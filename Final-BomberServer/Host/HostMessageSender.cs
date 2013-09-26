@@ -66,7 +66,7 @@ namespace Final_BomberServer.Host
             {
                 send.Write(client.Player.Id);
                 send.Write(client.Player.Speed);
-                send.Write(999/*GameSettings.GetCurrentMap().suddenDeathTime*/);
+                send.Write(GameConfiguration.SuddenDeathTimer.Milliseconds);
 
                 List<Wall> walls = HostGame.GameManager.WallList;
                 send.Write(walls.Count);
@@ -107,8 +107,10 @@ namespace Final_BomberServer.Host
         public void SendRemovePlayer(Player removePlayer)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.RemovePlayer);
             send.Write(removePlayer.Id);
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
@@ -225,6 +227,7 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
             WriteOutput("SUDDEN DEATH!");
         }
+
         /*
         public void SendSDExplosion(Explosion ex)
         {

@@ -52,10 +52,10 @@ namespace Final_BomberServer.Core
 
         public void Dispose()
         {
-            if (GameSettings.gameServer.HostStarted)
+            if (GameSettings.GameServer.HostStarted)
             {
-                GameSettings.gameServer.EndServer("byebye");
-                GameSettings.gameServer = null;
+                GameSettings.GameServer.EndServer("byebye");
+                GameSettings.GameServer = null;
             }
             //MainServer.EndMainConnection("byebye");
             Running = false;

@@ -593,7 +593,7 @@ namespace Final_Bomber.Screens
             // Sudden Death
             else if (Config.Debug && InputHandler.KeyDown(Keys.S))
             {
-                if (Config.ActiveSuddenDeath)
+                if (GameConfiguration.ActiveSuddenDeath)
                 {
                     for (int x = 0; x < World.Levels[World.CurrentLevel].Size.X; x++)
                     {
@@ -866,7 +866,7 @@ namespace Final_Bomber.Screens
 
                 #endregion
 
-                if (Config.ActiveSuddenDeath)
+                if (GameConfiguration.ActiveSuddenDeath)
                 {
                     Debug.Assert(SuddenDeath != null, "suddenDeath != null");
                     SuddenDeath.Draw(gameTime);

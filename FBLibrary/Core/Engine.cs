@@ -43,6 +43,10 @@ namespace FBLibrary.Core
         BadEffect
     }
 
+    public enum SuddenDeathTypeEnum { OnlyWall, OnlyBomb, BombAndWall, Whole };
+    public enum TeleporterPositionTypeEnum { Randomly, PlusForm };
+    public enum ArrowPositionTypeEnum { Randomly, SquareForm };
+
     #endregion
 
     public class Engine

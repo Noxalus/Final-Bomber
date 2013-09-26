@@ -16,7 +16,7 @@ namespace Final_BomberServer.Host
         {
             if (!client.isReady)
             {
-                var playerNames = GameSettings.gameServer.Clients.Select(c => c.Username).ToList();
+                var playerNames = GameSettings.GameServer.Clients.Select(c => c.Username).ToList();
 
                 client.Username = username;
                 if (playerNames.Contains(client.Username))

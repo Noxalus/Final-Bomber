@@ -31,6 +31,22 @@ namespace FBLibrary
         public const int MinBombPower = 1;
         public const int MinBombAmount = 1;
 
+        // Bad Item
+        public const int BadItemTimerMin = 10; // Seconds
+        public const int BadItemTimerMax = 30; // Seconds
+        public const int BadItemTimerChangedMin = 3; // Seconds
+        public const int BadItemTimerChangedMax = 8; // Seconds
+
+        // Sudden Death
+        public static bool ActiveSuddenDeath = true;
+        public static TimeSpan SuddenDeathTimer = TimeSpan.FromSeconds(5);
+        public static SuddenDeathTypeEnum SuddenDeathType = SuddenDeathTypeEnum.OnlyWall;
+        public static float SuddenDeathCounterBombs = 0.3f;
+        public static float SuddenDeathCounterWalls = 0.3f;
+        public static float SuddenDeathWallSpeed = (float)Math.Round(0.25f, 2);
+        public const float SuddenDeathMaxWallSpeed = 1f;
+
+
         // Game info
         public static float PlayerSpeedIncrementeurPercentage = 25; // Percentage of base player speed
         public static int WallPercentage = 100; // From 0% to 100%

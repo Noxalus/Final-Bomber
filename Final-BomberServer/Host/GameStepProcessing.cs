@@ -11,28 +11,28 @@ namespace Final_BomberServer.Host
         List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.gameServer.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
-                && !StartedMatch && GameSettings.gameServer.Clients.IsClientsReady())
+            if (GameSettings.GameServer.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
+                && !StartedMatch && GameSettings.GameServer.Clients.IsClientsReady())
             {
                 GameInitialize();
             }
 
-            foreach (Client client in GameSettings.gameServer.Clients)
+            foreach (Client client in GameSettings.GameServer.Clients)
             {
                 if (client.NewClient && StartedMatch && client.isReady)
                 {
-                    GameSettings.gameServer.SendStartGame(client, true);
-                    GameSettings.gameServer.SendPlayersToNew(client);
+                    GameSettings.GameServer.SendStartGame(client, true);
+                    GameSettings.GameServer.SendPlayersToNew(client);
                     client.NewClient = false;
                 }
             }
 
             // End of round
-            _alivePlayers = GameSettings.gameServer.Clients.GetAlivePlayers();
+            _alivePlayers = GameSettings.GameServer.Clients.GetAlivePlayers();
             if (StartedMatch && _alivePlayers.Count < 1)
             {
                 int maxScore = 0;
-                foreach (var player in GameSettings.gameServer.Clients.GetPlayers())
+                foreach (var player in GameSettings.GameServer.Clients.GetPlayers())
                 {
                     maxScore = Math.Max(maxScore, player.Stats.Score);
                 }
@@ -44,14 +44,14 @@ namespace Final_BomberServer.Host
                     GameSettings.CurrentMap++;
                     //MainServer.SendNextMap();
                     EndGame();
-                    foreach (Client client in GameSettings.gameServer.Clients)
+                    foreach (Client client in GameSettings.GameServer.Clients)
                     {
                         client.isReady = false;
-                        GameSettings.gameServer.SendEnd(client);
+                        GameSettings.GameServer.SendEnd(client);
                         // Restore the original values
                         var newPlayer = new Player(client.Player.Id);
                         GameManager.AddPlayer(client, newPlayer);
-                        GameSettings.gameServer.SendGameInfo(client);
+                        GameSettings.GameServer.SendGameInfo(client);
                     }
                 }
                 else
@@ -59,14 +59,14 @@ namespace Final_BomberServer.Host
                     // Reset
                     StartedMatch = false;
                     //HostGame.GameManager.Reset();
-                    foreach (Client client in GameSettings.gameServer.Clients)
+                    foreach (Client client in GameSettings.GameServer.Clients)
                     {
-                        GameSettings.gameServer.SendRoundEnd(client);
+                        GameSettings.GameServer.SendRoundEnd(client);
 
                         var newPlayer = new Player(client.Player.Id);
                         GameManager.AddPlayer(client, newPlayer);
 
-                        GameSettings.gameServer.SendGameInfo(client);
+                        GameSettings.GameServer.SendGameInfo(client);
                     } 
                 }
             }

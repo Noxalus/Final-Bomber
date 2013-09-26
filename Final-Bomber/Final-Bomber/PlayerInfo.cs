@@ -7,6 +7,6 @@ namespace Final_Bomber
 {
     static class PlayerInfo
     {
-        public static string Username = "COUCOU";
+        public static string Username = "NOOB";
     }
 }

@@ -43,7 +43,7 @@ namespace Final_BomberServer
                 return null;
         }
 
-        public static GameServer gameServer;
+        public static GameServer GameServer;
 
         public static int Speed;
 

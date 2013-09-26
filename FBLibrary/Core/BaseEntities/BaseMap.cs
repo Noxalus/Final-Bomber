@@ -40,6 +40,27 @@ namespace FBLibrary.Core.BaseEntities
 
         #region Method Region
 
+        public void Reset()
+        {
+            if (Loaded)
+            {
+                for (int x = 0; x < Size.X; x++)
+                {
+                    for (int y = 0; y < Size.Y; y++)
+                    {
+                        if (Board[x, y] is BaseEdgeWall ||
+                            Board[x, y] is BaseUnbreakableWall)
+                        {
+                            continue;
+                        }
+
+                        Board[x, y] = null;
+                        CollisionLayer[x, y] = false;
+                    }
+                }
+            }
+        }
+
         public void Parse(string file, BaseGameManager gameManager)
         {
             Name = file;
@@ -122,6 +143,8 @@ namespace FBLibrary.Core.BaseEntities
 
                         j++;
                     }
+
+                    Loaded = true;
                 }
             }
             catch (Exception ex)
