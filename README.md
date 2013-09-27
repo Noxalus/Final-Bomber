@@ -47,6 +47,7 @@ TODO List
 * Resources extension
 * Split screen for local multiplayer ?
 * Add logging for networking part (Log4Net => http://logging.apache.org/log4net/index.html)
+* GUI (with Squid ? => http://www.ionstar.org/)
 
 Videos
 ======
