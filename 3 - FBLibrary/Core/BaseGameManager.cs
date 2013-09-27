@@ -130,8 +130,8 @@ namespace FBLibrary.Core
                         // Kill
                         else if (bombId >= 0 && bombId < BasePlayerList.Count)
                         {
-                            BasePlayerList[i].Stats.Kills++;
-                            BasePlayerList[i].Stats.Score += GameConfiguration.ScoreByKill;
+                            BasePlayerList[bombId].Stats.Kills++;
+                            BasePlayerList[bombId].Stats.Score += GameConfiguration.ScoreByKill;
                             BasePlayer player = BasePlayerList.Find(p => p.Id == bombId);
                             if (player.OnEdge)
                             {
