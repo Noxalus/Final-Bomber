@@ -29,7 +29,7 @@ namespace Final_BomberServer.Host
 
             // End of round
             _alivePlayers = GameSettings.GameServer.Clients.GetAlivePlayers();
-            if (StartedMatch && _alivePlayers.Count < 1)
+            if (StartedMatch && _alivePlayers.Count <= GameConfiguration.AlivePlayerRemaining)
             {
                 int maxScore = 0;
                 foreach (var player in GameSettings.GameServer.Clients.GetPlayers())
