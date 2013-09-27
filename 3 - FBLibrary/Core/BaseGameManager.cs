@@ -130,8 +130,8 @@ namespace FBLibrary.Core
                         // Kill
                         else if (bombId >= 0 && bombId < BasePlayerList.Count)
                         {
-                            BasePlayerList[bombId].Stats.Kills++;
-                            BasePlayerList[bombId].Stats.Score += GameConfiguration.ScoreByKill;
+                            GetPlayerById(bombId).Stats.Kills++;
+                            GetPlayerById(bombId).Stats.Score += GameConfiguration.ScoreByKill;
                             BasePlayer player = BasePlayerList.Find(p => p.Id == bombId);
                             if (player.OnEdge)
                             {
@@ -303,6 +303,11 @@ namespace FBLibrary.Core
         {
             BaseCurrentMap.Parse(mapName, this);
             HazardMap = new int[BaseCurrentMap.Size.X, BaseCurrentMap.Size.Y];
+        }
+
+        private BasePlayer GetPlayerById(int id)
+        {
+            return BasePlayerList.FirstOrDefault(basePlayer => basePlayer.Id == id);
         }
 
         #region Displaying region
