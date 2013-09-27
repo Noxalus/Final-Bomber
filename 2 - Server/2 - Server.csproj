@@ -93,7 +93,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FBLibrary\3 - FBLibrary.csproj">
+    <ProjectReference Include="..\3 - FBLibrary\3 - FBLibrary.csproj">
       <Project>{3af57b97-6bf8-4b50-847b-c42b003a2471}</Project>
       <Name>3 - FBLibrary</Name>
     </ProjectReference>

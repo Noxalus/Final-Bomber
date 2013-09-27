@@ -1,9 +1,0 @@
-﻿<Window x:Class="FBLauncher.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="300" Width="300">
-    <Grid>
-        <Button Content="Check for Update" HorizontalAlignment="Left" Margin="87,203,0,0" VerticalAlignment="Top" Width="128" Height="44"/>
-
-    </Grid>
-</Window>
