@@ -13,6 +13,7 @@ using Final_Bomber.Core.Entities;
 using Final_Bomber.Core.Players;
 using Final_Bomber.Entities;
 using Final_Bomber.Screens;
+using Lidgren.Network;
 using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Network

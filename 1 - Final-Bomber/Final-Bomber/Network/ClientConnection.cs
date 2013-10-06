@@ -1,9 +1,7 @@
-﻿using Lidgren.Network;
-using System;
+﻿using System.Threading;
+using Lidgren.Network;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Final_Bomber.Network
 {
@@ -14,6 +12,9 @@ namespace Final_Bomber.Network
         private bool _disconnected;
 
         private NetClient _client;
+
+        // Message pool
+        private Queue<NetIncomingMessage> _messagePool;
 
         public bool HasStarted
         {
@@ -43,6 +44,12 @@ namespace Final_Bomber.Network
             _hasStarted = true;
             _connected = false;
             _disconnected = false;
+
+            _messagePool = new Queue<NetIncomingMessage>();
+
+            var threadStart = new ThreadStart(MessagePooling);
+            var messagePooling = new Thread(threadStart);
+            messagePooling.Start();
         }
 
         public void RunClientConnection()
@@ -58,26 +65,45 @@ namespace Final_Bomber.Network
                 _disconnected = true;
             }
 
-            NetIncomingMessage message;
-            while ((message = _client.ReadMessage()) != null)
+            if (_messagePool.Count > 0)
             {
-                Debug.Print("Packet received from server !");
-                byte type;
-                switch (message.MessageType)
+                NetIncomingMessage message;
+                while (_messagePool.Count > 0)
                 {
-                    case NetIncomingMessageType.Data:
-                        type = message.ReadByte();
-                        DataProcessing(type, message);
-                        break;
-                    case NetIncomingMessageType.ConnectionLatencyUpdated:
-                        float ping = message.ReadFloat() * 1000;
-                        RecievePing(ping);
-                        break;
-                    default:
-                        type = message.ReadByte();
-                        Debug.Print("Unhandle message type (" + type + ")");
-                        break;
+                    message = _messagePool.Dequeue();
+                    byte type;
+                    switch (message.MessageType)
+                    {
+                        case NetIncomingMessageType.Data:
+                            type = message.ReadByte();
+                            DataProcessing(type, message);
+                            break;
+                        case NetIncomingMessageType.ConnectionLatencyUpdated:
+                            float ping = message.ReadFloat() * 1000;
+                            RecievePing(ping);
+                            break;
+                        default:
+                            type = message.ReadByte();
+                            Debug.Print("Unhandle message type (" + type + ")");
+                            break;
+                    }
                 }
+            }
+        }
+
+        private void MessagePooling()
+        {
+            _messagePool.Clear();
+            while (true)
+            {
+                NetIncomingMessage message;
+                while ((message = _client.ReadMessage()) != null)
+                {
+                    Debug.Print("Packet received from server !");
+                    _messagePool.Enqueue(message);
+                }
+
+                Thread.Sleep(5);
             }
         }
 

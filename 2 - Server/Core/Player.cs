@@ -1,14 +1,7 @@
-﻿using System.Diagnostics;
-using FBLibrary.Core;
+﻿using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_BomberServer.Core.Entities;
-using Final_BomberServer.Core.WorldEngine;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Final_BomberServer.Core
 {
@@ -60,7 +53,6 @@ namespace Final_BomberServer.Core
                         break;
                     case LookDirection.Right:
                         Position += new Vector2(GetMovementSpeed(), 0);
-                        //Program.Log.Info("[Client #" + this.PlayerId + "]Position: " + Position.ToString());
                         break;
                     default:
                         IsMoving = false;
@@ -82,9 +74,7 @@ namespace Final_BomberServer.Core
                     if (_tmrSendPos.Each(ServerSettings.SendPlayerPositionTime))
                         SendPosition();
                 }
-
-                //Program.Log.Info("[Client #" + Id + "]Position: + " + Position.ToString());
-
+                
                 if (InDestruction)
                 {
                     _destructionTimer -= TimeSpan.FromMilliseconds(GameSettings.Speed);
@@ -107,80 +97,6 @@ namespace Final_BomberServer.Core
             GameSettings.GameServer.SendPlayerPosition(this, false);
         }
 
-        /*
-
-        public Vector2 GetCenterPosition()
-        {
-            return new Vector2(Position.X + SizeOffset.X + Dimension.X / 2f, Position.Y + SizeOffset.Y + Dimension.Y / 2f);
-        }
-
-        public void PositionOnTile(MapTile tile)
-        {
-            CurrentTile = tile;
-            NextTile = tile;
-            Vector2 pos = GetCenteredTilePos(tile);
-            Position.X = pos.X;
-            Position.Y = pos.Y;
-        }
-
-        public Vector2 GetCenteredTilePos(MapTile tile)
-        {
-            Vector2 rtn = new Vector2(0);
-            Vector2 pos = Vector2.Zero; //tile.GetMapPos();
-            pos += new Vector2(MapTile.SIZE / 2);
-            rtn.X = pos.X - (SizeOffset.X + Dimension.X / 2f);
-            rtn.Y = pos.Y - (SizeOffset.Y + Dimension.Y / 2f);
-            return rtn;
-        }
-
-        public MapTile GetPlayerPosition()
-        {
-            Vector2 pos = GetCenterPosition();
-            return GameSettings.GetCurrentMap().GetTileByPosition(pos.X, pos.Y);
-        }
-
-        public void Burn(OldBomb bomb)
-        {
-            if (true) //invurnable.Each(INVURNABLETIME))
-            {
-                if (bomb != null)
-                {
-                    if (bomb.player == this)
-                    {
-                        Stats.SelfExplodeHits++;
-                    }
-                    else
-                    {
-                        if (bomb.player != null)
-                            bomb.player.Stats.ExplodeHits++;
-                    }
-                }
-                Stats.Burns++;
-                //invurnable.Reset();
-                GameSettings.gameServer.SendPlayerGotBurned(this);
-                Kill(bomb);
-            }
-        }
-
-        public void Kill(OldBomb bomb)
-        {
-            if (IsAlive)
-            {
-                if (bomb.player == this)
-                {
-                    Stats.SelfKills++;
-                }
-                else
-                {
-                    if (bomb.player != null)
-                        bomb.player.Stats.Kills++;
-                }
-
-                IsAlive = false;
-                GameSettings.gameServer.SendRemovePlayer(this);
-            }
-        }
-        */
         protected override float GetMovementSpeed()
         {
             float rtn = (Speed * GameSettings.Speed) / 1000f;
