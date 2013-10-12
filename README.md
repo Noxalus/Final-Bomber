@@ -52,8 +52,10 @@ TODO List
 Videos
 ======
 I've uploaded some videos to show the AI progress:
-* http://www.youtube.com/watch?v=j8d18H-NKrU
-* http://www.youtube.com/watch?v=WCqIGvNPqBE
-* http://www.youtube.com/watch?v=tWfutYKStsU
-* http://www.youtube.com/watch?v=LH1Lfwke_pg
-* http://www.youtube.com/watch?v=F6pJpJsZ7GI
+* http://www.youtube.com/watch?v=j8d18H-NKrU (first AI test)
+* http://www.youtube.com/watch?v=WCqIGvNPqBE (second AI test)
+* http://www.youtube.com/watch?v=tWfutYKStsU (third AI test)
+* http://www.youtube.com/watch?v=LH1Lfwke_pg (first battle between 5 AI)
+* http://www.youtube.com/watch?v=F6pJpJsZ7GI (second battle between 5 AI)
+* http://www.youtube.com/watch?v=tu7cocmqBj8 (first networking test)
+* http://www.youtube.com/watch?v=tSVHtYrGvsg (second networking test)
