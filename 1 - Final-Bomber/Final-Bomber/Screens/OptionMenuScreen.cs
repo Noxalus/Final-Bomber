@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Screens
 {
@@ -40,6 +41,9 @@ namespace Final_Bomber.Screens
             menuString = new string[] { "Changer les touches", "Résolution", "Plein écran", "Retour" };
             indexMenu = 0;
             menuPosition = new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 4, FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2);
+
+            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/option"));
+
             base.Initialize();
         }
         

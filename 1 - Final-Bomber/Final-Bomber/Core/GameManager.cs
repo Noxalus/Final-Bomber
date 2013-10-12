@@ -118,7 +118,7 @@ namespace Final_Bomber.Core
         public void LoadContent()
         {
             // Musics
-            _mapSong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map1");
+            _mapSong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map2");
             _mapHurrySong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map1_hurry");
 
             // Sounds effects

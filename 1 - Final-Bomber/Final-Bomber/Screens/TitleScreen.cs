@@ -41,7 +41,7 @@ namespace Final_Bomber.Screens
         {
             menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, 3 * Config.Resolutions[Config.IndexResolution, 1] / 4 - 80);
             base.Initialize();
-            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/Title"));
+            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/title"));
             _title.Play();
         }
 
