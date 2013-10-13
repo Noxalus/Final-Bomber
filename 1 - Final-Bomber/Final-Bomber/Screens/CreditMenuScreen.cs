@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
+using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Final_Bomber.Entities;
-using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Screens
 {
@@ -32,6 +27,8 @@ namespace Final_Bomber.Screens
 
         protected override void LoadContent()
         {
+            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/credits"));
+
             base.LoadContent();
         }
 
@@ -53,10 +50,18 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            string s = "Game created Noxalus";
-            FinalBomber.Instance.SpriteBatch.DrawString(BigFont, s,
-                new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 2 - BigFont.MeasureString(s).X / 2,
-                    FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - BigFont.MeasureString(s).Y / 2), Color.Black);
+            var messages = new[] { "Game programmed by Noxalus", "", "The rights of graphics and sound resources", "belong to Hudson Soft Company,", " developers of the", " Bomberman game series." };
+            int i = 0;
+            foreach (var s in messages)
+            {
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, s,
+                    new Vector2(
+                        FinalBomber.Instance.GraphicsDevice.Viewport.Width/2f - BigFont.MeasureString(s).X/2,
+                        FinalBomber.Instance.GraphicsDevice.Viewport.Height/2f - BigFont.MeasureString(s).Y/2 - 200 + (i*60)),
+                    Color.Black);
+
+                i++;
+            }
 
             FinalBomber.Instance.SpriteBatch.End();
         }

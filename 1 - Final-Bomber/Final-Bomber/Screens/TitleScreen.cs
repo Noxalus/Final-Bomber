@@ -65,7 +65,9 @@ namespace Final_Bomber.Screens
             if (InputHandler.KeyPressed(Keys.Enter))
             {
                 if (!enableMenu)
+                {
                     enableMenu = true;
+                }
                 else
                 {
                     switch (menuString[indexMenu])
