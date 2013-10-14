@@ -59,3 +59,8 @@ I've uploaded some videos to show the AI progress:
 * http://www.youtube.com/watch?v=F6pJpJsZ7GI (second battle between 5 AI)
 * http://www.youtube.com/watch?v=tu7cocmqBj8 (first networking test)
 * http://www.youtube.com/watch?v=tSVHtYrGvsg (second networking test)
+ 
+Old repository
+==============
+This project didn't start here, it was hosted by Google Code before.
+You can found the old repository here: https://code.google.com/p/final-bomber/
