@@ -2,6 +2,7 @@
 using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core;
+using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Final_Bomber.Network;
@@ -36,6 +37,9 @@ namespace Final_Bomber.Screens
         Texture2D _windowSkin;
         WindowBox _scoresWindowBox;
         WindowBox _timerWindowBox;
+
+        // Camera
+        private Camera2D _camera;
 
         #endregion
 
@@ -75,6 +79,8 @@ namespace Final_Bomber.Screens
 
             GameManager.Initialize();
             NetworkManager.Initiliaze();
+
+            _camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, GameManager.CurrentMap.Size, 1f);
 
             GameManager.AddPlayer(NetworkManager.Me);
 
@@ -131,12 +137,14 @@ namespace Final_Bomber.Screens
             NetworkManager.Update();
             GameManager.Update(gameTime);
 
+            _camera.Update(NetworkManager.Me.Position);
+
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            FinalBomber.Instance.SpriteBatch.Begin();
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.GetTransformation());
 
             GameManager.Draw(gameTime);
 

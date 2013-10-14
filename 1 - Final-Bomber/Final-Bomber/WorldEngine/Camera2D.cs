@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Final_Bomber.Controls;
+﻿using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -67,14 +63,10 @@ namespace Final_Bomber.WorldEngine
             get { return _pos; }
             set
             {
-                float leftBarrier = (float)_viewportWidth *
-                       .5f / _zoom;
-                float rightBarrier = _worldWidth -
-                       (float)_viewportWidth * .5f / _zoom;
-                float topBarrier = _worldHeight -
-                       (float)_viewportHeight * .5f / _zoom;
-                float bottomBarrier = (float)_viewportHeight *
-                       .5f / _zoom;
+                float leftBarrier = (float)_viewportWidth * .5f / _zoom;
+                float rightBarrier = _worldWidth - (float)_viewportWidth * .5f / _zoom;
+                float topBarrier = _worldHeight - (float)_viewportHeight * .5f / _zoom;
+                float bottomBarrier = (float)_viewportHeight * .5f / _zoom;
                 _pos = value;
                 if (_pos.X < leftBarrier)
                     _pos.X = leftBarrier;
@@ -121,7 +113,6 @@ namespace Final_Bomber.WorldEngine
 
             this.Pos = position;
             this._center = new Vector2(position.X, position.Y);
-            //this.Pos += movement * 20;
         }
 
         public Matrix GetTransformation()

@@ -45,7 +45,7 @@ namespace Final_Bomber.Core
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
-
+        
         #region Properties
 
         public Map CurrentMap
