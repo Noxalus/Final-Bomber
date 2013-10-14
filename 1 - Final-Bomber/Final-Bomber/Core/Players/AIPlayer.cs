@@ -43,10 +43,11 @@ namespace Final_Bomber.Core.Players
 
                 ComputeWallCollision(map);
             }
-                #endregion
 
-                #region Search a goal
-                // Otherwise => we find another goal
+            #endregion
+
+            #region Search a goal
+            // Otherwise => we find another goal
             else
             {
                 // We place the player at the center of its cell

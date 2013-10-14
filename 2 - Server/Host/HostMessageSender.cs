@@ -54,6 +54,7 @@ namespace Final_BomberServer.Host
                 }
 
                 server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                Program.Log.Info("Send the map to client #" + client.ClientId);
             }
         }
 
@@ -77,11 +78,14 @@ namespace Final_BomberServer.Host
             }
 
             server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+            Program.Log.Info("Send start game to client #" + client.ClientId);
         }
 
         // Send all players to this player
         public void SendPlayersToNew(Client client)
         {
+            Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
+
             foreach (Client player in Clients)
             {
                 if (client != player)
@@ -89,8 +93,11 @@ namespace Final_BomberServer.Host
                     NetOutgoingMessage send = GetPlayerInfo(player);
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                     SendPlayerPosition(player.Player, false);
+
+                    Program.Log.Info("Send the player (client #" + player.ClientId + ") to the new player (client #" + client.ClientId + ")");
                 }
             }
+
         }
 
         // Send this player to all other available
@@ -101,6 +108,8 @@ namespace Final_BomberServer.Host
                 NetOutgoingMessage send = GetPlayerInfo(client);
                 server.SendToAll(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
                 SendPlayerPosition(client.Player, false);
+
+                Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
             }
         }
 
@@ -112,6 +121,8 @@ namespace Final_BomberServer.Host
             send.Write(removePlayer.Id);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("Send that the player #" + removePlayer.Id + " is dead !");
         }
 
         #region GetPlayerInfo
@@ -145,7 +156,8 @@ namespace Final_BomberServer.Host
             send.Write(player.Id);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            Program.Log.Info("Send Position of player #" + player.Id + " !");
+
+            Program.Log.Info("Send position of player #" + player.Id + " !");
         }
 
         // Send to all players that this player has placed a bomb
@@ -156,6 +168,8 @@ namespace Final_BomberServer.Host
             send.Write(player.Id);
             send.Write(position);
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("Send that player #" + player.Id + " has planted a bomb !");
         }
 
         // Send to all players that a bomb has blow up
@@ -179,22 +193,28 @@ namespace Final_BomberServer.Host
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send bomb exploded to everyone !");
+            Program.Log.Info("Send that bomb exploded to everyone ! (position: " + bomb.Position + ")");
         }
 
         public void SendPlayerGotBurned(Player player)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.Burn);
             send.Write(player.Id);
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("Send that player #" + player.Id + " has been killed by a bomb !");
         }
 
         public void SendExplodeTile(int tilePos)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.ExplodeTile);
             send.Write(tilePos);
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
@@ -208,7 +228,8 @@ namespace Final_BomberServer.Host
             send.Write(powerUp.CellPosition);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-            Program.Log.Info("Power up dropped !");
+
+            Program.Log.Info("Power up dropped ! (type: " + powerUp.Type + "|position: " + powerUp.CellPosition + ")");
         }
 
         public void SendPowerUpPick(Player player, PowerUp powerUp)
@@ -221,6 +242,7 @@ namespace Final_BomberServer.Host
             send.Write(powerUp.CellPosition);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+
             Program.Log.Info("Power up pick by player #" + player.Id + " !");
         }
 
@@ -231,16 +253,6 @@ namespace Final_BomberServer.Host
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
             WriteOutput("SUDDEN DEATH!");
         }
-
-        /*
-        public void SendSDExplosion(Explosion ex)
-        {
-            NetOutgoingMessage send = server.CreateMessage();
-            send.Write((byte)SMT.SDExplosion);
-            send.Write(ex.Position.GetListPos());
-            server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-        }
-        */
 
         public void SendRoundEnd(Client client)
         {

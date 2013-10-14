@@ -22,13 +22,13 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
+            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/credits"));
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/credits"));
-
             base.LoadContent();
         }
 
