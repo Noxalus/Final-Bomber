@@ -137,7 +137,7 @@ namespace Final_Bomber.Screens
             NetworkManager.Update();
             GameManager.Update(gameTime);
 
-            _camera.Update(NetworkManager.Me.Position);
+            _camera.Update(gameTime, NetworkManager.Me.Position);
 
             base.Update(gameTime);
         }

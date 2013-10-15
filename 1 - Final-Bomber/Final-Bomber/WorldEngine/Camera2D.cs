@@ -12,7 +12,8 @@ namespace Final_Bomber.WorldEngine
 
         private float _zoom;
         private Matrix _transform;
-        private Vector2 _pos;
+        private Vector2 _position;
+        private Vector2 _positionLag;
         private float _rotation;
         private int _viewportWidth;
         private int _viewportHeight;
@@ -25,7 +26,8 @@ namespace Final_Bomber.WorldEngine
         {
             _zoom = initialZoom;
             _rotation = 0.0f;
-            _pos = Vector2.Zero;
+            _position = Vector2.Zero;
+            _positionLag = Vector2.Zero;
             _viewportWidth = viewport.Width;
             _viewportHeight = viewport.Height;
             _worldWidth = worldSize.X;
@@ -55,34 +57,41 @@ namespace Final_Bomber.WorldEngine
 
         public void Move(Vector2 amount)
         {
-            _pos += amount;
+            _position += amount;
         }
 
-        public Vector2 Pos
+        public Vector2 Position
         {
-            get { return _pos; }
+            get { return _position; }
             set
             {
+                _position = value;
+                /*
                 float leftBarrier = (float)_viewportWidth * .5f / _zoom;
                 float rightBarrier = _worldWidth - (float)_viewportWidth * .5f / _zoom;
                 float topBarrier = _worldHeight - (float)_viewportHeight * .5f / _zoom;
                 float bottomBarrier = (float)_viewportHeight * .5f / _zoom;
-                _pos = value;
-                if (_pos.X < leftBarrier)
-                    _pos.X = leftBarrier;
-                if (_pos.X > rightBarrier)
-                    _pos.X = rightBarrier;
-                if (_pos.Y > topBarrier)
-                    _pos.Y = topBarrier;
-                if (_pos.Y < bottomBarrier)
-                    _pos.Y = bottomBarrier;
+                _position = value;
+                if (_position.X < leftBarrier)
+                    _position.X = leftBarrier;
+                if (_position.X > rightBarrier)
+                    _position.X = rightBarrier;
+                if (_position.Y > topBarrier)
+                    _position.Y = topBarrier;
+                if (_position.Y < bottomBarrier)
+                    _position.Y = bottomBarrier;
+                */
             }
         }
 
         #endregion
 
-        public void Update(Vector2 position)
+        public void Update(GameTime gameTime, Vector2 position)
         {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            Position = position;
+
             // Adjust zoom if the mouse wheel has moved
             if (InputHandler.ScrollUp())
             {
@@ -102,17 +111,36 @@ namespace Final_Bomber.WorldEngine
             // Move the camera when the arrow keys are pressed
             Vector2 movement = Vector2.Zero;
 
-            if (InputHandler.KeyDown(Keys.Left))
+            if (InputHandler.KeyDown(Keys.J))
                 movement.X -= 1f;
-            if (InputHandler.KeyDown(Keys.Right))
+            if (InputHandler.KeyDown(Keys.L))
                 movement.X += 1f;
-            if (InputHandler.KeyDown(Keys.Up))
+            if (InputHandler.KeyDown(Keys.I))
                 movement.Y -= 1f;
-            if (InputHandler.KeyDown(Keys.Down))
+            if (InputHandler.KeyDown(Keys.K))
                 movement.Y += 1f;
 
-            this.Pos = position;
-            this._center = new Vector2(position.X, position.Y);
+            // Reset camera lag
+            if (InputHandler.KeyPressed(Keys.End))
+            {
+                _positionLag = Vector2.Zero;
+            }
+            else
+            {
+                _positionLag += movement * 150 * dt;
+            }
+
+            Position += _positionLag;
+
+            // Rotation
+            if (InputHandler.KeyDown(Keys.PageDown))
+                Rotation -= dt;
+            else if (InputHandler.KeyDown(Keys.PageUp))
+                Rotation += dt;
+
+
+            _center = new Vector2(Position.X, Position.Y);
+
         }
 
         public Matrix GetTransformation()
