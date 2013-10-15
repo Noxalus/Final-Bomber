@@ -71,7 +71,9 @@ namespace Final_Bomber.WorldEngine
                 float rightBarrier = _worldWidth - (float)_viewportWidth * .5f / _zoom;
                 float topBarrier = _worldHeight - (float)_viewportHeight * .5f / _zoom;
                 float bottomBarrier = (float)_viewportHeight * .5f / _zoom;
+
                 _position = value;
+                
                 if (_position.X < leftBarrier)
                     _position.X = leftBarrier;
                 if (_position.X > rightBarrier)
