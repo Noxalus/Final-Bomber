@@ -65,6 +65,7 @@ I've uploaded some videos to show the AI progress:
 * http://www.youtube.com/watch?v=F6pJpJsZ7GI (second battle between 5 AI)
 * http://www.youtube.com/watch?v=tu7cocmqBj8 (first networking test)
 * http://www.youtube.com/watch?v=tSVHtYrGvsg (second networking test)
+* http://www.youtube.com/watch?v=gkYElxHD3Q8 (simple 2D camera)
  
 Old repository
 ==============
