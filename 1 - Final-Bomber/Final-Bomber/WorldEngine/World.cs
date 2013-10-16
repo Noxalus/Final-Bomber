@@ -75,7 +75,7 @@ namespace Final_Bomber.WorldEngine
             base.Draw(gameTime);
         }
 
-        public void DrawLevel(GameTime gameTime, SpriteBatch spriteBatch, Camera camera)
+        public void DrawLevel(GameTime gameTime, SpriteBatch spriteBatch, Camera2D camera)
         {
             levels[_currentLevel].Draw(gameTime, spriteBatch, camera);
         }

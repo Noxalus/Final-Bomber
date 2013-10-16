@@ -217,9 +217,9 @@ namespace Final_Bomber.Core
             base.UpdatePlayers();
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, Camera2D camera)
         {
-            CurrentMap.Draw(gameTime, FinalBomber.Instance.SpriteBatch, new Camera(FinalBomber.Instance.ScreenRectangle));
+            CurrentMap.Draw(gameTime, FinalBomber.Instance.SpriteBatch, camera);
 
             foreach (Wall wall in WallList)
                 wall.Draw(gameTime);

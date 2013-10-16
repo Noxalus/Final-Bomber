@@ -5,6 +5,7 @@ using System.Text;
 using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Final_Bomber.WorldEngine;
 
 namespace Final_Bomber.TileEngine
 {
@@ -69,14 +70,14 @@ namespace Final_Bomber.TileEngine
             layer[y, x] = new Tile(tileIndex, tileset);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera camera, List<Tileset> tilesets, bool[,] collisionLayer)
+        public void Draw(SpriteBatch spriteBatch, Camera2D camera, List<Tileset> tilesets, bool[,] collisionLayer)
         {
-            camera = new Camera(FinalBomber.Instance.ScreenRectangle);
-            Point cameraPoint = Engine.VectorToCell(camera.Position * (1 / camera.Zoom));
+            Vector2 cameraPosition = camera.Position - new Vector2(camera.ViewportRectangle.Width / 2f, camera.ViewportRectangle.Height / 2f);
+            Point cameraPoint = Engine.VectorToCell(cameraPosition * (1 / camera.Zoom));
             Point viewPoint = Engine.VectorToCell(
                 new Vector2(
-                    (camera.Position.X + camera.ViewportRectangle.Width) * (1 / camera.Zoom),
-                    (camera.Position.Y + camera.ViewportRectangle.Height) * (1 / camera.Zoom)));
+                    (cameraPosition.X + camera.ViewportRectangle.Width) * (1 / camera.Zoom),
+                    (cameraPosition.Y + camera.ViewportRectangle.Height) * (1 / camera.Zoom)));
 
             var min = new Point();
             var max = new Point();

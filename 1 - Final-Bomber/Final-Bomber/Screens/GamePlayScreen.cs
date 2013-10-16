@@ -709,7 +709,7 @@ namespace Final_Bomber.Screens
                     }
                 }
 
-                World.DrawLevel(gameTime, FinalBomber.Instance.SpriteBatch, PlayerList[0].Camera);
+                World.DrawLevel(gameTime, FinalBomber.Instance.SpriteBatch, null);
 
                 #region Draw each elements
 

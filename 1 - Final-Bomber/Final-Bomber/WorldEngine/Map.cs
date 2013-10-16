@@ -74,7 +74,7 @@ namespace Final_Bomber.WorldEngine
         {
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Camera camera)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Camera2D camera)
         {
             // Background
             var position = new Vector2(

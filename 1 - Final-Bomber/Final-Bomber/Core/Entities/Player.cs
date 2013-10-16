@@ -39,8 +39,6 @@ namespace Final_Bomber.Entities
 
         #region Property Region
 
-        public Camera Camera { get; private set; }
-
         #endregion
 
         #region Constructor Region

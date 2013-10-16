@@ -146,7 +146,7 @@ namespace Final_Bomber.Screens
         {
             FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.GetTransformation());
 
-            GameManager.Draw(gameTime);
+            GameManager.Draw(gameTime, _camera);
 
             FinalBomber.Instance.SpriteBatch.End();
 
@@ -163,6 +163,10 @@ namespace Final_Bomber.Screens
             string ping = "Ping: " + NetworkManager.Me.Ping;
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20), Color.White);
+
+            string cameraPosition = "Camera position: " + _camera.Position;
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
 
             /*
             // Draw IP adress

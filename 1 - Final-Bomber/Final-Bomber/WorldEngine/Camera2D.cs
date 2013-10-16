@@ -1,4 +1,5 @@
-﻿using Final_Bomber.Controls;
+﻿using FBLibrary.Core;
+using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,8 +16,7 @@ namespace Final_Bomber.WorldEngine
         private Vector2 _position;
         private Vector2 _positionLag;
         private float _rotation;
-        private int _viewportWidth;
-        private int _viewportHeight;
+        private Viewport _viewport;
         private int _worldWidth;
         private int _worldHeight;
 
@@ -28,8 +28,7 @@ namespace Final_Bomber.WorldEngine
             _rotation = 0.0f;
             _position = Vector2.Zero;
             _positionLag = Vector2.Zero;
-            _viewportWidth = viewport.Width;
-            _viewportHeight = viewport.Height;
+            _viewport = viewport;
             _worldWidth = worldSize.X;
             _worldHeight = worldSize.Y;
         }
@@ -66,24 +65,24 @@ namespace Final_Bomber.WorldEngine
             set
             {
                 _position = value;
+
                 /*
                 float leftBarrier = (float)_viewportWidth * .5f / _zoom;
                 float rightBarrier = _worldWidth - (float)_viewportWidth * .5f / _zoom;
                 float topBarrier = _worldHeight - (float)_viewportHeight * .5f / _zoom;
                 float bottomBarrier = (float)_viewportHeight * .5f / _zoom;
-
-                _position = value;
-                
-                if (_position.X < leftBarrier)
-                    _position.X = leftBarrier;
-                if (_position.X > rightBarrier)
-                    _position.X = rightBarrier;
-                if (_position.Y > topBarrier)
-                    _position.Y = topBarrier;
-                if (_position.Y < bottomBarrier)
-                    _position.Y = bottomBarrier;
                 */
+                float leftBarrier = 1000;
+                float rightBarrier = 2000;
+                
+                //_position.X = MathHelper.Clamp(_position.X, leftBarrier, rightBarrier);
+                //_position.Y = MathHelper.Clamp(_position.Y, topBarrier, bottomBarrier);
             }
+        }
+
+        public Rectangle ViewportRectangle
+        {
+            get { return _viewport.Bounds; }
         }
 
         #endregion
@@ -114,13 +113,13 @@ namespace Final_Bomber.WorldEngine
             Vector2 movement = Vector2.Zero;
 
             if (InputHandler.KeyDown(Keys.J))
-                movement.X -= 1f;
-            if (InputHandler.KeyDown(Keys.L))
                 movement.X += 1f;
+            if (InputHandler.KeyDown(Keys.L))
+                movement.X -= 1f;
             if (InputHandler.KeyDown(Keys.I))
-                movement.Y -= 1f;
-            if (InputHandler.KeyDown(Keys.K))
                 movement.Y += 1f;
+            if (InputHandler.KeyDown(Keys.K))
+                movement.Y -= 1f;
 
             // Reset camera lag
             if (InputHandler.KeyPressed(Keys.End))
@@ -136,12 +135,24 @@ namespace Final_Bomber.WorldEngine
 
             // Rotation
             if (InputHandler.KeyDown(Keys.PageDown))
-                Rotation -= dt;
+            {
+                if (InputHandler.KeyDown(Keys.LeftControl))
+                    Rotation -= 10 * dt;
+                else
+                    Rotation -= dt;
+            }
             else if (InputHandler.KeyDown(Keys.PageUp))
-                Rotation += dt;
+            {
+                if (InputHandler.KeyDown(Keys.LeftControl))
+                    Rotation += 10 * dt;
+                else
+                    Rotation += dt;
+            }
 
-
-            _center = new Vector2(Position.X, Position.Y);
+            _center = new Vector2(
+                Position.X + Engine.Origin.X + Engine.TileWidth / 2f,
+                Position.Y + Engine.Origin.Y + Engine.TileHeight / 2f
+            );
 
         }
 
@@ -151,7 +162,7 @@ namespace Final_Bomber.WorldEngine
                Matrix.CreateTranslation(new Vector3(-_center.X, -_center.Y, 0)) *
                Matrix.CreateRotationZ(Rotation) *
                Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-               Matrix.CreateTranslation(new Vector3(_viewportWidth * 0.5f, _viewportHeight * 0.5f, 0)
+               Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0)
                );
 
             return _transform;

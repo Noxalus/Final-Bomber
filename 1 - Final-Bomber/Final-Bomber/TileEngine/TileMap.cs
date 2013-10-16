@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FBLibrary.Core;
 using Microsoft.Xna.Framework.Graphics;
+using Final_Bomber.WorldEngine;
 
 namespace Final_Bomber.TileEngine
 {
@@ -77,7 +78,7 @@ namespace Final_Bomber.TileEngine
             tilesets.Add(tileset);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera camera, bool[,] collisionLayer)
+        public void Draw(SpriteBatch spriteBatch, Camera2D camera, bool[,] collisionLayer)
         {
             foreach (MapLayer layer in mapLayers)
             {

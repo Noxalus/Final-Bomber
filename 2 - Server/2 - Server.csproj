@@ -90,6 +90,9 @@
     <None Include="Content\Maps\classic.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Maps\classic2.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3 - FBLibrary\3 - FBLibrary.csproj">
