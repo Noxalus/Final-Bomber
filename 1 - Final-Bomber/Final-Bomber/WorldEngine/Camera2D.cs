@@ -66,17 +66,15 @@ namespace Final_Bomber.WorldEngine
             {
                 _position = value;
 
-                /*
-                float leftBarrier = (float)_viewportWidth * .5f / _zoom;
-                float rightBarrier = _worldWidth - (float)_viewportWidth * .5f / _zoom;
-                float topBarrier = _worldHeight - (float)_viewportHeight * .5f / _zoom;
-                float bottomBarrier = (float)_viewportHeight * .5f / _zoom;
-                */
-                float leftBarrier = 1000;
-                float rightBarrier = 2000;
                 
-                //_position.X = MathHelper.Clamp(_position.X, leftBarrier, rightBarrier);
-                //_position.Y = MathHelper.Clamp(_position.Y, topBarrier, bottomBarrier);
+                float leftBarrier = (float)_viewport.Width * .5f / _zoom;
+                float rightBarrier = _worldWidth - (float)_viewport.Width * .5f / _zoom;
+                float topBarrier = _worldHeight - (float)_viewport.Height * .5f / _zoom;
+                float bottomBarrier = (float)_viewport.Height * .5f / _zoom;
+
+                
+                _position.X = MathHelper.Clamp(_position.X, leftBarrier, rightBarrier);
+                _position.Y = MathHelper.Clamp(_position.Y, bottomBarrier, topBarrier);
             }
         }
 
