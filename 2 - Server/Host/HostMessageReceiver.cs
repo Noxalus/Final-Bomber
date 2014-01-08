@@ -36,6 +36,7 @@ namespace Final_BomberServer.Host
                 client.isReady = true;
                 //MainServer.SendCheckIfOnline(username, password);
                 Program.Log.Info("Client " + client.ClientId + " is ready to play");
+                client.Player.Name = client.Username;
             }
             else
             {

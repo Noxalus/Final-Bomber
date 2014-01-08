@@ -21,7 +21,6 @@ namespace Final_BomberServer.Core
         private readonly List<Wall> _wallList;
 
         // Map
-        private Map _currentMap;
 
         #region Properties
 
@@ -53,8 +52,7 @@ namespace Final_BomberServer.Core
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
 
-            _currentMap = new Map();
-            BaseCurrentMap = _currentMap;
+            BaseCurrentMap = new Map();
         }
 
         public override void Reset()
@@ -188,6 +186,7 @@ namespace Final_BomberServer.Core
 
         public void AddPlayer(Client client, Player player)
         {
+            player.Name = client.Username;
             client.Player = player;
 
             base.AddPlayer(player);
@@ -236,6 +235,11 @@ namespace Final_BomberServer.Core
             var wall = _wallList.Find(w => w.CellPosition == position);
 
             base.DestroyWall(wall);
+
+            if (wall == null)
+                Program.Log.Error("Wall at " + position + " doesn't exist !");
+            else
+                Program.Log.Info("Wall at " + position + " has been removed.");
         }
 
         private void RemoveWall(Wall wall)
@@ -243,6 +247,8 @@ namespace Final_BomberServer.Core
             _wallList.Remove(wall);
 
             base.RemoveWall(wall);
+
+            Program.Log.Info("Delete wall at " + wall.CellPosition);
         }
 
         #endregion
@@ -261,6 +267,11 @@ namespace Final_BomberServer.Core
             var bomb = _bombList.Find(b => b.CellPosition == position);
 
             base.DestroyBomb(bomb);
+
+            if (bomb == null)
+                Program.Log.Error("Bomb at " + position + "doesn't exist !");
+            else
+                Program.Log.Info("Bomb exploded at " + position);
         }
 
         private void RemoveBomb(Bomb bomb)
@@ -268,6 +279,8 @@ namespace Final_BomberServer.Core
             _bombList.Remove(bomb);
 
             base.RemoveBomb(bomb);
+
+            Program.Log.Info("Bomb at " + bomb.CellPosition + " has been removed.");
         }
 
         #endregion
@@ -289,14 +302,21 @@ namespace Final_BomberServer.Core
             powerUp.ApplyEffect(player);
             powerUp.PickUp();
 
+            Program.Log.Info("Power up at " + powerUp.CellPosition + " has been taken by player " + player.Name + ".");
+
             powerUp.Remove();
         }
 
         protected override void DestroyPowerUp(Point position)
         {
             var powerUp = _powerUpList.Find(pu => pu.CellPosition == position);
-
+            
             base.DestroyPowerUp(powerUp);
+
+            if (powerUp == null)
+                Program.Log.Error("Power up at " + position + "doesn't exist !");
+            else
+                Program.Log.Info("Power up at " + position + " has been destroyed.");
         }
 
         private void RemovePowerUp(PowerUp powerUp)
@@ -304,6 +324,8 @@ namespace Final_BomberServer.Core
             _powerUpList.Remove(powerUp);
 
             base.RemovePowerUp(powerUp);
+
+            Program.Log.Info("Power up at " + powerUp.CellPosition + " has been removed.");
         }
 
         #endregion

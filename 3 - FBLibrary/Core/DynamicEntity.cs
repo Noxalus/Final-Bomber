@@ -16,7 +16,7 @@ namespace FBLibrary.Core
         public float Speed
         {
             get { return _speed; }
-            set { _speed = MathHelper.Clamp(value, GameConfiguration.PlayerSpeedIncrementeurPercentage, GameConfiguration.MaxSpeed); }
+            protected set { _speed = MathHelper.Clamp(value, GameConfiguration.PlayerSpeedIncrementeurPercentage, GameConfiguration.MaxSpeed); }
         }
 
         public Vector2 Velocity
@@ -42,7 +42,7 @@ namespace FBLibrary.Core
             PreviousCellPosition = Point.Zero;
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             PreviousCellPosition = CellPosition;
             CellPosition = Engine.VectorToCell(Position, Dimension);
@@ -50,7 +50,7 @@ namespace FBLibrary.Core
             base.Update();
         }
 
-        public bool IsChangingCell()
+        protected bool IsChangingCell()
         {
             return (CellPosition != PreviousCellPosition);
         }

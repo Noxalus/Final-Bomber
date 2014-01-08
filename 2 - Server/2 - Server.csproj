@@ -35,27 +35,23 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\0 - DLL\Lidgren.Network.dll</HintPath>
+      <HintPath>..\0 - DLL\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
-    <Reference Include="Lidgren.Network.Xna">
-      <HintPath>..\0 - DLL\Lidgren.Network.Xna.dll</HintPath>
+    <Reference Include="Lidgren.Network.Xna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\0 - DLL\Debug\Lidgren.Network.Xna.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\0 - DLL\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\0 - DLL\Microsoft.Xna.Framework.dll</HintPath>
+      <HintPath>..\0 - DLL\Debug\Microsoft.Xna.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Entities\Arrow.cs" />
@@ -87,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Content\Maps\classic.map">
+    <None Include="Content\Maps\classic3.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Maps\classic2.map">

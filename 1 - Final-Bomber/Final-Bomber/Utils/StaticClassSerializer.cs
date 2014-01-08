@@ -77,7 +77,7 @@ namespace Final_Bomber.Utils
             catch(Exception ex)
             {
                 Debug.Print(ex.Message);
-                throw new Exception(ex.Message);
+                //throw new Exception(ex.Message);
                 return false;
             }
         }

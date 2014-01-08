@@ -48,17 +48,17 @@ namespace FBLibrary
 
 
         // Game info
-        public static float PlayerSpeedIncrementeurPercentage = 5; // Percentage of base player speed
+        public const float PlayerSpeedIncrementeurPercentage = 5; // Percentage of base player speed
         public static int WallPercentage = 50; // From 0% to 100%
-        public static int PowerUpPercentage = 50;
+        public const int PowerUpPercentage = 50;
 
         public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
         public static TimeSpan PowerUpDestructionTime = TimeSpan.FromMilliseconds(750);
         public static TimeSpan PlayerDestructionTime = TimeSpan.FromMilliseconds(1750);
 
         // Score
-        public static int ScoreByKill = 3;
-        public static int ScoreBySuicide = 1;
+        public const int ScoreByKill = 3;
+        public const int ScoreBySuicide = 1;
 
         // Power up
         public static readonly List<PowerUpType> PowerUpTypeAvailable = new List<PowerUpType>() 
@@ -87,9 +87,9 @@ namespace FBLibrary
         public static int DeltaTime; // milliseconds
 
         // TO DELETE
-        public static int PlayerNumber = 1;
-        public static string ServerIp = "localhost";
-        public static string ServerPort = "2643";
-        public static int AlivePlayerRemaining = PlayerNumber - 1;
+        public const int PlayerNumber = 2;
+        public const string ServerIp = "localhost";
+        public const string ServerPort = "2643";
+        public const int AlivePlayerRemaining = PlayerNumber - 1;
     }
 }

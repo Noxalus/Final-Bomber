@@ -7,9 +7,6 @@ namespace Final_BomberServer.Host
     {
         # region Variables/Properties
 
-        const int MAXCONNECTION = 50;
-        const int PORT = 2643;
-
         bool hostStarted = false;
 
         NetServer server;
@@ -47,15 +44,16 @@ namespace Final_BomberServer.Host
         {
             var config = new NetPeerConfiguration("Final-Bomber")
             {
-                MaximumConnections = MAXCONNECTION, 
-                Port = PORT
+                MaximumConnections = ServerSettings.MaxConnection, 
+                Port = ServerSettings.Port
             };
 
 #if DEBUG
-            //config.SimulatedLoss = 0.02f; 
+            config.PingInterval = 1f;
+            //config.SimulatedLoss = 0.5f;
+            config.SimulatedMinimumLatency = 0.300f;
 #endif
-
-            config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
+            config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
 
             bool checkPort;
             do
@@ -146,14 +144,15 @@ namespace Final_BomberServer.Host
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
                         float ping = message.ReadFloat() * 1000;
                         Program.Log.Info("Player #" + currentClient.Player.Id + " ping: " + ping + "ms");
+                        currentClient.Ping = ping;
 
                         // TODO: Send this client's ping to everyone
 
                         break;
 
-                } //ENDSWITCH
-            } //ENDWHILE
-        } //ENDMETHOD
+                }
+            }
+        }
 
         public void EndServer(string reson)
         {

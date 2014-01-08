@@ -22,16 +22,10 @@ namespace FBLibrary.Core
         private readonly List<BaseWall> _baseWallList;
         private readonly List<BasePowerUp> _basePowerUpList;
 
-        public Engine Engine
-        {
-            get { return _engine; }
-            set { _engine = value; }
-        }
-
         protected BaseGameManager()
         {
             // Engine
-            Engine = new Engine(32, 32, Vector2.Zero);
+            _engine = new Engine(32, 32, Vector2.Zero);
 
             _baseBombList = new List<BaseBomb>();
             BasePlayerList = new List<BasePlayer>();
@@ -43,8 +37,8 @@ namespace FBLibrary.Core
 
         public virtual void Update()
         {
-            UpdateWalls();
             UpdateBombs();
+            UpdateWalls();
             UpdatePowerUps();
             UpdatePlayers();
         }
@@ -165,8 +159,16 @@ namespace FBLibrary.Core
         protected virtual void RemovePlayer(BasePlayer player)
         {
             var p = (BasePlayer)BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y];
-            if (p.Id == player.Id)
-                BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y] = null;
+
+            if (p != null)
+            {
+                if (p.Id == player.Id)
+                    BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y] = null;
+            }
+            else
+            {
+                throw new Exception("This player doesn't exist and can't be removed !");
+            }
 
             BasePlayerList.Remove(player);
         }

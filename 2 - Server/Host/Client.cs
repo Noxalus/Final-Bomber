@@ -20,11 +20,12 @@ namespace Final_BomberServer.Host
         int clientId;
         NetConnection client;
         Player player;
-        public bool isReady = false; //Clienten säger till servern när den är klar att starta
-        public bool NewClient = true; //Om clienten har precis connectat
+        public bool isReady = false;
+        public bool NewClient = true;
         public bool Spectating = false;
         public string Username;
         public bool AlreadyPlayed;
+        public float Ping = 0f;
 
         public int ClientId
         {
