@@ -5,15 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Core.Players;
 using Final_Bomber.Entities;
-using Final_Bomber.Screens;
-using Lidgren.Network;
+using Final_Bomber.Screens.GameScreens;
 using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Network
@@ -35,9 +33,9 @@ namespace Final_Bomber.Network
         #endregion
 
         // Timers
-        TimeSpan timer;
-        Timer tmr;
-        Timer connectedTmr;
+        TimeSpan _timer;
+        readonly Timer _tmr;
+        readonly Timer _connectedTmr;
         private Timer _tmrWaitUntilStart;
 
         public string PublicIp;
@@ -54,18 +52,20 @@ namespace Final_Bomber.Network
         {
             _gameManager = gameManager;
             Me = new OnlineHumanPlayer(0);
+            Me.SetGameManager(_gameManager);
             IsConnected = true;
 
-            timer = new TimeSpan();
-            tmr = new Timer();
-            connectedTmr = new Timer();
+            _timer = new TimeSpan();
+            _tmr = new Timer();
+            _connectedTmr = new Timer();
         }
 
         public void Reset()
         {
             string username = Me.Name;
-            Me = new OnlineHumanPlayer(0, Me.Stats);
-            Me.Name = username;
+            Me = new OnlineHumanPlayer(0, Me.Stats) {Name = username};
+            Me.SetGameManager(_gameManager);
+
             LoadContent();
         }
 
@@ -87,9 +87,9 @@ namespace Final_Bomber.Network
 
             Me.Name = PlayerInfo.Username;
 
-            tmr.Start();
+            _tmr.Start();
             _tmrWaitUntilStart = new Timer();
-            connectedTmr.Start();
+            _connectedTmr.Start();
         }
 
         public void LoadContent()
@@ -121,7 +121,7 @@ namespace Final_Bomber.Network
                 {
                     IsConnected = true;
                 }
-                else if (connectedTmr.Each(5000))
+                else if (_connectedTmr.Each(5000))
                 {
                     Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
                     FinalBomber.Instance.Exit();
@@ -189,11 +189,11 @@ namespace Final_Bomber.Network
             _gameManager.AddWalls(wallPositions);
         }
 
-        private void GameServer_NewPlayer(int playerID, float moveSpeed, string username, int score)
+        private void GameServer_NewPlayer(int playerId, float moveSpeed, string username, int score)
         {
-            if (_gameManager.Players.GetPlayerByID(playerID) == null)
+            if (_gameManager.Players.GetPlayerByID(playerId) == null)
             {
-                var player = new OnlinePlayer(playerID) {Name = username, Stats = {Score = score}};
+                var player = new OnlinePlayer(playerId) {Name = username, Stats = {Score = score}};
 
                 if (username == Me.Name)
                 {
@@ -231,7 +231,7 @@ namespace Final_Bomber.Network
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
-            Player player = _gameManager.Players.GetPlayerByID(arg.PlayerID);
+            Player player = _gameManager.Players.GetPlayerByID(arg.PlayerId);
 
             if (player != null)
             {

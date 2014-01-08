@@ -1,29 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 using FBLibrary;
-using FBLibrary.Core;
+using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Final_Bomber.Entities;
-using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
-    public class BattleMenuScreen : BaseGameState
+    public class BattleMenuScreen : BaseMenuScreen
     {
         #region Field Region
-        string[] menuString;
-        int indexMenu;
-        Vector2 menuPosition;
-        bool disabledArrows;
-        #endregion
-
-        #region Property Region
-
+        bool _disabledArrows;
         #endregion
 
         #region Constructor Region
@@ -31,12 +19,12 @@ namespace Final_Bomber.Screens
         public BattleMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            menuString = new string[] 
+            MenuString = new string[] 
             { 
                 "Nombre de joueur", 
                 "Taille", 
-                Config.MapSize.X.ToString(), 
-                Config.MapSize.Y.ToString(), 
+                Config.MapSize.X.ToString(CultureInfo.InvariantCulture), 
+                Config.MapSize.Y.ToString(CultureInfo.InvariantCulture), 
                 "Téléporteurs",
                 "Flèches",
                 "Nombre de murs",
@@ -44,9 +32,8 @@ namespace Final_Bomber.Screens
                 "Mort Subite", 
                 "Objets", 
                 "Lancer la partie !" };
-            indexMenu = 0;
 
-            disabledArrows = false;
+            _disabledArrows = false;
         }
 
         #endregion
@@ -55,8 +42,9 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, Config.Resolutions[Config.IndexResolution, 1] / 4);
             base.Initialize();
+
+            MenuPosition.Y /= 2;
         }
 
         protected override void LoadContent()
@@ -71,7 +59,7 @@ namespace Final_Bomber.Screens
             if (InputHandler.KeyPressed(Keys.Escape))
                 StateManager.PushState(FinalBomber.Instance.TitleScreen);
 
-            switch (indexMenu)
+            switch (IndexMenu)
             {
                 case 0:
                     if (InputHandler.KeyPressed(Keys.Left))
@@ -113,16 +101,16 @@ namespace Final_Bomber.Screens
                             Config.MapSize = new Point(Config.MapSize.X + 2, Config.MapSize.Y + 2);
                         }
                     }
-                    menuString[2] = Config.MapSize.X.ToString();
-                    menuString[3] = Config.MapSize.Y.ToString();
+                    MenuString[2] = Config.MapSize.X.ToString(CultureInfo.InvariantCulture);
+                    MenuString[3] = Config.MapSize.Y.ToString(CultureInfo.InvariantCulture);
 
                     if (Config.MapSize.X < 17 || Config.MapSize.Y < 17)
                     {
-                        disabledArrows = true;
+                        _disabledArrows = true;
                         Config.ActiveArrows = false;
                     }
                     else
-                        disabledArrows = false;
+                        _disabledArrows = false;
                     break;
                 case 2:
                     if (InputHandler.KeyPressed(Keys.Left))
@@ -139,14 +127,14 @@ namespace Final_Bomber.Screens
                         else
                             Config.MapSize.X += 2;
                     }
-                    menuString[2] = Config.MapSize.X.ToString();
+                    MenuString[2] = Config.MapSize.X.ToString(CultureInfo.InvariantCulture);
                     if (Config.MapSize.X < 17)
                     {
-                        disabledArrows = true;
+                        _disabledArrows = true;
                         Config.ActiveArrows = false;
                     }
                     else if (Config.MapSize.Y >= 17)
-                        disabledArrows = false;   
+                        _disabledArrows = false;   
                     break;
                 case 3:
                     if (InputHandler.KeyPressed(Keys.Left))
@@ -163,14 +151,14 @@ namespace Final_Bomber.Screens
                         else
                             Config.MapSize.Y += 2;
                     }
-                    menuString[3] = Config.MapSize.Y.ToString();
+                    MenuString[3] = Config.MapSize.Y.ToString();
                     if (Config.MapSize.Y < 17)
                     {
-                        disabledArrows = true;
+                        _disabledArrows = true;
                         Config.ActiveArrows = false;
                     }
                     else if(Config.MapSize.X >= 17)
-                        disabledArrows = false;                    
+                        _disabledArrows = false;                    
                     break;
                 case 4:
                     if(InputHandler.KeyPressed(Keys.Right) || InputHandler.KeyPressed(Keys.Left) || InputHandler.KeyPressed(Keys.Enter))
@@ -229,22 +217,13 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyPressed(Keys.Up))
             {
-                if (indexMenu == 6 && disabledArrows)
-                    indexMenu = 4;
-                else
-                {
-                    if (indexMenu <= 0)
-                        indexMenu = menuString.Length - 1;
-                    else
-                        indexMenu--;
-                }
+                if (IndexMenu == 6 && _disabledArrows)
+                    IndexMenu = 4;
             }
             else if (InputHandler.KeyPressed(Keys.Down))
             {
-                if (indexMenu == 4 && disabledArrows)
-                    indexMenu = 6;
-                else
-                    indexMenu = (indexMenu + 1) % menuString.Length;
+                if (IndexMenu == 4 && _disabledArrows)
+                    IndexMenu = 6;
             }
 
             base.Update(gameTime);
@@ -260,7 +239,7 @@ namespace Final_Bomber.Screens
 
             int xLag = 0;
             int yLag = 0;
-            for (int i = 0; i < menuString.Length; i++)
+            for (int i = 0; i < MenuString.Length; i++)
             {
                 if (i < 2)
                     yLag = i;
@@ -298,56 +277,56 @@ namespace Final_Bomber.Screens
                 else if (i == 0)
                     xLag -= 30;
 
-                string text = menuString[i];
+                string text = MenuString[i];
 
                 Color textColor = Color.Black;
-                if (i == indexMenu)
+                if (i == IndexMenu)
                     textColor = Color.Green;
-                else if (i == 5 && disabledArrows)
+                else if (i == 5 && _disabledArrows)
                     textColor = Color.Gray;
 
                 FinalBomber.Instance.SpriteBatch.DrawString(BigFont, text,
-                    new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag,
-                        menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
+                    new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag,
+                        MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                 
                 switch(i)
                 {
                     case 0:
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.PlayersNumber,
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 1:
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": ",
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 2:
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, "x",
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 4:
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveTeleporters,
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 5:
-                        if(!disabledArrows)
+                        if(!_disabledArrows)
                             textColor = Color.Black;
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.ActiveArrows,
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), textColor);
                         break;
                     case 6:
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + GameConfiguration.WallPercentage + "%",
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                     case 7:
                         FinalBomber.Instance.SpriteBatch.DrawString(BigFont, ": " + Config.ItemNumber + "%",
-                        new Vector2(menuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
-                            menuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
+                        new Vector2(MenuPosition.X - BigFont.MeasureString(text).X / 2 + xLag + BigFont.MeasureString(text).X,
+                            MenuPosition.Y + BigFont.MeasureString(text).Y * yLag - BigFont.MeasureString(text).Y / 2), Color.Black);
                         break;
                 }
             }

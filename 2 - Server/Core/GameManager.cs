@@ -63,7 +63,7 @@ namespace Final_BomberServer.Core
             _powerUpList.Clear();
             _bombList.Clear();
             
-            GenerateWalls();
+            GenerateRandomWalls();
         }
 
         public override void Update()
@@ -146,40 +146,9 @@ namespace Final_BomberServer.Core
             base.LoadMap(mapName);
 
             // We generate wall
-            GenerateWalls();
-        }
-
-        private void GenerateWalls()
-        {
-            for (int x = 0; x < CurrentMap.Size.X; x++)
-            {
-                for (int y = 0; y < CurrentMap.Size.Y; y++)
-                {
-                    if (CurrentMap.Board[x, y] == null && GameConfiguration.Random.Next(0, 100) < ServerSettings.WallPercentage)
-                    {
-                        if (!NearPlayer(x, y))
-                        {
-                            AddWall(new Point(x, y));
-                        }
-                    }
-                }
-            }
+            GenerateRandomWalls(ServerSettings.WallPercentage);
 
             CurrentMap.DisplayBoard();
-        }
-
-        private bool NearPlayer(int x, int y)
-        {
-            return
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x, y)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x, y - 1)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1)) ||
-                CurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
         }
 
         #region Player methods

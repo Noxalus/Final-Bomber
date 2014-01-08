@@ -3,6 +3,7 @@ using FBLibrary.Core;
 using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Screens;
+using Final_Bomber.Screens.GameScreens;
 using Final_Bomber.Utils;
 using Final_Bomber.WorldEngine;
 using Lidgren.Network;
@@ -148,7 +149,7 @@ namespace Final_Bomber.Network
             {
                 Position = { X = positionX, Y = positionY },
                 Action = action,
-                PlayerID =  playerID
+                PlayerId =  playerID
             };
 
             OnMovePlayerAction(arg);
@@ -331,6 +332,6 @@ namespace Final_Bomber.Network
     {
         public Vector2 Position = new Vector2();
         public byte Action = 0;
-        public int PlayerID = 0;
+        public int PlayerId = 0;
     }
 }

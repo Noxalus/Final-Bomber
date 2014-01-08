@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Final_Bomber.Controls;
-using Microsoft.Xna.Framework.Input;
+﻿using System.Linq;
 using System.Threading;
+using Final_Bomber.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class UserRegistrationMenuScreen : BaseGameState
     {

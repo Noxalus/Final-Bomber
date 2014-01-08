@@ -3,106 +3,29 @@ using System.Diagnostics;
 using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Controls;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Entities;
 using Final_Bomber.Network;
-using Final_Bomber.Screens;
-using Final_Bomber.Sprites;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Core.Players
 {
-    public class OnlineHumanPlayer : Player
+    public class OnlineHumanPlayer : BaseHumanPlayer
     {
-        private Keys[] _keysSaved;
-        private Vector2 _motionVector;
-        public float Ping;
+        public float Ping = 0f;
 
         public OnlineHumanPlayer(int id)
             : base(id)
         {
-            Initialize();
         }
 
         public OnlineHumanPlayer(int id, PlayerStats stats)
             : base(id, stats)
         {
-            Initialize();
         }
-
-        private void Initialize()
-        {
-            Keys = Config.PlayersKeys[Id];
-            Buttons = Config.PlayersButtons[Id];
-            _motionVector = Vector2.Zero;
-
-            Ping = 0f;
-        }
-
-        private Keys[] Keys { get; set; }
-        private Buttons[] Buttons { get; set; }
 
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            #region Moving input
-
-            _motionVector = Vector2.Zero;
-
-            // Up
-            if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) ||
-                InputHandler.KeyDown(Keys[0]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Up;
-                CurrentDirection = LookDirection.Up;
-                _motionVector.Y = -1;
-            }
-                // Down
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) ||
-                     InputHandler.KeyDown(Keys[1]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Down;
-                CurrentDirection = LookDirection.Down;
-                _motionVector.Y = 1;
-            }
-                // Left
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) ||
-                     InputHandler.KeyDown(Keys[2]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Left;
-                CurrentDirection = LookDirection.Left;
-                _motionVector.X = -1;
-            }
-                // Right
-            else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) ||
-                     InputHandler.KeyDown(Keys[3]))
-            {
-                Sprite.CurrentAnimation = AnimationKey.Right;
-                CurrentDirection = LookDirection.Right;
-                _motionVector.X = 1;
-            }
-            else
-            {
-                CurrentDirection = LookDirection.Idle;
-            }
-
-            #endregion
-
-            //Debug.Print("Player position: " + Position);
-
-            if (_motionVector != Vector2.Zero)
-            {
-                IsMoving = true;
-
-                Position += _motionVector * GetMovementSpeed();
-            }
-            else
-            {
-                IsMoving = false;
-            }
-
-            Sprite.IsAnimating = IsMoving;
+            base.Move(gameTime, map, hazardMap);
 
             SendMovement();
 
@@ -116,7 +39,7 @@ namespace Final_Bomber.Core.Players
             {
                 if (this.CurrentBombAmount > 0)
                 {
-                    var bo = NetworkTestScreen.GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
+                    var bo = GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
                     if (bo == null)
                     {
                         // Send to server that we want to plant a bomb
@@ -126,8 +49,6 @@ namespace Final_Bomber.Core.Players
             }
 
             #endregion
-
-            base.Move(gameTime, map, hazardMap);
         }
 
         public override void ApplyBadItem(BadEffect effect)
@@ -148,7 +69,8 @@ namespace Final_Bomber.Core.Players
                     break;
                 case BadEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
-                    int randomBombTimer = GamePlayScreen.Random.Next(GameConfiguration.BadItemTimerChangedMin,
+                    int randomBombTimer = GameConfiguration.Random.Next(
+                        GameConfiguration.BadItemTimerChangedMin,
                         GameConfiguration.BadItemTimerChangedMax);
                     BombTimer = TimeSpan.FromSeconds(randomBombTimer);
                     break;

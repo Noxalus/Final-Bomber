@@ -1,16 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Final_Bomber.Controls;
+﻿using Final_Bomber.Controls;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
-    public class SinglePlayerGameModeMenuScreen : BaseMenuScreen
+    public class MultiplayerGameModeMenuScreen : BaseMenuScreen
     {
         #region Constructor region
-        public SinglePlayerGameModeMenuScreen(Game game, GameStateManager manager)
+        public MultiplayerGameModeMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            MenuString = new string[] { "Adventure", "Challenge", "Match", "Back" };
+            MenuString = new string[] { "Local game", "Online game", "Back" };
         }
         #endregion
 
@@ -34,10 +34,13 @@ namespace Final_Bomber.Screens
             {
                 switch (IndexMenu)
                 {
-                    case 2:
+                    case 0:
                         StateManager.ChangeState(FinalBomber.Instance.BattleMenuScreen);
                         break;
-                    case 3:
+                    case 1:
+                        StateManager.ChangeState(FinalBomber.Instance.OnlineGameMenuScreen);
+                        break;
+                    case 2:
                         StateManager.ChangeState(FinalBomber.Instance.TitleScreen);
                         break;
                 }
@@ -60,17 +63,13 @@ namespace Final_Bomber.Screens
                 if (i == IndexMenu)
                     textColor = Color.Green;
 
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, MenuString[i],
-                    new Vector2(MenuPosition.X - BigFont.MeasureString(MenuString[i]).X / 2,
-                        MenuPosition.Y + BigFont.MeasureString(MenuString[i]).Y * i - BigFont.MeasureString(MenuString[i]).Y / 2), textColor);
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, MenuString[i],
+                    new Vector2(MenuPosition.X - this.BigFont.MeasureString(MenuString[i]).X / 2,
+                        MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i - this.BigFont.MeasureString(MenuString[i]).Y / 2), textColor);
             }
 
             FinalBomber.Instance.SpriteBatch.End();
         }
-
-        #endregion
-
-        #region Title Screen Methods
 
         #endregion
     }

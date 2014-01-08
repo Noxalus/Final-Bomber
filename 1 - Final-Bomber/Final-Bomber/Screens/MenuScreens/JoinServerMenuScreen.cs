@@ -1,16 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Final_Bomber.Controls;
+﻿using Final_Bomber.Controls;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
-    public class OnlineGameMenuScreen : BaseMenuScreen
+    public class JoinServerMenuScreen : BaseMenuScreen
     {
         #region Constructor region
-        public OnlineGameMenuScreen(Game game, GameStateManager manager)
+        public JoinServerMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            MenuString = new string[] { "Not ranked game", "Ranked game", "Back" };
+            MenuString = new string[] { "Liste des serveurs", "Retour" };
+            IndexMenu = 0;
         }
         #endregion
 
@@ -37,10 +38,7 @@ namespace Final_Bomber.Screens
                     case 0:
                         break;
                     case 1:
-                        StateManager.ChangeState(FinalBomber.Instance.UserMenuScreen);
-                        break;
-                    case 2:
-                        StateManager.ChangeState(FinalBomber.Instance.TitleScreen);
+                        StateManager.ChangeState(FinalBomber.Instance.NetworkMenuScreen);
                         break;
                 }
             }

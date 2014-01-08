@@ -51,7 +51,7 @@ namespace Final_BomberServer.Host
 #if DEBUG
             config.PingInterval = 1f;
             //config.SimulatedLoss = 0.5f;
-            config.SimulatedMinimumLatency = 0.300f;
+            config.SimulatedMinimumLatency = 0.05f;
 #endif
             config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
 

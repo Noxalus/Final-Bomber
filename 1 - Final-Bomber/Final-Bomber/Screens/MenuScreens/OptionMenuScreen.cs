@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Final_Bomber.Entities;
-using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class OptionMenuScreen : BaseMenuScreen
     {
@@ -51,7 +44,7 @@ namespace Final_Bomber.Screens
             if (InputHandler.KeyDown(Keys.Escape))
             {
                 StateManager.PushState(FinalBomber.Instance.TitleScreen);
-                FinalBomber.Instance.graphics.ApplyChanges();
+                FinalBomber.Instance.Graphics.ApplyChanges();
             }
 
             switch (IndexMenu)
@@ -81,8 +74,8 @@ namespace Final_Bomber.Screens
 
                     if (changes)
                     {
-                        FinalBomber.Instance.graphics.PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0];
-                        FinalBomber.Instance.graphics.PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1];
+                        FinalBomber.Instance.Graphics.PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0];
+                        FinalBomber.Instance.Graphics.PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1];
 
                         FinalBomber.Instance.ScreenRectangle = new Rectangle(0, 0, Config.Resolutions[Config.IndexResolution, 0], 
                             Config.Resolutions[Config.IndexResolution, 1]);
@@ -94,14 +87,14 @@ namespace Final_Bomber.Screens
                         InputHandler.KeyPressed(Keys.Right))
                     {
                         Config.FullScreen = !Config.FullScreen;
-                        FinalBomber.Instance.graphics.IsFullScreen = Config.FullScreen;
+                        FinalBomber.Instance.Graphics.IsFullScreen = Config.FullScreen;
                     }
                     break;
                 case 3:
                     if (InputHandler.KeyPressed(Keys.Enter))
                     {
                         StateManager.ChangeState(FinalBomber.Instance.TitleScreen);
-                        FinalBomber.Instance.graphics.ApplyChanges();
+                        FinalBomber.Instance.Graphics.ApplyChanges();
                     }
                     break;
             }

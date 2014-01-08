@@ -8,7 +8,7 @@ namespace FBLibrary
 {
     public static class MapLoader
     {
-        public static Dictionary<string, string> MapFileDictionary = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> MapFileDictionary = new Dictionary<string, string>();
 
         public static void LoadMapFiles()
         {

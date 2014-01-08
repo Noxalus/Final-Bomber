@@ -9,6 +9,7 @@ using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Final_Bomber.Entities;
 using Final_Bomber.Screens;
+using Final_Bomber.Screens.GameScreens;
 using Final_Bomber.Sprites;
 using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;

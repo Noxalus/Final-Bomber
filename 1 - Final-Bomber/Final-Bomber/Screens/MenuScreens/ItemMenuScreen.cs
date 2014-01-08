@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FBLibrary;
+using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Final_Bomber.Entities;
-using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class ItemMenuScreen : BaseGameState
     {

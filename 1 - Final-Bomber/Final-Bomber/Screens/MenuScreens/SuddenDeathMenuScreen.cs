@@ -1,11 +1,11 @@
 ﻿using System;
 using FBLibrary;
+using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class SuddenDeathMenuScreen : BaseMenuScreen
     {

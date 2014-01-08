@@ -301,11 +301,47 @@ namespace FBLibrary.Core
             _baseWallList.Clear();
         }
 
+        #region Map region
         public virtual void LoadMap(string mapName)
         {
             BaseCurrentMap.Parse(mapName, this);
             HazardMap = new int[BaseCurrentMap.Size.X, BaseCurrentMap.Size.Y];
         }
+
+        public void GenerateRandomWalls(int wallPercentage = -1)
+        {
+            if (wallPercentage == -1)
+                wallPercentage = GameConfiguration.WallPercentage;
+
+            for (int x = 0; x < BaseCurrentMap.Size.X; x++)
+            {
+                for (int y = 0; y < BaseCurrentMap.Size.Y; y++)
+                {
+                    if (BaseCurrentMap.Board[x, y] == null && GameConfiguration.Random.Next(0, 100) < wallPercentage)
+                    {
+                        if (!NearPlayerSpawn(x, y))
+                        {
+                            AddWall(new Point(x, y));
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool NearPlayerSpawn(int x, int y)
+        {
+            return
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y - 1)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1)) ||
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
+        }
+        #endregion
 
         private BasePlayer GetPlayerById(int id)
         {

@@ -1,5 +1,6 @@
-using System.Diagnostics;
 using FBLibrary;
+using Final_Bomber.Screens.GameScreens;
+using Final_Bomber.Screens.MenuScreens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,7 @@ using Final_Bomber.Utils;
 
 namespace Final_Bomber
 {
-    public class FinalBomber : Microsoft.Xna.Framework.Game
+    public class FinalBomber : Game
     {
         // Static instance
         public static FinalBomber Instance;
@@ -25,44 +26,44 @@ namespace Final_Bomber
 
         #region XNA Field Region
 
-        public GraphicsDeviceManager graphics;
+        public readonly GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
 
         #endregion
 
         #region Game State Region
 
-        GameStateManager stateManager;
-        
         // ~~ Menu ~~ //
 
-        public TitleScreen TitleScreen;
-        public OptionMenuScreen OptionMenuScreen;
-        public KeysMenuScreen KeysMenuScreen;
-        public CreditMenuScreen CreditMenuScreen;
+        public readonly TitleScreen TitleScreen;
+        public readonly OptionMenuScreen OptionMenuScreen;
+        public readonly KeysMenuScreen KeysMenuScreen;
+        public readonly CreditMenuScreen CreditMenuScreen;
 
-        public SinglePlayerGameModeMenuScreen SinglePlayerGameModeMenuScreen;        
+        public readonly SinglePlayerGameModeMenuScreen SinglePlayerGameModeMenuScreen;
+
+        public readonly BattleMenuScreen BattleMenuScreen;
+        public readonly SuddenDeathMenuScreen SuddenDeathMenuScreen;
+        public readonly ItemMenuScreen ItemMenuScreen;
 
         // Local
-        public BattleMenuScreen BattleMenuScreen;
-        public SuddenDeathMenuScreen SuddenDeathMenuScreen;
-        public ItemMenuScreen ItemMenuScreen;
+        public readonly SinglePlayerGamePlayScreen SinglePlayerGamePlayScreen;
 
         // Network
-        public LobbyMenuScreen LobbyMenuScreen;
-        public OnlineGameMenuScreen OnlineGameMenuScreen;
-        public MultiplayerGameModeMenuScreen MultiplayerGameModeMenuScreen;
-        public UserMenuScreen UserMenuScreen;
-        public UserLoginMenuScreen UserLoginMenuScreen;
-        public UserRegistrationMenuScreen UserRegistrationMenuScreen;
-        public NetworkMenuScreen NetworkMenuScreen;
-        public CreateServerMenuScreen CreateServerMenuScreen;
-        public JoinServerMenuScreen JoinServerMenuScreen;
+        public readonly LobbyMenuScreen LobbyMenuScreen;
+        public readonly OnlineGameMenuScreen OnlineGameMenuScreen;
+        public readonly MultiplayerGameModeMenuScreen MultiplayerGameModeMenuScreen;
+        public readonly UserMenuScreen UserMenuScreen;
+        public readonly UserLoginMenuScreen UserLoginMenuScreen;
+        public readonly UserRegistrationMenuScreen UserRegistrationMenuScreen;
+        public readonly NetworkMenuScreen NetworkMenuScreen;
+        public readonly CreateServerMenuScreen CreateServerMenuScreen;
+        public readonly JoinServerMenuScreen JoinServerMenuScreen;
 
-        public NetworkTestScreen NetworkTestScreen;
+        public readonly NetworkTestScreen NetworkTestScreen;
 
         // ~~ Game ~~ //
-        public GamePlayScreen GamePlayScreen;
+        public readonly GamePlayScreen GamePlayScreen;
 
         #endregion
 
@@ -71,7 +72,7 @@ namespace Final_Bomber
         public FinalBomber()
         {
             Instance = this;
-            graphics = new GraphicsDeviceManager(this)
+            Graphics = new GraphicsDeviceManager(this)
                 {
                     PreferredBackBufferWidth = Config.Resolutions[Config.IndexResolution, 0],
                     PreferredBackBufferHeight = Config.Resolutions[Config.IndexResolution, 1]
@@ -79,21 +80,23 @@ namespace Final_Bomber
 
             ScreenRectangle = new Rectangle(0, 0, Config.Resolutions[Config.IndexResolution, 0], Config.Resolutions[Config.IndexResolution, 1]);
 
-            graphics.IsFullScreen = Config.FullScreen;
-            graphics.ApplyChanges();
+            Graphics.IsFullScreen = Config.FullScreen;
+            Graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
 
             Components.Add(new InputHandler(this));
 
-            stateManager = new GameStateManager(this);
+            var stateManager = new GameStateManager(this);
             Components.Add(stateManager);
-            
+
             TitleScreen = new TitleScreen(this, stateManager);
             BattleMenuScreen = new BattleMenuScreen(this, stateManager);
             SuddenDeathMenuScreen = new SuddenDeathMenuScreen(this, stateManager);
             ItemMenuScreen = new ItemMenuScreen(this, stateManager);
             GamePlayScreen = new GamePlayScreen(this, stateManager);
+            SinglePlayerGamePlayScreen = new SinglePlayerGamePlayScreen(this, stateManager);
+
             OptionMenuScreen = new OptionMenuScreen(this, stateManager);
             KeysMenuScreen = new KeysMenuScreen(this, stateManager);
             CreditMenuScreen = new CreditMenuScreen(this, stateManager);
@@ -152,6 +155,13 @@ namespace Final_Bomber
             // Delta time
             GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Milliseconds;
 
+            UpdatePasswordManagement();
+
+            base.Update(gameTime);
+        }
+
+        private void UpdatePasswordManagement()
+        {
             if (InputHandler.KeyPressed(Keys.F) && _password == "")
                 _password += "F";
             else if (InputHandler.KeyPressed(Keys.I) && _password == "F")
@@ -182,7 +192,6 @@ namespace Final_Bomber
                 Config.Debug = !Config.Debug;
                 _password = "";
             }
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)

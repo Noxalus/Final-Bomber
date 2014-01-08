@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using FBLibrary;
-using FBLibrary.Core;
-using Final_Bomber.Core.Entities;
-using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
-using Microsoft.Xna.Framework.Input;
-using Lidgren.Network;
 using Final_Bomber.Network;
+using Final_Bomber.Screens.GameScreens;
+using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class LobbyMenuScreen : BaseGameState
     {
         #region Field region
-        TimeSpan timer;
-        Timer tmr;
-        Timer connectedTmr;
+        TimeSpan _timer;
+        readonly Timer _tmr;
+        readonly Timer _connectedTmr;
         private Timer _tmrWaitUntilStart;
-        public bool IsConnected;
+        private bool _isConnected;
         private bool _isReady;
         #endregion
 
@@ -29,10 +24,10 @@ namespace Final_Bomber.Screens
         public LobbyMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            timer = new TimeSpan();
-            tmr = new Timer();
-            connectedTmr = new Timer();
-            IsConnected = false;
+            _timer = new TimeSpan();
+            _tmr = new Timer();
+            _connectedTmr = new Timer();
+            _isConnected = false;
             _isReady = false;
         }
         #endregion
@@ -46,9 +41,9 @@ namespace Final_Bomber.Screens
 
             GameSettings.GameServer.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
 
-            tmr.Start();
+            _tmr.Start();
             _tmrWaitUntilStart = new Timer();
-            connectedTmr.Start();
+            _connectedTmr.Start();
 
             base.Initialize();
         }
@@ -70,15 +65,15 @@ namespace Final_Bomber.Screens
         {
             ControlManager.Update(gameTime, PlayerIndex.One);
 
-            if (!IsConnected)
+            if (!_isConnected)
             {
                 GameSettings.GameServer.RunClientConnection();
                 if (GameSettings.GameServer.Connected)
                 {
-                    IsConnected = true;
+                    _isConnected = true;
                     //_publicIp = GetPublicIP();
                 }
-                else if (connectedTmr.Each(5000))
+                else if (_connectedTmr.Each(5000))
                 {
                     Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
                     FinalBomber.Instance.Exit();
@@ -93,12 +88,12 @@ namespace Final_Bomber.Screens
             }
 
 
-            if (tmr.Each(1000))
+            if (_tmr.Each(1000))
             {
-                timer = timer.Add(new TimeSpan(0, 0, 1));
-                if (timer.Seconds == 5)
+                _timer = _timer.Add(new TimeSpan(0, 0, 1));
+                if (_timer.Seconds == 5)
                 {
-                    tmr.Stop();
+                    _tmr.Stop();
                 }
             }
 
@@ -166,9 +161,9 @@ namespace Final_Bomber.Screens
                     BigFont.MeasureString(str).Y / 2),
                 Color.Black);
 
-            if (timer.Seconds != 5)
+            if (_timer.Seconds != 5)
             {
-                str = "Quit Timer: " + (5 - timer.Seconds).ToString();
+                str = "Quit Timer: " + (5 - _timer.Seconds).ToString();
                 FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                     new Vector2(
                         Config.Resolutions[Config.IndexResolution, 0] / 2f -

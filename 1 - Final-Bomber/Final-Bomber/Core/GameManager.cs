@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Final_Bomber.Core.Entities;
-using Final_Bomber.Core.Players;
 using Final_Bomber.Entities;
-using Final_Bomber.Screens;
-using Final_Bomber.TileEngine;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Core
@@ -21,7 +16,7 @@ namespace Final_Bomber.Core
         // Game logic
 
         // Players
-        public PlayerCollection Players;
+        public readonly PlayerCollection Players;
 
         // Collections
         private readonly List<Bomb> _bombList;
@@ -29,7 +24,7 @@ namespace Final_Bomber.Core
         private readonly List<Wall> _wallList;
 
         // Map
-        private Map _currentMap;
+        private readonly Map _currentMap;
 
         // Songs & sounds effect
         private Song _mapHurrySong;

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_Bomber.Core;
 using Final_Bomber.Core.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Final_Bomber.TileEngine;
-using System.Diagnostics;
-using System.IO;
 
 namespace Final_Bomber.WorldEngine
 {
@@ -22,10 +18,10 @@ namespace Final_Bomber.WorldEngine
 
         private TileMap _tileMap;
 
-        private List<EdgeWall> _edgeWallList;
-        private List<UnbreakableWall> _unbreakableWallList;
+        private readonly List<EdgeWall> _edgeWallList;
+        private readonly List<UnbreakableWall> _unbreakableWallList;
         private List<Teleporter> _teleporterList;
-        private List<Arrow> _arrowList;
+        private readonly List<Arrow> _arrowList;
 
         #endregion
 
@@ -67,7 +63,6 @@ namespace Final_Bomber.WorldEngine
             var layer = new MapLayer(Size.X, Size.Y);
             var mapLayers = new List<MapLayer> { layer };
             _tileMap = new TileMap(tilesets, mapLayers);
-
         }
 
         public void Update(GameTime gameTime)

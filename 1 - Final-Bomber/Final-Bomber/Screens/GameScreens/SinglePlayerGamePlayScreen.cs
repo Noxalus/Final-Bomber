@@ -1,55 +1,31 @@
 ﻿using System;
+using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
+using Final_Bomber.Controls;
 using Final_Bomber.Core;
+using Final_Bomber.Core.Players;
 using Final_Bomber.GUI;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
-using Final_Bomber.Controls;
-using Final_Bomber.Network;
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.GameScreens
 {
-    public class NetworkTestScreen : BaseGameState
+    public class SinglePlayerGamePlayScreen : BaseGamePlayScreen
     {
         #region Field region
-        Process _serverProcess;
 
-        // Game manager
-        public static GameManager GameManager;
-
-        // Network
-        public static NetworkManager NetworkManager;
-
-        // HUD
-        Texture2D _itemInfoIcon;
-        Texture2D _cross;
-        SpriteFont _gameFont;
-        SpriteFont _smallFont;
-        Point _hudOrigin;
-        int _hudTopSpace;
-        int _hudMarginLeft;
-        Texture2D _badItemTimerBar;
-
-        // Window box
-        Texture2D _windowSkin;
-        WindowBox _scoresWindowBox;
-        WindowBox _timerWindowBox;
-
-        // Camera
-        private Camera2D _camera;
+        // Player
+        private HumanPlayer _player;
 
         #endregion
 
         #region Constructor region
-        public NetworkTestScreen(Game game, GameStateManager manager)
+        public SinglePlayerGamePlayScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            GameManager = new GameManager();
-            NetworkManager = new NetworkManager(GameManager);
         }
         #endregion
 
@@ -57,102 +33,70 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            _hudOrigin = new Point(FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234, 0);
+            _player = new HumanPlayer(0) { Name = PlayerInfo.Username };
 
-            // Launch the dedicated server as host
-            _serverProcess = new Process
-            {
-                StartInfo =
-                {
-                    FileName = "Server.exe",
-                    Arguments = "COUCOU",
-                    //WindowStyle = ProcessWindowStyle.Hidden 
-                }
-            };
-
-            //_serverProcess.Start();
-
-            // Server events
-            GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
-            GameSettings.GameServer.End += GameServer_End;
+            // Map
+            GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
+            GameManager.GenerateRandomWalls();
 
             base.Initialize();
 
+            HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
+
             GameManager.Initialize();
-            NetworkManager.Initiliaze();
+            _player.SetGameManager(GameManager);
 
-            _camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, GameManager.CurrentMap.Size, 1f);
+            _player.ChangePosition(GameManager.CurrentMap.PlayerSpawnPoints[_player.Id]);
 
-            GameManager.AddPlayer(NetworkManager.Me);
+            Camera = new Camera2D(GraphicsDevice.Viewport, GameManager.CurrentMap.Size, 1f);
 
-            _hudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
-            _hudTopSpace = 15;
-            _hudMarginLeft = 15;
+            GameManager.AddPlayer(_player);
 
-            _scoresWindowBox = new WindowBox(_windowSkin, new Vector2(_hudOrigin.X, _hudOrigin.Y),
-                                             new Point(GraphicsDevice.Viewport.Width - (_hudOrigin.X),
-                                             _hudTopSpace + GameManager.Players.Count * Config.HUDPlayerInfoSpace + 15));
+            HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
+            HudTopSpace = 15;
+            HudMarginLeft = 15;
 
-            _timerWindowBox = new WindowBox(_windowSkin, new Vector2(_hudOrigin.X, _scoresWindowBox.Size.Y),
-                new Point(GraphicsDevice.Viewport.Width - _hudOrigin.X, 40));
+            ScoresWindowBox = new WindowBox(WindowSkin, new Vector2(HudOrigin.X, HudOrigin.Y),
+                                             new Point(GraphicsDevice.Viewport.Width - (HudOrigin.X),
+                                             HudTopSpace + GameManager.Players.Count * Config.HUDPlayerInfoSpace + 15));
 
-            NetworkManager.AddPlayer += ResizeHud;
+            TimerWindowBox = new WindowBox(WindowSkin, new Vector2(HudOrigin.X, ScoresWindowBox.Size.Y),
+                new Point(GraphicsDevice.Viewport.Width - HudOrigin.X, 40));
         }
 
         protected override void LoadContent()
         {
-            // Pictures      
-            _itemInfoIcon = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Pictures/ItemInfo");
-            _cross = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Pictures/Cross");
-            _badItemTimerBar = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Pictures/BadItemTimerCross");
-            _windowSkin = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Windowskins/Windowskin1");
-
-            // Fonts
-            _gameFont = FinalBomber.Instance.Content.Load<SpriteFont>("Graphics/Fonts/GameFont");
-            _smallFont = FinalBomber.Instance.Content.Load<SpriteFont>("Graphics/Fonts/SmallFont");
-
-            GameManager.LoadContent();
-            NetworkManager.LoadContent();
+            _player.LoadContent();
 
             base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            GameSettings.GameServer.EndClientConnection("Quit the game !");
-
-            //_serverProcess.Kill();
-
-            NetworkManager.Dispose();
-
-            NetworkManager.AddPlayer -= ResizeHud;
-
-            GameSettings.GameServer.RoundEnd -= GameServer_RoundEnd;
-            GameSettings.GameServer.End -= GameServer_End;
-
             base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            NetworkManager.Update();
             GameManager.Update(gameTime);
 
-            _camera.Update(gameTime, NetworkManager.Me.Position);
+            _player.Update(gameTime, GameManager.CurrentMap, GameManager.HazardMap);
+
+            Camera.Update(gameTime, _player.Position);
 
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.GetTransformation());
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.GetTransformation());
 
-            GameManager.Draw(gameTime, _camera);
+            GameManager.Draw(gameTime, Camera);
 
             FinalBomber.Instance.SpriteBatch.End();
 
             FinalBomber.Instance.SpriteBatch.Begin();
-            const string str = "Networking Tests";
+            const string str = "Single Player Tests";
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                     new Vector2(
                         Config.Resolutions[Config.IndexResolution, 0] / 2f -
@@ -160,37 +104,14 @@ namespace Final_Bomber.Screens
                         0),
             Color.Black);
 
-            // Player's ping
-            string ping = "Ping: " + NetworkManager.Me.Ping;
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21), Color.Black);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20), Color.White);
-
-            string cameraPosition = "Camera position: " + _camera.Position;
+            string cameraPosition = "Camera position: " + Camera.Position;
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
 
-            /*
-            // Draw IP adress
-            FinalBomber.Instance.SpriteBatch.DrawString(BigFont, _networkManager.PublicIp, new Vector2(530, 60), Color.Black);
-
-            // Draw ping
-            FinalBomber.Instance.SpriteBatch.DrawString(BigFont, GameServer.Ping.ToString(), new Vector2(740, 100), Color.Black);
-            */
-            /*
-            int counter = 0;
-            foreach (var player in GameManager.Players)
-            {
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player #" + player.Id + ": (" + player.IsChangingCell() +
-                    ")\nR: " + player.Position +
-                    "\nP: " + player.CellPosition, new Vector2(530, 60 + (100 * counter)), Color.Black);
-
-                counter++;
-            }
-            */
             #region HUD
             // Window boxes
-            _scoresWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
-            _timerWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
+            ScoresWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
+            TimerWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
 
             // Draw player HUD
             foreach (var p in GameManager.Players)
@@ -198,11 +119,11 @@ namespace Final_Bomber.Screens
                 // HUD => Item Info
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, p.Name + ": "
                      + p.Stats.Score + " pt(s)",
-                    new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
+                    new Vector2(HudOrigin.X + HudMarginLeft, HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
 #if DEBUG
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.CellPosition).ToString(),
-                    new Vector2(_hudOrigin.X + _hudMarginLeft, _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
+                    new Vector2(HudOrigin.X + HudMarginLeft, HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
 #endif
 
                 // To space the red icons and the "normal color" icons
@@ -215,18 +136,18 @@ namespace Final_Bomber.Screens
                     iconLag = 10;
                     counterRedFlames = p.BombPower / 10;
                     for (int i = 0; i < counterRedFlames; i++)
-                        FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon,
-                            new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 30),
+                        FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon,
+                            new Vector2(HudOrigin.X + HudMarginLeft + 7 * i,
+                            HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 30),
                             new Rectangle(14, 0, 14, 14), Color.White);
                 }
                 else
                     iconLag = 0;
                 int counterYellowFlames = p.BombPower % 10;
                 for (int i = 0; i < counterYellowFlames; i++)
-                    FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon,
-                        new Vector2(_hudOrigin.X + _hudMarginLeft + 14 * counterRedFlames + 7 * i + iconLag,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 30),
+                    FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon,
+                        new Vector2(HudOrigin.X + HudMarginLeft + 14 * counterRedFlames + 7 * i + iconLag,
+                            HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 30),
                         new Rectangle(0, 0, 14, 14), Color.White);
 
                 // Player's bomb number
@@ -237,8 +158,8 @@ namespace Final_Bomber.Screens
                     counterRedBombs = p.CurrentBombAmount / 10;
                     for (int i = 0; i < counterRedBombs; i++)
                     {
-                        FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50),
+                        FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon, new Vector2(HudOrigin.X + HudMarginLeft + 7 * i,
+                            HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50),
                             new Rectangle(42, 0, 14, 14), Color.White);
                     }
                 }
@@ -248,17 +169,17 @@ namespace Final_Bomber.Screens
                 int finalCounter = 0;
                 for (int i = 0; i < counterBlackBombs; i++)
                 {
-                    FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon,
-                        new Vector2(_hudOrigin.X + 7 * counterRedBombs + _hudMarginLeft + 7 * i + iconLag, _hudOrigin.Y +
-                            _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50),
+                    FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon,
+                        new Vector2(HudOrigin.X + 7 * counterRedBombs + HudMarginLeft + 7 * i + iconLag, HudOrigin.Y +
+                            HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50),
                         new Rectangle(28, 0, 14, 14), Color.White);
                     finalCounter = i;
                 }
 
                 if (p.HasBadEffect && p.BadEffect == BadEffect.NoBomb)
                 {
-                    FinalBomber.Instance.SpriteBatch.Draw(_cross, new Rectangle(_hudOrigin.X + _hudMarginLeft,
-                        _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50,
+                    FinalBomber.Instance.SpriteBatch.Draw(Cross, new Rectangle(HudOrigin.X + HudMarginLeft,
+                        HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 50,
                         7 * counterRedBombs + 7 * finalCounter + iconLag + 15, 15), Color.White);
                 }
 
@@ -270,8 +191,8 @@ namespace Final_Bomber.Screens
                     iconLag = 10;
                     counterRedShoes = (int)(counterIncrementeur) / 10;
                     for (int i = 0; i < counterRedShoes; i++)
-                        FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft + 7 * i,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
+                        FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon, new Vector2(HudOrigin.X + HudMarginLeft + 7 * i,
+                            HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
                             new Rectangle(70, 0, 14, 14), Color.White);
                 }
                 else
@@ -279,16 +200,16 @@ namespace Final_Bomber.Screens
                 int counterBlueShoes = (int)(counterIncrementeur) % 10;
 
                 for (int i = 0; i < counterBlueShoes; i++)
-                    FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon,
-                        new Vector2(_hudOrigin.X + _hudMarginLeft + counterRedShoes * 7 + 7 * i + iconLag,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
+                    FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon,
+                        new Vector2(HudOrigin.X + HudMarginLeft + counterRedShoes * 7 + 7 * i + iconLag,
+                            HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
                         new Rectangle(56, 0, 14, 14), Color.White);
 
                 // Player's bad item timer
                 if (p.HasBadEffect)
                 {
-                    FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft,
-                        _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
+                    FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon, new Vector2(HudOrigin.X + HudMarginLeft,
+                        HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
                                 new Rectangle(98, 0, 14, 14), Color.White);
 
                     int lenght = 200 - (int)((200 / p.BadEffectTimerLenght.TotalSeconds) * p.BadEffectTimer.TotalSeconds);
@@ -298,28 +219,28 @@ namespace Final_Bomber.Screens
 
                     for (int i = 0; i < lenght; i++)
                     {
-                        FinalBomber.Instance.SpriteBatch.Draw(_badItemTimerBar,
-                            new Vector2(_hudOrigin.X + _hudMarginLeft + 20 + 1 * i,
-                                _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90), Color.White);
+                        FinalBomber.Instance.SpriteBatch.Draw(BadItemTimerBar,
+                            new Vector2(HudOrigin.X + HudMarginLeft + 20 + 1 * i,
+                                HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90), Color.White);
                     }
-                    FinalBomber.Instance.SpriteBatch.DrawString(_smallFont, badItemTimer,
-                        new Vector2(_hudOrigin.X + _hudMarginLeft + 20 + 1 * (lenght / 2) - _smallFont.MeasureString(badItemTimer).X / 2,
-                            _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90), Color.White);
+                    FinalBomber.Instance.SpriteBatch.DrawString(SmallFont, badItemTimer,
+                        new Vector2(HudOrigin.X + HudMarginLeft + 20 + 1 * (lenght / 2) - SmallFont.MeasureString(badItemTimer).X / 2,
+                            HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90), Color.White);
                 }
                 else
                 {
-                    FinalBomber.Instance.SpriteBatch.Draw(_itemInfoIcon, new Vector2(_hudOrigin.X + _hudMarginLeft,
-                        _hudOrigin.Y + _hudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
+                    FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon, new Vector2(HudOrigin.X + HudMarginLeft,
+                        HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 90),
                                 new Rectangle(84, 0, 14, 14), Color.White);
                 }
             }
 
             var pos =
                 new Vector2(
-                    _hudOrigin.X + _hudMarginLeft +
+                    HudOrigin.X + HudMarginLeft +
                     (ControlManager.SpriteFont.MeasureString(GameManager.Timer.ToString("mm") + ":" +
                                                              GameManager.Timer.ToString("ss")).X) + 25,
-                    _hudOrigin.Y + _hudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 22);
+                    HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 22);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.Timer.ToString("mm") + ":" + GameManager.Timer.ToString("ss"),
                 pos, Color.Black);
 
@@ -424,31 +345,10 @@ namespace Final_Bomber.Screens
 
         private void ResizeHud(object sender, EventArgs e)
         {
-            _scoresWindowBox.Size = new Point(GraphicsDevice.Viewport.Width - (_hudOrigin.X),
-                _hudTopSpace + GameManager.Players.Count*Config.HUDPlayerInfoSpace + 15);
+            ScoresWindowBox.Size = new Point(GraphicsDevice.Viewport.Width - (HudOrigin.X),
+                HudTopSpace + GameManager.Players.Count*Config.HUDPlayerInfoSpace + 15);
 
-            _timerWindowBox.Position = new Vector2(_hudOrigin.X, _scoresWindowBox.Size.Y);
-        }
-
-        private void GameServer_RoundEnd()
-        {
-            GameManager.Reset();
-            NetworkManager.Reset();
-
-            GameManager.AddPlayer(NetworkManager.Me);
-        }
-
-        private void GameServer_End(bool won)
-        {
-            StateManager.ChangeState(FinalBomber.Instance.LobbyMenuScreen);
-            /*
-            endTmr.Start();
-            if (!Spectator)
-            {
-                shouldEnd = true;
-                haveWon = won;
-            }
-            */
+            TimerWindowBox.Position = new Vector2(HudOrigin.X, ScoresWindowBox.Size.Y);
         }
     }
 

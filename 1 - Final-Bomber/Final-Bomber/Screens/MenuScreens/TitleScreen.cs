@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Final_Bomber.Controls;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-
-using Final_Bomber.Controls;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-namespace Final_Bomber.Screens
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class TitleScreen : BaseMenuScreen
     {
@@ -83,6 +83,11 @@ namespace Final_Bomber.Screens
             if (InputHandler.KeyPressed(Keys.F1))
             {
                 StateManager.ChangeState(FinalBomber.Instance.LobbyMenuScreen);
+            }
+
+            else if (InputHandler.KeyPressed(Keys.F2))
+            {
+                StateManager.ChangeState(FinalBomber.Instance.SinglePlayerGamePlayScreen);
             }
             
             base.Update(gameTime);

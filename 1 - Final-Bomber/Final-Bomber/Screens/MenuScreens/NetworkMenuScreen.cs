@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Final_Bomber.Controls;
+﻿using Final_Bomber.Controls;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace Final_Bomber.Screens.MenuScreens
 {
     public class NetworkMenuScreen : BaseMenuScreen
     {

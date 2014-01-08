@@ -15,12 +15,12 @@ namespace FBLibrary.Core.BaseEntities
         public Point Size;
         public IEntity[,] Board;
         public bool[,] CollisionLayer;
-        public List<Point> PlayerSpawnPoints;
+        public readonly List<Point> PlayerSpawnPoints;
         public int PlayerNumber;
 
         private string _md5;
-        private List<BaseEdgeWall> _baseEdgeWallList;
-        private List<BaseUnbreakableWall> _baseUnbreakableWallList;
+        private readonly List<BaseEdgeWall> _baseEdgeWallList;
+        private readonly List<BaseUnbreakableWall> _baseUnbreakableWallList;
 
         #endregion
 
