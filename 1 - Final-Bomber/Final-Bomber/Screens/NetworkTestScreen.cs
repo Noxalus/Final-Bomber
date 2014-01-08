@@ -421,7 +421,7 @@ namespace Final_Bomber.Screens
 
         #endregion
 
-        private void ResizeHud()
+        private void ResizeHud(object sender, EventArgs e)
         {
             _scoresWindowBox.Size = new Point(GraphicsDevice.Viewport.Width - (_hudOrigin.X),
                 _hudTopSpace + GameManager.Players.Count*Config.HUDPlayerInfoSpace + 15);

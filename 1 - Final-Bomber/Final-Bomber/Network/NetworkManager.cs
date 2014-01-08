@@ -23,12 +23,12 @@ namespace Final_Bomber.Network
         #region Events
 
         #region NewPlayer
-        public delegate void AddPlayerEventHandler();
+        public delegate void AddPlayerEventHandler(object sender, EventArgs e);
         public event AddPlayerEventHandler AddPlayer;
-        protected virtual void OnAddPlayer()
+        protected virtual void OnAddPlayer(object sender, EventArgs e)
         {
             if (AddPlayer != null)
-                AddPlayer();
+                AddPlayer(sender, e);
         }
         #endregion
 
@@ -215,15 +215,15 @@ namespace Final_Bomber.Network
                 //player.MoveSpeed = moveSpeed;
                 _gameManager.AddPlayer(player);
 
-                OnAddPlayer();
+                OnAddPlayer(this, EventArgs.Empty);
             }
         }
 
-        private void GameServer_RemovePlayer(int playerID)
+        private void GameServer_RemovePlayer(int playerId)
         {
-            Player player = _gameManager.Players.GetPlayerByID(playerID);
+            Player player = _gameManager.Players.GetPlayerByID(playerId);
 
-            if (player != null && Me.Id != playerID)
+            if (player != null && Me.Id != playerId)
             {
                 _gameManager.RemovePlayer(player);
             }

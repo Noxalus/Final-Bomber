@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Screens
 {
-    public class SinglePlayerGameModeMenuScreen : BaseGameState
+    public class SinglePlayerGameModeMenuScreen : BaseMenuScreen
     {
-        #region Field region
-        string[] menuString;
-        int indexMenu;
-        Vector2 menuPosition;
-        #endregion
-
         #region Constructor region
         public SinglePlayerGameModeMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            menuString = new string[] { "Adventure", "Challenge", "Match", "Back" };
-            indexMenu = 0;
+            MenuString = new string[] { "Adventure", "Challenge", "Match", "Back" };
         }
         #endregion
 
@@ -30,7 +18,6 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, Config.Resolutions[Config.IndexResolution, 1] / 2);
             base.Initialize();
         }
 
@@ -45,7 +32,7 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyPressed(Keys.Enter))
             {
-                switch (indexMenu)
+                switch (IndexMenu)
                 {
                     case 2:
                         StateManager.ChangeState(FinalBomber.Instance.BattleMenuScreen);
@@ -54,18 +41,6 @@ namespace Final_Bomber.Screens
                         StateManager.ChangeState(FinalBomber.Instance.TitleScreen);
                         break;
                 }
-            }
-
-            if (InputHandler.KeyPressed(Keys.Up))
-            {
-                if (indexMenu <= 0)
-                    indexMenu = menuString.Length - 1;
-                else
-                    indexMenu--;
-            }
-            else if (InputHandler.KeyPressed(Keys.Down))
-            {
-                indexMenu = (indexMenu + 1) % menuString.Length;
             }
 
             base.Update(gameTime);
@@ -79,15 +54,15 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            for (int i = 0; i < menuString.Length; i++)
+            for (int i = 0; i < MenuString.Length; i++)
             {
                 Color textColor = Color.Black;
-                if (i == indexMenu)
+                if (i == IndexMenu)
                     textColor = Color.Green;
 
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, menuString[i],
-                    new Vector2(menuPosition.X - BigFont.MeasureString(menuString[i]).X / 2,
-                        menuPosition.Y + BigFont.MeasureString(menuString[i]).Y * i - BigFont.MeasureString(menuString[i]).Y / 2), textColor);
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, MenuString[i],
+                    new Vector2(MenuPosition.X - BigFont.MeasureString(MenuString[i]).X / 2,
+                        MenuPosition.Y + BigFont.MeasureString(MenuString[i]).Y * i - BigFont.MeasureString(MenuString[i]).Y / 2), textColor);
             }
 
             FinalBomber.Instance.SpriteBatch.End();

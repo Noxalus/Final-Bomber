@@ -149,7 +149,7 @@ namespace FBLibrary.Core.BaseEntities
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
                 //Program.Log.Error(ex.Message);
             }
         }
