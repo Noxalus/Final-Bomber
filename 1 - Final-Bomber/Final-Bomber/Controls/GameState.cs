@@ -4,15 +4,15 @@ using Microsoft.Xna.Framework;
 
 namespace Final_Bomber.Controls
 {
-    public abstract partial class GameState : Microsoft.Xna.Framework.DrawableGameComponent
+    public abstract partial class GameState : DrawableGameComponent
     {
         #region Fields and Properties
 
-        List<GameComponent> childComponents;
+        readonly List<GameComponent> _childComponents;
 
         public List<GameComponent> Components
         {
-            get { return childComponents; }
+            get { return _childComponents; }
         }
 
         GameState tag;
@@ -22,18 +22,18 @@ namespace Final_Bomber.Controls
             get { return tag; }
         }
 
-        protected GameStateManager StateManager;
+        protected readonly GameStateManager StateManager;
 
         #endregion
 
         #region Constructor Region
 
-        public GameState(Game game, GameStateManager manager)
+        protected GameState(Game game, GameStateManager manager)
             : base(game)
         {
             StateManager = manager;
 
-            childComponents = new List<GameComponent>();
+            _childComponents = new List<GameComponent>();
             tag = this;
         }
 
@@ -48,7 +48,7 @@ namespace Final_Bomber.Controls
 
         public override void Update(GameTime gameTime)
         {
-            foreach (GameComponent component in childComponents)
+            foreach (GameComponent component in _childComponents)
             {
                 if (component.Enabled)
                     component.Update(gameTime);
@@ -59,13 +59,11 @@ namespace Final_Bomber.Controls
 
         public override void Draw(GameTime gameTime)
         {
-            DrawableGameComponent drawComponent;
-
-            foreach (GameComponent component in childComponents)
+            foreach (GameComponent component in _childComponents)
             {
                 if (component is DrawableGameComponent)
                 {
-                    drawComponent = component as DrawableGameComponent;
+                    var drawComponent = component as DrawableGameComponent;
 
                     if (drawComponent.Visible)
                         drawComponent.Draw(gameTime);
@@ -92,11 +90,12 @@ namespace Final_Bomber.Controls
             Visible = true;
             Enabled = true;
 
-            foreach (GameComponent component in childComponents)
+            foreach (GameComponent component in _childComponents)
             {
                 component.Enabled = true;
-                if (component is DrawableGameComponent)
-                    ((DrawableGameComponent)component).Visible = true;
+                var gameComponent = component as DrawableGameComponent;
+                if (gameComponent != null)
+                    gameComponent.Visible = true;
             }
         }
 
@@ -105,11 +104,12 @@ namespace Final_Bomber.Controls
             Visible = false;
             Enabled = false;
 
-            foreach (GameComponent component in childComponents)
+            foreach (GameComponent component in _childComponents)
             {
                 component.Enabled = false;
-                if (component is DrawableGameComponent)
-                    ((DrawableGameComponent)component).Visible = false;
+                var gameComponent = component as DrawableGameComponent;
+                if (gameComponent != null)
+                    gameComponent.Visible = false;
             }
         }
 

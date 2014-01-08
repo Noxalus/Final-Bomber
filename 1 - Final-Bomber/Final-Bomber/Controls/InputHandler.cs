@@ -9,22 +9,22 @@ namespace Final_Bomber.Controls
     {
         #region Mouse Field Region
 
-        static MouseState mouseState;
-        static MouseState lastMouseState;
+        static MouseState _mouseState;
+        static MouseState _lastMouseState;
 
         #endregion
 
         #region Keyboard Field Region
 
-        static KeyboardState keyboardState;
-        static KeyboardState lastKeyboardState;
+        static KeyboardState _keyboardState;
+        static KeyboardState _lastKeyboardState;
 
         #endregion
 
         #region Game Pad Field Region
 
-        static GamePadState[] gamePadStates;
-        static GamePadState[] lastGamePadStates;
+        static GamePadState[] _gamePadStates;
+        static GamePadState[] _lastGamePadStates;
 
         #endregion
 
@@ -32,12 +32,12 @@ namespace Final_Bomber.Controls
 
         public static MouseState MouseState
         {
-            get { return mouseState; }
+            get { return _mouseState; }
         }
 
         public static MouseState LastMouseState
         {
-            get { return lastMouseState; }
+            get { return _lastMouseState; }
         }
 
         #endregion
@@ -46,12 +46,12 @@ namespace Final_Bomber.Controls
 
         public static KeyboardState KeyboardState
         {
-            get { return keyboardState; }
+            get { return _keyboardState; }
         }
 
         public static KeyboardState LastKeyboardState
         {
-            get { return lastKeyboardState; }
+            get { return _lastKeyboardState; }
         }
 
         #endregion
@@ -60,12 +60,12 @@ namespace Final_Bomber.Controls
 
         public static GamePadState[] GamePadStates
         {
-            get { return gamePadStates; }
+            get { return _gamePadStates; }
         }
 
         public static GamePadState[] LastGamePadStates
         {
-            get { return lastGamePadStates; }
+            get { return _lastGamePadStates; }
         }
 
         #endregion
@@ -75,14 +75,14 @@ namespace Final_Bomber.Controls
         public InputHandler(Game game)
             : base(game)
         {
-            mouseState = Mouse.GetState();
+            _mouseState = Mouse.GetState();
 
-            keyboardState = Keyboard.GetState();
+            _keyboardState = Keyboard.GetState();
 
-            gamePadStates = new GamePadState[Enum.GetValues(typeof(PlayerIndex)).Length];
+            _gamePadStates = new GamePadState[Enum.GetValues(typeof(PlayerIndex)).Length];
 
             foreach (PlayerIndex index in Enum.GetValues(typeof(PlayerIndex)))
-                gamePadStates[(int)index] = GamePad.GetState(index);
+                _gamePadStates[(int)index] = GamePad.GetState(index);
         }
 
         #endregion
@@ -96,15 +96,15 @@ namespace Final_Bomber.Controls
 
         public override void Update(GameTime gameTime)
         {
-            lastMouseState = mouseState;
-            mouseState = Mouse.GetState();
+            _lastMouseState = _mouseState;
+            _mouseState = Mouse.GetState();
 
-            lastKeyboardState = keyboardState;
-            keyboardState = Keyboard.GetState();
+            _lastKeyboardState = _keyboardState;
+            _keyboardState = Keyboard.GetState();
 
-            lastGamePadStates = (GamePadState[])gamePadStates.Clone();
+            _lastGamePadStates = (GamePadState[])_gamePadStates.Clone();
             foreach (PlayerIndex index in Enum.GetValues(typeof(PlayerIndex)))
-                gamePadStates[(int)index] = GamePad.GetState(index);
+                _gamePadStates[(int)index] = GamePad.GetState(index);
 
             base.Update(gameTime);
         }
@@ -115,8 +115,8 @@ namespace Final_Bomber.Controls
 
         public static void Flush()
         {
-            lastMouseState = mouseState;
-            lastKeyboardState = keyboardState;
+            _lastMouseState = _mouseState;
+            _lastKeyboardState = _keyboardState;
         }
 
         public static bool PressedUp()
@@ -171,17 +171,17 @@ namespace Final_Bomber.Controls
 
         public static bool Scroll()
         {
-            return mouseState.ScrollWheelValue == lastMouseState.ScrollWheelValue;
+            return _mouseState.ScrollWheelValue == _lastMouseState.ScrollWheelValue;
         }
 
         public static bool ScrollUp()
         {
-            return mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue;
+            return _mouseState.ScrollWheelValue > _lastMouseState.ScrollWheelValue;
         }
 
         public static bool ScrollDown()
         {
-            return mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue;
+            return _mouseState.ScrollWheelValue < _lastMouseState.ScrollWheelValue;
         }
 
         #endregion
@@ -190,29 +190,29 @@ namespace Final_Bomber.Controls
 
         public static bool KeyReleased(Keys key)
         {
-            return keyboardState.IsKeyUp(key) &&
-                lastKeyboardState.IsKeyDown(key);
+            return _keyboardState.IsKeyUp(key) &&
+                _lastKeyboardState.IsKeyDown(key);
         }
 
         public static bool KeyPressed(Keys key)
         {
-            return keyboardState.IsKeyDown(key) &&
-                lastKeyboardState.IsKeyUp(key);
+            return _keyboardState.IsKeyDown(key) &&
+                _lastKeyboardState.IsKeyUp(key);
         }
 
         public static bool KeyDown(Keys key)
         {
-            return keyboardState.IsKeyDown(key);
+            return _keyboardState.IsKeyDown(key);
         }
 
         public static bool HavePressedKey()
         {
-            return keyboardState != lastKeyboardState;
+            return _keyboardState != _lastKeyboardState;
         }
 
         public static Keys[] GetPressedKeys()
         {
-            return keyboardState.GetPressedKeys();
+            return _keyboardState.GetPressedKeys();
         }
 
         #endregion
@@ -221,24 +221,24 @@ namespace Final_Bomber.Controls
 
         public static bool ButtonReleased(Buttons button, PlayerIndex index)
         {
-            return gamePadStates[(int)index].IsButtonUp(button) &&
-                lastGamePadStates[(int)index].IsButtonDown(button);
+            return _gamePadStates[(int)index].IsButtonUp(button) &&
+                _lastGamePadStates[(int)index].IsButtonDown(button);
         }
 
         public static bool ButtonPressed(Buttons button, PlayerIndex index)
         {
-            return gamePadStates[(int)index].IsButtonDown(button) &&
-                lastGamePadStates[(int)index].IsButtonUp(button);
+            return _gamePadStates[(int)index].IsButtonDown(button) &&
+                _lastGamePadStates[(int)index].IsButtonUp(button);
         }
 
         public static bool ButtonDown(Buttons button, PlayerIndex index)
         {
-            return gamePadStates[(int)index].IsButtonDown(button);
+            return _gamePadStates[(int)index].IsButtonDown(button);
         }
 
         public static bool HavePressedButton(PlayerIndex index)
         {
-            return gamePadStates[(int)index] != lastGamePadStates[(int)index];
+            return _gamePadStates[(int)index] != _lastGamePadStates[(int)index];
         }
 
         public static Buttons[] GetPressedButton(PlayerIndex index)

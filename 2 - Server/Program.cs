@@ -15,6 +15,7 @@ namespace Final_BomberServer
 
         static void Main(string[] args)
         {
+            // For log
             XmlConfigurator.Configure();
 
             // We get all map files to store name + md5 checksum in a dictionary 

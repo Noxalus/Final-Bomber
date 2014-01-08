@@ -14,15 +14,15 @@ namespace Final_Bomber.Controls
 
         #region Fields and Properties Region
 
-        Stack<GameState> gameStates = new Stack<GameState>();
+        readonly Stack<GameState> _gameStates = new Stack<GameState>();
 
-        const int startDrawOrder = 5000;
-        const int drawOrderInc = 100;
-        int drawOrder;
+        const int StartDrawOrder = 5000;
+        const int DrawOrderInc = 100;
+        int _drawOrder;
 
         public GameState CurrentState
         {
-            get { return gameStates.Peek(); }
+            get { return _gameStates.Peek(); }
         }
 
         #endregion
@@ -32,7 +32,7 @@ namespace Final_Bomber.Controls
         public GameStateManager(Game game)
             : base(game)
         {
-            drawOrder = startDrawOrder;
+            _drawOrder = StartDrawOrder;
         }
 
         #endregion
@@ -55,10 +55,10 @@ namespace Final_Bomber.Controls
 
         public void PopState()
         {
-            if (gameStates.Count > 0)
+            if (_gameStates.Count > 0)
             {
                 RemoveState();
-                drawOrder -= drawOrderInc;
+                _drawOrder -= DrawOrderInc;
 
                 if (OnStateChange != null)
                     OnStateChange(this, null);
@@ -67,17 +67,17 @@ namespace Final_Bomber.Controls
 
         private void RemoveState()
         {
-            GameState State = gameStates.Peek();
+            GameState state = _gameStates.Peek();
 
-            OnStateChange -= State.StateChange;
-            Game.Components.Remove(State);
-            gameStates.Pop();
+            OnStateChange -= state.StateChange;
+            Game.Components.Remove(state);
+            _gameStates.Pop();
         }
 
         public void PushState(GameState newState)
         {
-            drawOrder += drawOrderInc;
-            newState.DrawOrder = drawOrder;
+            _drawOrder += DrawOrderInc;
+            newState.DrawOrder = _drawOrder;
 
             AddState(newState);
 
@@ -87,7 +87,7 @@ namespace Final_Bomber.Controls
 
         private void AddState(GameState newState)
         {
-            gameStates.Push(newState);
+            _gameStates.Push(newState);
 
             Game.Components.Add(newState);
 
@@ -96,11 +96,11 @@ namespace Final_Bomber.Controls
 
         public void ChangeState(GameState newState)
         {
-            while (gameStates.Count > 0)
+            while (_gameStates.Count > 0)
                 RemoveState();
 
-            newState.DrawOrder = startDrawOrder;
-            drawOrder = startDrawOrder;
+            newState.DrawOrder = StartDrawOrder;
+            _drawOrder = StartDrawOrder;
 
             AddState(newState);
 

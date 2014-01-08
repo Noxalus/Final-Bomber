@@ -2,6 +2,7 @@
 using FBLibrary;
 using FBLibrary.Core;
 using Final_Bomber.Core;
+using Final_Bomber.GUI;
 using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework;
 using Final_Bomber.Controls;

@@ -1,4 +1,4 @@
-﻿<Application x:Class="_5___Launcher.App"
+﻿<Application x:Class="Launcher.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">

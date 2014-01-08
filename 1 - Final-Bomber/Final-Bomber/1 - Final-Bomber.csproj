@@ -94,6 +94,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\0 - DLL\Lidgren.Network.Xna.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\0 - DLL\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -144,7 +147,7 @@
     <Compile Include="Controls\GameState.cs" />
     <Compile Include="Controls\GameStateManager.cs" />
     <Compile Include="Controls\Keyboarding.cs" />
-    <Compile Include="Controls\WindowBox.cs" />
+    <Compile Include="GUI\WindowBox.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="Network\ClientConnection.cs" />
     <Compile Include="Network\ClientMessageReceiver.cs" />

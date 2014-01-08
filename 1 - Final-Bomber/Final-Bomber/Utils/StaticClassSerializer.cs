@@ -11,27 +11,27 @@ namespace Final_Bomber.Utils
 {
     public static class StaticClassSerializer
     {
-        public static bool Save(Type staticClass, string filename, bool binaryFormatter = true)
+        public static bool Save(Type staticClass, string fileName, bool binaryFormatter = true)
         {
             try
             {
                 FieldInfo[] fields = staticClass.GetFields(BindingFlags.Static | BindingFlags.Public);
-                var a = new object[fields.Length, 2];
+                var data = new object[fields.Length, 2];
 
                 int i = 0;
                 foreach (FieldInfo field in fields)
                 {
-                    a[i, 0] = field.Name;
-                    a[i, 1] = field.GetValue(null);
+                    data[i, 0] = field.Name;
+                    data[i, 1] = field.GetValue(null);
                     i++;
                 }
 
-                Stream f = File.Open(filename, FileMode.Create);
+                Stream file = File.Open(fileName, FileMode.Create);
 
                 IFormatter formatter = (binaryFormatter ? (IFormatter)new BinaryFormatter() : new SoapFormatter());
 
-                formatter.Serialize(f, a);
-                f.Close();
+                formatter.Serialize(file, data);
+                file.Close();
                 return true;
             }
             catch
@@ -40,13 +40,12 @@ namespace Final_Bomber.Utils
             }
         }
 
-        public static bool Load(Type staticClass, string filename, bool binaryFormatter = true)
+        public static bool Load(Type staticClass, string fileName, bool binaryFormatter = true)
         {
             try
             {
                 FieldInfo[] fields = staticClass.GetFields(BindingFlags.Static | BindingFlags.Public);
-                object[,] a;
-                Stream f = File.Open(filename, FileMode.Open);
+                Stream file = File.Open(fileName, FileMode.Open);
 
                 IFormatter formatter;
 
@@ -55,18 +54,18 @@ namespace Final_Bomber.Utils
                 else
                     formatter = new SoapFormatter();
 
-                a = formatter.Deserialize(f) as object[,];
+                var data = formatter.Deserialize(file) as object[,];
 
-                f.Close();
+                file.Close();
 
-                if (a != null && a.GetLength(0) != fields.Length) return false;
+                if (data != null && data.GetLength(0) != fields.Length) return false;
 
                 int i = 0;
                 foreach (FieldInfo field in fields)
                 {
-                    if (a != null && field.Name == (a[i, 0] as string))
+                    if (data != null && field.Name == (data[i, 0] as string))
                     {
-                        field.SetValue(null, a[i, 1]);
+                        field.SetValue(null, data[i, 1]);
                     }
 
                     i++;
@@ -77,7 +76,6 @@ namespace Final_Bomber.Utils
             catch(Exception ex)
             {
                 Debug.Print(ex.Message);
-                //throw new Exception(ex.Message);
                 return false;
             }
         }

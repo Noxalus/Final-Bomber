@@ -19,6 +19,7 @@ using Final_Bomber.WorldEngine;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 using FBLibrary.Core;
+using Final_Bomber.GUI;
 
 namespace Final_Bomber.Screens
 {
