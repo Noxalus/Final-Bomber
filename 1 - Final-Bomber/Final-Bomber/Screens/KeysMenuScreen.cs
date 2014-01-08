@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Screens
 {
-    public class KeysMenuScreen : BaseGameState
+    public class KeysMenuScreen : BaseMenuScreen
     {
         #region Field Region
-        string[] menuString;
-        int indexMenu;
-        Vector2 menuPosition;
-        int indexPlayer;
 
-        int counter;
-        string[] keysNames;
-        string[] instructions;
-
-        #endregion
-
-        #region Property Region
+        int _indexPlayer;
+        int _counter;
+        string[] _keysNames;
+        string[] _instructions;
 
         #endregion
 
@@ -43,23 +29,24 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuString = new string[Config.PlayersName.Length + 1];
+            MenuString = new string[Config.PlayersName.Length + 1];
             for (int i = 0; i < Config.PlayersName.Length; i++)
-                menuString[i] = Config.PlayersName[i];
-            menuString[Config.PlayersName.Length] = "Retour";
+                MenuString[i] = Config.PlayersName[i];
+            MenuString[Config.PlayersName.Length] = "Retour";
 
-            indexMenu = 0;
-            indexPlayer = -1;
-            menuPosition = new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 2.5f, FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2.5f);
+            _indexPlayer = -1;
 
-            counter = 0;
-            keysNames = new string[] { "Haut", "Bas", "Gauche", "Droite", "Poser une bombe" };
+            _counter = 0;
+            _keysNames = new string[] { "Haut", "Bas", "Gauche", "Droite", "Poser une bombe" };
 
-            instructions = new string[2];
-            instructions[0] = "Appuyez sur une touche pour la touche";
-            instructions[1] = "\"" + keysNames[counter] + "\" !";
+            _instructions = new string[2];
+            _instructions[0] = "Appuyez sur une touche pour la touche";
+            _instructions[1] = "\"" + _keysNames[_counter] + "\" !";
 
             base.Initialize();
+
+            MenuPosition.X = Config.Resolutions[Config.IndexResolution, 0] / 2.5f;
+            MenuPosition.Y = Config.Resolutions[Config.IndexResolution, 1] / 2.5f;
         }
 
         protected override void LoadContent()
@@ -75,17 +62,17 @@ namespace Final_Bomber.Screens
                 StateManager.PushState(FinalBomber.Instance.TitleScreen);
 
             
-            if (indexPlayer >= 0)
+            if (_indexPlayer >= 0)
             {
-                if (counter < 5)
+                if (_counter < 5)
                 {
-                    instructions[0] = "Appuyez sur une touche\n    pour la touche";
-                    instructions[1] = "\"" + keysNames[counter] + "\" !";
+                    _instructions[0] = "Appuyez sur une touche\n    pour la touche";
+                    _instructions[1] = "\"" + _keysNames[_counter] + "\" !";
                 }
                 else
                 {
-                    instructions[0] = "Les touches ont bien\n   été configurées !";
-                    instructions[1] = "Appuyez sur Entrer !";
+                    _instructions[0] = "Les touches ont bien\n   été configurées !";
+                    _instructions[1] = "Appuyez sur Entrer !";
                 }
 
                 // Séléction des touches
@@ -109,32 +96,19 @@ namespace Final_Bomber.Screens
                 if (InputHandler.HavePressedButton(PlayerIndex.One) && InputHandler.GetPressedButton(PlayerIndex.One).Length > 0)
                 {
                     Buttons buttons = InputHandler.GetPressedButton(PlayerIndex.One)[0];
-                    counter++;
+                    _counter++;
                 }
             }
             else
             {
                 if (InputHandler.KeyPressed(Keys.Enter))
                 {
-                    indexPlayer = -1;
-                    if (indexMenu >= 0 && indexMenu <= Config.PlayersName.Length - 1)
-                        indexPlayer = indexMenu;
-                    else if (indexMenu == Config.PlayersName.Length)
+                    _indexPlayer = -1;
+                    if (IndexMenu >= 0 && IndexMenu <= Config.PlayersName.Length - 1)
+                        _indexPlayer = IndexMenu;
+                    else if (IndexMenu == Config.PlayersName.Length)
                         StateManager.ChangeState(FinalBomber.Instance.OptionMenuScreen);
                 }
-            }
-            
-
-            if (InputHandler.KeyPressed(Keys.Up))
-            {
-                if (indexMenu <= 0)
-                    indexMenu = menuString.Length - 1;
-                else
-                    indexMenu--;
-            }
-            else if (InputHandler.KeyPressed(Keys.Down))
-            {
-                indexMenu = (indexMenu + 1) % menuString.Length;
             }
 
             base.Update(gameTime);
@@ -150,26 +124,26 @@ namespace Final_Bomber.Screens
 
             Color textColor = Color.Black;
 
-            if (indexPlayer >= 0)
+            if (_indexPlayer >= 0)
             {
-                string text = "Changement des touches\n     de " + Config.PlayersName[indexPlayer];
+                string text = "Changement des touches\nde " + Config.PlayersName[_indexPlayer];
                 FinalBomber.Instance.SpriteBatch.DrawString(BigFont, text,
-                        new Vector2(menuPosition.X / 1.5f, (BigFont.MeasureString(text).Y) / 2), textColor);
+                        new Vector2(MenuPosition.X / 1.5f, (BigFont.MeasureString(text).Y) / 2), textColor);
 
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, instructions[0], 
-                    new Vector2(menuPosition.X/1.5f, 2 * (BigFont.MeasureString(instructions[0]).Y)), Color.Black);
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, instructions[1],
-                    new Vector2(menuPosition.X / 1.5f + 250 - BigFont.MeasureString(instructions[1]).X / 2, 
-                        6 * (BigFont.MeasureString(instructions[1]).Y)), Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, _instructions[0], 
+                    new Vector2(MenuPosition.X/1.5f, 2 * (BigFont.MeasureString(_instructions[0]).Y)), Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, _instructions[1],
+                    new Vector2(MenuPosition.X / 1.5f + 250 - BigFont.MeasureString(_instructions[1]).X / 2, 
+                        6 * (BigFont.MeasureString(_instructions[1]).Y)), Color.Black);
             }
             else
             {
-                for (int i = 0; i < menuString.Length; i++)
+                for (int i = 0; i < MenuString.Length; i++)
                 {
-                    textColor = i == indexMenu ? Color.Green : Color.Black;
+                    textColor = i == IndexMenu ? Color.Green : Color.Black;
 
-                    FinalBomber.Instance.SpriteBatch.DrawString(BigFont, menuString[i],
-                        new Vector2(menuPosition.X, menuPosition.Y + (BigFont.MeasureString(menuString[i]).Y) * i), textColor);
+                    FinalBomber.Instance.SpriteBatch.DrawString(BigFont, MenuString[i],
+                        new Vector2(MenuPosition.X, MenuPosition.Y + (BigFont.MeasureString(MenuString[i]).Y) * i), textColor);
                 }
             }
 

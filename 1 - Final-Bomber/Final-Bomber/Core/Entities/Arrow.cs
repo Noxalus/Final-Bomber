@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Final_Bomber.Core.Entities
 {
-    public class Arrow : BaseEntity
+    public class Arrow : DynamicEntity
     {
         #region Field Region
 
@@ -18,16 +18,21 @@ namespace Final_Bomber.Core.Entities
 
         #region Property Region
 
-        public bool IsAlive
-        {
-            get { return _isAlive; }
-        }
-
         #endregion
 
         #region Constructor Region
 
         public Arrow(Point position, LookDirection initialLookDirection)
+        {
+            _isAlive = true;
+            _lookDirection = initialLookDirection;
+        }
+
+        #endregion
+
+        #region XNA Method Region
+
+        public void LoadContent()
         {
             const int animationFramesPerSecond = 10;
             var animations = new Dictionary<AnimationKey, Animation>();
@@ -45,17 +50,13 @@ namespace Final_Bomber.Core.Entities
             animations.Add(AnimationKey.Up, animation);
 
             var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/arrow");
-            Sprite = new AnimatedSprite(spriteTexture, animations) {IsAnimating = true};
 
-            _lookDirection = initialLookDirection;
-            Sprite.CurrentAnimation = LookDirectionToAnimationKey(_lookDirection);
-
-            _isAlive = true;
+            Sprite = new AnimatedSprite(spriteTexture, animations)
+            {
+                IsAnimating = true,
+                CurrentAnimation = LookDirectionToAnimationKey(_lookDirection)
+            };
         }
-
-        #endregion
-
-        #region XNA Method Region
 
         public void Update(GameTime gameTime)
         {

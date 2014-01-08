@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FBLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Final_Bomber.Entities;
 using Final_Bomber.Controls;
 using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Screens
 {
-    public class SuddenDeathMenuScreen : BaseGameState
+    public class SuddenDeathMenuScreen : BaseMenuScreen
     {
         #region Field Region
-        string[] menuString;
-        int indexMenu;
-        Vector2 menuPosition;
-        int suddenDeathTypeIndex;
+        int _suddenDeathTypeIndex;
         #endregion
 
         #region Property Region
@@ -38,11 +30,12 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuString = new string[] { "Active", "Déclenchement", "Vitesse", "Type", "Retour" };
-            indexMenu = 0;
-            menuPosition = new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 4, FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2);
-            suddenDeathTypeIndex = 2;
+            MenuString = new string[] { "Active", "Déclenchement", "Vitesse", "Type", "Retour" };
+            _suddenDeathTypeIndex = 2;
+
             base.Initialize();
+
+            MenuPosition.X /= 2f;
         }
 
         protected override void LoadContent()
@@ -57,7 +50,7 @@ namespace Final_Bomber.Screens
             if (InputHandler.KeyDown(Keys.Escape))
                 StateManager.PushState(FinalBomber.Instance.BattleMenuScreen);
 
-            switch (indexMenu)
+            switch (IndexMenu)
             {
                 case 0:
                     if (InputHandler.KeyPressed(Keys.Left) || InputHandler.KeyPressed(Keys.Right) || InputHandler.KeyPressed(Keys.Enter))
@@ -96,33 +89,21 @@ namespace Final_Bomber.Screens
                 case 3:
                     if (InputHandler.KeyPressed(Keys.Left))
                     {
-                        if (suddenDeathTypeIndex <= 0)
-                            suddenDeathTypeIndex = Config.SuddenDeathTypeArray.Length - 1;
+                        if (_suddenDeathTypeIndex <= 0)
+                            _suddenDeathTypeIndex = Config.SuddenDeathTypeArray.Length - 1;
                         else
-                            suddenDeathTypeIndex--;
+                            _suddenDeathTypeIndex--;
                     }
                     else if (InputHandler.KeyPressed(Keys.Right))
                     {
-                        suddenDeathTypeIndex = (suddenDeathTypeIndex + 1) % Config.SuddenDeathTypeArray.Length;
+                        _suddenDeathTypeIndex = (_suddenDeathTypeIndex + 1) % Config.SuddenDeathTypeArray.Length;
                     }
-                    GameConfiguration.SuddenDeathType = Config.SuddenDeathTypeArray[suddenDeathTypeIndex];
+                    GameConfiguration.SuddenDeathType = Config.SuddenDeathTypeArray[_suddenDeathTypeIndex];
                     break;
                 case 4:
                     if (InputHandler.KeyPressed(Keys.Enter))
                         StateManager.ChangeState(FinalBomber.Instance.BattleMenuScreen);
                     break;
-            }
-
-            if (InputHandler.KeyPressed(Keys.Up))
-            {
-                if (indexMenu <= 0)
-                    indexMenu = menuString.Length - 1;
-                else
-                    indexMenu--;
-            }
-            else if (InputHandler.KeyPressed(Keys.Down))
-            {
-                indexMenu = (indexMenu + 1) % menuString.Length;
             }
 
             base.Update(gameTime);
@@ -136,44 +117,44 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            for (int i = 0; i < menuString.Length; i++)
+            for (int i = 0; i < MenuString.Length; i++)
             {
                 Color textColor = Color.Black;
-                if (i == indexMenu)
+                if (i == IndexMenu)
                     textColor = Color.Green;
 
-                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
-                    new Vector2(menuPosition.X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), textColor);
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, MenuString[i],
+                    new Vector2(MenuPosition.X, MenuPosition.Y + (this.BigFont.MeasureString(MenuString[i]).Y) * i), textColor);
 
                 if (i != 4)
                 {
                     FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": ",
-                        new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i]).X,
-                            menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
+                        new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i]).X,
+                            MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i), Color.Black);
 
                     if (i == 0)
                     {
                         FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, GameConfiguration.ActiveSuddenDeath.ToString(),
-                        new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
-                            menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
+                        new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i] + ": ").X,
+                            MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i), Color.Black);
                     }
                     else if (i == 1)
                     {
                         FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, GameConfiguration.SuddenDeathTimer.ToString(),
-                        new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
-                            menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
+                        new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i] + ": ").X,
+                            MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i), Color.Black);
                     }
                     else if (i == 2)
                     {
                         FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, (100 - (GameConfiguration.SuddenDeathWallSpeed - 0.1f) * 100).ToString() + "%",
-                        new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
-                            menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
+                        new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i] + ": ").X,
+                            MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i), Color.Black);
                     }
                     else if (i == 3)
                     {
                         FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, Config.SuddenDeathTypeText[GameConfiguration.SuddenDeathType],
-                        new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i] + ": ").X,
-                            menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i), Color.Black);
+                        new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i] + ": ").X,
+                            MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i), Color.Black);
                     }
                 }
             }

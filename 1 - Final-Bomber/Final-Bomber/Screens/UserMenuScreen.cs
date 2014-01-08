@@ -5,12 +5,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Final_Bomber.Screens
 {
-    public class UserMenuScreen : BaseGameState
+    public class UserMenuScreen : BaseMenuScreen
     {
         #region Field region
-        string[] menuString;
-        int indexMenu;
-        Vector2 menuPosition;
 
         // Net
         public const string VERSION = "1";
@@ -26,8 +23,7 @@ namespace Final_Bomber.Screens
         public UserMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            menuString = new string[] { "Se connecter", "S'inscrire", "Retour" };
-            indexMenu = 0;
+            MenuString = new string[] { "Se connecter", "S'inscrire", "Retour" };
         }
         #endregion
 
@@ -35,7 +31,6 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuPosition = new Vector2(Config.Resolutions[Config.IndexResolution, 0] / 2, Config.Resolutions[Config.IndexResolution, 1] / 2);
             base.Initialize();
 
             // Net
@@ -89,7 +84,7 @@ namespace Final_Bomber.Screens
 
             if (InputHandler.KeyPressed(Keys.Enter))
             {
-                switch (indexMenu)
+                switch (IndexMenu)
                 {
                     case 0:
                         StateManager.ChangeState(FinalBomber.Instance.UserLoginMenuScreen);
@@ -101,18 +96,6 @@ namespace Final_Bomber.Screens
                         Exit();
                         break;
                 }
-            }
-
-            if (InputHandler.KeyPressed(Keys.Up))
-            {
-                if (indexMenu <= 0)
-                    indexMenu = menuString.Length - 1;
-                else
-                    indexMenu--;
-            }
-            else if (InputHandler.KeyPressed(Keys.Down))
-            {
-                indexMenu = (indexMenu + 1) % menuString.Length; 
             }
 
             base.Update(gameTime);
@@ -129,15 +112,15 @@ namespace Final_Bomber.Screens
             if(hasConnected)
                 FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, "Connecté au serveur !", Vector2.Zero, Color.Red);
 
-            for (int i = 0; i < menuString.Length; i++)
+            for (int i = 0; i < MenuString.Length; i++)
             {
                 Color textColor = Color.Black;
-                if (i == indexMenu)
+                if (i == IndexMenu)
                     textColor = Color.Green;
 
-                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
-                    new Vector2(menuPosition.X - this.BigFont.MeasureString(menuString[i]).X / 2,
-                        menuPosition.Y + this.BigFont.MeasureString(menuString[i]).Y * i - this.BigFont.MeasureString(menuString[i]).Y / 2), textColor);
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, MenuString[i],
+                    new Vector2(MenuPosition.X - this.BigFont.MeasureString(MenuString[i]).X / 2,
+                        MenuPosition.Y + this.BigFont.MeasureString(MenuString[i]).Y * i - this.BigFont.MeasureString(MenuString[i]).Y / 2), textColor);
             }
 
             FinalBomber.Instance.SpriteBatch.End();

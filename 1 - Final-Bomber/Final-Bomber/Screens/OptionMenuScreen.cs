@@ -13,17 +13,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Final_Bomber.Screens
 {
-    public class OptionMenuScreen : BaseGameState
+    public class OptionMenuScreen : BaseMenuScreen
     {
-        #region Field Region
-        string[] menuString;
-        int indexMenu;
-        Vector2 menuPosition;
-        #endregion
-
-        #region Property Region
-
-        #endregion
 
         #region Constructor Region
 
@@ -38,13 +29,13 @@ namespace Final_Bomber.Screens
 
         public override void Initialize()
         {
-            menuString = new string[] { "Changer les touches", "Résolution", "Plein écran", "Retour" };
-            indexMenu = 0;
-            menuPosition = new Vector2(FinalBomber.Instance.GraphicsDevice.Viewport.Width / 4, FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2);
+            MenuString = new string[] { "Changer les touches", "Résolution", "Plein écran", "Retour" };
 
             MediaPlayer.Play(FinalBomber.Instance.Content.Load<Song>("Audio/Musics/option"));
 
             base.Initialize();
+
+            MenuPosition.X /= 2f;
         }
         
 
@@ -63,7 +54,7 @@ namespace Final_Bomber.Screens
                 FinalBomber.Instance.graphics.ApplyChanges();
             }
 
-            switch (indexMenu)
+            switch (IndexMenu)
             {
                 case 0:
                     if(InputHandler.KeyPressed(Keys.Enter))
@@ -115,18 +106,6 @@ namespace Final_Bomber.Screens
                     break;
             }
 
-            if (InputHandler.KeyPressed(Keys.Up))
-            {
-                if (indexMenu <= 0)
-                    indexMenu = menuString.Length - 1;
-                else
-                    indexMenu--;
-            }
-            else if (InputHandler.KeyPressed(Keys.Down))
-            {
-                indexMenu = (indexMenu + 1) % menuString.Length;
-            }
-
             base.Update(gameTime);
         }
 
@@ -138,26 +117,26 @@ namespace Final_Bomber.Screens
 
             ControlManager.Draw(FinalBomber.Instance.SpriteBatch);
 
-            for (int i = 0; i < menuString.Length; i++)
+            for (int i = 0; i < MenuString.Length; i++)
             {
                 Color textColor = Color.Black;
-                if (i == indexMenu)
+                if (i == IndexMenu)
                     textColor = Color.Green;
 
-                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, menuString[i],
-                    new Vector2(menuPosition.X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), textColor);
+                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, MenuString[i],
+                    new Vector2(MenuPosition.X, MenuPosition.Y + (this.BigFont.MeasureString(MenuString[i]).Y) * i), textColor);
 
                 if (i == 1)
                 {
                     FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + 
                         Config.Resolutions[Config.IndexResolution, 0] + "x" + Config.Resolutions[Config.IndexResolution, 1],
-                    new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i]).X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i), 
+                    new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i]).X, MenuPosition.Y + (this.BigFont.MeasureString(MenuString[i]).Y) * i), 
                     textColor);
                 }
                 else if (i == 2)
                 {
                     FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, ": " + Config.FullScreen,
-                    new Vector2(menuPosition.X + this.BigFont.MeasureString(menuString[i]).X, menuPosition.Y + (this.BigFont.MeasureString(menuString[i]).Y) * i),
+                    new Vector2(MenuPosition.X + this.BigFont.MeasureString(MenuString[i]).X, MenuPosition.Y + (this.BigFont.MeasureString(MenuString[i]).Y) * i),
                     textColor);
                 }
             }
@@ -165,12 +144,6 @@ namespace Final_Bomber.Screens
             FinalBomber.Instance.SpriteBatch.End();
         }
 
-        #endregion
-
-        #region Abstract Method Region
-        #endregion
-
-        #region Method Region
         #endregion
     }
 }

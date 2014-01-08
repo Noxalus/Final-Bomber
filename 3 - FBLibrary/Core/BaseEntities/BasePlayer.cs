@@ -383,6 +383,8 @@ namespace FBLibrary.Core.BaseEntities
             BadEffect = effect;
             BadEffectTimerLenght = TimeSpan.FromSeconds(15);
             //BadEffectTimerLenght = TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
+
+
         }
 
         protected virtual void RemoveBadItem()

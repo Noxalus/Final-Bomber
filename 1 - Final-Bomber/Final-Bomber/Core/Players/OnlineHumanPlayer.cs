@@ -145,10 +145,6 @@ namespace Final_Bomber.Core.Players
                     Speed = Config.MaxSpeed;
                     break;
                 case BadEffect.KeysInversion:
-                    _keysSaved = (Keys[]) Keys.Clone();
-                    var inversedKeysArray = new[] {1, 0, 3, 2};
-                    for (int i = 0; i < inversedKeysArray.Length; i++)
-                        Keys[i] = _keysSaved[inversedKeysArray[i]];
                     break;
                 case BadEffect.BombTimerChanged:
                     BombTimerSaved = BombTimer;
@@ -172,7 +168,6 @@ namespace Final_Bomber.Core.Players
                     Speed = SpeedSaved;
                     break;
                 case BadEffect.KeysInversion:
-                    Keys = _keysSaved;
                     break;
                 case BadEffect.BombTimerChanged:
                     BombTimer = BombTimerSaved;
@@ -183,132 +178,6 @@ namespace Final_Bomber.Core.Players
         protected override void MoveFromEdgeWall()
         {
             base.MoveFromEdgeWall();
-
-            // The player is either at the top either at the bottom
-            // => he can only move on the right or on the left
-            if (Position.Y <= 0 || Position.Y >= (Config.MapSize.Y - 1)*Engine.TileHeight)
-            {
-                // If he wants to go to the left
-                if (Position.X > 0 && InputHandler.KeyDown(Keys[2]))
-                    Position = new Vector2(Position.X - Speed, Position.Y);
-                    // If he wants to go to the right
-                else if (Position.X < (Config.MapSize.X*Engine.TileWidth) - Engine.TileWidth &&
-                         InputHandler.KeyDown(Keys[3]))
-                    Position = new Vector2(Position.X + Speed, Position.Y);
-            }
-            // The player is either on the left either on the right
-            if (Position.X <= 0 || Position.X >= (Config.MapSize.X - 1)*Engine.TileWidth)
-            {
-                // If he wants to go to the top
-                if (Position.Y > 0 && InputHandler.KeyDown(Keys[0]))
-                    Position = new Vector2(Position.X, Position.Y - Speed);
-                    // If he wants to go to the bottom
-                else if (Position.Y < (Config.MapSize.Y*Engine.TileHeight) - Engine.TileHeight &&
-                         InputHandler.KeyDown(Keys[1]))
-                    Position = new Vector2(Position.X, Position.Y + Speed);
-            }
-
-            if (Position.Y <= 0)
-                Sprite.CurrentAnimation = AnimationKey.Down;
-            else if (Position.Y >= (Config.MapSize.Y - 1)*Engine.TileHeight)
-                Sprite.CurrentAnimation = AnimationKey.Up;
-            else if (Position.X <= 0)
-                Sprite.CurrentAnimation = AnimationKey.Right;
-            else if (Position.X >= (Config.MapSize.X - 1)*Engine.TileWidth)
-                Sprite.CurrentAnimation = AnimationKey.Left;
-
-            #region Bombs => Edge gameplay
-
-            if (InputHandler.KeyDown(Keys[4]) && CurrentBombAmount > 0)
-            {
-                // He can't put a bomb when he is on edges
-                if (
-                    !((CellPosition.Y == 0 &&
-                       (CellPosition.X == 0 || CellPosition.X == Config.MapSize.X - 1)) ||
-                      (CellPosition.Y == Config.MapSize.Y - 1 &&
-                       (CellPosition.X == 0 || (CellPosition.X == Config.MapSize.X - 1)))))
-                {
-                    Map level =
-                        FinalBomber.Instance.GamePlayScreen.World.Levels[
-                            FinalBomber.Instance.GamePlayScreen.World.CurrentLevel];
-                    int lag = 0;
-                    Point bombPosition = CellPosition;
-                    // Up
-                    if (CellPosition.Y == 0)
-                    {
-                        while (CellPosition.Y + lag + 3 < Config.MapSize.Y &&
-                               level.CollisionLayer[CellPosition.X, CellPosition.Y + lag + 3])
-                        {
-                            lag++;
-                        }
-                        bombPosition.Y = CellPosition.Y + lag + 3;
-                        if (bombPosition.Y < Config.MapSize.Y)
-                        {
-                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombAmount--;
-                        }
-                    }
-                    // Down
-                    if (CellPosition.Y == Config.MapSize.Y - 1)
-                    {
-                        while (CellPosition.Y - lag - 3 >= 0 &&
-                               level.CollisionLayer[CellPosition.X, CellPosition.Y - lag - 3])
-                        {
-                            lag++;
-                        }
-                        bombPosition.Y = CellPosition.Y - lag - 3;
-                        if (bombPosition.Y >= 0)
-                        {
-                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombAmount--;
-                        }
-                    }
-                    // Left
-                    if (CellPosition.X == 0)
-                    {
-                        while (CellPosition.X + lag + 3 < Config.MapSize.X &&
-                               level.CollisionLayer[CellPosition.X + lag + 3, CellPosition.Y])
-                        {
-                            lag++;
-                        }
-                        bombPosition.X = CellPosition.X + lag + 3;
-                        if (bombPosition.X < Config.MapSize.X)
-                        {
-                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombAmount--;
-                        }
-                    }
-                    // Right
-                    if (CellPosition.X == Config.MapSize.X - 1)
-                    {
-                        while (CellPosition.X - lag - 3 >= 0 &&
-                               level.CollisionLayer[CellPosition.X - lag - 3, CellPosition.Y])
-                        {
-                            lag++;
-                        }
-                        bombPosition.X = CellPosition.X - lag - 3;
-                        if (bombPosition.X >= 0)
-                        {
-                            var bomb = new Bomb(Id, bombPosition, BombPower, BombTimer, GameConfiguration.BaseBombSpeed + Speed);
-                            level.CollisionLayer[bombPosition.X, bombPosition.Y] = true;
-                            FinalBomber.Instance.GamePlayScreen.BombList.Add(bomb);
-                            level.Board[bombPosition.X, bombPosition.Y] = bomb;
-                            CurrentBombAmount--;
-                        }
-                    }
-                }
-            }
-
-            #endregion
         }
 
         private void SendMovement()
