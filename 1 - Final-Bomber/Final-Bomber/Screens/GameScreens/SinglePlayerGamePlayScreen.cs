@@ -108,6 +108,10 @@ namespace Final_Bomber.Screens.GameScreens
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
 
+            string playerSpeed = "Player's speed: " + _player.Speed;
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(1, 61), Color.Black);
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(0, 60), Color.White);
+
             #region HUD
             // Window boxes
             ScoresWindowBox.Draw(FinalBomber.Instance.SpriteBatch);

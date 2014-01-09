@@ -136,6 +136,10 @@ namespace Final_Bomber.Screens.GameScreens
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
 
+            string playerSpeed = "Player's speed: " + NetworkManager.Me.Speed;
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(1, 61), Color.Black);
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(0, 60), Color.White);
+
             /*
             // Draw IP adress
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, _networkManager.PublicIp, new Vector2(530, 60), Color.Black);

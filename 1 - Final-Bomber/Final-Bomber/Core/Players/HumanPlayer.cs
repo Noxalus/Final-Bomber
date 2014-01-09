@@ -93,33 +93,5 @@ namespace Final_Bomber.Core.Players
                     break;
             }
         }
-
-        private void Move()
-        {
-            if (PreviousDirection != CurrentDirection)
-            {
-                var newPosition = Position;
-
-                switch (CurrentDirection)
-                {
-                    case LookDirection.Down:
-                        newPosition.Y++;
-                        break;
-                    case LookDirection.Left:
-                        newPosition.X--;
-                        break;
-                    case LookDirection.Right:
-                        newPosition.X++;
-                        break;
-                    case LookDirection.Up:
-                        newPosition.Y--;
-                        break;
-                    default:
-                        break;
-                }
-
-                Position = newPosition;
-            }
-        }
     }
 }
