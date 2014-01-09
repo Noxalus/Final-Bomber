@@ -1,5 +1,9 @@
+using System;
+using System.Net.Mime;
+using System.Threading;
 using log4net;
 using log4net.Config;
+using System.Reflection;
 
 namespace Final_Bomber
 {
@@ -15,13 +19,26 @@ namespace Final_Bomber
         static void Main(string[] args)
         {
             // For log
-            XmlConfigurator.Configure();
-
-            Log.Info("Little test !");
-
-            using (var game = new FinalBomber())
+            XmlConfigurator.Configure(); 
+            
+            Assembly asm = Assembly.GetExecutingAssembly();
+            using (var mutex = new Mutex(false, @"Global\" + asm.GetType().GUID))
             {
-                game.Run();
+
+#if !DEBUG
+                if (!mutex.WaitOne(0, false))
+                {
+                    Log.Error("Instance already running");
+                    return;
+                }
+
+                GC.Collect();
+#endif
+
+                using (var game = new FinalBomber())
+                {
+                    game.Run();
+                }
             }
         }
     }
