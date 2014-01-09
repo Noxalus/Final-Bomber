@@ -1,0 +1,14 @@
+<map id="FBLibrary.Core.DynamicEntity" name="FBLibrary.Core.DynamicEntity">
+<area shape="rect" id="node4" href="$d1/d7e/class_f_b_client_1_1_core_1_1_entities_1_1_arrow.html" title="FBClient.Core.Entities.Arrow" alt="" coords="498,5,686,32"/>
+<area shape="rect" id="node5" href="$d3/dbe/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html" title="FBLibrary.Core.BaseEntities.\lBaseBomb" alt="" coords="497,57,687,98"/>
+<area shape="rect" id="node8" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="FBLibrary.Core.BaseEntities.\lBasePlayer" alt="" coords="497,122,687,163"/>
+<area shape="rect" id="node2" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="113,64,199,91"/>
+<area shape="rect" id="node3" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,64,64,91"/>
+<area shape="rect" id="node6" href="$db/d4b/class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html" title="FBClient.Core.Entities.Bomb" alt="" coords="737,20,927,47"/>
+<area shape="rect" id="node7" href="$df/ddb/class_f_b_server_1_1_core_1_1_entities_1_1_bomb.html" title="FBServer.Core.Entities.Bomb" alt="" coords="736,71,928,97"/>
+<area shape="rect" id="node9" href="$d0/d17/class_f_b_client_1_1_entities_1_1_player.html" title="FBClient.Entities.Player" alt="" coords="751,125,913,152"/>
+<area shape="rect" id="node16" href="$d7/da1/class_f_b_server_1_1_core_1_1_player.html" title="FBServer.Core.Player" alt="" coords="759,176,905,203"/>
+<area shape="rect" id="node11" href="$d6/d55/class_f_b_client_1_1_core_1_1_players_1_1_base_human_player.html" title="FBClient.Core.Players.Base\lHumanPlayer" alt="" coords="986,85,1171,126"/>
+<area shape="rect" id="node12" href="$da/daf/class_f_b_client_1_1_core_1_1_players_1_1_human_player.html" title="FBClient.Core.Players.Human\lPlayer" alt="" coords="1230,51,1426,93"/>
+<area shape="rect" id="node13" href="$d5/d7f/class_f_b_client_1_1_core_1_1_players_1_1_online_human_player.html" title="FBClient.Core.Players.Online\lHumanPlayer" alt="" coords="1232,117,1424,158"/>
+</map>

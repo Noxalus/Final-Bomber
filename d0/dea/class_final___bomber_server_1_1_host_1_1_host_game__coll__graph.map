@@ -1,0 +1,6 @@
+<map id="Final_BomberServer.Host.HostGame" name="Final_BomberServer.Host.HostGame">
+<area shape="rect" id="node2" href="$d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html" title="Final_BomberServer.Core.\lGameManager" alt="" coords="13,281,187,322"/>
+<area shape="rect" id="node3" href="$dd/d70/class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="31,203,168,229"/>
+<area shape="rect" id="node4" href="$d6/d37/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="5,97,195,138"/>
+<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="25,5,175,32"/>
+</map>

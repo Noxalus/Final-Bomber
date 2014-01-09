@@ -1,0 +1,13 @@
+digraph "D:/Projets/Final-Bomber/3 - FBLibrary/Core" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_33bf69db0a2e95912537fb4659309f70 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="3 - FBLibrary" fontname="Helvetica", fontsize="10", URL="dir_33bf69db0a2e95912537fb4659309f70.html"]
+  subgraph clusterdir_7ae1f15f2b5237b0417ef3a49d6da869 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_7ae1f15f2b5237b0417ef3a49d6da869.html"];
+    dir_7ae1f15f2b5237b0417ef3a49d6da869 [shape=plaintext label="Core"];
+    dir_e05080d52f4d8e18f99186db14c8bfe0 [shape=box label="BaseEntities" color="black" fillcolor="white" style="filled" URL="dir_e05080d52f4d8e18f99186db14c8bfe0.html"];
+  }
+  }
+}

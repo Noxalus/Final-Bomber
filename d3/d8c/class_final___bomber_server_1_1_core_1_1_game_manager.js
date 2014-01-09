@@ -1,0 +1,26 @@
+var class_final___bomber_server_1_1_core_1_1_game_manager =
+[
+    [ "GameManager", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a90f61fd011025e7cfd7f04c46edfed61", null ],
+    [ "AddBomb", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a9f2acae456990dfa97413edf364bc18a", null ],
+    [ "AddPlayer", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a7a35ccf9d95d51a2e9c48a09af5b4da6", null ],
+    [ "AddPowerUp", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a404fa218c8005fc07cf1d0d16ab74e81", null ],
+    [ "AddWall", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a0e7eb757df5f94aeba0ac87b4fcbc036", null ],
+    [ "AddWall", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a4e9c1a64fc42d9d4650e49f439ab3e01", null ],
+    [ "DestroyBomb", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a6e422da874f5045ce1b0eb7094a23ed4", null ],
+    [ "DestroyPlayer", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a7a7d9fef21e4ae6d2b7b9f666b0a57b2", null ],
+    [ "DestroyPowerUp", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a8e8c8d6f52b0fa221d75ec96e2b5bbc2", null ],
+    [ "DestroyWall", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#abed4a4e49ea14aae6cb862555269a60b", null ],
+    [ "LoadMap", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#ab8146a21a3e23191cbdff64147fbcbd7", null ],
+    [ "PickUpPowerUp", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a6a90ffe87380e4e7c9883e73e7cda059", null ],
+    [ "RemovePlayer", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a4b8b44b0375d6c60b6d18743de2d6fdd", null ],
+    [ "Reset", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a5e2ce70e5e7cfd35b9b222b848611d3f", null ],
+    [ "Update", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a9967b994cf71ee99c639e6dc4326c1aa", null ],
+    [ "UpdateBombs", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a826e2b5ae213b26719b9d632ef9b6e4f", null ],
+    [ "UpdatePlayers", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a92018386611b30be9808028ccc22b9e2", null ],
+    [ "UpdatePowerUps", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#acacf5833cd3d08ecf2844109d7c7201a", null ],
+    [ "UpdateWalls", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#aad56c3a81b77b19e55e386389e5b127e", null ],
+    [ "BombList", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a61d85d0d904a282071704d165ac9df40", null ],
+    [ "CurrentMap", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a3bab59de448147a9be2a7511033d0440", null ],
+    [ "PowerUpList", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a9859d9fe474b88fb117f908285b2cfd8", null ],
+    [ "WallList", "d3/d8c/class_final___bomber_server_1_1_core_1_1_game_manager.html#a16da6be0ce3063c4166ee35af0465831", null ]
+];

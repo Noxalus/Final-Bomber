@@ -1,0 +1,9 @@
+digraph "D:/Projets/Final-Bomber/2 - Server/Core/WorldEngine" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_5e3b1a3adb985d9091f7dd191d64449f {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Core" fontname="Helvetica", fontsize="10", URL="dir_5e3b1a3adb985d9091f7dd191d64449f.html"]
+  dir_dbc958748f0e300ce2e9dfc8ae80aff8 [shape=box, label="WorldEngine", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_dbc958748f0e300ce2e9dfc8ae80aff8.html"];
+  }
+}

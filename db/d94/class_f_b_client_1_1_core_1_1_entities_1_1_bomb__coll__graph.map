@@ -1,0 +1,8 @@
+<map id="FBClient.Core.Entities.Bomb" name="FBClient.Core.Entities.Bomb">
+<area shape="rect" id="node2" href="$d3/dbe/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html" title="BaseBomb" alt="" coords="117,280,203,307"/>
+<area shape="rect" id="node3" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="5,181,112,208"/>
+<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="15,83,101,109"/>
+<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="29,5,88,32"/>
+<area shape="rect" id="node6" href="$d6/d37/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="137,174,327,215"/>
+<area shape="rect" id="node7" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="157,83,307,109"/>
+</map>

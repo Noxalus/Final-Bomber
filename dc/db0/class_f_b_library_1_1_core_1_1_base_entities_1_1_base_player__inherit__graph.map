@@ -1,0 +1,10 @@
+<map id="FBLibrary.Core.BaseEntities.BasePlayer" name="FBLibrary.Core.BaseEntities.BasePlayer">
+<area shape="rect" id="node5" href="$d0/d17/class_f_b_client_1_1_entities_1_1_player.html" title="FBClient.Entities.Player" alt="" coords="643,97,805,124"/>
+<area shape="rect" id="node12" href="$d7/da1/class_f_b_server_1_1_core_1_1_player.html" title="FBServer.Core.Player" alt="" coords="651,148,797,175"/>
+<area shape="rect" id="node2" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="248,123,355,149"/>
+<area shape="rect" id="node3" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="113,123,199,149"/>
+<area shape="rect" id="node4" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,123,64,149"/>
+<area shape="rect" id="node7" href="$d6/d55/class_f_b_client_1_1_core_1_1_players_1_1_base_human_player.html" title="FBClient.Core.Players.Base\lHumanPlayer" alt="" coords="863,57,1049,98"/>
+<area shape="rect" id="node8" href="$da/daf/class_f_b_client_1_1_core_1_1_players_1_1_human_player.html" title="FBClient.Core.Players.Human\lPlayer" alt="" coords="1107,23,1303,65"/>
+<area shape="rect" id="node9" href="$d5/d7f/class_f_b_client_1_1_core_1_1_players_1_1_online_human_player.html" title="FBClient.Core.Players.Online\lHumanPlayer" alt="" coords="1109,89,1301,130"/>
+</map>

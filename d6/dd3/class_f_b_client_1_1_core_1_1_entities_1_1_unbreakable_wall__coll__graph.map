@@ -1,0 +1,6 @@
+<map id="FBClient.Core.Entities.UnbreakableWall" name="FBClient.Core.Entities.UnbreakableWall">
+<area shape="rect" id="node2" href="$d5/daf/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_unbreakable_wall.html" title="BaseUnbreakableWall" alt="" coords="57,229,207,256"/>
+<area shape="rect" id="node3" href="$d5/d47/class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="87,155,177,181"/>
+<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="89,80,175,107"/>
+<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="103,5,161,32"/>
+</map>

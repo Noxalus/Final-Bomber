@@ -1,0 +1,20 @@
+<map id="FBLibrary.Core.StaticEntity" name="FBLibrary.Core.StaticEntity">
+<area shape="rect" id="node4" href="$d0/dd4/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_arrow.html" title="FBLibrary.Core.BaseEntities.\lBaseArrow" alt="" coords="478,17,669,58"/>
+<area shape="rect" id="node6" href="$d3/dd2/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html" title="FBLibrary.Core.BaseEntities.\lBaseEdgeWall" alt="" coords="478,99,669,141"/>
+<area shape="rect" id="node9" href="$d4/d17/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_power_up.html" title="FBLibrary.Core.BaseEntities.\lBasePowerUp" alt="" coords="478,179,669,221"/>
+<area shape="rect" id="node12" href="$d1/d6f/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_teleporter.html" title="FBLibrary.Core.BaseEntities.\lBaseTeleporter" alt="" coords="478,245,669,286"/>
+<area shape="rect" id="node14" href="$d5/daf/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_unbreakable_wall.html" title="FBLibrary.Core.BaseEntities.\lBaseUnbreakableWall" alt="" coords="478,310,669,351"/>
+<area shape="rect" id="node17" href="$de/d4e/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall.html" title="FBLibrary.Core.BaseEntities.\lBaseWall" alt="" coords="478,403,669,445"/>
+<area shape="rect" id="node2" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="113,220,199,247"/>
+<area shape="rect" id="node3" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,220,64,247"/>
+<area shape="rect" id="node5" href="$de/d38/class_f_b_server_1_1_core_1_1_entities_1_1_arrow.html" title="FBServer.Core.Entities.Arrow" alt="" coords="750,5,941,32"/>
+<area shape="rect" id="node7" href="$d2/d1b/class_f_b_client_1_1_core_1_1_entities_1_1_edge_wall.html" title="FBClient.Core.Entities.EdgeWall" alt="" coords="740,56,951,83"/>
+<area shape="rect" id="node8" href="$d0/d06/class_f_b_server_1_1_core_1_1_entities_1_1_edge_wall.html" title="FBServer.Core.Entities.EdgeWall" alt="" coords="738,107,953,133"/>
+<area shape="rect" id="node10" href="$d8/d77/class_f_b_client_1_1_core_1_1_entities_1_1_power_up.html" title="FBClient.Core.Entities.PowerUp" alt="" coords="742,157,949,184"/>
+<area shape="rect" id="node11" href="$de/d96/class_f_b_server_1_1_core_1_1_entities_1_1_power_up.html" title="FBServer.Core.Entities.PowerUp" alt="" coords="740,208,951,235"/>
+<area shape="rect" id="node13" href="$d0/d88/class_f_b_server_1_1_core_1_1_entities_1_1_teleporter.html" title="FBServer.Core.Entities.Teleporter" alt="" coords="738,259,953,285"/>
+<area shape="rect" id="node15" href="$d4/d3a/class_f_b_client_1_1_core_1_1_entities_1_1_unbreakable_wall.html" title="FBClient.Core.Entities.UnbreakableWall" alt="" coords="719,309,972,336"/>
+<area shape="rect" id="node16" href="$d7/d46/class_f_b_server_1_1_core_1_1_entities_1_1_unbreakable_wall.html" title="FBServer.Core.Entities.UnbreakableWall" alt="" coords="717,360,973,387"/>
+<area shape="rect" id="node18" href="$d3/d1b/class_f_b_client_1_1_core_1_1_entities_1_1_wall.html" title="FBClient.Core.Entities.Wall" alt="" coords="755,411,936,437"/>
+<area shape="rect" id="node19" href="$d6/db7/class_f_b_server_1_1_core_1_1_entities_1_1_wall.html" title="FBServer.Core.Entities.Wall" alt="" coords="753,461,937,488"/>
+</map>

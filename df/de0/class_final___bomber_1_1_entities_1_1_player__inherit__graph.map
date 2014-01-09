@@ -1,0 +1,9 @@
+<map id="Final_Bomber.Entities.Player" name="Final_Bomber.Entities.Player">
+<area shape="rect" id="node7" href="$d4/d16/class_final___bomber_1_1_core_1_1_players_1_1_base_human_player.html" title="Final_Bomber.Core.Players.\lBaseHumanPlayer" alt="" coords="782,70,967,111"/>
+<area shape="rect" id="node2" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="BasePlayer" alt="" coords="403,111,493,137"/>
+<area shape="rect" id="node3" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="248,111,355,137"/>
+<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="113,111,199,137"/>
+<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,111,64,137"/>
+<area shape="rect" id="node8" href="$dd/d50/class_final___bomber_1_1_core_1_1_players_1_1_human_player.html" title="Final_Bomber.Core.Players.\lHumanPlayer" alt="" coords="1017,38,1202,79"/>
+<area shape="rect" id="node9" href="$dc/d42/class_final___bomber_1_1_core_1_1_players_1_1_online_human_player.html" title="Final_Bomber.Core.Players.\lOnlineHumanPlayer" alt="" coords="1017,103,1202,145"/>
+</map>

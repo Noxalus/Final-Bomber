@@ -1,0 +1,7 @@
+<map id="FBClient.Screens.MenuScreens.TitleScreen" name="FBClient.Screens.MenuScreens.TitleScreen">
+<area shape="rect" id="node2" href="$db/d78/class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="BaseMenuScreen" alt="" coords="344,373,469,400"/>
+<area shape="rect" id="node3" href="$df/d2f/class_f_b_client_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="347,296,465,323"/>
+<area shape="rect" id="node4" href="$d7/d38/class_f_b_client_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="259,197,347,224"/>
+<area shape="rect" id="node6" href="$df/d33/class_f_b_client_1_1_controls_1_1_game_state_manager.html" title="FBClient.Controls.GameState\lManager" alt="" coords="205,83,400,125"/>
+<area shape="rect" id="node8" href="$d6/db2/class_f_b_client_1_1_controls_1_1_control_manager.html" title="FBClient.Controls.Control\lManager" alt="" coords="383,190,552,231"/>
+</map>

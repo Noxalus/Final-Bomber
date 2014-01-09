@@ -1,0 +1,6 @@
+<map id="FBServer.Core.Player" name="FBServer.Core.Player">
+<area shape="rect" id="node2" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="BasePlayer" alt="" coords="34,229,123,256"/>
+<area shape="rect" id="node3" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="25,155,132,181"/>
+<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="35,80,121,107"/>
+<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="49,5,108,32"/>
+</map>

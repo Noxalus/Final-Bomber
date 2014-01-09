@@ -1,0 +1,23 @@
+<map id="FBClient.Screens.GameScreens.NetworkTestScreen" name="FBClient.Screens.GameScreens.NetworkTestScreen">
+<area shape="rect" id="node2" href="$d6/db6/class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html" title="BaseGamePlayScreen" alt="" coords="1392,104,1547,131"/>
+<area shape="rect" id="node3" href="$df/d2f/class_f_b_client_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="1062,108,1181,135"/>
+<area shape="rect" id="node4" href="$d7/d38/class_f_b_client_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="740,108,828,135"/>
+<area shape="rect" id="node6" href="$df/d33/class_f_b_client_1_1_controls_1_1_game_state_manager.html" title="FBClient.Controls.GameState\lManager" alt="" coords="355,107,549,149"/>
+<area shape="rect" id="node8" href="$d6/db2/class_f_b_client_1_1_controls_1_1_control_manager.html" title="FBClient.Controls.Control\lManager" alt="" coords="699,17,869,58"/>
+<area shape="rect" id="node10" href="$d4/daf/class_f_b_client_1_1_core_1_1_game_manager.html" title="FBClient.Core.GameManager" alt="" coords="1025,181,1217,208"/>
+<area shape="rect" id="node20" href="$d6/d55/class_f_b_client_1_1_core_1_1_players_1_1_base_human_player.html" title="BaseHumanPlayer" alt="" coords="1404,184,1535,211"/>
+<area shape="rect" id="node11" href="$dd/d70/class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="715,229,853,256"/>
+<area shape="rect" id="node12" href="$d6/d37/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="357,225,547,266"/>
+<area shape="rect" id="node13" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="115,232,266,259"/>
+<area shape="rect" id="node14" href="$de/d8b/class_player_collection.html" title="PlayerCollection" alt="" coords="726,175,842,201"/>
+<area shape="rect" id="node16" href="$dd/d9b/class_f_b_client_1_1_g_u_i_1_1_window_box.html" title="FBClient.GUI.WindowBox" alt="" coords="1036,7,1207,33"/>
+<area shape="rect" id="node17" href="$d9/d74/class_f_b_client_1_1_world_engine_1_1_camera2_d.html" title="FBClient.WorldEngine.Camera2D" alt="" coords="1014,57,1229,84"/>
+<area shape="rect" id="node18" href="$d5/d87/class_f_b_client_1_1_network_1_1_network_manager.html" title="FBClient.Network.Network\lManager" alt="" coords="1862,166,2037,207"/>
+<area shape="rect" id="node19" href="$d5/d7f/class_f_b_client_1_1_core_1_1_players_1_1_online_human_player.html" title="FBClient.Core.Players.Online\lHumanPlayer" alt="" coords="1597,169,1789,210"/>
+<area shape="rect" id="node21" href="$d0/d17/class_f_b_client_1_1_entities_1_1_player.html" title="Player" alt="" coords="1092,271,1151,297"/>
+<area shape="rect" id="node22" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="BasePlayer" alt="" coords="739,291,829,317"/>
+<area shape="rect" id="node23" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="399,341,505,368"/>
+<area shape="rect" id="node24" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="147,341,234,368"/>
+<area shape="rect" id="node25" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,341,64,368"/>
+<area shape="rect" id="node26" href="$dd/df2/class_f_b_library_1_1_core_1_1_player_stats.html" title="FBLibrary.Core.PlayerStats" alt="" coords="361,291,543,317"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="FBLibrary.Core.BaseEntities.BasePowerUp" name="FBLibrary.Core.BaseEntities.BasePowerUp">
+<area shape="rect" id="node5" href="$d8/d77/class_f_b_client_1_1_core_1_1_entities_1_1_power_up.html" title="FBClient.Core.Entities.PowerUp" alt="" coords="5,320,211,347"/>
+<area shape="rect" id="node6" href="$de/d96/class_f_b_server_1_1_core_1_1_entities_1_1_power_up.html" title="FBServer.Core.Entities.PowerUp" alt="" coords="236,320,447,347"/>
+<area shape="rect" id="node2" href="$d5/d47/class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="179,155,269,181"/>
+<area shape="rect" id="node3" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="181,80,267,107"/>
+<area shape="rect" id="node4" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="195,5,253,32"/>
+</map>

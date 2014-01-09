@@ -1,0 +1,7 @@
+<map id="FBLibrary.Core.BaseEntities.BaseWall" name="FBLibrary.Core.BaseEntities.BaseWall">
+<area shape="rect" id="node5" href="$d3/d1b/class_f_b_client_1_1_core_1_1_entities_1_1_wall.html" title="FBClient.Core.Entities.Wall" alt="" coords="5,320,187,347"/>
+<area shape="rect" id="node6" href="$d6/db7/class_f_b_server_1_1_core_1_1_entities_1_1_wall.html" title="FBServer.Core.Entities.Wall" alt="" coords="211,320,395,347"/>
+<area shape="rect" id="node2" href="$d5/d47/class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="153,155,244,181"/>
+<area shape="rect" id="node3" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="155,80,241,107"/>
+<area shape="rect" id="node4" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="169,5,228,32"/>
+</map>

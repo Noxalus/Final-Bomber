@@ -1,0 +1,6 @@
+<map id="Final_Bomber.Core.Entities.Wall" name="Final_Bomber.Core.Entities.Wall">
+<area shape="rect" id="node2" href="$de/d4e/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall.html" title="BaseWall" alt="" coords="71,229,149,256"/>
+<area shape="rect" id="node3" href="$d5/d47/class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="65,155,156,181"/>
+<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="67,80,153,107"/>
+<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="81,5,140,32"/>
+</map>

@@ -1,0 +1,23 @@
+<map id="Final_Bomber.Screens.GameScreens.NetworkTestScreen" name="Final_Bomber.Screens.GameScreens.NetworkTestScreen">
+<area shape="rect" id="node2" href="$dc/d8d/class_final___bomber_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html" title="BaseGamePlayScreen" alt="" coords="1429,139,1584,165"/>
+<area shape="rect" id="node3" href="$d3/d87/class_final___bomber_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="1095,88,1214,115"/>
+<area shape="rect" id="node4" href="$d3/d4d/class_final___bomber_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="755,88,843,115"/>
+<area shape="rect" id="node6" href="$d6/d4b/class_final___bomber_1_1_controls_1_1_game_state_manager.html" title="Final_Bomber.Controls.Game\lStateManager" alt="" coords="355,107,549,149"/>
+<area shape="rect" id="node8" href="$d1/da8/class_final___bomber_1_1_controls_1_1_control_manager.html" title="Final_Bomber.Controls.Control\lManager" alt="" coords="699,9,898,50"/>
+<area shape="rect" id="node10" href="$d1/dc1/class_final___bomber_1_1_g_u_i_1_1_window_box.html" title="Final_Bomber.GUI.WindowBox" alt="" coords="1054,139,1255,165"/>
+<area shape="rect" id="node11" href="$d6/d85/class_final___bomber_1_1_core_1_1_game_manager.html" title="Final_Bomber.Core.GameManager" alt="" coords="1043,212,1266,239"/>
+<area shape="rect" id="node20" href="$d4/d16/class_final___bomber_1_1_core_1_1_players_1_1_base_human_player.html" title="BaseHumanPlayer" alt="" coords="1441,229,1572,256"/>
+<area shape="rect" id="node12" href="$dd/d70/class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="730,228,867,255"/>
+<area shape="rect" id="node13" href="$d6/d37/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="357,225,547,266"/>
+<area shape="rect" id="node14" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="115,232,266,259"/>
+<area shape="rect" id="node15" href="$de/d8b/class_player_collection.html" title="PlayerCollection" alt="" coords="741,173,857,200"/>
+<area shape="rect" id="node17" href="$d3/d5f/class_final___bomber_1_1_world_engine_1_1_camera2_d.html" title="Final_Bomber.WorldEngine.\lCamera2D" alt="" coords="1063,22,1247,63"/>
+<area shape="rect" id="node18" href="$dc/d3d/class_final___bomber_1_1_network_1_1_network_manager.html" title="Final_Bomber.Network.Network\lManager" alt="" coords="1894,207,2098,249"/>
+<area shape="rect" id="node19" href="$dc/d42/class_final___bomber_1_1_core_1_1_players_1_1_online_human_player.html" title="Final_Bomber.Core.Players.\lOnlineHumanPlayer" alt="" coords="1635,210,1821,251"/>
+<area shape="rect" id="node21" href="$d9/d58/class_final___bomber_1_1_entities_1_1_player.html" title="Player" alt="" coords="1125,284,1184,311"/>
+<area shape="rect" id="node22" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="BasePlayer" alt="" coords="754,291,843,317"/>
+<area shape="rect" id="node23" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="399,341,505,368"/>
+<area shape="rect" id="node24" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="147,341,234,368"/>
+<area shape="rect" id="node25" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,341,64,368"/>
+<area shape="rect" id="node26" href="$dd/df2/class_f_b_library_1_1_core_1_1_player_stats.html" title="FBLibrary.Core.PlayerStats" alt="" coords="361,291,543,317"/>
+</map>
