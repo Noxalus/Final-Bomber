@@ -72,3 +72,11 @@ Old repository
 This project didn't start here, it was hosted by Google Code before.
 
 You can found the old repository here: https://code.google.com/p/final-bomber/
+
+Dev blog (french)
+=================
+You can find a dev blog with technical articles here: https://final-bomber.blogspot.com
+
+Documentation
+=============
+A complete documentation generated with Doxygen is available here: http://noxalus.github.io/Final-Bomber
