@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using Lidgren.Network.Xna;
 
-namespace Final_Bomber.Network
+namespace FBClient.Network
 {
     partial class GameServer
     {

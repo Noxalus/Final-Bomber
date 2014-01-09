@@ -1,10 +1,10 @@
 ﻿using System;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_BomberServer.Core;
+using FBServer.Core;
 using System.Collections.Generic;
 
-namespace Final_BomberServer.Host
+namespace FBServer.Host
 {
     partial class HostGame
     {

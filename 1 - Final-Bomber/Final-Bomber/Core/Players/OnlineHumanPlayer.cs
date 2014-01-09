@@ -2,12 +2,12 @@
 using System.Diagnostics;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Controls;
-using Final_Bomber.Network;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Network;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Core.Players
+namespace FBClient.Core.Players
 {
     public class OnlineHumanPlayer : BaseHumanPlayer
     {

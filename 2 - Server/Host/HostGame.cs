@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_BomberServer.Core;
-using Final_BomberServer.Core.Entities;
+using FBServer.Core;
+using FBServer.Core.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Final_BomberServer.Host
+namespace FBServer.Host
 {
     partial class HostGame
     {

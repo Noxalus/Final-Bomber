@@ -1,12 +1,12 @@
 ﻿
-using Final_Bomber.Controls;
-using Final_Bomber.Core;
-using Final_Bomber.GUI;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Core;
+using FBClient.GUI;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Screens.GameScreens
+namespace FBClient.Screens.GameScreens
 {
     public abstract class BaseGamePlayScreen : BaseGameState
     {

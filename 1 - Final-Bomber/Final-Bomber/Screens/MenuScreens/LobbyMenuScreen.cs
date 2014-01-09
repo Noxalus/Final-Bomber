@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using FBLibrary;
-using Final_Bomber.Controls;
-using Final_Bomber.Network;
-using Final_Bomber.Screens.GameScreens;
+using FBClient.Controls;
+using FBClient.Network;
+using FBClient.Screens.GameScreens;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Screens.MenuScreens
+namespace FBClient.Screens.MenuScreens
 {
     public class LobbyMenuScreen : BaseGameState
     {

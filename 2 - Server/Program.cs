@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using FBLibrary;
-using Final_BomberServer.Core;
+using FBServer.Core;
 using System;
 using System.Threading;
-using Final_BomberServer.Core.WorldEngine;
+using FBServer.Core.WorldEngine;
 using log4net;
 using log4net.Config;
 
-namespace Final_BomberServer
+namespace FBServer
 {
     class Program
     {

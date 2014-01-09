@@ -1,9 +1,9 @@
-﻿using Final_Bomber.Controls;
+﻿using FBClient.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens.MenuScreens
+namespace FBClient.Screens.MenuScreens
 {
     public class KeysMenuScreen : BaseMenuScreen
     {

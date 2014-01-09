@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Controls
+namespace FBClient.Controls
 {
     public class GameStateManager : GameComponent
     {

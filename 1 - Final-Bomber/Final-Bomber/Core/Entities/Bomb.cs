@@ -4,18 +4,18 @@ using System.Diagnostics;
 using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_Bomber.Controls;
-using Final_Bomber.Entities;
-using Final_Bomber.Screens;
-using Final_Bomber.Screens.GameScreens;
-using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Entities;
+using FBClient.Screens;
+using FBClient.Screens.GameScreens;
+using FBClient.Sprites;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Core.Entities
+namespace FBClient.Core.Entities
 {
     public class Bomb : BaseBomb
     {

@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using FBLibrary.Core;
-using Final_Bomber.Entities;
-using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
+using FBClient.Entities;
+using FBClient.Sprites;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Core.Players
+namespace FBClient.Core.Players
 {
     internal class OnlinePlayer : Player
     {

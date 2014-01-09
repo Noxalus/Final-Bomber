@@ -1,4 +1,4 @@
-﻿using Final_BomberServer.Core;
+﻿using FBServer.Core;
 using Lidgren.Network;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Final_BomberServer.Host
+namespace FBServer.Host
 {
     public class ClientCollection : List<Client>
     {

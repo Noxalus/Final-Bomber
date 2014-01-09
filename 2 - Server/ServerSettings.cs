@@ -1,5 +1,5 @@
 ﻿
-namespace Final_BomberServer
+namespace FBServer
 {
     public static class ServerSettings
     {

@@ -3,7 +3,7 @@ using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Final_BomberServer.Core
+namespace FBServer.Core
 {
     public class Player : BasePlayer
     {

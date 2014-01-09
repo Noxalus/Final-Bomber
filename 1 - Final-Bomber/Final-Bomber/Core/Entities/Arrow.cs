@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using FBLibrary.Core;
-using Final_Bomber.Sprites;
+using FBClient.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Core.Entities
+namespace FBClient.Core.Entities
 {
     public class Arrow : DynamicEntity
     {

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Entities;
-using Final_Bomber.Entities.AI;
-using Final_Bomber.Screens;
-using Final_Bomber.Screens.GameScreens;
-using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
+using FBClient.Core.Entities;
+using FBClient.Entities;
+using FBClient.Entities.AI;
+using FBClient.Screens;
+using FBClient.Screens.GameScreens;
+using FBClient.Sprites;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Core.Players
+namespace FBClient.Core.Players
 {
     internal class AIPlayer : Player
     {

@@ -1,4 +1,4 @@
-﻿namespace Final_Bomber.Controls
+﻿namespace FBClient.Controls
 {
     public static class Keyboarding
     {

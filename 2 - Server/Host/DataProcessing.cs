@@ -1,7 +1,7 @@
 ﻿using FBLibrary.Core;
 using Lidgren.Network;
 
-namespace Final_BomberServer.Host
+namespace FBServer.Host
 {
     partial class GameServer
     {

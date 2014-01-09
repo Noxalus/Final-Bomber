@@ -7,14 +7,14 @@ using System.Net;
 using System.Net.Sockets;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Core;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Core.Players;
-using Final_Bomber.Entities;
-using Final_Bomber.Screens.GameScreens;
+using FBClient.Core;
+using FBClient.Core.Entities;
+using FBClient.Core.Players;
+using FBClient.Entities;
+using FBClient.Screens.GameScreens;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Network
+namespace FBClient.Network
 {
     public class NetworkManager
     {

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Controls
+namespace FBClient.Controls
 {
     public abstract class Control
     {

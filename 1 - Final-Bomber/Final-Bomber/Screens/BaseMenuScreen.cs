@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Final_Bomber.Controls;
+using FBClient.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens
+namespace FBClient.Screens
 {
     public abstract class BaseMenuScreen : BaseGameState
     {

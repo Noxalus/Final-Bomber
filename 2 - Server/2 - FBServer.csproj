@@ -7,8 +7,8 @@
     <ProjectGuid>{0BF45F02-38A7-4E02-A5B1-62A153FBBF69}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Final_BomberServer</RootNamespace>
-    <AssemblyName>Final-BomberServer</AssemblyName>
+    <RootNamespace>FBServer</RootNamespace>
+    <AssemblyName>FBServer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,20 +35,18 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\0 - DLL\Debug\Lidgren.Network.dll</HintPath>
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\ExtLibs\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
-    <Reference Include="Lidgren.Network.Xna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\0 - DLL\Debug\Lidgren.Network.Xna.dll</HintPath>
+    <Reference Include="Lidgren.Network.Xna">
+      <HintPath>..\ExtLibs\Debug\Lidgren.Network.Xna.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\0 - DLL\log4net.dll</HintPath>
+      <HintPath>..\ExtLibs\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\0 - DLL\Debug\Microsoft.Xna.Framework.dll</HintPath>
+      <HintPath>..\ExtLibs\Microsoft.Xna.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

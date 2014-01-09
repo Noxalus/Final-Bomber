@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Final_Bomber.Utils
+namespace FBClient.Utils
 {
     public class FrameRateCounter : DrawableGameComponent
     {

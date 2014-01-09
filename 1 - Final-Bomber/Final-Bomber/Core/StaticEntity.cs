@@ -1,7 +1,7 @@
-﻿using Final_Bomber.Entities;
+﻿using FBClient.Entities;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Core
+namespace FBClient.Core
 {
     public abstract class StaticEntity
     {

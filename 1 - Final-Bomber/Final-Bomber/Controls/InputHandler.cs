@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Controls
+namespace FBClient.Controls
 {
     class InputHandler : Microsoft.Xna.Framework.GameComponent
     {

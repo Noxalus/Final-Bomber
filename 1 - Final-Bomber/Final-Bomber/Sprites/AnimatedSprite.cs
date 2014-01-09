@@ -5,9 +5,9 @@ using System.Text;
 using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.TileEngine;
+using FBClient.TileEngine;
 
-namespace Final_Bomber.Sprites
+namespace FBClient.Sprites
 {
     public class AnimatedSprite
     {

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FBLibrary.Core;
-using Final_Bomber.Core.Entities;
+using FBClient.Core.Entities;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.IO;
-using Final_Bomber.Entities;
+using FBClient.Entities;
 
-namespace Final_Bomber
+namespace FBClient
 {   
     [Serializable]
     static class Config

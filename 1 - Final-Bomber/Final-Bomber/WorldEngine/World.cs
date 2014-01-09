@@ -6,9 +6,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Final_Bomber.TileEngine;
+using FBClient.TileEngine;
 
-namespace Final_Bomber.WorldEngine
+namespace FBClient.WorldEngine
 {
     public class World : DrawableGameComponent
     {

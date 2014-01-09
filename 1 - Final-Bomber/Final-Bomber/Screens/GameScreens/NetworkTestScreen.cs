@@ -2,16 +2,16 @@
 using System.Diagnostics;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Controls;
-using Final_Bomber.Core;
-using Final_Bomber.GUI;
-using Final_Bomber.Network;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Core;
+using FBClient.GUI;
+using FBClient.Network;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Screens.GameScreens
+namespace FBClient.Screens.GameScreens
 {
     public class NetworkTestScreen : BaseGamePlayScreen
     {

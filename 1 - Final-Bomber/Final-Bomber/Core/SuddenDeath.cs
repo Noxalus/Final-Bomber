@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Entities;
-using Final_Bomber.Screens;
-using Final_Bomber.Screens.GameScreens;
+using FBClient.Core.Entities;
+using FBClient.Entities;
+using FBClient.Screens;
+using FBClient.Screens.GameScreens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
-namespace Final_Bomber.Core
+namespace FBClient.Core
 {
     public class SuddenDeath
     {

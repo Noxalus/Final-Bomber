@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core.BaseEntities

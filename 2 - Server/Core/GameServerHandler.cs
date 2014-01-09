@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using Final_BomberServer.Core.WorldEngine;
-using Final_BomberServer.Host;
+using FBServer.Core.WorldEngine;
+using FBServer.Host;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Final_BomberServer.Core
+namespace FBServer.Core
 {
     partial class GameServerHandler
     {

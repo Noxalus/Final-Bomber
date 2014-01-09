@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_BomberServer.Core.Entities;
-using Final_BomberServer.Core.WorldEngine;
-using Final_BomberServer.Host;
+using FBServer.Core.Entities;
+using FBServer.Core.WorldEngine;
+using FBServer.Host;
 using Microsoft.Xna.Framework;
 
-namespace Final_BomberServer.Core
+namespace FBServer.Core
 {
     public class GameManager : BaseGameManager
     {

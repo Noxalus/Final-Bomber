@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_BomberServer.Core.Entities;
+using FBServer.Core.Entities;
 using Microsoft.Xna.Framework;
 
-namespace Final_BomberServer.Core.WorldEngine
+namespace FBServer.Core.WorldEngine
 {
     public class Map : BaseMap
     {

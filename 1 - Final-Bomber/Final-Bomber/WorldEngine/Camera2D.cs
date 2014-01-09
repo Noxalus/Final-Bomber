@@ -1,10 +1,10 @@
 ﻿using FBLibrary.Core;
-using Final_Bomber.Controls;
+using FBClient.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.WorldEngine
+namespace FBClient.WorldEngine
 {
     public class Camera2D
     {

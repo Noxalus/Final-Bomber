@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Final_Bomber.Network
+namespace FBClient.Network
 {
     /*
     public partial class MainGame : E2D_Map

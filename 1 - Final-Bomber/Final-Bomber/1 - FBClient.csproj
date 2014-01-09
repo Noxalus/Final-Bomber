@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Final_Bomber</RootNamespace>
-    <AssemblyName>Final-Bomber</AssemblyName>
+    <RootNamespace>FBClient</RootNamespace>
+    <AssemblyName>FBClient</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -86,16 +86,17 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\0 - DLL\Lidgren.Network.dll</HintPath>
+      <HintPath>..\..\ExtLibs\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="Lidgren.Network.Xna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\0 - DLL\Lidgren.Network.Xna.dll</HintPath>
+      <HintPath>..\..\ExtLibs\Debug\Lidgren.Network.Xna.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\0 - DLL\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExtLibs\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -213,9 +214,9 @@
       <Project>{3af57b97-6bf8-4b50-847b-c42b003a2471}</Project>
       <Name>3 - FBLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Final-BomberContent\1 - Final-BomberContent.contentproj">
+    <ProjectReference Include="..\Final-BomberContent\1 - FBClientContent.contentproj">
       <Project>{677B3A84-ED63-4490-B8E1-A174941CD6B9}</Project>
-      <Name>1 - Final-BomberContent</Name>
+      <Name>1 - FBClientContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>

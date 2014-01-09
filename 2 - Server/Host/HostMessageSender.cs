@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_BomberServer.Core;
-using Final_BomberServer.Core.Entities;
-using Final_BomberServer.Core.WorldEngine;
+using FBServer.Core;
+using FBServer.Core.Entities;
+using FBServer.Core.WorldEngine;
 using Lidgren.Network;
 using Lidgren.Network.Xna;
 using Microsoft.Xna.Framework;
 using System.Linq;
 
-namespace Final_BomberServer.Host
+namespace FBServer.Host
 {
     partial class GameServer
     {

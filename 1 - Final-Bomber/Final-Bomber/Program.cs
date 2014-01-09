@@ -5,7 +5,7 @@ using log4net;
 using log4net.Config;
 using System.Reflection;
 
-namespace Final_Bomber
+namespace FBClient
 {
 #if WINDOWS || XBOX
     static class Program

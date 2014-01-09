@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1 - Final-Bomber", "1 - Final-Bomber\Final-Bomber\1 - Final-Bomber.csproj", "{B3EC01BD-F46B-4015-8FD4-06BD3E72CD82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1 - FBClient", "1 - Final-Bomber\Final-Bomber\1 - FBClient.csproj", "{B3EC01BD-F46B-4015-8FD4-06BD3E72CD82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1 - Final-BomberContent", "1 - Final-Bomber\Final-BomberContent\1 - Final-BomberContent.contentproj", "{677B3A84-ED63-4490-B8E1-A174941CD6B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1 - FBClientContent", "1 - Final-Bomber\Final-BomberContent\1 - FBClientContent.contentproj", "{677B3A84-ED63-4490-B8E1-A174941CD6B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2 - Server", "2 - Server\2 - Server.csproj", "{0BF45F02-38A7-4E02-A5B1-62A153FBBF69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2 - FBServer", "2 - Server\2 - FBServer.csproj", "{0BF45F02-38A7-4E02-A5B1-62A153FBBF69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3 - FBLibrary", "3 - FBLibrary\3 - FBLibrary.csproj", "{3AF57B97-6BF8-4B50-847B-C42B003A2471}"
 EndProject

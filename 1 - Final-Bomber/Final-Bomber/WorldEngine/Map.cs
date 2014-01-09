@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_Bomber.Core.Entities;
+using FBClient.Core.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.TileEngine;
+using FBClient.TileEngine;
 
-namespace Final_Bomber.WorldEngine
+namespace FBClient.WorldEngine
 {
     public class Map : BaseMap
     {

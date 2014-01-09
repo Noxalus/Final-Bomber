@@ -1,4 +1,4 @@
-﻿namespace Final_Bomber.Entities.AI
+﻿namespace FBClient.Entities.AI
 {
     internal interface IAIStrategy
     {

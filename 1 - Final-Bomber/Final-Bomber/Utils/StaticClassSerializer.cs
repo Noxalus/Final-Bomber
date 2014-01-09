@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 
 
-namespace Final_Bomber.Utils
+namespace FBClient.Utils
 {
     public static class StaticClassSerializer
     {

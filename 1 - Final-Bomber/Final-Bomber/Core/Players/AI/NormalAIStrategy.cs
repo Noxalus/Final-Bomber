@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Final_Bomber.Entities.AI
+namespace FBClient.Entities.AI
 {
     internal class NormalAIStrategy : IAIStrategy
     {

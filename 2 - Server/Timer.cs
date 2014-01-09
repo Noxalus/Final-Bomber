@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Final_BomberServer
+namespace FBServer
 {
     public class Timer
     {

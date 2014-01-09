@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Final_Bomber.Network
+namespace FBClient.Network
 {
     /*
     public partial class GameHandler : Microsoft.Xna.Framework.Game

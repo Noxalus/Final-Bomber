@@ -1,12 +1,12 @@
 ﻿using System;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Controls;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Core.Entities;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Core.Players
+namespace FBClient.Core.Players
 {
     public class HumanPlayer : BaseHumanPlayer
     {

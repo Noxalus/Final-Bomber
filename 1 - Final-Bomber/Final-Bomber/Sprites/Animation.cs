@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Sprites
+namespace FBClient.Sprites
 {
     public enum AnimationKey { Down, Left, Right, Up, Middle, Horizontal, Vertical }
 

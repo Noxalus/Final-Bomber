@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 
-namespace Final_BomberServer.Core.Entities
+namespace FBServer.Core.Entities
 {
     class Teleporter : BaseTeleporter
     {

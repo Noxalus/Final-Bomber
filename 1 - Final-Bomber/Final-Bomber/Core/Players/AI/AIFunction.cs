@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using FBLibrary.Core;
-using Final_Bomber.Core;
-using Final_Bomber.Core.Entities;
+using FBClient.Core;
+using FBClient.Core.Entities;
 using Microsoft.Xna.Framework;
 
-namespace Final_Bomber.Entities.AI
+namespace FBClient.Entities.AI
 {
     public static class AIFunction
     {

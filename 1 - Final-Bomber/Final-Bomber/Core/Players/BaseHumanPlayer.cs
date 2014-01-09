@@ -1,12 +1,12 @@
 ﻿using FBLibrary.Core;
-using Final_Bomber.Controls;
-using Final_Bomber.Entities;
-using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Entities;
+using FBClient.Sprites;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Final_Bomber.Core.Players
+namespace FBClient.Core.Players
 {
     public abstract class BaseHumanPlayer : Player
     {

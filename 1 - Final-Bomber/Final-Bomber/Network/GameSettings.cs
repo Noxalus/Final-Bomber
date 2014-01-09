@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Final_Bomber.Network
+namespace FBClient.Network
 {
     static class GameSettings
     {

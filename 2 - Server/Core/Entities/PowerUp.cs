@@ -2,7 +2,7 @@
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 
-namespace Final_BomberServer.Core.Entities
+namespace FBServer.Core.Entities
 {
     public class PowerUp : BasePowerUp
     {

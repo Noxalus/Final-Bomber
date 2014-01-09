@@ -5,9 +5,9 @@ using System.Text;
 using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.WorldEngine;
+using FBClient.WorldEngine;
 
-namespace Final_Bomber.TileEngine
+namespace FBClient.TileEngine
 {
     public class MapLayer
     {

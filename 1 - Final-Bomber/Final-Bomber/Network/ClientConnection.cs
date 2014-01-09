@@ -3,7 +3,7 @@ using Lidgren.Network;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Final_Bomber.Network
+namespace FBClient.Network
 {
     partial class GameServer
     {

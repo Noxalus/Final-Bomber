@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Entities;
-using Final_Bomber.WorldEngine;
+using FBClient.Core.Entities;
+using FBClient.Entities;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-namespace Final_Bomber.Core
+namespace FBClient.Core
 {
     public class GameManager : BaseGameManager
     {

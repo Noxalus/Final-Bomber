@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.GUI
+namespace FBClient.GUI
 {
     public class WindowBox
     {

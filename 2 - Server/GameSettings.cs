@@ -1,13 +1,13 @@
-﻿using Final_BomberServer.Core;
-using Final_BomberServer.Core.WorldEngine;
-using Final_BomberServer.Host;
+﻿using FBServer.Core;
+using FBServer.Core.WorldEngine;
+using FBServer.Host;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Final_BomberServer
+namespace FBServer
 {
     static class GameSettings
     {

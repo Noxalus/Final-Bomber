@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Final_Bomber
+namespace FBClient
 {
     static class PlayerInfo
     {

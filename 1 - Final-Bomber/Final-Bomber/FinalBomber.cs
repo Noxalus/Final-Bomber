@@ -1,15 +1,15 @@
 using FBLibrary;
-using Final_Bomber.Screens.GameScreens;
-using Final_Bomber.Screens.MenuScreens;
+using FBClient.Screens.GameScreens;
+using FBClient.Screens.MenuScreens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Final_Bomber.Screens;
-using Final_Bomber.Controls;
-using Final_Bomber.Utils;
+using FBClient.Screens;
+using FBClient.Controls;
+using FBClient.Utils;
 
-namespace Final_Bomber
+namespace FBClient
 {
     public class FinalBomber : Game
     {

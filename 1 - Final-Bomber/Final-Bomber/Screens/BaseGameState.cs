@@ -6,9 +6,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Final_Bomber.Controls;
+using FBClient.Controls;
 
-namespace Final_Bomber.Screens
+namespace FBClient.Screens
 {
     public abstract partial class BaseGameState : GameState
     {

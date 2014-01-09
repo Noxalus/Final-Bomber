@@ -4,21 +4,21 @@ using System.Diagnostics;
 using System.IO;
 using FBLibrary;
 using FBLibrary.Core;
-using Final_Bomber.Controls;
-using Final_Bomber.Core;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Core.Players;
-using Final_Bomber.Entities;
-using Final_Bomber.GUI;
-using Final_Bomber.TileEngine;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Core;
+using FBClient.Core.Entities;
+using FBClient.Core.Players;
+using FBClient.Entities;
+using FBClient.GUI;
+using FBClient.TileEngine;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Final_Bomber.Screens.GameScreens
+namespace FBClient.Screens.GameScreens
 {
     public class GamePlayScreen : BaseGameState
     {

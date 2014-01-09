@@ -1,12 +1,12 @@
 ﻿using FBLibrary.Core;
-using Final_Bomber.Screens;
-using Final_Bomber.Screens.GameScreens;
-using Final_Bomber.Sprites;
-using Final_Bomber.WorldEngine;
+using FBClient.Screens;
+using FBClient.Screens.GameScreens;
+using FBClient.Sprites;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Core.Entities
+namespace FBClient.Core.Entities
 {
     public class Teleporter : BaseEntity
     {

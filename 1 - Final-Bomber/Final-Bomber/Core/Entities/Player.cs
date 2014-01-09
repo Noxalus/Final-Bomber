@@ -4,19 +4,19 @@ using System.Diagnostics;
 using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using Final_Bomber.Controls;
-using Final_Bomber.Core;
-using Final_Bomber.Core.Entities;
-using Final_Bomber.Entities;
-using Final_Bomber.Screens;
-using Final_Bomber.Screens.GameScreens;
-using Final_Bomber.Sprites;
-using Final_Bomber.TileEngine;
-using Final_Bomber.WorldEngine;
+using FBClient.Controls;
+using FBClient.Core;
+using FBClient.Core.Entities;
+using FBClient.Entities;
+using FBClient.Screens;
+using FBClient.Screens.GameScreens;
+using FBClient.Sprites;
+using FBClient.TileEngine;
+using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Final_Bomber.Entities
+namespace FBClient.Entities
 {
     public abstract class Player : BasePlayer
     {

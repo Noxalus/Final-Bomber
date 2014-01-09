@@ -1,11 +1,11 @@
-﻿using Final_Bomber.Entities;
+﻿using FBClient.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Final_Bomber.Network.Core
+namespace FBClient.Network.Core
 {
     /*
     class Bomb : entity
