@@ -14,6 +14,7 @@ namespace FBClient.Network
         private NetClient _client;
 
         // Message pool
+        private Thread _messagePooling;
         private Queue<NetIncomingMessage> _messagePool;
 
         public bool HasStarted
@@ -48,8 +49,8 @@ namespace FBClient.Network
             _messagePool = new Queue<NetIncomingMessage>();
 
             var threadStart = new ThreadStart(MessagePooling);
-            var messagePooling = new Thread(threadStart);
-            messagePooling.Start();
+            _messagePooling = new Thread(threadStart);
+            _messagePooling.Start();
         }
 
         public void RunClientConnection()
@@ -113,6 +114,7 @@ namespace FBClient.Network
             _hasStarted = false;
             _connected = false;
             _disconnected = false;
+            _messagePooling.Abort();
         }
     }
 }
