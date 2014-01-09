@@ -67,12 +67,6 @@ I've uploaded some videos to show the AI progress:
 * http://www.youtube.com/watch?v=tSVHtYrGvsg (second networking test)
 * http://www.youtube.com/watch?v=gkYElxHD3Q8 (simple 2D camera)
  
-Old repository
-==============
-This project didn't start here, it was hosted by Google Code before.
-
-You can found the old repository here: https://code.google.com/p/final-bomber/
-
 Dev blog (french)
 =================
 You can find a dev blog with technical articles here: https://final-bomber.blogspot.com
@@ -80,3 +74,9 @@ You can find a dev blog with technical articles here: https://final-bomber.blogs
 Documentation
 =============
 A complete documentation generated with Doxygen is available here: http://noxalus.github.io/Final-Bomber
+
+Old repository
+==============
+This project didn't start here, it was hosted by Google Code before.
+
+You can found the old repository here: https://code.google.com/p/final-bomber/
