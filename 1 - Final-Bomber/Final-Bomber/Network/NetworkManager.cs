@@ -260,7 +260,7 @@ namespace FBClient.Network
             {
                 var bomb = new Bomb(playerId, position, player.BombPower, player.BombTimer, player.Speed);
                 player.CurrentBombAmount--;
-                bomb.Initialize(_gameManager.CurrentMap, _gameManager.HazardMap);
+                bomb.Initialize(_gameManager.CurrentMap.Size, _gameManager.CurrentMap.CollisionLayer, _gameManager.HazardMap);
 
                 _gameManager.AddBomb(bomb);
             }

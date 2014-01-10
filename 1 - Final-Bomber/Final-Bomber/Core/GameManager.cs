@@ -153,7 +153,7 @@ namespace FBClient.Core
         {
             for (int i = 0; i < _bombList.Count; i++)
             {
-                _bombList[i].Update(_gameTime, CurrentMap, HazardMap);
+                _bombList[i].Update(_gameTime);
 
                 // Do we delete the bomb
                 if (!_bombList[i].IsAlive)

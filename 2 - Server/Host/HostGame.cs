@@ -310,7 +310,7 @@ namespace FBServer.Host
                     var bomb = new Bomb(player.Id, player.CellPosition, player.BombPower, player.BombTimer,
                         player.Speed);
 
-                    bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);
+                    bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);
 
                     GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
                     GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;

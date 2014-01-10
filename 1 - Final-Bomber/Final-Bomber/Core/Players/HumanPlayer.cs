@@ -38,7 +38,7 @@ namespace FBClient.Core.Players
                         // Plant a new bomb
                         var bomb = new Bomb(Id, CellPosition, BombPower, BombTimer, Speed);
                         CurrentBombAmount--;
-                        bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);
+                        bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);
 
                         GameManager.AddBomb(bomb);
                     }

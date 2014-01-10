@@ -62,7 +62,7 @@ namespace FBLibrary.Core
             {
                 // Is it die ?
                 if ((HazardMap[_baseBombList[i].CellPosition.X, _baseBombList[i].CellPosition.Y] == 3 ||
-                    _baseBombList[i].Timer >= _baseBombList[i].TimerLenght) && !_baseBombList[i].InDestruction)
+                    _baseBombList[i].Timer <= TimeSpan.Zero) && !_baseBombList[i].InDestruction)
                 {
                     DestroyBomb(_baseBombList[i].CellPosition);
                 }

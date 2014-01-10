@@ -46,8 +46,8 @@ namespace FBClient.Core.Entities
         
         #region Constructor Region
 
-        public Bomb(int playerId, Point cellPosition, int pow, TimeSpan timerLenght, float playerSpeed)
-            : base(playerId, cellPosition, pow, timerLenght, playerSpeed)
+        public Bomb(int playerId, Point cellPosition, int pow, TimeSpan timer, float playerSpeed)
+            : base(playerId, cellPosition, pow, timer, playerSpeed)
         {
             // TODO: Move all loading of content into a LoadContent XNA method like
             // Bomb Sprite
@@ -83,7 +83,7 @@ namespace FBClient.Core.Entities
 
         #region XNA Method
 
-        public void Update(GameTime gameTime, Map map, int[,] hazardMap)
+        public void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
 
@@ -159,7 +159,7 @@ namespace FBClient.Core.Entities
 
                         break;
                     case LookDirection.Down:
-                        if (Position.Y < (Map.Size.Y - 2)*Engine.TileHeight)
+                        if (Position.Y < (MapSize.Y - 2)*Engine.TileHeight)
                             PositionY = Position.Y + Speed;
                         else
                             CurrentDirection = LookDirection.Idle;
@@ -195,7 +195,7 @@ namespace FBClient.Core.Entities
                         }
                         break;
                     case LookDirection.Right:
-                        if (Position.X < (Map.Size.X - 2)*Engine.TileWidth)
+                        if (Position.X < (MapSize.X - 2)*Engine.TileWidth)
                             PositionX = Position.X + Speed;
                         else
                             CurrentDirection = LookDirection.Idle;
@@ -258,10 +258,10 @@ namespace FBClient.Core.Entities
                     foreach (Point p in ActionField)
                     {
                         // Is this a wall ? => we don't like wall !
-                        if (!Map.CollisionLayer[p.X, p.Y] || p == CellPosition)
+                        if (!CollisionLayer[p.X, p.Y] || p == CellPosition)
                         {
                             // We choose the sprite of explosion for each cell
-                            _explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p, Map, HazardMap);
+                            _explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p, HazardMap);
                         }
                     }
                 }
@@ -289,9 +289,9 @@ namespace FBClient.Core.Entities
 
         private bool WallAt(Point cell)
         {
-            if (cell.X >= 0 && cell.Y >= 0 && cell.X < Map.Size.X &&
-                cell.Y < Map.Size.Y)
-                return (Map.CollisionLayer[cell.X, cell.Y]);
+            if (cell.X >= 0 && cell.Y >= 0 && cell.X < MapSize.X &&
+                cell.Y < MapSize.Y)
+                return (CollisionLayer[cell.X, cell.Y]);
             return false;
         }
 
@@ -318,7 +318,7 @@ namespace FBClient.Core.Entities
         #endregion
 
         // 0 => Down, 1 => Left, 2 => Right, 3 => Up, 4 => Middle, 5 => Horizontal, 6 => Vertical 
-        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, BaseMap map, int[,] hazardMap)
+        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, int[,] hazardMap)
         {
             int downCell = cell.Y + 1, leftCell = cell.X - 1, rightCell = cell.X + 1, upCell = cell.Y - 1;
 
@@ -368,7 +368,7 @@ namespace FBClient.Core.Entities
                 return ExplosionDirection.Up;
             }
                 // Corner Bottom - Left
-            if (cell.Y == map.Size.Y - 2 && cell.X == 1)
+            if (cell.Y == MapSize.Y - 2 && cell.X == 1)
             {
                 // Left extremity
                 return ActionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero
@@ -377,7 +377,7 @@ namespace FBClient.Core.Entities
             }
 
                 // Corner Top - Right
-            if (cell.X == map.Size.X - 2 && cell.Y == 1)
+            if (cell.X == MapSize.X - 2 && cell.Y == 1)
             {
                 // Right extremity
                 return ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero
@@ -385,7 +385,7 @@ namespace FBClient.Core.Entities
                     : ExplosionDirection.Up;
             }
                 // Corner Bottom - Right
-            if (cell.Y == map.Size.Y - 2 && cell.X == map.Size.X - 2)
+            if (cell.Y == MapSize.Y - 2 && cell.X == MapSize.X - 2)
             {
                 // Right extremity
                 return ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero
@@ -419,7 +419,7 @@ namespace FBClient.Core.Entities
                     break;
             }
 
-            if (!Map.CollisionLayer[pos.X, pos.Y])
+            if (!CollisionLayer[pos.X, pos.Y])
             {
                 CurrentDirection = lD;
                 _lastPlayerThatPushIt = playerId;
@@ -441,7 +441,7 @@ namespace FBClient.Core.Entities
 
         public override void Remove()
         {
-            IsAlive = false;
+            base.Remove();
         }
 
         #endregion

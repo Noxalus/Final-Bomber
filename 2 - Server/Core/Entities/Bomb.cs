@@ -23,7 +23,7 @@ namespace FBServer.Core.Entities
 
         public override void Remove()
         {
-            IsAlive = false;
+            base.Remove();
         }
     }
 }

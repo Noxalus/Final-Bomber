@@ -8,38 +8,40 @@ namespace FBLibrary.Core.BaseEntities
     public abstract class BaseBomb : DynamicEntity
     {
         public int PlayerId;
-        protected int Power;
         public TimeSpan Timer;
-        public TimeSpan TimerLenght;
-        protected bool WillExplode;
+        protected int Power;
+        private bool WillExplode;
 
         public List<Point> ActionField { get; private set; }
 
+        // Map
+        protected Point MapSize;
+        protected bool[,] CollisionLayer;
+
         // References
-        protected BaseMap Map;
         protected int[,] HazardMap;
 
-        protected BaseBomb(int playerId, Point cellPosition, int pow, TimeSpan timerLenght, float playerSpeed)
+        protected BaseBomb(int playerId, Point cellPosition, int power, TimeSpan timer, float playerSpeed)
             : base(cellPosition)
         {
             // ID of the player that planted the bomb
             PlayerId = playerId;
 
-            TimerLenght = timerLenght;
-            Power = pow;
+            Power = power;
             Speed = playerSpeed;
 
             // Bomb's timer
-            Timer = TimeSpan.Zero;
+            Timer = timer;
             WillExplode = false;
 
             // Action field
             ActionField = new List<Point>();
         }
 
-        public void Initialize(BaseMap map, int[,] hazardMap)
+        public void Initialize(Point mapSize, bool[,] collisionLayer, int[,] hazardMap)
         {
-            Map = map;
+            MapSize = mapSize;
+            CollisionLayer = collisionLayer;
             HazardMap = hazardMap;
 
             ComputeActionField(1);
@@ -51,17 +53,13 @@ namespace FBLibrary.Core.BaseEntities
         {
             #region Timer
 
-            if (Timer >= TimerLenght)
+            if (Timer >= TimeSpan.Zero)
             {
-                Timer = TimeSpan.FromSeconds(-1);
-            }
-            else if (Timer >= TimeSpan.Zero)
-            {
-                Timer += TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+                Timer -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
 
                 // The bomb will explode soon
                 if (CurrentDirection == LookDirection.Idle &&
-                    !WillExplode && TimerLenght.TotalSeconds - Timer.TotalSeconds < 1)
+                    !WillExplode && Timer.TotalSeconds < 1)
                 {
                     ComputeActionField(2);
                     WillExplode = true;
@@ -107,68 +105,56 @@ namespace FBLibrary.Core.BaseEntities
                 Point addPosition;
                 if (up >= 0 && !obstacles["up"])
                 {
-                    if (Map.CollisionLayer[CellPosition.X, up])
+                    if (CollisionLayer[CellPosition.X, up])
                         obstacles["up"] = true;
-                    // We don't count the outside walls
-                    if (!(Map.Board[CellPosition.X, up] is BaseEdgeWall))
+
+                    addPosition = new Point(CellPosition.X, up);
+                    ActionField.Add(addPosition);
+                    if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
                     {
-                        addPosition = new Point(CellPosition.X, up);
-                        ActionField.Add(addPosition);
-                        if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
-                        {
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
-                        }
+                        HazardMap[addPosition.X, addPosition.Y] = dangerType;
                     }
                 }
 
                 // Down
-                if (down < Map.Size.Y - 1 && !obstacles["down"])
+                if (down < MapSize.Y - 1 && !obstacles["down"])
                 {
-                    if (Map.CollisionLayer[CellPosition.X, down])
+                    if (CollisionLayer[CellPosition.X, down])
                         obstacles["down"] = true;
-                    // We don't count the outside walls
-                    if (!(Map.Board[CellPosition.X, down] is BaseEdgeWall))
+
+                    addPosition = new Point(CellPosition.X, down);
+                    ActionField.Add(addPosition);
+                    if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
                     {
-                        addPosition = new Point(CellPosition.X, down);
-                        ActionField.Add(addPosition);
-                        if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
-                        {
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
-                        }
+                        HazardMap[addPosition.X, addPosition.Y] = dangerType;
                     }
                 }
 
                 // Right
-                if (right < Map.Size.X - 1 && !obstacles["right"])
+                if (right < MapSize.X - 1 && !obstacles["right"])
                 {
-                    if (Map.CollisionLayer[right, CellPosition.Y])
+                    if (CollisionLayer[right, CellPosition.Y])
                         obstacles["right"] = true;
-                    // We don't count the outside walls
-                    if (!(Map.Board[right, CellPosition.Y] is BaseEdgeWall))
+
+                    addPosition = new Point(right, CellPosition.Y);
+                    ActionField.Add(addPosition);
+                    if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
                     {
-                        addPosition = new Point(right, CellPosition.Y);
-                        ActionField.Add(addPosition);
-                        if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
-                        {
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
-                        }
+                        HazardMap[addPosition.X, addPosition.Y] = dangerType;
                     }
                 }
 
                 // Left
                 if (left >= 0 && !obstacles["left"])
                 {
-                    if (Map.CollisionLayer[left, CellPosition.Y])
+                    if (CollisionLayer[left, CellPosition.Y])
                         obstacles["left"] = true;
-                    // We don't count the outside walls
-                    if (!(Map.Board[left, CellPosition.Y] is BaseEdgeWall))
+
+                    addPosition = new Point(left, CellPosition.Y);
+                    ActionField.Add(addPosition);
+                    if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
                     {
-                        addPosition = new Point(left, CellPosition.Y);
-                        ActionField.Add(addPosition);
-                        if (HazardMap[addPosition.X, addPosition.Y] < dangerType)
-                        {
-                            HazardMap[addPosition.X, addPosition.Y] = dangerType;
-                        }
+                        HazardMap[addPosition.X, addPosition.Y] = dangerType;
                     }
                 }
 
@@ -193,6 +179,10 @@ namespace FBLibrary.Core.BaseEntities
             ComputeActionField(3);
         }
 
+        public override void Remove()
+        {
+            IsAlive = false;
+        }
 
     }
 }
