@@ -116,8 +116,8 @@ namespace FBClient.Core.Entities
 
             if (InDestruction)
             {
-                foreach (Animation a in _explosionAnimations)
-                    a.Update(gameTime);
+                foreach (Animation animation in _explosionAnimations)
+                    animation.Update(gameTime);
             }
 
             Debug.Print(Timer.ToString());
