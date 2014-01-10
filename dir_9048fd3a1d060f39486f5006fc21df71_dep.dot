@@ -1,9 +1,0 @@
-digraph "D:/Projets/Final-Bomber/1 - Final-Bomber/Final-Bomber/Screens/GameScreens" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  subgraph clusterdir_1633dd0d7500a1113555b4d9bc050008 {
-    graph [ bgcolor="#ddddee", pencolor="black", label="Screens" fontname="Helvetica", fontsize="10", URL="dir_1633dd0d7500a1113555b4d9bc050008.html"]
-  dir_9048fd3a1d060f39486f5006fc21df71 [shape=box, label="GameScreens", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_9048fd3a1d060f39486f5006fc21df71.html"];
-  }
-}

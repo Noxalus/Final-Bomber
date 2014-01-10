@@ -1,7 +1,0 @@
-<map id="Final_Bomber.Screens.MenuScreens.UserMenuScreen" name="Final_Bomber.Screens.MenuScreens.UserMenuScreen">
-<area shape="rect" id="node2" href="$dd/d18/class_final___bomber_1_1_screens_1_1_base_menu_screen.html" title="BaseMenuScreen" alt="" coords="343,373,468,400"/>
-<area shape="rect" id="node3" href="$d3/d87/class_final___bomber_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="346,296,464,323"/>
-<area shape="rect" id="node4" href="$d3/d4d/class_final___bomber_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="259,197,347,224"/>
-<area shape="rect" id="node6" href="$d6/d4b/class_final___bomber_1_1_controls_1_1_game_state_manager.html" title="Final_Bomber.Controls.Game\lStateManager" alt="" coords="206,83,399,125"/>
-<area shape="rect" id="node8" href="$d1/da8/class_final___bomber_1_1_controls_1_1_control_manager.html" title="Final_Bomber.Controls.Control\lManager" alt="" coords="375,190,573,231"/>
-</map>

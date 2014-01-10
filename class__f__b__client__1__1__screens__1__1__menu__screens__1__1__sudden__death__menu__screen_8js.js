@@ -1,0 +1,4 @@
+var class__f__b__client__1__1__screens__1__1__menu__screens__1__1__sudden__death__menu__screen_8js =
+[
+    [ "class_f_b_client_1_1_screens_1_1_menu_screens_1_1_sudden_death_menu_screen", "class__f__b__client__1__1__screens__1__1__menu__screens__1__1__sudden__death__menu__screen_8js.html#a73ce6ff4437f3cb1283eea229d8cc44d", null ]
+];

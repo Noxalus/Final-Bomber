@@ -1,0 +1,3 @@
+<map id="FBClient.Core.GameManager" name="FBClient.Core.GameManager">
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="{BaseGameManager\n|+ HazardMap\l# BaseCurrentMap\l# BasePlayerList\l|+ Update()\l+ AddWall()\l+ AddPowerUp()\l+ Reset()\l+ LoadMap()\l+ GenerateRandomWalls()\l+ DisplayHazardMap()\l# BaseGameManager()\l# UpdateWalls()\l# UpdateBombs()\l# UpdatePowerUps()\l# UpdatePlayers()\l# AddPlayer()\l# DestroyPlayer()\l# DestroyPlayer()\l# RemovePlayer()\l# AddWall()\land 12 more...\l}" alt="" coords="13,6,189,362"/>
+</map>

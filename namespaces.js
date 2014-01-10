@@ -1,10 +1,10 @@
 var namespaces =
 [
-    [ "FBClient", "d2/d0d/namespace_f_b_client.html", "d2/d0d/namespace_f_b_client" ],
-    [ "FBLauncher", "da/d0b/namespace_f_b_launcher.html", "da/d0b/namespace_f_b_launcher" ],
-    [ "FBLibrary", "dc/dd8/namespace_f_b_library.html", "dc/dd8/namespace_f_b_library" ],
-    [ "FBServer", "d3/dd1/namespace_f_b_server.html", "d3/dd1/namespace_f_b_server" ],
-    [ "Final_BomberMainServer", "d2/d80/namespace_final___bomber_main_server.html", null ],
-    [ "Launcher", "d8/d8b/namespace_launcher.html", null ],
-    [ "UpdateLibrary", "d3/d0e/namespace_update_library.html", null ]
+    [ "FBClient", "namespace_f_b_client.html", "namespace_f_b_client" ],
+    [ "FBLauncher", "namespace_f_b_launcher.html", "namespace_f_b_launcher" ],
+    [ "FBLibrary", "namespace_f_b_library.html", "namespace_f_b_library" ],
+    [ "FBServer", "namespace_f_b_server.html", "namespace_f_b_server" ],
+    [ "Final_BomberMainServer", "namespace_final___bomber_main_server.html", null ],
+    [ "Launcher", "namespace_launcher.html", null ],
+    [ "UpdateLibrary", "namespace_update_library.html", null ]
 ];

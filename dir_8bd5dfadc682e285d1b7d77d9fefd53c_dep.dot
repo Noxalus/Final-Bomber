@@ -1,9 +1,0 @@
-digraph "D:/Projets/Final-Bomber/1 - Final-Bomber/Final-Bomber/Network/Core" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  subgraph clusterdir_ebbb47fe57febb73e27b89b5d6055d90 {
-    graph [ bgcolor="#ddddee", pencolor="black", label="Network" fontname="Helvetica", fontsize="10", URL="dir_ebbb47fe57febb73e27b89b5d6055d90.html"]
-  dir_8bd5dfadc682e285d1b7d77d9fefd53c [shape=box, label="Core", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_8bd5dfadc682e285d1b7d77d9fefd53c.html"];
-  }
-}

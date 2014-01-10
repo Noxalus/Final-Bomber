@@ -1,6 +1,0 @@
-<map id="FBServer.Host.HostGame" name="FBServer.Host.HostGame">
-<area shape="rect" id="node2" href="$d5/d2d/class_f_b_server_1_1_core_1_1_game_manager.html" title="FBServer.Core.GameManager" alt="" coords="5,280,200,307"/>
-<area shape="rect" id="node3" href="$dd/d70/class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="34,203,171,229"/>
-<area shape="rect" id="node4" href="$d6/d37/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="7,97,197,138"/>
-<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="27,5,177,32"/>
-</map>

@@ -50,6 +50,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -80,6 +81,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="functions.html"><span>All</span></a></li>
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_vars.html"><span>Variables</span></a></li>
+      <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
+      <li><a href="functions_prop.html"><span>Properties</span></a></li>
+      <li><a href="functions_evnt.html"><span>Events</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow4" class="tabs3">
+    <ul class="tablist">
+      <li class="current"><a href="functions_func.html#index_a"><span>a</span></a></li>
+      <li><a href="functions_func_b.html#index_b"><span>b</span></a></li>
+      <li><a href="functions_func_c.html#index_c"><span>c</span></a></li>
+      <li><a href="functions_func_d.html#index_d"><span>d</span></a></li>
+      <li><a href="functions_func_e.html#index_e"><span>e</span></a></li>
+      <li><a href="functions_func_f.html#index_f"><span>f</span></a></li>
+      <li><a href="functions_func_g.html#index_g"><span>g</span></a></li>
+      <li><a href="functions_func_h.html#index_h"><span>h</span></a></li>
+      <li><a href="functions_func_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_func_j.html#index_j"><span>j</span></a></li>
+      <li><a href="functions_func_k.html#index_k"><span>k</span></a></li>
+      <li><a href="functions_func_l.html#index_l"><span>l</span></a></li>
+      <li><a href="functions_func_m.html#index_m"><span>m</span></a></li>
+      <li><a href="functions_func_n.html#index_n"><span>n</span></a></li>
+      <li><a href="functions_func_o.html#index_o"><span>o</span></a></li>
+      <li><a href="functions_func_p.html#index_p"><span>p</span></a></li>
+      <li><a href="functions_func_r.html#index_r"><span>r</span></a></li>
+      <li><a href="functions_func_s.html#index_s"><span>s</span></a></li>
+      <li><a href="functions_func_t.html#index_t"><span>t</span></a></li>
+      <li><a href="functions_func_u.html#index_u"><span>u</span></a></li>
+      <li><a href="functions_func_v.html#index_v"><span>v</span></a></li>
+      <li><a href="functions_func_w.html#index_w"><span>w</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -102,7 +134,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Events</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -112,13 +144,72 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </div>
 
 <div class="contents">
-&#160;<ul>
-<li>InitializeComponent()
-: <a class="el" href="d6/d7c/class_f_b_launcher_1_1_main_window.html#a469fe633a5571c4560c0240eb9d145d0">FBLauncher.MainWindow</a>
-, <a class="el" href="d6/d38/class_launcher_1_1_app.html#a395eeff8292fbdeb13a86fc7d253f84a">Launcher.App</a>
+&#160;
+
+<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>AddBomb()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a3a0be36e252bc15b58853efb010ab8c4">FBClient.Core.GameManager</a>
+, <a class="el" href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_game_play_screen.html#a418a79d9bbb74811da8eacdbd2452655">FBClient.Screens.GameScreens.GamePlayScreen</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_game_manager.html#a5c0d04540852cf766245dcf10feee96a">FBLibrary.Core.BaseGameManager</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_game_manager.html#ae7ef27308f5235496f543a8554b57a73">FBServer.Core.GameManager</a>
 </li>
-<li>Main()
-: <a class="el" href="d6/d38/class_launcher_1_1_app.html#ac51fa8add10c77c032b0d6de3e51249c">Launcher.App</a>
+<li>AddClient()
+: <a class="el" href="class_f_b_server_1_1_host_1_1_client_collection.html#a1c0c338d51b25b9bfa272e994a9ca4de">FBServer.Host.ClientCollection</a>
+</li>
+<li>AddEdgeWall()
+: <a class="el" href="class_f_b_client_1_1_world_engine_1_1_map.html#a7cd58281b1100c71d74986c544d0fcd3">FBClient.WorldEngine.Map</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a26c36c645dfbd641b88a08ff7c27b350">FBLibrary.Core.BaseEntities.BaseMap</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_world_engine_1_1_map.html#a746c86e6c8b54e12f9a687b6b07bce39">FBServer.Core.WorldEngine.Map</a>
+</li>
+<li>AddLayer()
+: <a class="el" href="class_f_b_client_1_1_tile_engine_1_1_tile_map.html#a7b620917287bff7b8c1b7c49cb21cf8e">FBClient.TileEngine.TileMap</a>
+</li>
+<li>AddPlayer()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a5bf65e72ab96db5bbaf2ea40e551f30e">FBClient.Core.GameManager</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_game_manager.html#a78c58fe13c472b836721df715341e65b">FBLibrary.Core.BaseGameManager</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_game_manager.html#ab95980bf813e1466eaad4a97b2b56bb5">FBServer.Core.GameManager</a>
+</li>
+<li>AddPlayerEventHandler()
+: <a class="el" href="class_f_b_client_1_1_network_1_1_network_manager.html#a6887e794c2a393b518e3733781fb1055">FBClient.Network.NetworkManager</a>
+</li>
+<li>AddPowerUp()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a62aa015c21c613228b66eb07c25a8e11">FBClient.Core.GameManager</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_game_manager.html#a7526ef61a5637c86a9f0e0f5d4654708">FBLibrary.Core.BaseGameManager</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_game_manager.html#a4820610604cbb334e9aaec989a636415">FBServer.Core.GameManager</a>
+</li>
+<li>AddTileset()
+: <a class="el" href="class_f_b_client_1_1_tile_engine_1_1_tile_map.html#a6efcc0f537f3934b57b175112a09a770">FBClient.TileEngine.TileMap</a>
+</li>
+<li>AddUnbreakableWall()
+: <a class="el" href="class_f_b_client_1_1_world_engine_1_1_map.html#a1142a7488dc18e3102ada0ec1d0e814f">FBClient.WorldEngine.Map</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#ae7f37677a9552fc28432f87c5ed8f962">FBLibrary.Core.BaseEntities.BaseMap</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_world_engine_1_1_map.html#af0589c6b6736c7d82d53c383eda7a001">FBServer.Core.WorldEngine.Map</a>
+</li>
+<li>AddWall()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a58774eb46efc19327d0cc1ef089c3f52">FBClient.Core.GameManager</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_game_manager.html#aaa243cdd5202f885e21da8d04ac28fd8">FBLibrary.Core.BaseGameManager</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_game_manager.html#a3258e7cdd5efb88f7e51c8f1b46aa383">FBServer.Core.GameManager</a>
+</li>
+<li>AddWalls()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a795382b807dac124b400e43e6a885239">FBClient.Core.GameManager</a>
+</li>
+<li>AnimatedSprite()
+: <a class="el" href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html#ae7710afb689cf2639634114dc738fd1e">FBClient.Sprites.AnimatedSprite</a>
+</li>
+<li>Animation()
+: <a class="el" href="class_f_b_client_1_1_sprites_1_1_animation.html#a6697be25330a64423ca7f0cae312213d">FBClient.Sprites.Animation</a>
+</li>
+<li>ApplyBadItem()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_players_1_1_human_player.html#aad77f7ff5f34f68e2dbcb1dda811a07e">FBClient.Core.Players.HumanPlayer</a>
+, <a class="el" href="class_f_b_client_1_1_core_1_1_players_1_1_online_human_player.html#a4b916955650144d3bd86c020617e20a6">FBClient.Core.Players.OnlineHumanPlayer</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html#aefdb108262a565fa81a8c7b8b4ac63ff">FBLibrary.Core.BaseEntities.BasePlayer</a>
+</li>
+<li>ApplyEffect()
+: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_power_up.html#a458a43183fa335968f8f0e717a5bb0f5">FBLibrary.Core.BaseEntities.BasePowerUp</a>
+</li>
+<li>Arrow()
+: <a class="el" href="class_f_b_client_1_1_core_1_1_entities_1_1_arrow.html#a6547c924860ac4302d2bf5f32b3a624d">FBClient.Core.Entities.Arrow</a>
+, <a class="el" href="class_f_b_server_1_1_core_1_1_entities_1_1_arrow.html#aa0f95457f88973d742862fc7280bc5a4">FBServer.Core.Entities.Arrow</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -126,7 +217,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 9 2014 21:03:38 for Final-Bomber by
+    <li class="footer">Generated on Fri Jan 10 2014 01:51:41 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

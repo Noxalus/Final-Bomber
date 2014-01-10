@@ -1,0 +1,4 @@
+<map id="FBLibrary.Core.DynamicEntity" name="FBLibrary.Core.DynamicEntity">
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="{BaseEntity\n|+ IsAlive\l+ InDestruction\l+ DestructionTime\l+ Position\l+ PositionX\l+ PositionY\l+ CellPositionX\l+ CellPositionY\l+ CellPosition\l+ Dimension\l|+ Update()\l+ ChangePosition()\l+ ChangePosition()\l+ ChangePosition()\l+ Destroy()\l+ Remove()\l# BaseEntity()\l# BaseEntity()\l}" alt="" coords="37,147,171,459"/>
+<area shape="rect" id="node3" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="60,6,148,98"/>
+</map>

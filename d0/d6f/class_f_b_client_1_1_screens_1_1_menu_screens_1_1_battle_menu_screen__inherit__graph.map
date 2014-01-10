@@ -1,5 +1,0 @@
-<map id="FBClient.Screens.MenuScreens.BattleMenuScreen" name="FBClient.Screens.MenuScreens.BattleMenuScreen">
-<area shape="rect" id="node2" href="$db/d78/class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="BaseMenuScreen" alt="" coords="48,229,173,256"/>
-<area shape="rect" id="node3" href="$df/d2f/class_f_b_client_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="51,155,169,181"/>
-<area shape="rect" id="node4" href="$d7/d38/class_f_b_client_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="67,80,155,107"/>
-</map>

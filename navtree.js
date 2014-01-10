@@ -1,17 +1,35 @@
 var NAVTREE =
 [
   [ "Final-Bomber", "index.html", [
-    [ "Final-Bomber", "d3/dfd/md__d_1__projets__final-_bomber__r_e_a_d_m_e.html", null ],
+    [ "Final-Bomber", "md__d_1__projets__final-_bomber__final-_bomber__r_e_a_d_m_e.html", null ],
     [ "Packages", null, [
-      [ "Packages", "namespaces.html", "namespaces" ]
+      [ "Packages", "namespaces.html", "namespaces" ],
+      [ "Package Functions", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
+      ] ]
     ] ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ]
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Enumerator", "functions_eval.html", null ],
+        [ "Properties", "functions_prop.html", null ],
+        [ "Events", "functions_evnt.html", null ]
+      ] ]
+    ] ],
+    [ "Files", null, [
+      [ "File List", "files.html", "files" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", "globals_dup" ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", "globals_vars" ]
       ] ]
     ] ]
   ] ]
@@ -19,11 +37,17 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"d3/db7/class_f_b_server_1_1_host_1_1_game_server.html#ac91486aa152455778ef792f62cf20a72",
-"d6/db6/class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#ac88b78a13351a40d74e206a2a18b009b",
-"db/d4b/class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a6aa90fbbc8dff08a4b812675da768917",
-"df/d2f/class_f_b_client_1_1_screens_1_1_base_game_state.html#ab85c2955d17cd61b85ce35b0aeb9a7b6"
+"1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_arrow_8cs.html",
+"_game_configuration_8cs.html",
+"class__f__b__client__1__1__network__1__1__network__manager_8js.html#ae7fc3c78ca4b0777d91405f9cc919bee",
+"class__final______bomber__1__1__core__1__1__entities__1__1__wall_8js_source.html",
+"class_f_b_client_1_1_controls_1_1_game_state_manager.html#a377e581d8df2fbd91daea1d9a9bb71a9",
+"class_f_b_client_1_1_network_1_1_game_server.html#a97f4f7f0248cc062f6bd496f8f1619e1ae7d31fc0602fb2ede144d18cdffd816b",
+"class_f_b_client_1_1_sprites_1_1_base_sprite.html#adc03827ac21ca0b53f300f7f99576552",
+"class_f_b_server_1_1_core_1_1_entities_1_1_wall.html#a0e0de85c2551622b49c52592a8a41cfe",
+"dir_11142e133fbf221118761558889685e0.html",
+"dir_f75f691f23fded792dda15f1a5c544f9.html",
+"namespace__f__b__launcher_8js.html#a2dadbe1ab16c13c6549f5599cdaa655e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

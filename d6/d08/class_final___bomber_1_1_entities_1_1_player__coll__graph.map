@@ -1,7 +1,0 @@
-<map id="Final_Bomber.Entities.Player" name="Final_Bomber.Entities.Player">
-<area shape="rect" id="node2" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="BasePlayer" alt="" coords="139,251,228,277"/>
-<area shape="rect" id="node3" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="5,160,112,187"/>
-<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="15,83,101,109"/>
-<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="29,5,88,32"/>
-<area shape="rect" id="node6" href="$dd/df2/class_f_b_library_1_1_core_1_1_player_stats.html" title="FBLibrary.Core.PlayerStats" alt="" coords="136,160,317,187"/>
-</map>

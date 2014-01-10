@@ -1,5 +1,0 @@
-<map id="Final_Bomber.Screens.MenuScreens.SuddenDeathMenuScreen" name="Final_Bomber.Screens.MenuScreens.SuddenDeathMenuScreen">
-<area shape="rect" id="node2" href="$dd/d18/class_final___bomber_1_1_screens_1_1_base_menu_screen.html" title="BaseMenuScreen" alt="" coords="55,229,180,256"/>
-<area shape="rect" id="node3" href="$d3/d87/class_final___bomber_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="58,155,176,181"/>
-<area shape="rect" id="node4" href="$d3/d4d/class_final___bomber_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="73,80,161,107"/>
-</map>

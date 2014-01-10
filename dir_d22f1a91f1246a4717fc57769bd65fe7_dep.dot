@@ -1,9 +1,0 @@
-digraph "D:/Projets/Final-Bomber/2 - Server/Properties" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  subgraph clusterdir_84b4cce606750ea1da5a83508b66c79b {
-    graph [ bgcolor="#ddddee", pencolor="black", label="2 - Server" fontname="Helvetica", fontsize="10", URL="dir_84b4cce606750ea1da5a83508b66c79b.html"]
-  dir_d22f1a91f1246a4717fc57769bd65fe7 [shape=box, label="Properties", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_d22f1a91f1246a4717fc57769bd65fe7.html"];
-  }
-}

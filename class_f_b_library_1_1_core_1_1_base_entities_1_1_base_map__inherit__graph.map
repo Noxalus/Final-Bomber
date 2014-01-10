@@ -1,0 +1,4 @@
+<map id="FBLibrary.Core.BaseEntities.BaseMap" name="FBLibrary.Core.BaseEntities.BaseMap">
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_world_engine_1_1_map.html" title="{FBClient.WorldEngine.Map\n|+ TileMap\l+ TeleporterList\l|+ Map()\l+ LoadContent()\l+ Update()\l+ Draw()\l# AddUnbreakableWall()\l# AddEdgeWall()\l}" alt="" coords="5,381,184,547"/>
+<area shape="rect" id="node3" href="$class_f_b_server_1_1_core_1_1_world_engine_1_1_map.html" title="{FBServer.Core.WorldEngine.Map\n||+ Map()\l# AddUnbreakableWall()\l# AddEdgeWall()\l}" alt="" coords="208,411,421,517"/>
+</map>

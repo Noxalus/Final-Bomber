@@ -1,9 +1,0 @@
-<map id="FBClient.Entities.Player" name="FBClient.Entities.Player">
-<area shape="rect" id="node7" href="$d6/d55/class_f_b_client_1_1_core_1_1_players_1_1_base_human_player.html" title="FBClient.Core.Players.Base\lHumanPlayer" alt="" coords="762,57,947,98"/>
-<area shape="rect" id="node2" href="$d2/d11/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html" title="BasePlayer" alt="" coords="403,97,493,124"/>
-<area shape="rect" id="node3" href="$de/d64/class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="248,97,355,124"/>
-<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="113,97,199,124"/>
-<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="5,97,64,124"/>
-<area shape="rect" id="node8" href="$da/daf/class_f_b_client_1_1_core_1_1_players_1_1_human_player.html" title="FBClient.Core.Players.Human\lPlayer" alt="" coords="1006,23,1202,65"/>
-<area shape="rect" id="node9" href="$d5/d7f/class_f_b_client_1_1_core_1_1_players_1_1_online_human_player.html" title="FBClient.Core.Players.Online\lHumanPlayer" alt="" coords="1008,89,1200,130"/>
-</map>

@@ -1,0 +1,5 @@
+<map id="FBClient.Screens.MenuScreens.JoinServerMenuScreen" name="FBClient.Screens.MenuScreens.JoinServerMenuScreen">
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="{BaseMenuScreen\n|# MenuString\l# IndexMenu\l# MenuPosition\l|+ Initialize()\l+ Update()\l# BaseMenuScreen()\l}" alt="" coords="39,573,183,709"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="{BaseGameState\n|# ControlManager\l# BigFont\l# playerIndexInControl\l|+ BaseGameState()\l+ Update()\l+ Draw()\l# LoadContent()\l}" alt="" coords="35,374,185,525"/>
+<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="{GameState\n|+ Components\l+ Tag\l# StateManager\l|+ Initialize()\l+ Update()\l+ Draw()\l# GameState()\l# StateChange()\l# Show()\l# Hide()\l}" alt="" coords="53,131,168,325"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="FBServer.Host.GameServer" name="FBServer.Host.GameServer">
+<area shape="rect" id="node2" href="$class_f_b_server_1_1_host_1_1_client_collection.html" title="{FBServer.Host.ClientCollection\n|+ MapName\l+ Hosting\l|+ AddClient()\l+ RemoveClient()\l+ IsClientsReady()\l+ GetClientFromConnection()\l+ GetClientFromPlayer()\l+ GetClientFromUsername()\l+ GetPlayerFromId()\l+ GetAlivePlayers()\l+ GetPlayers()\l}" alt="" coords="20,134,220,343"/>
+</map>

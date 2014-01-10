@@ -1,0 +1,6 @@
+<map id="FBClient.Screens.GameScreens.BaseGamePlayScreen" name="FBClient.Screens.GameScreens.BaseGamePlayScreen">
+<area shape="rect" id="node5" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_test_screen.html" title="{FBClient.Screens.GameScreens.\lNetworkTestScreen\n|+ NetworkManager\l|+ NetworkTestScreen()\l+ Initialize()\l+ Update()\l+ Draw()\l# LoadContent()\l# UnloadContent()\l}" alt="" coords="5,904,219,1069"/>
+<area shape="rect" id="node6" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_single_player_game_play_screen.html" title="{FBClient.Screens.GameScreens.\lSinglePlayerGamePlayScreen\n||+ SinglePlayerGamePlayScreen()\l+ Initialize()\l+ Update()\l+ Draw()\l# LoadContent()\l# UnloadContent()\l}" alt="" coords="243,904,460,1069"/>
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="{BaseGameState\n|# ControlManager\l# BigFont\l# playerIndexInControl\l|+ BaseGameState()\l+ Update()\l+ Draw()\l# LoadContent()\l}" alt="" coords="157,374,307,525"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="{GameState\n|+ Components\l+ Tag\l# StateManager\l|+ Initialize()\l+ Update()\l+ Draw()\l# GameState()\l# StateChange()\l# Show()\l# Hide()\l}" alt="" coords="174,131,289,325"/>
+</map>

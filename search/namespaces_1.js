@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['launcher',['Launcher',['../d8/d8b/namespace_launcher.html',1,'']]]
+  ['launcher',['Launcher',['../namespace_launcher.html',1,'']]]
 ];

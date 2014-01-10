@@ -1,9 +1,0 @@
-digraph "D:/Projets/Final-Bomber/5 - Launcher/Properties" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  subgraph clusterdir_3e0b3ff9085383779e47859d31e42809 {
-    graph [ bgcolor="#ddddee", pencolor="black", label="5 - Launcher" fontname="Helvetica", fontsize="10", URL="dir_3e0b3ff9085383779e47859d31e42809.html"]
-  dir_e63356393cdc9d8a442bed8c298760df [shape=box, label="Properties", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_e63356393cdc9d8a442bed8c298760df.html"];
-  }
-}

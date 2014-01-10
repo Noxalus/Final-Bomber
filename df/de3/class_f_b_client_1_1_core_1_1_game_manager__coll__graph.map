@@ -1,6 +1,0 @@
-<map id="FBClient.Core.GameManager" name="FBClient.Core.GameManager">
-<area shape="rect" id="node2" href="$dd/d70/class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="39,203,176,229"/>
-<area shape="rect" id="node3" href="$d6/d37/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="5,97,195,138"/>
-<area shape="rect" id="node4" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="25,5,175,32"/>
-<area shape="rect" id="node5" href="$de/d8b/class_player_collection.html" title="PlayerCollection" alt="" coords="211,203,327,229"/>
-</map>

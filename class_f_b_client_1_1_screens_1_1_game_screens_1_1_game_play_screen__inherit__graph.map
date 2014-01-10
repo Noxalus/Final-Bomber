@@ -1,0 +1,4 @@
+<map id="FBClient.Screens.GameScreens.GamePlayScreen" name="FBClient.Screens.GameScreens.GamePlayScreen">
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="{BaseGameState\n|# ControlManager\l# BigFont\l# playerIndexInControl\l|+ BaseGameState()\l+ Update()\l+ Draw()\l# LoadContent()\l}" alt="" coords="37,374,187,525"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="{GameState\n|+ Components\l+ Tag\l# StateManager\l|+ Initialize()\l+ Update()\l+ Draw()\l# GameState()\l# StateChange()\l# Show()\l# Hide()\l}" alt="" coords="54,131,169,325"/>
+</map>

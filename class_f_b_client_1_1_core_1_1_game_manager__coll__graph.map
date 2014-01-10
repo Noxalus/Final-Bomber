@@ -1,0 +1,6 @@
+<map id="FBClient.Core.GameManager" name="FBClient.Core.GameManager">
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="{BaseGameManager\n|+ HazardMap\l# BasePlayerList\l|+ Update()\l+ AddWall()\l+ AddPowerUp()\l+ Reset()\l+ LoadMap()\l+ GenerateRandomWalls()\l+ DisplayHazardMap()\l# BaseGameManager()\l# UpdateWalls()\l# UpdateBombs()\l# UpdatePowerUps()\l# UpdatePlayers()\l# AddPlayer()\l# DestroyPlayer()\l# DestroyPlayer()\l# RemovePlayer()\l# AddWall()\land 12 more...\l}" alt="" coords="12,539,188,880"/>
+<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="{FBLibrary.Core.BaseEntities.\lBaseMap\n|+ Name\l+ Loaded\l+ Size\l+ CollisionLayer\l+ PlayerSpawnPoints\l+ PlayerNumber\l|+ Reset()\l+ Parse()\l+ FindEmptyCells()\l+ GetMd5()\l+ DisplayBoard()\l+ DisplayCollisionLayer()\l# BaseMap()\l# AddUnbreakableWall()\l# AddUnbreakableWall()\l# AddEdgeWall()\l# AddEdgeWall()\l}" alt="" coords="5,163,195,475"/>
+<area shape="rect" id="node4" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{FBLibrary.Core.IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="25,6,175,98"/>
+<area shape="rect" id="node5" href="$class_player_collection.html" title="{PlayerCollection\n||+ GetPlayerByID()\l}" alt="" coords="212,671,340,748"/>
+</map>

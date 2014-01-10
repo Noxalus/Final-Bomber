@@ -1,0 +1,4 @@
+<map id="FBClient.WorldEngine.Map" name="FBClient.WorldEngine.Map">
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="{BaseMap\n|+ Name\l+ Loaded\l+ Size\l+ CollisionLayer\l+ PlayerSpawnPoints\l+ PlayerNumber\l|+ Reset()\l+ Parse()\l+ FindEmptyCells()\l+ GetMd5()\l+ DisplayBoard()\l+ DisplayCollisionLayer()\l# BaseMap()\l# AddUnbreakableWall()\l# AddUnbreakableWall()\l# AddEdgeWall()\l# AddEdgeWall()\l}" alt="" coords="11,163,177,461"/>
+<area shape="rect" id="node3" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{FBLibrary.Core.IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="19,6,169,98"/>
+</map>

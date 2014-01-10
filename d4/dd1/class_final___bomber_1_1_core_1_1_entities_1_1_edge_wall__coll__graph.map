@@ -1,6 +1,0 @@
-<map id="Final_Bomber.Core.Entities.EdgeWall" name="Final_Bomber.Core.Entities.EdgeWall">
-<area shape="rect" id="node2" href="$d3/dd2/class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html" title="BaseEdgeWall" alt="" coords="43,229,151,256"/>
-<area shape="rect" id="node3" href="$d5/d47/class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="52,155,143,181"/>
-<area shape="rect" id="node4" href="$da/d55/class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="54,80,140,107"/>
-<area shape="rect" id="node5" href="$de/d5e/interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="68,5,127,32"/>
-</map>

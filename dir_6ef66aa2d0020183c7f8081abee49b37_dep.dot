@@ -1,9 +1,0 @@
-digraph "D:/Projets/Final-Bomber/2 - Server/obj/Release" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  subgraph clusterdir_6c2a406e54d474760d008f09f621783a {
-    graph [ bgcolor="#ddddee", pencolor="black", label="obj" fontname="Helvetica", fontsize="10", URL="dir_6c2a406e54d474760d008f09f621783a.html"]
-  dir_6ef66aa2d0020183c7f8081abee49b37 [shape=box, label="Release", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_6ef66aa2d0020183c7f8081abee49b37.html"];
-  }
-}
