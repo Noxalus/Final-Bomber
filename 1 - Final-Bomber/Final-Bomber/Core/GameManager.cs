@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using FBClient.Core.Entities;
 using FBClient.Entities;
 using FBClient.WorldEngine;
@@ -42,12 +43,8 @@ namespace FBClient.Core
         // Sudden Death
         private SuddenDeath _suddenDeath;
 
-        #region Events
-
-                public delegate void RoundEndEventHandler();
-        public event RoundEndEventHandler RoundEnd;
-
-        #endregion
+        // Events
+        public readonly GameEventManager GameEventManager;
 
         #region Properties
 
@@ -77,6 +74,8 @@ namespace FBClient.Core
             _gameTimer = TimeSpan.Zero;
 
             GameTime = new GameTime();
+
+            GameEventManager = new GameEventManager(this);
         }
 
         public virtual void Initialize()
@@ -89,16 +88,13 @@ namespace FBClient.Core
             Engine.Origin = origin;
 
             _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
-
-            // Events
-            RoundEnd += RoundEndAction;
         }
 
         public virtual void Dispose()
         {
-            RoundEnd -= RoundEndAction;
+            GameEventManager.Dispose();
         }
-        
+
         public override void Reset()
         {
             MediaPlayer.Play(_mapSong);
@@ -167,6 +163,7 @@ namespace FBClient.Core
                     RemoveBomb(BombList[i]);
                 }
             }
+
             base.UpdateBombs();
         }
 
@@ -378,24 +375,16 @@ namespace FBClient.Core
 
         #region Events
 
-        #region Round End
-        public virtual void OnRoundEnd()
-        {
-            if (RoundEnd != null)
-                RoundEnd();
-        }
-
         protected virtual void OnPlayerDeath()
         {
             int test = 42;
         }
 
-        protected virtual void RoundEndAction()
+        public virtual void RoundEndAction()
         {
             Reset();
         }
 
-        #endregion
 
         #endregion
     }

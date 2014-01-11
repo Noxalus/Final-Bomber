@@ -278,7 +278,7 @@ namespace FBClient.Network
 
         private void RecieveRoundEnd()
         {
-            GameServer.Instance.GameManager.OnRoundEnd();
+            GameServer.Instance.GameManager.GameEventManager.OnRoundEnd();
         }
 
         #region End

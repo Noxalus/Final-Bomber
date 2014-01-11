@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\GameEventManager.cs" />
     <Compile Include="Core\GameManager.cs" />
     <Compile Include="Core\IDrawableGameComponent.cs" />
     <Compile Include="Core\LocalGameManager.cs" />

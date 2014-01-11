@@ -44,7 +44,7 @@ namespace FBClient.Network
 
         #region Events actions
 
-        protected override void RoundEndAction()
+        public override void RoundEndAction()
         {
             base.RoundEndAction();
 

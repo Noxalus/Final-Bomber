@@ -59,12 +59,12 @@ namespace FBClient.Core
         {
             // We check if the round is finished
             if (Players.Count(p => p.IsAlive) < GameConfiguration.AlivePlayerRemaining)
-                OnRoundEnd();
+                GameEventManager.OnRoundEnd();
 
             base.OnPlayerDeath();
         }
 
-        protected override void RoundEndAction()
+        public override void RoundEndAction()
         {
             base.RoundEndAction();
 
