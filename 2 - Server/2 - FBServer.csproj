@@ -58,6 +58,7 @@
     <Compile Include="Core\Entities\Teleporter.cs" />
     <Compile Include="Core\Entities\UnbreakableWall.cs" />
     <Compile Include="Core\Entities\Wall.cs" />
+    <Compile Include="Core\GameEventManager.cs" />
     <Compile Include="Core\GameManager.cs" />
     <Compile Include="Core\GameServerHandler.cs" />
     <Compile Include="Core\Entities\PowerUp.cs" />

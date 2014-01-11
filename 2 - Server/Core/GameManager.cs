@@ -20,8 +20,6 @@ namespace FBServer.Core
         private readonly List<PowerUp> _powerUpList;
         private readonly List<Wall> _wallList;
 
-        // Map
-
         #region Properties
 
         public BaseMap CurrentMap
@@ -53,6 +51,8 @@ namespace FBServer.Core
             _bombList = new List<Bomb>();
 
             BaseCurrentMap = new Map();
+
+            GameEventManager = new GameEventManager(this);
         }
 
         public override void Reset()
