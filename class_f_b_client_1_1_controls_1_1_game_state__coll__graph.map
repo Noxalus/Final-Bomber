@@ -1,3 +1,3 @@
 <map id="FBClient.Controls.GameState" name="FBClient.Controls.GameState">
-<area shape="rect" id="node3" href="$class_f_b_client_1_1_controls_1_1_game_state_manager.html" title="{FBClient.Controls.GameState\lManager\n|+ CurrentState\l|+ GameStateManager()\l+ Initialize()\l+ Update()\l+ PopState()\l+ PushState()\l+ ChangeState()\l}" alt="" coords="205,133,400,299"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_controls_1_1_game_state_manager.html" title="FBClient.Controls.GameState\lManager" alt="" coords="205,83,400,125"/>
 </map>

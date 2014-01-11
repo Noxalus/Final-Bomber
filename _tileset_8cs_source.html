@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -162,10 +161,10 @@ $(document).ready(function(){initNavTree('_tileset_8cs_source.html','');});
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordtype">int</span> tile = 0;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; tilesHigh; y++)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> = 0; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> &lt; tilesWide; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>++)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; tilesWide; x++)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                {</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    sourceRectangles[tile] = <span class="keyword">new</span> Rectangle(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                        <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> * tileWidth,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                        x * tileWidth,</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                        y * tileHeight,</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                        tileWidth,</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                        tileHeight);</div>
@@ -181,14 +180,13 @@ $(document).ready(function(){initNavTree('_tileset_8cs_source.html','');});
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
 <div class="ttc" id="class_f_b_client_1_1_tile_engine_1_1_tileset_html"><div class="ttname"><a href="class_f_b_client_1_1_tile_engine_1_1_tileset.html">FBClient.TileEngine.Tileset</a></div><div class="ttdef"><b>Definition:</b> <a href="_tileset_8cs_source.html#l00010">Tileset.cs:10</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_tile_engine_1_1_tileset_html_a9ead5e89a18dbfa07fa5dd80c68ae336"><div class="ttname"><a href="class_f_b_client_1_1_tile_engine_1_1_tileset.html#a9ead5e89a18dbfa07fa5dd80c68ae336">FBClient.TileEngine.Tileset.Tileset</a></div><div class="ttdeci">Tileset(Texture2D image, int tilesWide, int tilesHigh, int tileWidth, int tileHeight)</div><div class="ttdef"><b>Definition:</b> <a href="_tileset_8cs_source.html#l00039">Tileset.cs:39</a></div></div>
-<div class="ttc" id="jquery_8js_html_a4c3eadaa5164016d2c340d495fc6e55e"><div class="ttname"><a href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a></div><div class="ttdeci">function x(bx)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00030">jquery.js:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_2135bb62f7ce5f20f714a37c7b9caea1.html">TileEngine</a></li><li class="navelem"><a class="el" href="_tileset_8cs.html">Tileset.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_a091963a66e0532e405b10822f6f83cf.html">TileEngine</a></li><li class="navelem"><a class="el" href="_tileset_8cs.html">Tileset.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

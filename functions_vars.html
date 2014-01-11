@@ -186,8 +186,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="class_f_b_server_1_1_game_values_1_1_powerup_drops.html#af3bb4b8081903b3d22cd7ab1a8a7837b">FBServer.GameValues.PowerupDrops</a>
 , <a class="el" href="class_f_b_server_1_1_game_values_1_1_powerup_values.html#a3ae371c4b0eed5e53a3f11dca28b97a8">FBServer.GameValues.PowerupValues</a>
 </li>
-<li>BombExplosionSound
-: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a2cbbcfe4391fadae1348d1190612fb82">FBClient.Core.GameManager</a>
+<li>BombList
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#aa3a601b1509b98d8c78ddaef1f03101b">FBClient.Core.GameManager</a>
 </li>
 <li>BombPower
 : <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html#aa646e936a931e82294284cbb62ea222d">FBLibrary.Core.BaseEntities.BasePlayer</a>
@@ -213,7 +213,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="class_f_b_server_1_1_host_1_1_game_server.html#afbb7802cc95e5166938f74549f14206a">FBServer.Host.GameServer</a>
 </li>
 <li>CollisionLayer
-: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a3facbd5573ddce7ef626e26e6bd698f7">FBLibrary.Core.BaseEntities.BaseMap</a>
+: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html#ad948b6d226d1eed68bba6df8598c2019">FBLibrary.Core.BaseEntities.BaseBomb</a>
+, <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a3facbd5573ddce7ef626e26e6bd698f7">FBLibrary.Core.BaseEntities.BaseMap</a>
 </li>
 <li>ControlManager
 : <a class="el" href="class_f_b_client_1_1_screens_1_1_base_game_state.html#a4eb384bf4f154794b0c143ed080c8c76">FBClient.Screens.BaseGameState</a>
@@ -252,11 +253,15 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>GameManager
 : <a class="el" href="class_f_b_client_1_1_core_1_1_players_1_1_base_human_player.html#aef4116d7f9b2847bd5d927997e6fae83">FBClient.Core.Players.BaseHumanPlayer</a>
+, <a class="el" href="class_f_b_client_1_1_network_1_1_game_server.html#a121d8b9e0af9ffcaf913554bc7f4ca3c">FBClient.Network.GameServer</a>
 , <a class="el" href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#ab540695bf07f1b53a0ad94cecdb0aca0">FBClient.Screens.GameScreens.BaseGamePlayScreen</a>
 , <a class="el" href="class_f_b_server_1_1_host_1_1_host_game.html#a49d8d2e88e9ac0f10e18327de0d3d253">FBServer.Host.HostGame</a>
 </li>
 <li>GamePlayScreen
 : <a class="el" href="class_f_b_client_1_1_final_bomber.html#a8be858cc7acb2de24038354870a948ee">FBClient.FinalBomber</a>
+</li>
+<li>GameTime
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a44b26bfda8db1c3aadc433dd7f3fe02d">FBClient.Core.GameManager</a>
 </li>
 <li>Graphics
 : <a class="el" href="class_f_b_client_1_1_final_bomber.html#a615427d6073b5e0a86bcccb7e4773f6c">FBClient.FinalBomber</a>
@@ -371,8 +376,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
-<li>Map
-: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html#acd2bb5a86972906abcd18b8b4a4314c1">FBLibrary.Core.BaseEntities.BaseBomb</a>
+<li>MapSize
+: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html#a4eb6ab773e2a0746cecfb6a8756cb4c6">FBLibrary.Core.BaseEntities.BaseBomb</a>
 </li>
 <li>Me
 : <a class="el" href="class_f_b_client_1_1_network_1_1_network_manager.html#ac30b56ac96755e5bd5d5d04703b30fde">FBClient.Network.NetworkManager</a>
@@ -402,13 +407,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 , <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_player.html#adfd858fb638b3250f59fb623d2d567c3">FBLibrary.Core.BaseEntities.BasePlayer</a>
 </li>
 <li>NetworkManager
-: <a class="el" href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_test_screen.html#a013ff18fb8f8416f9937ae407550d388">FBClient.Screens.GameScreens.NetworkTestScreen</a>
+: <a class="el" href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_game_play_screen.html#a3da06d4f70389f011a833c3aa1cb2f72">FBClient.Screens.GameScreens.NetworkGamePlayScreen</a>
 </li>
 <li>NetworkMenuScreen
 : <a class="el" href="class_f_b_client_1_1_final_bomber.html#a2705bce079d3bee73331f062b846147e">FBClient.FinalBomber</a>
 </li>
 <li>NetworkTestScreen
-: <a class="el" href="class_f_b_client_1_1_final_bomber.html#a1ce1c0324400edf63eb4e7e147653f23">FBClient.FinalBomber</a>
+: <a class="el" href="class_f_b_client_1_1_final_bomber.html#a7e90e85a690a35becb8f1000b5133de9">FBClient.FinalBomber</a>
 </li>
 <li>NewClient
 : <a class="el" href="class_f_b_server_1_1_host_1_1_client.html#ae2085d75ce0e66faaf81f163e1191481">FBServer.Host.Client</a>
@@ -434,9 +439,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="class_f_b_client_1_1_core_1_1_players_1_1_online_human_player.html#a47ce052ab85d2a148096ab674bb0f9c6">FBClient.Core.Players.OnlineHumanPlayer</a>
 , <a class="el" href="class_f_b_client_1_1_network_1_1_game_server.html#a8f08d4ffe5c78ae7b46239e3f130a760">FBClient.Network.GameServer</a>
 , <a class="el" href="class_f_b_server_1_1_host_1_1_client.html#a3a624f1084ee40730b03674f2c278d78">FBServer.Host.Client</a>
-</li>
-<li>PlayerDeathSound
-: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a32ce934fe7e02f796b9cb206437de1de">FBClient.Core.GameManager</a>
 </li>
 <li>PlayerId
 : <a class="el" href="class_f_b_client_1_1_network_1_1_move_player_args.html#ad25a4436ed8e31ea89489eccdd2604bd">FBClient.Network.MovePlayerArgs</a>
@@ -466,8 +468,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>PowerupDrop
 : <a class="el" href="class_f_b_server_1_1_game_values.html#a0ab1841def97392e1a1a874cdb74bca5">FBServer.GameValues</a>
 </li>
-<li>PowerUpPickUpSound
-: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#abf7c859e203b96f9272dca313828fbd5">FBClient.Core.GameManager</a>
+<li>PowerUpList
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a6f81aacab30a1a3168ae252a5b6be159">FBClient.Core.GameManager</a>
 </li>
 <li>Powerups
 : <a class="el" href="class_f_b_server_1_1_game_values_1_1_powerup_drops.html#a6c363a20089d62ff87e04d088aeaaaa0">FBServer.GameValues.PowerupDrops</a>
@@ -551,9 +553,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>Timer
 : <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html#a9ac5c51a776e632e9c2779ac0e33142b">FBLibrary.Core.BaseEntities.BaseBomb</a>
 </li>
-<li>TimerLenght
-: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html#a6a5c754ea36f91255c53a912ea5a7971">FBLibrary.Core.BaseEntities.BaseBomb</a>
-</li>
 <li>TimerWindowBox
 : <a class="el" href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a196f786cd6b8f94c904c3e895dd139c1">FBClient.Screens.GameScreens.BaseGamePlayScreen</a>
 </li>
@@ -596,8 +595,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
-<li>WillExplode
-: <a class="el" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html#a3dfa143ad31c137fe514cd54161f7b70">FBLibrary.Core.BaseEntities.BaseBomb</a>
+<li>WallList
+: <a class="el" href="class_f_b_client_1_1_core_1_1_game_manager.html#a5d796837f060905ccd3013ef005609d4">FBClient.Core.GameManager</a>
 </li>
 <li>WindowSkin
 : <a class="el" href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#af5facd30e69db44a012a1571869caffb">FBClient.Screens.GameScreens.BaseGamePlayScreen</a>
@@ -608,7 +607,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:42 for Final-Bomber by
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:12 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

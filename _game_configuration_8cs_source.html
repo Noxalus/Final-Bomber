@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -127,18 +126,18 @@ $(document).ready(function(){initNavTree('_game_configuration_8cs_source.html','
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="comment">// Base characteristics</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> BasePlayerBombPower = 1;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> BasePlayerSpeed = 150<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> BaseBombSpeed = 3<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> BasePlayerSpeed = 150f;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> BaseBombSpeed = 3f;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> BasePlayerBombAmount = 1;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="comment">// Initially =&gt; 2</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> TimeSpan BaseBombTimer = TimeSpan.FromSeconds(2);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="comment">// Characteristics minimum and maximum</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MaxSpeed = 300<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MaxSpeed = 300f;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MaxBombPower = 30;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MaxBombAmount = 30;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MinSpeed = 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MinSpeed = 1f;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MinBombPower = 1;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MinBombAmount = 1;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
@@ -155,7 +154,7 @@ $(document).ready(function(){initNavTree('_game_configuration_8cs_source.html','
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">float</span> SuddenDeathCounterBombs = 0.3f;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">float</span> SuddenDeathCounterWalls = 0.3f;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">float</span> SuddenDeathWallSpeed = (float)Math.Round(0.25f, 2);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> SuddenDeathMaxWallSpeed = 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> SuddenDeathMaxWallSpeed = 1f;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="comment">// Game info</span></div>
@@ -195,7 +194,7 @@ $(document).ready(function(){initNavTree('_game_configuration_8cs_source.html','
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Point BaseTileSize = <span class="keyword">new</span> Point(32, 32);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="comment">// Time</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> DeltaTime; <span class="comment">// milliseconds</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">long</span> DeltaTime; <span class="comment">// Ticks</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="comment">// TO DELETE</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> PlayerNumber = 1;</div>
@@ -205,14 +204,13 @@ $(document).ready(function(){initNavTree('_game_configuration_8cs_source.html','
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a6a7651615e07b0d5f59ed7fe8a97d50c"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a6a7651615e07b0d5f59ed7fe8a97d50c">FBLibrary.Core.SuddenDeathTypeEnum</a></div><div class="ttdeci">SuddenDeathTypeEnum</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00046">Engine.cs:46</a></div></div>
-<div class="ttc" id="jquery_8js_html_a633de4b0c14ca52ea2432a3c8a5c4c31"><div class="ttname"><a href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_bd5960241e8193d485052893c86bc07f.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="_game_configuration_8cs.html">GameConfiguration.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_ec3ec17c793273d9ae6f2b37deed55ab.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="_game_configuration_8cs.html">GameConfiguration.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

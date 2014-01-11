@@ -1,7 +1,7 @@
 <map id="FBLibrary.Core.BaseEntities.BasePowerUp" name="FBLibrary.Core.BaseEntities.BasePowerUp">
-<area shape="rect" id="node5" href="$class_f_b_client_1_1_core_1_1_entities_1_1_power_up.html" title="{FBClient.Core.Entities.PowerUp\n|+ Sprite\l|+ PowerUp()\l+ Update()\l+ Draw()\l+ PickUp()\l+ Destroy()\l+ Remove()\l}" alt="" coords="5,846,211,997"/>
-<area shape="rect" id="node6" href="$class_f_b_server_1_1_core_1_1_entities_1_1_power_up.html" title="{FBServer.Core.Entities.PowerUp\n||+ PowerUp()\l+ Destroy()\l+ Remove()\l}" alt="" coords="236,868,447,975"/>
-<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_static_entity.html" title="{StaticEntity\n||+ Update()\l# StaticEntity()\l# StaticEntity()\l}" alt="" coords="169,507,279,613"/>
-<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="{BaseEntity\n|+ IsAlive\l+ InDestruction\l+ DestructionTime\l+ Position\l+ PositionX\l+ PositionY\l+ CellPositionX\l+ CellPositionY\l+ CellPosition\l+ Dimension\l|+ Update()\l+ ChangePosition()\l+ ChangePosition()\l+ ChangePosition()\l+ Destroy()\l+ Remove()\l# BaseEntity()\l# BaseEntity()\l}" alt="" coords="157,147,291,459"/>
-<area shape="rect" id="node4" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="180,6,268,98"/>
+<area shape="rect" id="node5" href="$class_f_b_client_1_1_core_1_1_entities_1_1_power_up.html" title="FBClient.Core.Entities.PowerUp" alt="" coords="5,320,211,347"/>
+<area shape="rect" id="node6" href="$class_f_b_server_1_1_core_1_1_entities_1_1_power_up.html" title="FBServer.Core.Entities.PowerUp" alt="" coords="236,320,447,347"/>
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="179,155,269,181"/>
+<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="181,80,267,107"/>
+<area shape="rect" id="node4" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="195,5,253,32"/>
 </map>

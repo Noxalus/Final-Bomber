@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -179,12 +178,12 @@ $(document).ready(function(){initNavTree('_user_login_menu_screen_8cs_source.htm
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            ControlManager.Update(gameTime, PlayerIndex.One);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">if</span> (textCursorBlinkFrequency &gt;= 0<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">if</span> (textCursorBlinkFrequency &gt;= 0f)</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                textCursorBlinkFrequency -= (float)gameTime.ElapsedGameTime.TotalSeconds;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                textCursorBlinkFrequency = Config.TextCursorBlinkFrequency;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <a class="code" href="jquery_8js.html#a9db6d45a025ad692282fe23e69eeba43">if</a> (indexMenu == 0 || indexMenu == 1)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            if (indexMenu == 0 || indexMenu == 1)</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                isActive = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                isActive = <span class="keyword">false</span>;</div>
@@ -291,7 +290,7 @@ $(document).ready(function(){initNavTree('_user_login_menu_screen_8cs_source.htm
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                }</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            }</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> ((indexMenu == 0 || indexMenu == 1) &amp;&amp; textCursorBlinkFrequency &gt; Config.TextCursorBlinkFrequency / 2<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>)</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> ((indexMenu == 0 || indexMenu == 1) &amp;&amp; textCursorBlinkFrequency &gt; Config.TextCursorBlinkFrequency / 2f)</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            {</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                FinalBomber.Instance.SpriteBatch.DrawString(this.BigFont, <span class="stringliteral">&quot;|&quot;</span>,</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <span class="keyword">new</span> Vector2(menuPosition.X + <span class="keyword">this</span>.BigFont.MeasureString(login[indexMenu]).X / 2,</div>
@@ -349,11 +348,9 @@ $(document).ready(function(){initNavTree('_user_login_menu_screen_8cs_source.htm
 <div class="ttc" id="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen_html_ab1bbd14a257771548dfb4ded2025e3fe"><div class="ttname"><a href="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen.html#ab1bbd14a257771548dfb4ded2025e3fe">FBClient.Screens.MenuScreens.UserLoginMenuScreen.UserLoginMenuScreen</a></div><div class="ttdeci">UserLoginMenuScreen(Game game, GameStateManager manager)</div><div class="ttdef"><b>Definition:</b> <a href="_user_login_menu_screen_8cs_source.html#l00032">UserLoginMenuScreen.cs:32</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_controls_1_1_input_handler_html"><div class="ttname"><a href="class_f_b_client_1_1_controls_1_1_input_handler.html">FBClient.Controls.InputHandler</a></div><div class="ttdef"><b>Definition:</b> <a href="_input_handler_8cs_source.html#l00008">InputHandler.cs:8</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_controls_1_1_game_state_manager_html"><div class="ttname"><a href="class_f_b_client_1_1_controls_1_1_game_state_manager.html">FBClient.Controls.GameStateManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_game_state_manager_8cs_source.html#l00007">GameStateManager.cs:7</a></div></div>
-<div class="ttc" id="jquery_8js_html_a633de4b0c14ca52ea2432a3c8a5c4c31"><div class="ttname"><a href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen_html_a8f3a4302bbee66cd7ca8a0eca9c4786b"><div class="ttname"><a href="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen.html#a8f3a4302bbee66cd7ca8a0eca9c4786b">FBClient.Screens.MenuScreens.UserLoginMenuScreen.Draw</a></div><div class="ttdeci">override void Draw(GameTime gameTime)</div><div class="ttdef"><b>Definition:</b> <a href="_user_login_menu_screen_8cs_source.html#l00152">UserLoginMenuScreen.cs:152</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_functions_html_af7d947903e5e5fd2c2f5a2e0fd97a4fa"><div class="ttname"><a href="class_f_b_client_1_1_functions.html#af7d947903e5e5fd2c2f5a2e0fd97a4fa">FBClient.Functions.HidePassword</a></div><div class="ttdeci">static string HidePassword(string password)</div><div class="ttdef"><b>Definition:</b> <a href="_functions_8cs_source.html#l00013">Functions.cs:13</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_controls_1_1_input_handler_html_a7603947a66f197cf76c98b74accd0491"><div class="ttname"><a href="class_f_b_client_1_1_controls_1_1_input_handler.html#a7603947a66f197cf76c98b74accd0491">FBClient.Controls.InputHandler.KeyPressed</a></div><div class="ttdeci">static bool KeyPressed(Keys key)</div><div class="ttdef"><b>Definition:</b> <a href="_input_handler_8cs_source.html#l00197">InputHandler.cs:197</a></div></div>
-<div class="ttc" id="jquery_8js_html_a9db6d45a025ad692282fe23e69eeba43"><div class="ttname"><a href="jquery_8js.html#a9db6d45a025ad692282fe23e69eeba43">if</a></div><div class="ttdeci">if(!b.support.opacity)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00028">jquery.js:28</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen_html"><div class="ttname"><a href="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen.html">FBClient.Screens.MenuScreens.UserLoginMenuScreen</a></div><div class="ttdef"><b>Definition:</b> <a href="_user_login_menu_screen_8cs_source.html#l00008">UserLoginMenuScreen.cs:8</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_controls_1_1_input_handler_html_aea198a7c4a593e8949cd6e6bb5634ee6"><div class="ttname"><a href="class_f_b_client_1_1_controls_1_1_input_handler.html#aea198a7c4a593e8949cd6e6bb5634ee6">FBClient.Controls.InputHandler.KeyboardState</a></div><div class="ttdeci">static KeyboardState KeyboardState</div><div class="ttdef"><b>Definition:</b> <a href="_input_handler_8cs_source.html#l00048">InputHandler.cs:48</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen_html_af1845639202312bb10a7dd1573299d2a"><div class="ttname"><a href="class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_login_menu_screen.html#af1845639202312bb10a7dd1573299d2a">FBClient.Screens.MenuScreens.UserLoginMenuScreen.Update</a></div><div class="ttdeci">override void Update(GameTime gameTime)</div><div class="ttdef"><b>Definition:</b> <a href="_user_login_menu_screen_8cs_source.html#l00067">UserLoginMenuScreen.cs:67</a></div></div>
@@ -366,8 +363,8 @@ $(document).ready(function(){initNavTree('_user_login_menu_screen_8cs_source.htm
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_2ad446ac5b2d9c3a5d2daa1941c44b5e.html">Screens</a></li><li class="navelem"><a class="el" href="dir_8337d2a326b4d835b069d49382331ab9.html">MenuScreens</a></li><li class="navelem"><a class="el" href="_user_login_menu_screen_8cs.html">UserLoginMenuScreen.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_d680b1b1f89dab51b6a26eb5b3d10071.html">Screens</a></li><li class="navelem"><a class="el" href="dir_2fad358d518af129915db15c9932cc35.html">MenuScreens</a></li><li class="navelem"><a class="el" href="_user_login_menu_screen_8cs.html">UserLoginMenuScreen.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

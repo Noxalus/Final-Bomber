@@ -1,5 +1,5 @@
 <map id="FBClient.Screens.MenuScreens.SinglePlayerGameModeMenuScreen" name="FBClient.Screens.MenuScreens.SinglePlayerGameModeMenuScreen">
-<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="{BaseMenuScreen\n|# MenuString\l# IndexMenu\l# MenuPosition\l|+ Initialize()\l+ Update()\l# BaseMenuScreen()\l}" alt="" coords="51,573,195,709"/>
-<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="{BaseGameState\n|# ControlManager\l# BigFont\l# playerIndexInControl\l|+ BaseGameState()\l+ Update()\l+ Draw()\l# LoadContent()\l}" alt="" coords="47,374,197,525"/>
-<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="{GameState\n|+ Components\l+ Tag\l# StateManager\l|+ Initialize()\l+ Update()\l+ Draw()\l# GameState()\l# StateChange()\l# Show()\l# Hide()\l}" alt="" coords="65,131,180,325"/>
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="BaseMenuScreen" alt="" coords="60,229,185,256"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="63,155,181,181"/>
+<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="79,80,167,107"/>
 </map>

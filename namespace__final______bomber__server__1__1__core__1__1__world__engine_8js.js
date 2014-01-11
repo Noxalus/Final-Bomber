@@ -1,4 +1,0 @@
-var namespace__final______bomber__server__1__1__core__1__1__world__engine_8js =
-[
-    [ "namespace_final___bomber_server_1_1_core_1_1_world_engine", "namespace__final______bomber__server__1__1__core__1__1__world__engine_8js.html#aa1ee4cc07259a792b5cc427709a42477", null ]
-];

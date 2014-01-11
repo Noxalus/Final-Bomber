@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_f_b_library_1_1_core_1_1_engine.html" title="FBLibrary.Core.Engine" alt="" coords="6,5,159,32"/>
+<area shape="rect" id="node1" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="FBLibrary.Core.BaseGameManager" alt="" coords="6,60,234,87"/>
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_core_1_1_game_manager.html" title="This class is used to regroup common behaviors between network and local game logic. " alt="" coords="284,35,476,61"/>
+<area shape="rect" id="node5" href="$class_f_b_server_1_1_core_1_1_game_manager.html" title="FBServer.Core.GameManager" alt="" coords="283,85,477,112"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_core_1_1_local_game_manager.html" title="This class is specificaly used for the logic of local games " alt="" coords="526,5,749,32"/>
+<area shape="rect" id="node4" href="$class_f_b_client_1_1_network_1_1_network_game_manager.html" title="This class is specificaly used for the logic of network games " alt="" coords="550,57,725,98"/>
 </map>

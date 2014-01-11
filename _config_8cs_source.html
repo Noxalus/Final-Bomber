@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -156,8 +155,8 @@ $(document).ready(function(){initNavTree('_config_8cs_source.html','');});
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> readonly Keys[][] PlayersKeys = <span class="keyword">new</span> Keys[][]</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;             <span class="keyword">new</span> Keys[]{ Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl }, </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;             <span class="keyword">new</span> Keys[]{ <a class="code" href="jquery_8js.html#adc18d83abfd9f87d396e8fd6b6ac0fe1">Keys.Z</a>, Keys.S, Keys.Q, Keys.D, Keys.LeftControl }, </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;             <span class="keyword">new</span> Keys[]{ Keys.I, Keys.K, Keys.J, <a class="code" href="jquery_8js.html#a38ee4c0b5f4fe2a18d0c783af540d253">Keys.L</a>, Keys.Space }, </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;             <span class="keyword">new</span> Keys[]{ Keys.Z, Keys.S, Keys.Q, Keys.D, Keys.LeftControl }, </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;             <span class="keyword">new</span> Keys[]{ Keys.I, Keys.K, Keys.J, Keys.L, Keys.Space }, </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;             <span class="keyword">new</span> Keys[]{ Keys.NumPad8, Keys.NumPad5, Keys.NumPad4, Keys.NumPad6, Keys.Enter },</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;             <span class="keyword">new</span> Keys[]{ Keys.T, Keys.G, Keys.F, Keys.H, Keys.Y }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        };</div>
@@ -180,15 +179,15 @@ $(document).ready(function(){initNavTree('_config_8cs_source.html','');});
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Color[] PlayersColor = <span class="keyword">new</span> Color[] { Color.White, Color.White, Color.White, Color.White };</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="comment">// Characteristics minimum and maximum</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MaxSpeed = 30000<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MinSpeed = 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MaxSpeed = 30000f;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MinSpeed = 1f;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> readonly <span class="keywordtype">int</span> MaxBombPower = (MapSize.X + MapSize.Y) / 2;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MinBombPower = 1;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> readonly <span class="keywordtype">int</span> MaxBombNumber = (MapSize.X * MapSize.Y) / 2;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> MinBombNumber = 1;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> PlayerSpeedIncrementeur = 0.25f;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> BombSpeedIncrementeur = 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> BombSpeedIncrementeur = 1f;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> PlayerCanPush = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> PlayerCanLaunch = <span class="keyword">false</span>;</div>
@@ -270,7 +269,7 @@ $(document).ready(function(){initNavTree('_config_8cs_source.html','');});
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> readonly <span class="keywordtype">int</span>[] PlayersScores = <span class="keyword">new</span> <span class="keywordtype">int</span>[5];</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="comment">// Map moving scale</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MapMovingScale = 10<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">float</span> MapMovingScale = 10f;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="comment">// HUD</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keyword">public</span> <span class="keyword">const</span> <span class="keywordtype">int</span> HUDPlayerInfoSpace = 105;</div>
@@ -281,20 +280,17 @@ $(document).ready(function(){initNavTree('_config_8cs_source.html','');});
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a6a7651615e07b0d5f59ed7fe8a97d50c"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a6a7651615e07b0d5f59ed7fe8a97d50c">FBLibrary.Core.SuddenDeathTypeEnum</a></div><div class="ttdeci">SuddenDeathTypeEnum</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00046">Engine.cs:46</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_af68b0b2616574e0efc89015ebae6026e"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#af68b0b2616574e0efc89015ebae6026e">FBLibrary.Core.LookDirection</a></div><div class="ttdeci">LookDirection</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00018">Engine.cs:18</a></div></div>
-<div class="ttc" id="jquery_8js_html_a633de4b0c14ca52ea2432a3c8a5c4c31"><div class="ttname"><a href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a3f379938b3dedb35940099a0167d7671"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a3f379938b3dedb35940099a0167d7671">FBLibrary.Core.BadEffect</a></div><div class="ttdeci">BadEffect</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00027">Engine.cs:27</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a058addd0514a136f5c28fa809cbc092a"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a058addd0514a136f5c28fa809cbc092a">FBLibrary.Core.PowerUpType</a></div><div class="ttdeci">PowerUpType</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00037">Engine.cs:37</a></div></div>
-<div class="ttc" id="jquery_8js_html_a38ee4c0b5f4fe2a18d0c783af540d253"><div class="ttname"><a href="jquery_8js.html#a38ee4c0b5f4fe2a18d0c783af540d253">L</a></div><div class="ttdeci">function L</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00016">jquery.js:16</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a25382e3980d36f573f1ee88e9d6633c3"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a25382e3980d36f573f1ee88e9d6633c3">FBLibrary.Core.ArrowPositionTypeEnum</a></div><div class="ttdeci">ArrowPositionTypeEnum</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00048">Engine.cs:48</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_ae33de498215476fe9b48e21ce571f8f7"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#ae33de498215476fe9b48e21ce571f8f7">FBLibrary.Core.TeleporterPositionTypeEnum</a></div><div class="ttdeci">TeleporterPositionTypeEnum</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00047">Engine.cs:47</a></div></div>
-<div class="ttc" id="jquery_8js_html_adc18d83abfd9f87d396e8fd6b6ac0fe1"><div class="ttname"><a href="jquery_8js.html#adc18d83abfd9f87d396e8fd6b6ac0fe1">Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00028">jquery.js:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="_config_8cs.html">Config.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:35 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="_config_8cs.html">Config.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:09 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

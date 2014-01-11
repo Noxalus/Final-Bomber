@@ -1,6 +1,6 @@
 <map id="FBServer.Core.Entities.Wall" name="FBServer.Core.Entities.Wall">
-<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall.html" title="{BaseWall\n||+ Update()\l# BaseWall()\l}" alt="" coords="49,662,145,754"/>
-<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_static_entity.html" title="{StaticEntity\n||+ Update()\l# StaticEntity()\l# StaticEntity()\l}" alt="" coords="43,507,152,613"/>
-<area shape="rect" id="node4" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="{BaseEntity\n|+ IsAlive\l+ InDestruction\l+ DestructionTime\l+ Position\l+ PositionX\l+ PositionY\l+ CellPositionX\l+ CellPositionY\l+ CellPosition\l+ Dimension\l|+ Update()\l+ ChangePosition()\l+ ChangePosition()\l+ ChangePosition()\l+ Destroy()\l+ Remove()\l# BaseEntity()\l# BaseEntity()\l}" alt="" coords="31,147,164,459"/>
-<area shape="rect" id="node5" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="53,6,141,98"/>
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall.html" title="BaseWall" alt="" coords="58,229,136,256"/>
+<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_static_entity.html" title="StaticEntity" alt="" coords="52,155,143,181"/>
+<area shape="rect" id="node4" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="54,80,140,107"/>
+<area shape="rect" id="node5" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="68,5,127,32"/>
 </map>

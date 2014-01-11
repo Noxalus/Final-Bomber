@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -211,14 +210,14 @@ $(document).ready(function(){initNavTree('_engine_8cs_source.html','');});
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordtype">int</span> positionX = 0;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="keywordtype">int</span> positionY = 0;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">if</span> (position.X &gt; 0)</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    positionX = (int)(position.X - (dimension.X / 2<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>)) / _tileWidth + 1;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    positionX = (int)(position.X - (dimension.X / 2f)) / _tileWidth + 1;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keywordflow">if</span> (position.Y &gt; 0)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    positionY = (int)(position.Y - (dimension.Y) / 4<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>) / _tileHeight + 1;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    positionY = (int)(position.Y - (dimension.Y) / 4f) / _tileHeight + 1;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> Point(positionX, positionY);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            }</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> Point((<span class="keywordtype">int</span>)(position.X - (dimension.X / 2<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>)) / _tileWidth + 1, (<span class="keywordtype">int</span>)(position.Y - (dimension.Y / 2<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>)) / _tileHeight + 1);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> Point((<span class="keywordtype">int</span>)(position.X - (dimension.X / 2f)) / _tileWidth + 1, (<span class="keywordtype">int</span>)(position.Y - (dimension.Y / 2f)) / _tileHeight + 1);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
 <div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_engine.html#a021beb5f45f05d07c5deeca1ac265443">  113</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Point <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a021beb5f45f05d07c5deeca1ac265443">VectorToCell</a>(Vector2 position)</div>
@@ -231,15 +230,15 @@ $(document).ready(function(){initNavTree('_engine_8cs_source.html','');});
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Vector2((<span class="keywordtype">float</span>)(position.X * _tileWidth), (<span class="keywordtype">float</span>)(position.Y * _tileHeight));</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_engine.html#afa441f3ea3be53a4108551bdf39cf92f">  123</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#afa441f3ea3be53a4108551bdf39cf92f">ChangeOrigin</a>(<span class="keywordtype">float</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, <span class="keywordtype">float</span> y)</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_engine.html#afa441f3ea3be53a4108551bdf39cf92f">  123</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#afa441f3ea3be53a4108551bdf39cf92f">ChangeOrigin</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y)</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            _origin.X = <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            _origin.X = x;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            _origin.Y = y;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_engine.html#a22af0b624fa0d822379b1fe1742fc026">  129</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a22af0b624fa0d822379b1fe1742fc026">ChangeXOrigin</a>(<span class="keywordtype">float</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>)</div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_engine.html#a22af0b624fa0d822379b1fe1742fc026">  129</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a22af0b624fa0d822379b1fe1742fc026">ChangeXOrigin</a>(<span class="keywordtype">float</span> x)</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            _origin.X = <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            _origin.X = x;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
 <div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_engine.html#ab59214001529292aa5f13a64f4f7496e">  134</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#ab59214001529292aa5f13a64f4f7496e">ChangeYOrigin</a>(<span class="keywordtype">float</span> y)</div>
@@ -258,8 +257,6 @@ $(document).ready(function(){initNavTree('_engine_8cs_source.html','');});
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_af68b0b2616574e0efc89015ebae6026e"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#af68b0b2616574e0efc89015ebae6026e">FBLibrary.Core.LookDirection</a></div><div class="ttdeci">LookDirection</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00018">Engine.cs:18</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_add06173bfddfcdb215ed1e7efd6aa2f5ad0888defea7cf0dea03c15fa2d396a9a"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#add06173bfddfcdb215ed1e7efd6aa2f5ad0888defea7cf0dea03c15fa2d396a9a">FBLibrary.Core.Teleporter</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a6a7651615e07b0d5f59ed7fe8a97d50cadcdd9fef47096fa8cd5c4ea00c2e9def"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a6a7651615e07b0d5f59ed7fe8a97d50cadcdd9fef47096fa8cd5c4ea00c2e9def">FBLibrary.Core.BombAndWall</a></div></div>
-<div class="ttc" id="jquery_8js_html_a4c3eadaa5164016d2c340d495fc6e55e"><div class="ttname"><a href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a></div><div class="ttdeci">function x(bx)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00030">jquery.js:30</a></div></div>
-<div class="ttc" id="jquery_8js_html_a633de4b0c14ca52ea2432a3c8a5c4c31"><div class="ttname"><a href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a6a7651615e07b0d5f59ed7fe8a97d50cac8d2fc8ed10b21e647d7f58d4436b050"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a6a7651615e07b0d5f59ed7fe8a97d50cac8d2fc8ed10b21e647d7f58d4436b050">FBLibrary.Core.Whole</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a3f379938b3dedb35940099a0167d7671a3332eae8860836ce9554811a48beb464"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a3f379938b3dedb35940099a0167d7671a3332eae8860836ce9554811a48beb464">FBLibrary.Core.NoBomb</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a3f379938b3dedb35940099a0167d7671"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a3f379938b3dedb35940099a0167d7671">FBLibrary.Core.BadEffect</a></div><div class="ttdeci">BadEffect</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00027">Engine.cs:27</a></div></div>
@@ -297,8 +294,8 @@ $(document).ready(function(){initNavTree('_engine_8cs_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_bd5960241e8193d485052893c86bc07f.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="dir_da8b686cda261f266ae248c50a793773.html">Core</a></li><li class="navelem"><a class="el" href="_engine_8cs.html">Engine.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_ec3ec17c793273d9ae6f2b37deed55ab.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="dir_a8587bdd7818fd06d3be4558edcbbcfd.html">Core</a></li><li class="navelem"><a class="el" href="_engine_8cs.html">Engine.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

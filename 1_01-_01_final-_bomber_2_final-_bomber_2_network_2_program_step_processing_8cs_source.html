@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -124,11 +123,11 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">        private void ProgramStepProccesing()</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">        {</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">            if (!GameSettings.GameServer.Connected)</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">            if (!GameServer.Instance.Connected)</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">            {</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">                DisplayStatusBeforeExiting(&quot;The Game Server has closed/disconnected&quot;);</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">            if (GameSettings.GameServer.Connected)</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">            if (GameServer.Instance.Connected)</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">            {</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">                ConnectedGameProcessing();</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">            }</span></div>
@@ -151,7 +150,7 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">            }</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">            if (tmr_WaitUntilStart.Each(5000)) //Vänta 5 sekunder innan man skickar isready, för att man ska hinna hoppa ur matchen</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">            {</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">                GameSettings.GameServer.SendIsReady();</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">                GameServer.Instance.SendIsReady();</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">                tmr_WaitUntilStart.Stop();</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">            }</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">        }</span></div>
@@ -207,8 +206,8 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_a10f86b1eb853f0c90ba29bf848bb5e3.html">Network</a></li><li class="navelem"><a class="el" href="1_01-_01_final-_bomber_2_final-_bomber_2_network_2_program_step_processing_8cs.html">ProgramStepProcessing.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_03532af5fe4c4ab5dfcb37313a8b50c3.html">Network</a></li><li class="navelem"><a class="el" href="1_01-_01_final-_bomber_2_final-_bomber_2_network_2_program_step_processing_8cs.html">ProgramStepProcessing.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:09 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

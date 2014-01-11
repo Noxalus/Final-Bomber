@@ -1,7 +1,7 @@
 <map id="FBClient.Screens.MenuScreens.UserMenuScreen" name="FBClient.Screens.MenuScreens.UserMenuScreen">
-<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="{BaseMenuScreen\n|# MenuString\l# IndexMenu\l# MenuPosition\l|+ Initialize()\l+ Update()\l# BaseMenuScreen()\l}" alt="" coords="335,808,479,944"/>
-<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="{BaseGameState\n|# BigFont\l# playerIndexInControl\l|+ BaseGameState()\l+ Update()\l+ Draw()\l# LoadContent()\l}" alt="" coords="331,621,481,757"/>
-<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="{GameState\n|+ Components\l+ Tag\l|+ Initialize()\l+ Update()\l+ Draw()\l# GameState()\l# StateChange()\l# Show()\l# Hide()\l}" alt="" coords="245,370,360,550"/>
-<area shape="rect" id="node6" href="$class_f_b_client_1_1_controls_1_1_game_state_manager.html" title="{FBClient.Controls.GameState\lManager\n|+ CurrentState\l|+ GameStateManager()\l+ Initialize()\l+ Update()\l+ PopState()\l+ PushState()\l+ ChangeState()\l}" alt="" coords="205,133,400,299"/>
-<area shape="rect" id="node8" href="$class_f_b_client_1_1_controls_1_1_control_manager.html" title="{FBClient.Controls.Control\lManager\n|+ SpriteFont\l+ AcceptInput\l|+ ControlManager()\l+ ControlManager()\l+ ControlManager()\l+ Update()\l+ Draw()\l+ NextControl()\l+ PreviousControl()\l}" alt="" coords="390,363,559,557"/>
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_base_menu_screen.html" title="BaseMenuScreen" alt="" coords="344,373,469,400"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="347,296,465,323"/>
+<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="259,197,347,224"/>
+<area shape="rect" id="node6" href="$class_f_b_client_1_1_controls_1_1_game_state_manager.html" title="FBClient.Controls.GameState\lManager" alt="" coords="205,83,400,125"/>
+<area shape="rect" id="node8" href="$class_f_b_client_1_1_controls_1_1_control_manager.html" title="FBClient.Controls.Control\lManager" alt="" coords="383,190,552,231"/>
 </map>

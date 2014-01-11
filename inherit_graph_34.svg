@@ -11,10 +11,10 @@
 <polygon fill="white" stroke="white" points="-4,4 -4,-34 160,-34 160,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node"><title>Node1</title>
-<g id="a_node1"><a xlink:href="class_f_b_server_1_1_game_values_1_1_powerup_values.html" target="_top" xlink:title="FBServer.GameValues.Powerup\lValues">
+<g id="a_node1"><a xlink:href="class_f_b_server_1_1_game_values_1_1_powerup_drops.html" target="_top" xlink:title="FBServer.GameValues.Powerup\lDrops">
 <polygon fill="white" stroke="black" points="0,-0 0,-30 156,-30 156,-0 0,-0"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">FBServer.GameValues.Powerup</text>
-<text text-anchor="middle" x="78" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Values</text>
+<text text-anchor="middle" x="78" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Drops</text>
 </a>
 </g>
 </g>

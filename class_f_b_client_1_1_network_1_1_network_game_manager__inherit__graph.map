@@ -1,0 +1,4 @@
+<map id="FBClient.Network.NetworkGameManager" name="FBClient.Network.NetworkGameManager">
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_core_1_1_game_manager.html" title="This class is used to regroup common behaviors between network and local game logic. " alt="" coords="39,80,145,107"/>
+<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="23,5,160,32"/>
+</map>

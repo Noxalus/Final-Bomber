@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -112,89 +111,89 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> System.Diagnostics;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> FBLibrary;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> FBLibrary.Core;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using</span> FBLibrary.Core.BaseEntities;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">using</span> FBClient.Controls;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using</span> FBClient.Entities;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using</span> FBClient.Screens;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">using</span> FBClient.Screens.GameScreens;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">using</span> FBClient.Sprites;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">using</span> FBClient.WorldEngine;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework.Audio;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework.Graphics;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework.Input;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span>FBClient.Core.Entities</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">   20</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">Bomb</a> : <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html">BaseBomb</a></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">        #region Field Region</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">private</span> readonly <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>[] _explosionAnimations;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">private</span> readonly Dictionary&lt;Point, ExplosionDirection&gt; _explosionAnimationsDirection;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">private</span> readonly Texture2D _explosionSpriteTexture;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#ae189d6a9460e8bbe8a0d545bc76c54bb">   28</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html">AnimatedSprite</a> Sprite { <span class="keyword">get</span>; <span class="keyword">protected</span> set; }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="comment">// TODO: Move to base bomb</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">bool</span> _cellTeleporting;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> _lastPlayerThatPushIt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">private</span> <span class="keyword">enum</span> ExplosionDirection</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a08a38277b0309070706f6652eeae9a53">Down</a>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a945d5e233cf7d6240f6b783b36a374ff">Left</a>,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a92b09c7c48c520c3c55e497875da437c">Right</a>,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a258f49887ef8d14ac268c92b02503aaa">Up</a>,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104ab1ca34f82e83c52b010f86955f264e05">Middle</a>,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104ac1b5fa03ecdb95d4a45dd1c40b02527f">Horizontal</a>,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a06ce2a25e5d12c166a36f654dbea6012">Vertical</a></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        };</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span>        </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">        #region Constructor Region</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a765b19bdf682f4e0163042588bf0f2a8">   49</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a765b19bdf682f4e0163042588bf0f2a8">Bomb</a>(<span class="keywordtype">int</span> playerId, Point cellPosition, <span class="keywordtype">int</span> pow, TimeSpan timerLenght, <span class="keywordtype">float</span> playerSpeed)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            : base(playerId, cellPosition, pow, timerLenght, playerSpeed)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="comment">// TODO: Move all loading of content into a LoadContent XNA method like</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="comment">// Bomb Sprite</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            var spriteTexture = FinalBomber.Instance.Content.Load&lt;Texture2D&gt;(<span class="stringliteral">&quot;Graphics/Characters/bomb&quot;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            var animation = <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(3, 32, 32, 0, 0, 3);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            Sprite = <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html">AnimatedSprite</a>(spriteTexture, animation)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                IsAnimating = <span class="keyword">true</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            };</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="comment">// Bomb&#39;s explosion animations</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            _explosionSpriteTexture = FinalBomber.Instance.Content.Load&lt;Texture2D&gt;(<span class="stringliteral">&quot;Graphics/Characters/explosion&quot;</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            var explosionAnimationsFramesPerSecond = 10;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            _explosionAnimations = <span class="keyword">new</span>[]</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 0, explosionAnimationsFramesPerSecond),</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 32, explosionAnimationsFramesPerSecond),</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 64, explosionAnimationsFramesPerSecond),</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 96, explosionAnimationsFramesPerSecond),</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 128, explosionAnimationsFramesPerSecond),</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 160, explosionAnimationsFramesPerSecond),</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 192, explosionAnimationsFramesPerSecond)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            };</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            _explosionAnimationsDirection = <span class="keyword">new</span> Dictionary&lt;Point, ExplosionDirection&gt;();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="comment">// Bomb&#39;s states</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            _cellTeleporting = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            _lastPlayerThatPushIt = -1;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> FBLibrary.Core;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> FBLibrary.Core.BaseEntities;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using</span> FBClient.Sprites;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework.Audio;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using</span> Microsoft.Xna.Framework.Graphics;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>FBClient.Core.Entities</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">   13</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">Bomb</a> : <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html">BaseBomb</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">        #region Field Region</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keyword">private</span> readonly <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>[] _explosionAnimations;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">private</span> readonly Dictionary&lt;Point, ExplosionDirection&gt; _explosionAnimationsDirection;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">private</span> readonly Texture2D _explosionSpriteTexture;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="comment">// Sounds</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">private</span> SoundEffect _bombExplosionSound;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#ae189d6a9460e8bbe8a0d545bc76c54bb">   25</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html">AnimatedSprite</a> Sprite { <span class="keyword">get</span>; <span class="keyword">protected</span> set; }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="comment">// TODO: Move to base bomb</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">bool</span> _cellTeleporting;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> _lastPlayerThatPushIt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">private</span> <span class="keyword">enum</span> ExplosionDirection</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a08a38277b0309070706f6652eeae9a53">Down</a>,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a945d5e233cf7d6240f6b783b36a374ff">Left</a>,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a92b09c7c48c520c3c55e497875da437c">Right</a>,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a258f49887ef8d14ac268c92b02503aaa">Up</a>,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104ab1ca34f82e83c52b010f86955f264e05">Middle</a>,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104ac1b5fa03ecdb95d4a45dd1c40b02527f">Horizontal</a>,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <a class="code" href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a06ce2a25e5d12c166a36f654dbea6012">Vertical</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        };</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span>        </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">        #region Constructor Region</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a1791728c4722b884590cae366c999d09">   46</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a1791728c4722b884590cae366c999d09">Bomb</a>(<span class="keywordtype">int</span> playerId, Point cellPosition, <span class="keywordtype">int</span> pow, TimeSpan timer, <span class="keywordtype">float</span> playerSpeed)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            : base(playerId, cellPosition, pow, timer, playerSpeed)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="comment">// TODO: Move all loading of content into a LoadContent XNA method like</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="comment">// Bomb Sprite</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            var spriteTexture = FinalBomber.Instance.Content.Load&lt;Texture2D&gt;(<span class="stringliteral">&quot;Graphics/Characters/bomb&quot;</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            var animation = <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(3, 32, 32, 0, 0, 3);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            Sprite = <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html">AnimatedSprite</a>(spriteTexture, animation)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                IsAnimating = <span class="keyword">true</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="comment">// Bomb&#39;s explosion animations</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            _explosionSpriteTexture = FinalBomber.Instance.Content.Load&lt;Texture2D&gt;(<span class="stringliteral">&quot;Graphics/Characters/explosion&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> explosionAnimationsFramesPerSecond = 10;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            _explosionAnimations = <span class="keyword">new</span>[]</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 0, explosionAnimationsFramesPerSecond),</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 32, explosionAnimationsFramesPerSecond),</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 64, explosionAnimationsFramesPerSecond),</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 96, explosionAnimationsFramesPerSecond),</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 128, explosionAnimationsFramesPerSecond),</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 160, explosionAnimationsFramesPerSecond),</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>(4, 32, 32, 0, 192, explosionAnimationsFramesPerSecond)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            _explosionAnimationsDirection = <span class="keyword">new</span> Dictionary&lt;Point, ExplosionDirection&gt;();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="comment">// Bomb&#39;s states</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            _cellTeleporting = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            _lastPlayerThatPushIt = -1;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="comment">// Sounds</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            _bombExplosionSound = FinalBomber.Instance.Content.Load&lt;SoundEffect&gt;(<span class="stringliteral">&quot;Audio/Sounds/boom&quot;</span>);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">        #endregion</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">        #region XNA Method</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#ad12d52bf436a51e88b562c2e0ce50cc2">   86</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#ad12d52bf436a51e88b562c2e0ce50cc2">Update</a>(GameTime gameTime, <a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a> map, <span class="keywordtype">int</span>[,] hazardMap)</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a33e70d0ff65eb687826bb13a0293355b">   86</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a33e70d0ff65eb687826bb13a0293355b">Update</a>(GameTime gameTime)</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            Sprite.Update(gameTime);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
@@ -227,8 +226,8 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">if</span> (InDestruction)</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="keywordflow">foreach</span> (<a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a> <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> <span class="keywordflow">in</span> _explosionAnimations)</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    a.Update(gameTime);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="keywordflow">foreach</span> (<a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a> animation <span class="keywordflow">in</span> _explosionAnimations)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    animation.Update(gameTime);</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            }</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            Debug.Print(Timer.ToString());</div>
@@ -270,7 +269,7 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">                        break;</span></div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">                    case LookDirection.Down:</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">                        if (Position.Y &lt; (Map.Size.Y - 2)*Engine.TileHeight)</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">                        if (Position.Y &lt; (MapSize.Y - 2)*Engine.TileHeight)</span></div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">                            PositionY = Position.Y + Speed;</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">                        else</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">                            CurrentDirection = LookDirection.Idle;</span></div>
@@ -306,7 +305,7 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">                        }</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">                        break;</span></div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">                    case LookDirection.Right:</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">                        if (Position.X &lt; (Map.Size.X - 2)*Engine.TileWidth)</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">                        if (Position.X &lt; (MapSize.X - 2)*Engine.TileWidth)</span></div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">                            PositionX = Position.X + Speed;</span></div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">                        else</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">                            CurrentDirection = LookDirection.Idle;</span></div>
@@ -366,13 +365,13 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            {</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="keywordflow">if</span> (_explosionAnimationsDirection.Count == 0)</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                {</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                    <span class="keywordflow">foreach</span> (Point <a class="code" href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a> <span class="keywordflow">in</span> ActionField)</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                    <span class="keywordflow">foreach</span> (Point p <span class="keywordflow">in</span> ActionField)</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    {</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                        <span class="comment">// Is this a wall ? =&gt; we don&#39;t like wall !</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                        <span class="keywordflow">if</span> (!<a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a3facbd5573ddce7ef626e26e6bd698f7">CollisionLayer</a>[p.X, p.Y] || p == CellPosition)</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                        <span class="keywordflow">if</span> (!CollisionLayer[p.X, p.Y] || p == CellPosition)</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                        {</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                            <span class="comment">// We choose the sprite of explosion for each cell</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                            _explosionAnimationsDirection[<a class="code" href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a>] = ComputeExplosionSpriteDirections(p, <a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a>, HazardMap);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                            _explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p, HazardMap);</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                        }</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                    }</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                }</div>
@@ -400,9 +399,9 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">bool</span> WallAt(Point cell)</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keywordflow">if</span> (cell.X &gt;= 0 &amp;&amp; cell.Y &gt;= 0 &amp;&amp; cell.X &lt; <a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">Size</a>.X &amp;&amp;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                cell.Y &lt; <a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">Size</a>.Y)</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <span class="keywordflow">return</span> (<a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a3facbd5573ddce7ef626e26e6bd698f7">CollisionLayer</a>[cell.X, cell.Y]);</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keywordflow">if</span> (cell.X &gt;= 0 &amp;&amp; cell.Y &gt;= 0 &amp;&amp; cell.X &lt; MapSize.X &amp;&amp;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                cell.Y &lt; MapSize.Y)</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <span class="keywordflow">return</span> (CollisionLayer[cell.X, cell.Y]);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        }</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
@@ -429,7 +428,7 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="preprocessor">        #endregion</span></div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="comment">// 0 =&gt; Down, 1 =&gt; Left, 2 =&gt; Right, 3 =&gt; Up, 4 =&gt; Middle, 5 =&gt; Horizontal, 6 =&gt; Vertical </span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <span class="keyword">private</span> ExplosionDirection ComputeExplosionSpriteDirections(Point cell, <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html">BaseMap</a> map, <span class="keywordtype">int</span>[,] hazardMap)</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <span class="keyword">private</span> ExplosionDirection ComputeExplosionSpriteDirections(Point cell, <span class="keywordtype">int</span>[,] hazardMap)</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        {</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            <span class="keywordtype">int</span> downCell = cell.Y + 1, leftCell = cell.X - 1, rightCell = cell.X + 1, upCell = cell.Y - 1;</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
@@ -441,30 +440,30 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            <span class="comment">// Top extremity</span></div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <span class="keywordflow">if</span> (hazardMap[cell.X, upCell] == 0 &amp;&amp;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == cell.X &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == downCell) != Point.Zero))</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                (ActionField.Find(c =&gt; c.X == cell.X &amp;&amp; c.Y == downCell) != Point.Zero))</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Up;</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                <span class="comment">// Vertical</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            <span class="keywordflow">if</span> ((ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == cell.X &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == downCell) != Point.Zero) &amp;&amp;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == cell.X &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == upCell) != Point.Zero))</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            <span class="keywordflow">if</span> ((ActionField.Find(c =&gt; c.X == cell.X &amp;&amp; c.Y == downCell) != Point.Zero) &amp;&amp;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                (ActionField.Find(c =&gt; c.X == cell.X &amp;&amp; c.Y == upCell) != Point.Zero))</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Vertical;</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                <span class="comment">// Bottom extremity</span></div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            <span class="keywordflow">if</span> (hazardMap[cell.X, downCell] == 0 &amp;&amp;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == cell.X &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == upCell) != Point.Zero))</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                (ActionField.Find(c =&gt; c.X == cell.X &amp;&amp; c.Y == upCell) != Point.Zero))</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Down;</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                <span class="comment">// ~ Horizontal axis ~ //</span></div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                <span class="comment">// Left extremity</span></div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            <span class="keywordflow">if</span> (hazardMap[leftCell, cell.Y] == 0 &amp;&amp;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == rightCell &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == cell.Y) != Point.Zero))</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                (ActionField.Find(c =&gt; c.X == rightCell &amp;&amp; c.Y == cell.Y) != Point.Zero))</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Left;</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                <span class="comment">// Left - Right</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">if</span> ((ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == rightCell &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == cell.Y) != Point.Zero) &amp;&amp;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == leftCell &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == cell.Y) != Point.Zero))</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">if</span> ((ActionField.Find(c =&gt; c.X == rightCell &amp;&amp; c.Y == cell.Y) != Point.Zero) &amp;&amp;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                (ActionField.Find(c =&gt; c.X == leftCell &amp;&amp; c.Y == cell.Y) != Point.Zero))</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Horizontal;</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                <span class="comment">// Right extremity</span></div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            <span class="keywordflow">if</span> (hazardMap[rightCell, cell.Y] == 0 &amp;&amp;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == leftCell &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == cell.Y) != Point.Zero))</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                (ActionField.Find(c =&gt; c.X == leftCell &amp;&amp; c.Y == cell.Y) != Point.Zero))</div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Right;</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                <span class="comment">// ~ Corners ~ //</span></div>
@@ -473,33 +472,33 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            <span class="keywordflow">if</span> (cell.Y == 1 &amp;&amp; cell.X == 1)</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            {</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                <span class="comment">// Left extremity</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                <span class="keywordflow">if</span> (ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.X == rightCell &amp;&amp; <a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a>.Y == cell.Y) != Point.Zero)</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                <span class="keywordflow">if</span> (ActionField.Find(c =&gt; c.X == rightCell &amp;&amp; c.Y == cell.Y) != Point.Zero)</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                    <span class="keywordflow">return</span> ExplosionDirection.Left;</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                    <span class="comment">// Top extremity</span></div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                <span class="keywordflow">return</span> ExplosionDirection.Up;</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            }</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                <span class="comment">// Corner Bottom - Left</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            <span class="keywordflow">if</span> (cell.Y == map.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">Size</a>.Y - 2 &amp;&amp; cell.X == 1)</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            <span class="keywordflow">if</span> (cell.Y == MapSize.Y - 2 &amp;&amp; cell.X == 1)</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            {</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                <span class="comment">// Left extremity</span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                <span class="keywordflow">return</span> ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; c.X == rightCell &amp;&amp; c.Y == cell.Y) != Point.Zero</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                <span class="keywordflow">return</span> ActionField.Find(c =&gt; c.X == rightCell &amp;&amp; c.Y == cell.Y) != Point.Zero</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;                    ? ExplosionDirection.Left</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;                    : ExplosionDirection.Down;</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            }</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                <span class="comment">// Corner Top - Right</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keywordflow">if</span> (cell.X == map.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">Size</a>.X - 2 &amp;&amp; cell.Y == 1)</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keywordflow">if</span> (cell.X == MapSize.X - 2 &amp;&amp; cell.Y == 1)</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            {</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                <span class="comment">// Right extremity</span></div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                <span class="keywordflow">return</span> ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; c.X == leftCell &amp;&amp; c.Y == cell.Y) != Point.Zero</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                <span class="keywordflow">return</span> ActionField.Find(c =&gt; c.X == leftCell &amp;&amp; c.Y == cell.Y) != Point.Zero</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                    ? ExplosionDirection.Right</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                    : ExplosionDirection.Up;</div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            }</div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                <span class="comment">// Corner Bottom - Right</span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            <span class="keywordflow">if</span> (cell.Y == map.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">Size</a>.Y - 2 &amp;&amp; cell.X == map.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">Size</a>.X - 2)</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            <span class="keywordflow">if</span> (cell.Y == MapSize.Y - 2 &amp;&amp; cell.X == MapSize.X - 2)</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            {</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                <span class="comment">// Right extremity</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                <span class="keywordflow">return</span> ActionField.Find(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; c.X == leftCell &amp;&amp; c.Y == cell.Y) != Point.Zero</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                <span class="keywordflow">return</span> ActionField.Find(c =&gt; c.X == leftCell &amp;&amp; c.Y == cell.Y) != Point.Zero</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                    ? ExplosionDirection.Right</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                    : ExplosionDirection.Down;</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            }</div>
@@ -530,11 +529,11 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                    <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            }</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="class_f_b_client_1_1_world_engine_1_1_map.html">Map</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a3facbd5573ddce7ef626e26e6bd698f7">CollisionLayer</a>[pos.X, pos.Y])</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            <span class="keywordflow">if</span> (!CollisionLayer[pos.X, pos.Y])</div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            {</div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                CurrentDirection = lD;</div>
 <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                _lastPlayerThatPushIt = playerId;</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                <span class="keywordflow">foreach</span> (Point <a class="code" href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a> <span class="keywordflow">in</span> ActionField)</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                <span class="keywordflow">foreach</span> (Point p <span class="keywordflow">in</span> ActionField)</div>
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                {</div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                    HazardMap[p.X, p.Y] = 0;</div>
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                }</div>
@@ -545,14 +544,14 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
 <div class="line"><a name="l00435"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a565e77895ef2b0a9f34148ef07c42808">  435</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a565e77895ef2b0a9f34148ef07c42808">Destroy</a>()</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        {</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            NetworkTestScreen.GameManager.BombExplosionSound.Play();</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            _bombExplosionSound.Play();</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;            base.Destroy();</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        }</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
 <div class="line"><a name="l00442"></a><span class="lineno"><a class="line" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a77e9aa7bc41b09c583f38fc009f27af8">  442</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a77e9aa7bc41b09c583f38fc009f27af8">Remove</a>()</div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        {</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            IsAlive = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            base.Remove();</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        }</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<span class="preprocessor">        #endregion</span></div>
@@ -561,31 +560,24 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;}</div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104ac1b5fa03ecdb95d4a45dd1c40b02527f"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104ac1b5fa03ecdb95d4a45dd1c40b02527f">FBClient.Sprites.Horizontal</a></div></div>
+<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a33e70d0ff65eb687826bb13a0293355b"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a33e70d0ff65eb687826bb13a0293355b">FBClient.Core.Entities.Bomb.Update</a></div><div class="ttdeci">void Update(GameTime gameTime)</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00086">Bomb.cs:86</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_af68b0b2616574e0efc89015ebae6026e"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#af68b0b2616574e0efc89015ebae6026e">FBLibrary.Core.LookDirection</a></div><div class="ttdeci">LookDirection</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00018">Engine.cs:18</a></div></div>
-<div class="ttc" id="jquery_8js_html_a2335e57f79b6acfb6de59c235dc8a83e"><div class="ttname"><a href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a></div><div class="ttdeci">function p(by, bw, bv)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00028">jquery.js:28</a></div></div>
-<div class="ttc" id="jquery_8js_html_ad9d1ac02e33c4aed62ad517a7cb8b3fb"><div class="ttname"><a href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a></div><div class="ttdeci">var c</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00029">jquery.js:29</a></div></div>
-<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a765b19bdf682f4e0163042588bf0f2a8"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a765b19bdf682f4e0163042588bf0f2a8">FBClient.Core.Entities.Bomb.Bomb</a></div><div class="ttdeci">Bomb(int playerId, Point cellPosition, int pow, TimeSpan timerLenght, float playerSpeed)</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00049">Bomb.cs:49</a></div></div>
-<div class="ttc" id="jquery_8js_html_aa4d4888597588a84fd5b1184d00c91f3"><div class="ttname"><a href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a></div><div class="ttdeci">function a</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00041">jquery.js:41</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_engine_html_a7c3c5a82eba3b3d02bc5c1d15c003798"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">FBLibrary.Core.Engine.Origin</a></div><div class="ttdeci">static Vector2 Origin</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00075">Engine.cs:75</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a7d750161940269b8f78722581116a580"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a7d750161940269b8f78722581116a580">FBClient.Core.Entities.Bomb.ChangeDirection</a></div><div class="ttdeci">void ChangeDirection(LookDirection lD, int playerId)</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00403">Bomb.cs:403</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_sprites_1_1_animation_html"><div class="ttname"><a href="class_f_b_client_1_1_sprites_1_1_animation.html">FBClient.Sprites.Animation</a></div><div class="ttdef"><b>Definition:</b> <a href="_animation_8cs_source.html#l00011">Animation.cs:11</a></div></div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104a06ce2a25e5d12c166a36f654dbea6012"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a06ce2a25e5d12c166a36f654dbea6012">FBClient.Sprites.Vertical</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_sprites_1_1_animated_sprite_html"><div class="ttname"><a href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html">FBClient.Sprites.AnimatedSprite</a></div><div class="ttdef"><b>Definition:</b> <a href="_animated_sprite_8cs_source.html#l00012">AnimatedSprite.cs:12</a></div></div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104a08a38277b0309070706f6652eeae9a53"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a08a38277b0309070706f6652eeae9a53">FBClient.Sprites.Down</a></div></div>
-<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_ad12d52bf436a51e88b562c2e0ce50cc2"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#ad12d52bf436a51e88b562c2e0ce50cc2">FBClient.Core.Entities.Bomb.Update</a></div><div class="ttdeci">void Update(GameTime gameTime, Map map, int[,] hazardMap)</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00086">Bomb.cs:86</a></div></div>
+<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a1791728c4722b884590cae366c999d09"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a1791728c4722b884590cae366c999d09">FBClient.Core.Entities.Bomb.Bomb</a></div><div class="ttdeci">Bomb(int playerId, Point cellPosition, int pow, TimeSpan timer, float playerSpeed)</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00046">Bomb.cs:46</a></div></div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104ab1ca34f82e83c52b010f86955f264e05"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104ab1ca34f82e83c52b010f86955f264e05">FBClient.Sprites.Middle</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a77e9aa7bc41b09c583f38fc009f27af8"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a77e9aa7bc41b09c583f38fc009f27af8">FBClient.Core.Entities.Bomb.Remove</a></div><div class="ttdeci">override void Remove()</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00442">Bomb.cs:442</a></div></div>
-<div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html">FBLibrary.Core.BaseEntities.BaseMap</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00009">BaseMap.cs:9</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a6aa90fbbc8dff08a4b812675da768917"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a6aa90fbbc8dff08a4b812675da768917">FBClient.Core.Entities.Bomb.Draw</a></div><div class="ttdeci">void Draw(GameTime gameTime)</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00252">Bomb.cs:252</a></div></div>
-<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">FBClient.Core.Entities.Bomb</a></div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00020">Bomb.cs:20</a></div></div>
+<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">FBClient.Core.Entities.Bomb</a></div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00013">Bomb.cs:13</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html_a565e77895ef2b0a9f34148ef07c42808"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html#a565e77895ef2b0a9f34148ef07c42808">FBClient.Core.Entities.Bomb.Destroy</a></div><div class="ttdeci">override void Destroy()</div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00435">Bomb.cs:435</a></div></div>
-<div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_a3facbd5573ddce7ef626e26e6bd698f7"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a3facbd5573ddce7ef626e26e6bd698f7">FBLibrary.Core.BaseEntities.BaseMap.CollisionLayer</a></div><div class="ttdeci">bool[,] CollisionLayer</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00017">BaseMap.cs:17</a></div></div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104a258f49887ef8d14ac268c92b02503aaa"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a258f49887ef8d14ac268c92b02503aaa">FBClient.Sprites.Up</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_engine_html_a0cca33a35434b83fea7946995dfb1a63"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_engine.html#a0cca33a35434b83fea7946995dfb1a63">FBLibrary.Core.Engine.TileWidth</a></div><div class="ttdeci">static int TileWidth</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00065">Engine.cs:65</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_engine_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_engine.html">FBLibrary.Core.Engine</a></div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00052">Engine.cs:52</a></div></div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104a945d5e233cf7d6240f6b783b36a374ff"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a945d5e233cf7d6240f6b783b36a374ff">FBClient.Sprites.Left</a></div></div>
-<div class="ttc" id="class_f_b_client_1_1_world_engine_1_1_map_html"><div class="ttname"><a href="class_f_b_client_1_1_world_engine_1_1_map.html">FBClient.WorldEngine.Map</a></div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_world_engine_2_map_8cs_source.html#l00011">Map.cs:11</a></div></div>
-<div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_aa53448022a161999155909ff843fc12f"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#aa53448022a161999155909ff843fc12f">FBLibrary.Core.BaseEntities.BaseMap.Size</a></div><div class="ttdeci">Point Size</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00015">BaseMap.cs:15</a></div></div>
 <div class="ttc" id="namespace_f_b_client_1_1_sprites_html_a25e33c2e3b36ddf086d0b59262b12104a92b09c7c48c520c3c55e497875da437c"><div class="ttname"><a href="namespace_f_b_client_1_1_sprites.html#a25e33c2e3b36ddf086d0b59262b12104a92b09c7c48c520c3c55e497875da437c">FBClient.Sprites.Right</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_engine_html_ac5b43676e6951283742c0092b3c08378"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_engine.html#ac5b43676e6951283742c0092b3c08378">FBLibrary.Core.Engine.TileHeight</a></div><div class="ttdeci">static int TileHeight</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00070">Engine.cs:70</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_bomb.html">FBLibrary.Core.BaseEntities.BaseBomb</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_bomb_8cs_source.html#l00008">BaseBomb.cs:8</a></div></div>
@@ -594,8 +586,8 @@ $(document).ready(function(){initNavTree('1_01-_01_final-_bomber_2_final-_bomber
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_58df0a9d625adf303b5f99090eb34aa3.html">Core</a></li><li class="navelem"><a class="el" href="dir_b1274d742f472bbd61d555eb66ecc723.html">Entities</a></li><li class="navelem"><a class="el" href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs.html">Bomb.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_3200730fb3b811e0a6993e4b73750277.html">Core</a></li><li class="navelem"><a class="el" href="dir_0d3c05353c7315613be7399574daf10a.html">Entities</a></li><li class="navelem"><a class="el" href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs.html">Bomb.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:09 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

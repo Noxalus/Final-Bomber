@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -139,7 +138,7 @@ $(document).ready(function(){initNavTree('_host_message_sender_8cs_source.html',
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                    server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                }</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">catch</span> (NetException <a class="code" href="jquery_8js.html#a2c038346d47955cbe2cb91e338edd7e1">e</a>)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">catch</span> (NetException e)</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                WriteOutput(<span class="stringliteral">&quot;NET EXCEPTION: &quot;</span> + e.ToString());</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            }</div>
@@ -411,7 +410,6 @@ $(document).ready(function(){initNavTree('_host_message_sender_8cs_source.html',
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_ac91486aa152455778ef792f62cf20a72"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#ac91486aa152455778ef792f62cf20a72">FBServer.Host.GameServer.SendPlayerPosition</a></div><div class="ttdeci">void SendPlayerPosition(Player player, bool notDir)</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_sender_8cs_source.html#l00145">HostMessageSender.cs:145</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_ab27f2e2cc79e24aa70c4f6246e95c24d"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#ab27f2e2cc79e24aa70c4f6246e95c24d">FBServer.Host.GameServer.SMT</a></div><div class="ttdeci">SMT</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_type_8cs_source.html#l00023">HostMessageType.cs:23</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_a0985d91b7c5ecb45303733c10bc1272c"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#a0985d91b7c5ecb45303733c10bc1272c">FBServer.Host.GameServer.SendStartGame</a></div><div class="ttdeci">void SendStartGame(Client client, bool gameinProgress)</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_sender_8cs_source.html#l00061">HostMessageSender.cs:61</a></div></div>
-<div class="ttc" id="jquery_8js_html_a2c038346d47955cbe2cb91e338edd7e1"><div class="ttname"><a href="jquery_8js.html#a2c038346d47955cbe2cb91e338edd7e1">e</a></div><div class="ttdeci">function e</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_ad1bb9235f72c6ee7ccccdf00e47e24c6"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#ad1bb9235f72c6ee7ccccdf00e47e24c6">FBServer.Host.GameServer.SendPowerUpDrop</a></div><div class="ttdeci">void SendPowerUpDrop(PowerUp powerUp)</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_sender_8cs_source.html#l00221">HostMessageSender.cs:221</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_a0f05f4aeced43d2b6d688e1edc4a5ba3"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#a0f05f4aeced43d2b6d688e1edc4a5ba3">FBServer.Host.GameServer.SendPlayerGotBurned</a></div><div class="ttdeci">void SendPlayerGotBurned(Player player)</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_sender_8cs_source.html#l00199">HostMessageSender.cs:199</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_afb3cea596679555f96e7fcf47b9f1617"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#afb3cea596679555f96e7fcf47b9f1617">FBServer.Host.GameServer.SendCurrentMap</a></div><div class="ttdeci">void SendCurrentMap(Client client)</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_sender_8cs_source.html#l00037">HostMessageSender.cs:37</a></div></div>
@@ -425,8 +423,8 @@ $(document).ready(function(){initNavTree('_host_message_sender_8cs_source.html',
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_9f5ca9439b178aee938cd6991640c733.html">2 - Server</a></li><li class="navelem"><a class="el" href="dir_27106fd4a48a7bc58b614a4c8efcd1af.html">Host</a></li><li class="navelem"><a class="el" href="_host_message_sender_8cs.html">HostMessageSender.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_37e019b48aa04337b118ed7433747f11.html">2 - Server</a></li><li class="navelem"><a class="el" href="dir_2aee0e2a503700edee3aaa0117e4f5eb.html">Host</a></li><li class="navelem"><a class="el" href="_host_message_sender_8cs.html">HostMessageSender.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

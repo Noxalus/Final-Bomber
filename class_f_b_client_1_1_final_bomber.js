@@ -18,7 +18,7 @@ var class_f_b_client_1_1_final_bomber =
     [ "LobbyMenuScreen", "class_f_b_client_1_1_final_bomber.html#a2628838207afc63f37f08340af0e7065", null ],
     [ "MultiplayerGameModeMenuScreen", "class_f_b_client_1_1_final_bomber.html#a4b1cbce6c562f51ba0ac11c8eb255f79", null ],
     [ "NetworkMenuScreen", "class_f_b_client_1_1_final_bomber.html#a2705bce079d3bee73331f062b846147e", null ],
-    [ "NetworkTestScreen", "class_f_b_client_1_1_final_bomber.html#a1ce1c0324400edf63eb4e7e147653f23", null ],
+    [ "NetworkTestScreen", "class_f_b_client_1_1_final_bomber.html#a7e90e85a690a35becb8f1000b5133de9", null ],
     [ "OnlineGameMenuScreen", "class_f_b_client_1_1_final_bomber.html#a0d7500630af73ec25801f508aca8e7a1", null ],
     [ "OptionMenuScreen", "class_f_b_client_1_1_final_bomber.html#ae245a33befbc4c4746bc828737742d59", null ],
     [ "ScreenRectangle", "class_f_b_client_1_1_final_bomber.html#a1920fde0c703e9a808decb3fafae2538", null ],

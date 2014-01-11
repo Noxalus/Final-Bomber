@@ -1,6 +1,6 @@
 var class_f_b_client_1_1_network_1_1_network_manager =
 [
-    [ "NetworkManager", "class_f_b_client_1_1_network_1_1_network_manager.html#a39ae3c33109f7e9abb456a7dafd85027", null ],
+    [ "NetworkManager", "class_f_b_client_1_1_network_1_1_network_manager.html#ac4ab410aeb92c2c4f54931a88c84680a", null ],
     [ "AddPlayerEventHandler", "class_f_b_client_1_1_network_1_1_network_manager.html#a6887e794c2a393b518e3733781fb1055", null ],
     [ "Dispose", "class_f_b_client_1_1_network_1_1_network_manager.html#ad7b23829ff10753c9a621c9f9db709ac", null ],
     [ "Initiliaze", "class_f_b_client_1_1_network_1_1_network_manager.html#a6e9943e2dab24c0d30821dd9ed3dd681", null ],

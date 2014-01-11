@@ -17,6 +17,6 @@ var searchData=
   ['baseunbreakablewall',['BaseUnbreakableWall',['../class_f_b_library_1_1_core_1_1_base_entities_1_1_base_unbreakable_wall.html',1,'FBLibrary::Core::BaseEntities']]],
   ['basewall',['BaseWall',['../class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall.html',1,'FBLibrary::Core::BaseEntities']]],
   ['battlemenuscreen',['BattleMenuScreen',['../class_f_b_client_1_1_screens_1_1_menu_screens_1_1_battle_menu_screen.html',1,'FBClient::Screens::MenuScreens']]],
-  ['bomb',['Bomb',['../class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html',1,'FBClient::Core::Entities']]],
-  ['bomb',['Bomb',['../class_f_b_server_1_1_core_1_1_entities_1_1_bomb.html',1,'FBServer::Core::Entities']]]
+  ['bomb',['Bomb',['../class_f_b_server_1_1_core_1_1_entities_1_1_bomb.html',1,'FBServer::Core::Entities']]],
+  ['bomb',['Bomb',['../class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html',1,'FBClient::Core::Entities']]]
 ];

@@ -1,5 +1,5 @@
 <map id="FBClient.Screens.GameScreens.SinglePlayerGamePlayScreen" name="FBClient.Screens.GameScreens.SinglePlayerGamePlayScreen">
-<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html" title="{BaseGamePlayScreen\n|+ GameManager\l# ItemInfoIcon\l# Cross\l# GameFont\l# SmallFont\l# HudOrigin\l# HudTopSpace\l# HudMarginLeft\l# BadItemTimerBar\l# WindowSkin\l# ScoresWindowBox\l# TimerWindowBox\l# Camera\l|# BaseGamePlayScreen()\l# LoadContent()\l}" alt="" coords="27,574,200,842"/>
-<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="{BaseGameState\n|# ControlManager\l# BigFont\l# playerIndexInControl\l|+ BaseGameState()\l+ Update()\l+ Draw()\l# LoadContent()\l}" alt="" coords="38,374,188,525"/>
-<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="{GameState\n|+ Components\l+ Tag\l# StateManager\l|+ Initialize()\l+ Update()\l+ Draw()\l# GameState()\l# StateChange()\l# Show()\l# Hide()\l}" alt="" coords="55,131,171,325"/>
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html" title="BaseGamePlayScreen" alt="" coords="35,229,189,256"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_screens_1_1_base_game_state.html" title="BaseGameState" alt="" coords="53,155,171,181"/>
+<area shape="rect" id="node4" href="$class_f_b_client_1_1_controls_1_1_game_state.html" title="GameState" alt="" coords="68,80,156,107"/>
 </map>

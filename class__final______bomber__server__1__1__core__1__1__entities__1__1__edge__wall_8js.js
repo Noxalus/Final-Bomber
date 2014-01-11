@@ -1,4 +1,0 @@
-var class__final______bomber__server__1__1__core__1__1__entities__1__1__edge__wall_8js =
-[
-    [ "class_final___bomber_server_1_1_core_1_1_entities_1_1_edge_wall", "class__final______bomber__server__1__1__core__1__1__entities__1__1__edge__wall_8js.html#a5afd1d98eb3b9956eeca7cdf67af1b23", null ]
-];

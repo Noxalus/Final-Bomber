@@ -1,4 +1,0 @@
-var class__final______bomber__1__1__screens__1__1__game__screens__1__1__network__test__screen_8js =
-[
-    [ "class_final___bomber_1_1_screens_1_1_game_screens_1_1_network_test_screen", "class__final______bomber__1__1__screens__1__1__game__screens__1__1__network__test__screen_8js.html#a59184123315bd697bfb5576e65671917", null ]
-];

@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -155,18 +154,18 @@ $(document).ready(function(){initNavTree('_base_map_8cs_source.html','');});
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">if</span> (Loaded)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> = 0; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> &lt; Size.X; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>++)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Size.X; x++)</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Size.Y; y++)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                        <span class="keywordflow">if</span> (Board[<a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, y] is <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html">BaseEdgeWall</a> ||</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                        <span class="keywordflow">if</span> (Board[x, y] is <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html">BaseEdgeWall</a> ||</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            Board[x, y] is <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_unbreakable_wall.html">BaseUnbreakableWall</a>)</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                        {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                        }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                        Board[<a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, y] = null;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                        CollisionLayer[<a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, y] = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                        Board[x, y] = null;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                        CollisionLayer[x, y] = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
@@ -268,11 +267,11 @@ $(document).ready(function(){initNavTree('_base_map_8cs_source.html','');});
 <div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a553eddc386b7d394cd720760002b3187">  157</a></span>&#160;        <span class="keyword">public</span> List&lt;Point&gt; <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a553eddc386b7d394cd720760002b3187">FindEmptyCells</a>()</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        {</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            var emptyCells = <span class="keyword">new</span> List&lt;Point&gt;();</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> = 0; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> &lt; Size.X; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>++)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Size.X; x++)</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            {</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Size.Y; y++)</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                    <span class="keywordflow">if</span> (!CollisionLayer[<a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, y])</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                    <span class="keywordflow">if</span> (!CollisionLayer[x, y])</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                        emptyCells.Add(<span class="keyword">new</span> Point(x, y));</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                }</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            }</div>
@@ -337,9 +336,9 @@ $(document).ready(function(){initNavTree('_base_map_8cs_source.html','');});
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Size.Y; y++)</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> = 0; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> &lt; Size.X; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>++)</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Size.X; x++)</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                {</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                    <span class="keywordflow">if</span> (Board[<a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, y] is <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html">BaseEdgeWall</a>)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                    <span class="keywordflow">if</span> (Board[x, y] is <a class="code" href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html">BaseEdgeWall</a>)</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                    {</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                        Console.Write(<span class="stringliteral">&quot;E &quot;</span>);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                    }</div>
@@ -369,9 +368,9 @@ $(document).ready(function(){initNavTree('_base_map_8cs_source.html','');});
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        {</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Size.Y; y++)</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            {</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> = 0; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a> &lt; Size.X; <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>++)</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Size.X; x++)</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                    Console.Write(CollisionLayer[<a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, y] ? <span class="stringliteral">&quot;1 &quot;</span> : <span class="stringliteral">&quot;0 &quot;</span>);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                    Console.Write(CollisionLayer[x, y] ? <span class="stringliteral">&quot;1 &quot;</span> : <span class="stringliteral">&quot;0 &quot;</span>);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                }</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                Console.WriteLine();</div>
@@ -380,12 +379,11 @@ $(document).ready(function(){initNavTree('_base_map_8cs_source.html','');});
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="preprocessor">        #endregion</span></div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;}</div>
-<div class="ttc" id="class_f_b_library_1_1_core_1_1_base_game_manager_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_game_manager.html">FBLibrary.Core.BaseGameManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_game_manager_8cs_source.html#l00012">BaseGameManager.cs:12</a></div></div>
+<div class="ttc" id="class_f_b_library_1_1_core_1_1_base_game_manager_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_game_manager.html">FBLibrary.Core.BaseGameManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_game_manager_8cs_source.html#l00009">BaseGameManager.cs:9</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_wall.html">FBLibrary.Core.BaseEntities.BaseWall</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_wall_8cs_source.html#l00005">BaseWall.cs:5</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_ac5ba83938ededceb904948265d0d9ccf"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#ac5ba83938ededceb904948265d0d9ccf">FBLibrary.Core.BaseEntities.BaseMap.Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00043">BaseMap.cs:43</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_a553eddc386b7d394cd720760002b3187"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a553eddc386b7d394cd720760002b3187">FBLibrary.Core.BaseEntities.BaseMap.FindEmptyCells</a></div><div class="ttdeci">List&lt; Point &gt; FindEmptyCells()</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00157">BaseMap.cs:157</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_edge_wall.html">FBLibrary.Core.BaseEntities.BaseEdgeWall</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_edge_wall_8cs_source.html#l00005">BaseEdgeWall.cs:5</a></div></div>
-<div class="ttc" id="jquery_8js_html_a4c3eadaa5164016d2c340d495fc6e55e"><div class="ttname"><a href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a></div><div class="ttdeci">function x(bx)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00030">jquery.js:30</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_ae0dc2ebb9ab5252e7520af61a2b48dc2"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#ae0dc2ebb9ab5252e7520af61a2b48dc2">FBLibrary.Core.BaseEntities.BaseMap.PlayerSpawnPoints</a></div><div class="ttdeci">readonly List&lt; Point &gt; PlayerSpawnPoints</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00018">BaseMap.cs:18</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_a2f8992a3a1227b0df8a175ae181c6a19"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a2f8992a3a1227b0df8a175ae181c6a19">FBLibrary.Core.BaseEntities.BaseMap.DisplayCollisionLayer</a></div><div class="ttdeci">void DisplayCollisionLayer()</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00257">BaseMap.cs:257</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map_html_a5d0ba99fb32dd5e2c0c336f0989cd5be"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html#a5d0ba99fb32dd5e2c0c336f0989cd5be">FBLibrary.Core.BaseEntities.BaseMap.Loaded</a></div><div class="ttdeci">bool Loaded</div><div class="ttdef"><b>Definition:</b> <a href="_base_map_8cs_source.html#l00014">BaseMap.cs:14</a></div></div>
@@ -409,8 +407,8 @@ $(document).ready(function(){initNavTree('_base_map_8cs_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_bd5960241e8193d485052893c86bc07f.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="dir_da8b686cda261f266ae248c50a793773.html">Core</a></li><li class="navelem"><a class="el" href="dir_1c7114abaac0c6e4e07a1e4fd0025efe.html">BaseEntities</a></li><li class="navelem"><a class="el" href="_base_map_8cs.html">BaseMap.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_ec3ec17c793273d9ae6f2b37deed55ab.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="dir_a8587bdd7818fd06d3be4558edcbbcfd.html">Core</a></li><li class="navelem"><a class="el" href="dir_ac01aabf988ace2f2d29a3216e6ff7ee.html">BaseEntities</a></li><li class="navelem"><a class="el" href="_base_map_8cs.html">BaseMap.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

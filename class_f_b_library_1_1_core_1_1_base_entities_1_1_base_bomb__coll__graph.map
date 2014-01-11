@@ -1,7 +1,5 @@
 <map id="FBLibrary.Core.BaseEntities.BaseBomb" name="FBLibrary.Core.BaseEntities.BaseBomb">
-<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="{DynamicEntity\n|+ CurrentDirection\l+ Speed\l+ Velocity\l# PreviousCellPosition\l# PreviousDirection\l# IsMoving\l|+ Update()\l# DynamicEntity()\l# DynamicEntity()\l# IsChangingCell()\l}" alt="" coords="5,584,155,779"/>
-<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="{BaseEntity\n|+ IsAlive\l+ InDestruction\l+ DestructionTime\l+ Position\l+ PositionX\l+ PositionY\l+ CellPositionX\l+ CellPositionY\l+ CellPosition\l+ Dimension\l|+ Update()\l+ ChangePosition()\l+ ChangePosition()\l+ ChangePosition()\l+ Destroy()\l+ Remove()\l# BaseEntity()\l# BaseEntity()\l}" alt="" coords="13,149,147,461"/>
-<area shape="rect" id="node4" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="36,6,124,98"/>
-<area shape="rect" id="node5" href="$class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="{FBLibrary.Core.BaseEntities.\lBaseMap\n|+ Name\l+ Loaded\l+ Size\l+ CollisionLayer\l+ PlayerSpawnPoints\l+ PlayerNumber\l|+ Reset()\l+ Parse()\l+ FindEmptyCells()\l+ GetMd5()\l+ DisplayBoard()\l+ DisplayCollisionLayer()\l# BaseMap()\l# AddUnbreakableWall()\l# AddUnbreakableWall()\l# AddEdgeWall()\l# AddEdgeWall()\l}" alt="" coords="179,525,369,837"/>
-<area shape="rect" id="node6" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="{FBLibrary.Core.IEntity\n||+ Destroy()\l+ Remove()\l}" alt="" coords="199,259,349,351"/>
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_dynamic_entity.html" title="DynamicEntity" alt="" coords="47,155,153,181"/>
+<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_entity.html" title="BaseEntity" alt="" coords="57,80,143,107"/>
+<area shape="rect" id="node4" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="IEntity" alt="" coords="71,5,129,32"/>
 </map>

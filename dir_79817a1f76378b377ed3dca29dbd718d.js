@@ -1,4 +1,0 @@
-var dir_79817a1f76378b377ed3dca29dbd718d =
-[
-    [ "class_final___bomber_1_1_screens_1_1_menu_screens_1_1_battle_menu_screen.js", "class__final______bomber__1__1__screens__1__1__menu__screens__1__1__battle__menu__screen_8js.html", "class__final______bomber__1__1__screens__1__1__menu__screens__1__1__battle__menu__screen_8js" ]
-];

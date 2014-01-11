@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$class_launcher_1_1_app.html" title="App " alt="" coords="142,5,245,32"/>
+<area shape="rect" id="node2" href="$class_final___bomber_1_1_screens_1_1_multiplayer_game_mode_menu_screen.html" title="Final_Bomber.Screens.Multiplayer\lGameModeMenuScreen" alt="" coords="173,5,395,46"/>
+<area shape="rect" id="node3" href="$class_final___bomber_1_1_screens_1_1_online_game_menu_screen.html" title="Final_Bomber.Screens.Online\lGameMenuScreen" alt="" coords="187,70,381,111"/>
+<area shape="rect" id="node4" href="$class_final___bomber_1_1_screens_1_1_single_player_game_mode_menu_screen.html" title="Final_Bomber.Screens.Single\lPlayerGameModeMenuScreen" alt="" coords="185,135,383,177"/>
 </map>

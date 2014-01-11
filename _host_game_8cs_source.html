@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -368,7 +367,7 @@ $(document).ready(function(){initNavTree('_host_game_8cs_source.html','');});
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">        #endregion</span></div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">        #region ServerEvents</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor"></span>        <span class="keyword">private</span> <span class="keywordtype">void</span> gameServer_ConnectedClient(Client sender, EventArgs <a class="code" href="jquery_8js.html#a2c038346d47955cbe2cb91e338edd7e1">e</a>)</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor"></span>        <span class="keyword">private</span> <span class="keywordtype">void</span> gameServer_ConnectedClient(Client sender, EventArgs e)</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        {</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keywordflow">if</span> (<span class="keyword">true</span> <span class="comment">/*GameSettings.gameServer.clients.Count &lt;= GameSettings.Get_gameManager.CurrentMap().playerAmount*/</span>)</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            {</div>
@@ -414,14 +413,14 @@ $(document).ready(function(){initNavTree('_host_game_8cs_source.html','');});
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                <span class="keywordflow">if</span> (player.CurrentBombAmount &gt; 0)</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                {</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                    var bo = GameManager.BombList.Find(<a class="code" href="jquery_8js.html#ac0431efac4d7c393d1e70b86115cb93f">b</a> =&gt; b.CellPosition == player.CellPosition);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                    var bo = GameManager.BombList.Find(b =&gt; b.CellPosition == player.CellPosition);</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                    <span class="keywordflow">if</span> (bo != null) <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                    var bomb = <span class="keyword">new</span> <a class="code" href="class_f_b_server_1_1_core_1_1_entities_1_1_bomb.html">Bomb</a>(player.Id, player.CellPosition, player.BombPower, player.BombTimer,</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                        player.Speed);</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = <span class="keyword">true</span>;</div>
@@ -462,13 +461,11 @@ $(document).ready(function(){initNavTree('_host_game_8cs_source.html','');});
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;}</div>
 <div class="ttc" id="class_f_b_server_1_1_core_1_1_entities_1_1_bomb_html"><div class="ttname"><a href="class_f_b_server_1_1_core_1_1_entities_1_1_bomb.html">FBServer.Core.Entities.Bomb</a></div><div class="ttdef"><b>Definition:</b> <a href="2_01-_01_server_2_core_2_entities_2_bomb_8cs_source.html#l00007">Bomb.cs:7</a></div></div>
-<div class="ttc" id="jquery_8js_html_ac0431efac4d7c393d1e70b86115cb93f"><div class="ttname"><a href="jquery_8js.html#ac0431efac4d7c393d1e70b86115cb93f">b</a></div><div class="ttdeci">var b</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00016">jquery.js:16</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_host_game_html_abfbdfb012dc10268831c3a8bcc97fe25"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_host_game.html#abfbdfb012dc10268831c3a8bcc97fe25">FBServer.Host.HostGame.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="_host_game_8cs_source.html#l00062">HostGame.cs:62</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_host_game_html_a49d8d2e88e9ac0f10e18327de0d3d253"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_host_game.html#a49d8d2e88e9ac0f10e18327de0d3d253">FBServer.Host.HostGame.GameManager</a></div><div class="ttdeci">static GameManager GameManager</div><div class="ttdef"><b>Definition:</b> <a href="_host_game_8cs_source.html#l00032">HostGame.cs:32</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_core_1_1_game_manager_html"><div class="ttname"><a href="class_f_b_server_1_1_core_1_1_game_manager.html">FBServer.Core.GameManager</a></div><div class="ttdef"><b>Definition:</b> <a href="2_01-_01_server_2_core_2_game_manager_8cs_source.html#l00016">GameManager.cs:16</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_client_html"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_client.html">FBServer.Host.Client</a></div><div class="ttdef"><b>Definition:</b> <a href="_client_8cs_source.html#l00011">Client.cs:11</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html">FBServer.Host.GameServer</a></div><div class="ttdef"><b>Definition:</b> <a href="2_01-_01_server_2_host_2_data_processing_8cs_source.html#l00006">DataProcessing.cs:6</a></div></div>
-<div class="ttc" id="jquery_8js_html_a2c038346d47955cbe2cb91e338edd7e1"><div class="ttname"><a href="jquery_8js.html#a2c038346d47955cbe2cb91e338edd7e1">e</a></div><div class="ttdeci">function e</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_host_game_html_af204187a730dbc4caa3abf83e1bd481a"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_host_game.html#af204187a730dbc4caa3abf83e1bd481a">FBServer.Host.HostGame.Dispose</a></div><div class="ttdeci">void Dispose()</div><div class="ttdef"><b>Definition:</b> <a href="_host_game_8cs_source.html#l00083">HostGame.cs:83</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_timer_html"><div class="ttname"><a href="class_f_b_server_1_1_timer.html">FBServer.Timer</a></div><div class="ttdef"><b>Definition:</b> <a href="2_01-_01_server_2_timer_8cs_source.html#l00009">Timer.cs:9</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_core_1_1_player_html"><div class="ttname"><a href="class_f_b_server_1_1_core_1_1_player.html">FBServer.Core.Player</a></div><div class="ttdef"><b>Definition:</b> <a href="2_01-_01_server_2_core_2_player_8cs_source.html#l00008">Player.cs:8</a></div></div>
@@ -480,8 +477,8 @@ $(document).ready(function(){initNavTree('_host_game_8cs_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_9f5ca9439b178aee938cd6991640c733.html">2 - Server</a></li><li class="navelem"><a class="el" href="dir_27106fd4a48a7bc58b614a4c8efcd1af.html">Host</a></li><li class="navelem"><a class="el" href="_host_game_8cs.html">HostGame.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_37e019b48aa04337b118ed7433747f11.html">2 - Server</a></li><li class="navelem"><a class="el" href="dir_2aee0e2a503700edee3aaa0117e4f5eb.html">Host</a></li><li class="navelem"><a class="el" href="_host_game_8cs.html">HostGame.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

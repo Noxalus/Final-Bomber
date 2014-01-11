@@ -1,4 +1,0 @@
-var class__f__b__client__1__1__core__1__1__players__1__1__base__human__player_8js =
-[
-    [ "class_f_b_client_1_1_core_1_1_players_1_1_base_human_player", "class__f__b__client__1__1__core__1__1__players__1__1__base__human__player_8js.html#a7ecbeb0a992a059e89711f292a8694f2", null ]
-];

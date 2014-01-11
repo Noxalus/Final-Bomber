@@ -23,6 +23,6 @@
 <area shape="rect" id="node14" href="$class_f_b_client_1_1_screens_1_1_menu_screens_1_1_sudden_death_menu_screen.html" title="FBClient.Screens.MenuScreens.\lSuddenDeathMenuScreen" alt="" coords="990,593,1202,634"/>
 <area shape="rect" id="node15" href="$class_f_b_client_1_1_screens_1_1_menu_screens_1_1_title_screen.html" title="FBClient.Screens.MenuScreens.\lTitleScreen" alt="" coords="990,658,1202,699"/>
 <area shape="rect" id="node16" href="$class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_menu_screen.html" title="FBClient.Screens.MenuScreens.\lUserMenuScreen" alt="" coords="990,723,1202,765"/>
-<area shape="rect" id="node18" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_test_screen.html" title="FBClient.Screens.GameScreens.\lNetworkTestScreen" alt="" coords="989,789,1203,830"/>
+<area shape="rect" id="node18" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_game_play_screen.html" title="FBClient.Screens.GameScreens.\lNetworkGamePlayScreen" alt="" coords="989,789,1203,830"/>
 <area shape="rect" id="node19" href="$class_f_b_client_1_1_screens_1_1_game_screens_1_1_single_player_game_play_screen.html" title="FBClient.Screens.GameScreens.\lSinglePlayerGamePlayScreen" alt="" coords="989,854,1203,895"/>
 </map>

@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -129,7 +128,7 @@ $(document).ready(function(){initNavTree('_host_message_receiver_8cs_source.html
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            {</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                <span class="keywordflow">if</span> (!client.AlreadyPlayed)</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                    var playerNames = GameSettings.GameServer.Clients.Select(<a class="code" href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a> =&gt; c.Username).ToList();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                    var playerNames = GameSettings.GameServer.Clients.Select(c =&gt; c.Username).ToList();</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                    client.Username = username;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                    <span class="keywordflow">if</span> (playerNames.Contains(client.Username))</div>
@@ -179,7 +178,6 @@ $(document).ready(function(){initNavTree('_host_message_receiver_8cs_source.html
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_a44de5e20dd3ee26d14b735fb9268d79f"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#a44de5e20dd3ee26d14b735fb9268d79f">FBServer.Host.GameServer.OnBombPlacing</a></div><div class="ttdeci">virtual void OnBombPlacing(Client sender)</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_receiver_8cs_source.html#l00056">HostMessageReceiver.cs:56</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_af68b0b2616574e0efc89015ebae6026e"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#af68b0b2616574e0efc89015ebae6026e">FBLibrary.Core.LookDirection</a></div><div class="ttdeci">LookDirection</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00018">Engine.cs:18</a></div></div>
-<div class="ttc" id="jquery_8js_html_ad9d1ac02e33c4aed62ad517a7cb8b3fb"><div class="ttname"><a href="jquery_8js.html#ad9d1ac02e33c4aed62ad517a7cb8b3fb">c</a></div><div class="ttdeci">var c</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00029">jquery.js:29</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_client_html"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_client.html">FBServer.Host.Client</a></div><div class="ttdef"><b>Definition:</b> <a href="_client_8cs_source.html#l00011">Client.cs:11</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_game_server_html_a5a02dbc1501dfdee9a2c0550774d119c"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_game_server.html#a5a02dbc1501dfdee9a2c0550774d119c">FBServer.Host.GameServer.BombPlacing</a></div><div class="ttdeci">BombPlacingEventHandler BombPlacing</div><div class="ttdef"><b>Definition:</b> <a href="_host_message_receiver_8cs_source.html#l00055">HostMessageReceiver.cs:55</a></div></div>
 <div class="ttc" id="class_f_b_server_1_1_host_1_1_client_html_ae4bb8a96772910d404d5d9cd5cd02922"><div class="ttname"><a href="class_f_b_server_1_1_host_1_1_client.html#ae4bb8a96772910d404d5d9cd5cd02922">FBServer.Host.Client.Player</a></div><div class="ttdeci">Player Player</div><div class="ttdef"><b>Definition:</b> <a href="_client_8cs_source.html#l00043">Client.cs:43</a></div></div>
@@ -188,8 +186,8 @@ $(document).ready(function(){initNavTree('_host_message_receiver_8cs_source.html
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_9f5ca9439b178aee938cd6991640c733.html">2 - Server</a></li><li class="navelem"><a class="el" href="dir_27106fd4a48a7bc58b614a4c8efcd1af.html">Host</a></li><li class="navelem"><a class="el" href="_host_message_receiver_8cs.html">HostMessageReceiver.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_37e019b48aa04337b118ed7433747f11.html">2 - Server</a></li><li class="navelem"><a class="el" href="dir_2aee0e2a503700edee3aaa0117e4f5eb.html">Host</a></li><li class="navelem"><a class="el" href="_host_message_receiver_8cs.html">HostMessageReceiver.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

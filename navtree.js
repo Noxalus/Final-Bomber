@@ -25,12 +25,7 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Files", null, [
-      [ "File List", "files.html", "files" ],
-      [ "File Members", "globals.html", [
-        [ "All", "globals.html", "globals_dup" ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", "globals_vars" ]
-      ] ]
+      [ "File List", "files.html", "files" ]
     ] ]
   ] ]
 ];
@@ -38,16 +33,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_arrow_8cs.html",
-"_game_configuration_8cs.html",
-"class__f__b__client__1__1__network__1__1__network__manager_8js.html#ae7fc3c78ca4b0777d91405f9cc919bee",
-"class__final______bomber__1__1__core__1__1__entities__1__1__wall_8js_source.html",
-"class_f_b_client_1_1_controls_1_1_game_state_manager.html#a377e581d8df2fbd91daea1d9a9bb71a9",
-"class_f_b_client_1_1_network_1_1_game_server.html#a97f4f7f0248cc062f6bd496f8f1619e1ae7d31fc0602fb2ede144d18cdffd816b",
-"class_f_b_client_1_1_sprites_1_1_base_sprite.html#adc03827ac21ca0b53f300f7f99576552",
-"class_f_b_server_1_1_core_1_1_entities_1_1_wall.html#a0e0de85c2551622b49c52592a8a41cfe",
-"dir_11142e133fbf221118761558889685e0.html",
-"dir_f75f691f23fded792dda15f1a5c544f9.html",
-"namespace__f__b__launcher_8js.html#a2dadbe1ab16c13c6549f5599cdaa655e"
+"_engine_8cs.html#af68b0b2616574e0efc89015ebae6026eae599161956d626eda4cb0a5ffb85271c",
+"class_f_b_client_1_1_core_1_1_game_manager.html#a4b06080f7873f7bf096e67af65d70d8b",
+"class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a06638724fa4bb2cc0c3d49634a8f44c0",
+"class_f_b_launcher_1_1_main_window.html#a4aa2903c6ef97276d34a3a5744910fd0",
+"class_f_b_server_1_1_host_1_1_client.html#ada57ad11099c7bf1f1d295df759923b7",
+"namespace_f_b_client_1_1_screens.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

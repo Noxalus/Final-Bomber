@@ -1,5 +1,0 @@
-var dir_341a14862757fd389b7d1dbc4e4482f7 =
-[
-    [ "class_f_b_client_1_1_screens_1_1_menu_screens_1_1_user_registration_menu_screen.js", "class__f__b__client__1__1__screens__1__1__menu__screens__1__1__user__registration__menu__screen_8js.html", "class__f__b__client__1__1__screens__1__1__menu__screens__1__1__user__registration__menu__screen_8js" ],
-    [ "class_final___bomber_1_1_network_1_1_move_player_args.js", "class__final______bomber__1__1__network__1__1__move__player__args_8js.html", "class__final______bomber__1__1__network__1__1__move__player__args_8js" ]
-];

@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -156,7 +155,7 @@ $(document).ready(function(){initNavTree('2_01-_01_server_2_program_8cs_source.h
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">while</span>(server.Running)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    <span class="comment">// Delta time</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    GameConfiguration.DeltaTime = timer.Elapsed.Milliseconds;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    GameConfiguration.DeltaTime = timer.Elapsed.Ticks;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    server.Update();</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    <span class="comment">//Program.Log.Info(timer.Elapsed.Milliseconds);</span></div>
@@ -175,8 +174,8 @@ $(document).ready(function(){initNavTree('2_01-_01_server_2_program_8cs_source.h
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_9f5ca9439b178aee938cd6991640c733.html">2 - Server</a></li><li class="navelem"><a class="el" href="2_01-_01_server_2_program_8cs.html">Program.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_37e019b48aa04337b118ed7433747f11.html">2 - Server</a></li><li class="navelem"><a class="el" href="2_01-_01_server_2_program_8cs.html">Program.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:09 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

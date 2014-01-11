@@ -6,6 +6,7 @@ var class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen =
     [ "Camera", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a06638724fa4bb2cc0c3d49634a8f44c0", null ],
     [ "Cross", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a197d89b22c922e2afd7542952779cf42", null ],
     [ "GameFont", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#aa75af535712b994efb84c17a0f624a0d", null ],
+    [ "GameManager", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#ab540695bf07f1b53a0ad94cecdb0aca0", null ],
     [ "HudMarginLeft", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a87e92e85b8d9c048ce785c9538ff4381", null ],
     [ "HudOrigin", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a584620cd0d2df955d3dd598b5f1cdc10", null ],
     [ "HudTopSpace", "class_f_b_client_1_1_screens_1_1_game_screens_1_1_base_game_play_screen.html#a716faf8c07fbcfabaee906fb351d9a62", null ],

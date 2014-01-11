@@ -1,4 +1,0 @@
-var class__f__b__library__1__1__core__1__1__base__entities__1__1__base__power__up_8js =
-[
-    [ "class_f_b_library_1_1_core_1_1_base_entities_1_1_base_power_up", "class__f__b__library__1__1__core__1__1__base__entities__1__1__base__power__up_8js.html#a11ab83e684af5ee2a01de77550841705", null ]
-];

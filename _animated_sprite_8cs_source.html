@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -150,9 +149,9 @@ $(document).ready(function(){initNavTree('_animated_sprite_8cs_source.html','');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                var anim = <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a>[_animations.Count];</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="keywordflow">foreach</span> (<a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a> <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> <span class="keywordflow">in</span> _animations.Values)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="keywordflow">foreach</span> (<a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a> a <span class="keywordflow">in</span> _animations.Values)</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    anim[i] = <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    anim[i] = a;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    i++;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">return</span> anim;</div>
@@ -250,12 +249,12 @@ $(document).ready(function(){initNavTree('_animated_sprite_8cs_source.html','');
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                spriteBatch.Draw(</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    _texture,</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                    <span class="keyword">new</span> Rectangle(</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                        (<span class="keywordtype">int</span>)(<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">Origin</a>.X + position.X - <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a0cca33a35434b83fea7946995dfb1a63">TileWidth</a> / 4<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>),</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                        (<span class="keywordtype">int</span>)(<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">Origin</a>.Y + position.Y - <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#ac5b43676e6951283742c0092b3c08378">TileHeight</a> / 2<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>),</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                        (<span class="keywordtype">int</span>)(<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">Origin</a>.X + position.X - <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a0cca33a35434b83fea7946995dfb1a63">TileWidth</a> / 4f),</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                        (<span class="keywordtype">int</span>)(<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">Origin</a>.Y + position.Y - <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#ac5b43676e6951283742c0092b3c08378">TileHeight</a> / 2f),</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                        <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a0cca33a35434b83fea7946995dfb1a63">TileWidth</a> + <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a0cca33a35434b83fea7946995dfb1a63">TileWidth</a> / 2,</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                        <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#ac5b43676e6951283742c0092b3c08378">TileHeight</a> + <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#ac5b43676e6951283742c0092b3c08378">TileHeight</a> / 2),</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                    sourceRectangle,</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    Color.White, 0<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>, Vector2.Zero, SpriteEffects.None, 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            }</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            {</div>
@@ -263,7 +262,7 @@ $(document).ready(function(){initNavTree('_animated_sprite_8cs_source.html','');
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                _texture,</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keyword">new</span> Vector2(<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">Origin</a>.X + position.X, <a class="code" href="class_f_b_library_1_1_core_1_1_engine.html">Engine</a>.<a class="code" href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">Origin</a>.Y + position.Y),</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                sourceRectangle,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                Color.White, 0<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>, Vector2.Zero, 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>, SpriteEffects.None, 1<a class="code" href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a>);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            }</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
@@ -275,7 +274,7 @@ $(document).ready(function(){initNavTree('_animated_sprite_8cs_source.html','');
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">if</span> (_controlable)</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">foreach</span> (<a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a> <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> <span class="keywordflow">in</span> _animations.Values)</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">foreach</span> (<a class="code" href="class_f_b_client_1_1_sprites_1_1_animation.html">Animation</a> a <span class="keywordflow">in</span> _animations.Values)</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                    a.FramesPerSecond = newValue;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            }</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <span class="keywordflow">else</span></div>
@@ -314,8 +313,6 @@ $(document).ready(function(){initNavTree('_animated_sprite_8cs_source.html','');
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
 <div class="ttc" id="class_f_b_client_1_1_sprites_1_1_animated_sprite_html_a617edde2599bf22a2e04037d55289c90"><div class="ttname"><a href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html#a617edde2599bf22a2e04037d55289c90">FBClient.Sprites.AnimatedSprite.ChangeFramesPerSecond</a></div><div class="ttdeci">void ChangeFramesPerSecond(int newValue)</div><div class="ttdef"><b>Definition:</b> <a href="_animated_sprite_8cs_source.html#l00163">AnimatedSprite.cs:163</a></div></div>
-<div class="ttc" id="jquery_8js_html_aa4d4888597588a84fd5b1184d00c91f3"><div class="ttname"><a href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a></div><div class="ttdeci">function a</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00041">jquery.js:41</a></div></div>
-<div class="ttc" id="jquery_8js_html_a633de4b0c14ca52ea2432a3c8a5c4c31"><div class="ttname"><a href="jquery_8js.html#a633de4b0c14ca52ea2432a3c8a5c4c31">f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00071">jquery.js:71</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_sprites_1_1_animated_sprite_html_ad4a401cac40fc01296bb406add0d8b70"><div class="ttname"><a href="class_f_b_client_1_1_sprites_1_1_animated_sprite.html#ad4a401cac40fc01296bb406add0d8b70">FBClient.Sprites.AnimatedSprite.Update</a></div><div class="ttdeci">void Update(GameTime gameTime)</div><div class="ttdef"><b>Definition:</b> <a href="_animated_sprite_8cs_source.html#l00115">AnimatedSprite.cs:115</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_engine_html_a7c3c5a82eba3b3d02bc5c1d15c003798"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_engine.html#a7c3c5a82eba3b3d02bc5c1d15c003798">FBLibrary.Core.Engine.Origin</a></div><div class="ttdeci">static Vector2 Origin</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00075">Engine.cs:75</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_sprites_1_1_animation_html"><div class="ttname"><a href="class_f_b_client_1_1_sprites_1_1_animation.html">FBClient.Sprites.Animation</a></div><div class="ttdef"><b>Definition:</b> <a href="_animation_8cs_source.html#l00011">Animation.cs:11</a></div></div>
@@ -332,8 +329,8 @@ $(document).ready(function(){initNavTree('_animated_sprite_8cs_source.html','');
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_d692e32740258645f90afe36faa51c23.html">Sprites</a></li><li class="navelem"><a class="el" href="_animated_sprite_8cs.html">AnimatedSprite.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_aa003c90f052a34f48ed3cc1e0640f42.html">Sprites</a></li><li class="navelem"><a class="el" href="_animated_sprite_8cs.html">AnimatedSprite.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

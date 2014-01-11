@@ -1,3 +1,5 @@
 <map id="FBClient.Core.GameManager" name="FBClient.Core.GameManager">
-<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="{BaseGameManager\n|+ HazardMap\l# BaseCurrentMap\l# BasePlayerList\l|+ Update()\l+ AddWall()\l+ AddPowerUp()\l+ Reset()\l+ LoadMap()\l+ GenerateRandomWalls()\l+ DisplayHazardMap()\l# BaseGameManager()\l# UpdateWalls()\l# UpdateBombs()\l# UpdatePowerUps()\l# UpdatePlayers()\l# AddPlayer()\l# DestroyPlayer()\l# DestroyPlayer()\l# RemovePlayer()\l# AddWall()\land 12 more...\l}" alt="" coords="13,6,189,362"/>
+<area shape="rect" id="node3" href="$class_f_b_client_1_1_core_1_1_local_game_manager.html" title="This class is specificaly used for the logic of local games " alt="" coords="5,163,227,189"/>
+<area shape="rect" id="node4" href="$class_f_b_client_1_1_network_1_1_network_game_manager.html" title="This class is specificaly used for the logic of network games " alt="" coords="251,155,425,197"/>
+<area shape="rect" id="node2" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="158,5,295,32"/>
 </map>

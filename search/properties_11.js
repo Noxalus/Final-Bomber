@@ -12,6 +12,5 @@ var searchData=
   ['tileshigh',['TilesHigh',['../class_f_b_client_1_1_tile_engine_1_1_tileset.html#a22ddffde8baa03e19ee8da4133e3fdc2',1,'FBClient::TileEngine::Tileset']]],
   ['tileswide',['TilesWide',['../class_f_b_client_1_1_tile_engine_1_1_tileset.html#aa102ff868be41bb75a2372ddac033a1e',1,'FBClient::TileEngine::Tileset']]],
   ['tilewidth',['TileWidth',['../class_f_b_client_1_1_tile_engine_1_1_tileset.html#aa0b889352808743e247e78a71502429b',1,'FBClient.TileEngine.Tileset.TileWidth()'],['../class_f_b_library_1_1_core_1_1_engine.html#a0cca33a35434b83fea7946995dfb1a63',1,'FBLibrary.Core.Engine.TileWidth()']]],
-  ['timer',['Timer',['../class_f_b_client_1_1_core_1_1_game_manager.html#a3d83c853cf385e594b901e16bc3a4cdd',1,'FBClient::Core::GameManager']]],
   ['type',['Type',['../class_f_b_client_1_1_controls_1_1_control.html#a20e06985519fdf922c725f2ee2e84d2a',1,'FBClient::Controls::Control']]]
 ];

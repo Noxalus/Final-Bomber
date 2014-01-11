@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -117,63 +116,88 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Description</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;===========</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;Final-Bomber is <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> Dynablaster (Bomberman) remake developed in C<span class="preprocessor"># with XNA 4.0.</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor"></span>For now, it<span class="stringliteral">&#39;s only possible to play offline with a total of 5 players.</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="stringliteral">How to compile it ?</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="stringliteral">===================</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="stringliteral">I&#39;</span>ve just tested it on Windows 7, so I don<span class="stringliteral">&#39;t know if it will works on another platform. </span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="stringliteral">If you are on a unix-based OS or on Mac OS, look for Mono XNA.</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="stringliteral">If you are on Windows 7 or greater, you need to install **Microsoft XNA Game Studio 4.0** (http://www.microsoft.com/en-us/download/details.aspx?id=23714).</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="stringliteral">You have to get a version of Microsoft Visual Studio 2010 (Express version is enough =&gt; http://www.microsoft.com/visualstudio/eng/downloads#d-2010-express).</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="stringliteral">If you use Microsoft Visual Studio 2012, you can&#39;</span>t directly use XNA and you still need to install VS2010. </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;To use XNA 4.0 in VS2012, an explanation is available in the wiki here: https:<span class="comment">//github.com/Noxalus/Final-Bomber/wiki/How-to-install-XNA-4.0-on-VS2012</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;Current features</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;================</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;* The game can be played in fullscreen or windowed</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;* Resolution can be changed</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;* All players can reassign their inputs</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;* Teleporters can be enabled</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;* Arrows can be enabled</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;* It<span class="stringliteral">&#39;s possible to change the wall percentage</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="stringliteral">* It&#39;</span>s possible to change the probability to have <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> bonus in <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> wall</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;* Sudden death can be activated</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;* The sudden death<span class="stringliteral">&#39;s speed can be changed</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="stringliteral">* The sudden death&#39;</span>s beginning can be changed</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;* Players can choose wich bonuses will be included in the game</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;* Players can push the bomb</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;TODO List</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;=========</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;* Add the Xbox controller support</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;* Add <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> LAN and online games</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;* Redesign menus</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;* Improve the AI behavior</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;* Add <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> level editor</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;* Add <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> CTF (capture the flag) mode with classes (engineer that can build wall, etc...)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;* Multiplatform (Monogame)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;* Replay to save (to see again <a class="code" href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a> finished game)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;* Boss script</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;* Resources extension</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;* Split screen <span class="keywordflow">for</span> local multiplayer ?</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;Videos</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;======</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;I<span class="stringliteral">&#39;ve uploaded some videos to show the AI progress:</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=j8d18H-NKrU</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=WCqIGvNPqBE</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=tWfutYKStsU</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=LH1Lfwke_pg</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=F6pJpJsZ7GI</span></div>
-<div class="ttc" id="jquery_8js_html_aa4d4888597588a84fd5b1184d00c91f3"><div class="ttname"><a href="jquery_8js.html#aa4d4888597588a84fd5b1184d00c91f3">a</a></div><div class="ttdeci">function a</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00041">jquery.js:41</a></div></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;Final-Bomber is a Dyna Blaster (Bomberman) remake developed in C<span class="preprocessor"># with XNA 4.0.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;For now, it<span class="stringliteral">&#39;s only possible to play local games with a total of 5 players (humans or bots).</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="stringliteral">How to compile it ?</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="stringliteral">===================</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="stringliteral">I&#39;</span>ve just tested it on Windows 7, so I don<span class="stringliteral">&#39;t know if it will works on another platform.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="stringliteral">If you are on a unix-based OS, look for Monogame.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="stringliteral">If you are on Windows 7 or greater, you need to install **Microsoft XNA Game Studio 4.0** (http://www.microsoft.com/en-us/download/details.aspx?id=23714).</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="stringliteral">You have to get a version of Microsoft Visual Studio 2010 (Express version is enough =&gt; http://www.microsoft.com/visualstudio/eng/downloads#d-2010-express).</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="stringliteral">If you use Microsoft Visual Studio 2012, you can&#39;</span>t directly use XNA and you still need to install VS2010. </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;To use XNA 4.0 in VS2012, an explanation is available in the wiki here: https:<span class="comment">//github.com/Noxalus/Final-Bomber/wiki/How-to-install-XNA-4.0-on-VS2012 (same manipulation for VS2013).</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;Current features</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;================</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;* The game can be played in fullscreen or windowed</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;* Resolution can be changed</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;* All players can reassign their inputs</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;* Teleporters can be enabled</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;* Arrows can be enabled</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;* It<span class="stringliteral">&#39;s possible to change the wall percentage</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="stringliteral">* It&#39;</span>s possible to change the probability to have a bonus in a wall</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;* Sudden death can be activated</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;* The sudden death<span class="stringliteral">&#39;s speed can be changed</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="stringliteral">* The sudden death&#39;</span>s beginning can be changed</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;* Players can choose wich bonuses will be included in the game</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;* Players can push the bomb</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;TODO List</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;=========</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;* Add the Xbox controller support (with many controllers)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;* Add LAN and online implementation (Lidgren =&gt; https:<span class="comment">//code.google.com/p/lidgren-network-gen3/)</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;* Redesign menus (XUI =&gt; http:<span class="comment">//xui.codeplex.com/releases/view/80711)</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;* Improve the AI behavior</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;* Add a level editor (HTML5 ?)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;* Add a CTF (capture the flag) mode with classes (engineer that can build wall, etc...)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;* Multiplatform (at least Linux and Mac support =&gt; Monogame)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;* Replay to save (to see again a finished game)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;* Boss scripts (LUA)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;* Easy resources extension (window skins, sprites, etc)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;* Split screen <span class="keywordflow">for</span> local multiplayer ?</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;* Add logging <span class="keywordflow">for</span> networking part (Log4Net =&gt; http:<span class="comment">//logging.apache.org/log4net/index.html)</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;* GUI (with Squid ? =&gt; http:<span class="comment">//www.ionstar.org/)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;Videos</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;======</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;I<span class="stringliteral">&#39;ve uploaded some videos to show the AI progress:</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=j8d18H-NKrU (first AI test)</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=WCqIGvNPqBE (second AI test)</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=tWfutYKStsU (third AI test)</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=LH1Lfwke_pg (first battle between 5 AI)</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=F6pJpJsZ7GI (second battle between 5 AI)</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=tu7cocmqBj8 (first networking test)</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=tSVHtYrGvsg (second networking test)</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="stringliteral">* http://www.youtube.com/watch?v=gkYElxHD3Q8 (simple 2D camera)</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="stringliteral">Dev blog (french)</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="stringliteral">=================</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="stringliteral">You can find a dev blog with technical articles here: https://final-bomber.blogspot.com</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="stringliteral">Documentation</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="stringliteral">=============</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="stringliteral">A complete documentation generated with Doxygen is available here: http://noxalus.github.io/Final-Bomber</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="stringliteral">Old repository</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="stringliteral">==============</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="stringliteral">This project didn&#39;</span>t start here, it was hosted by Google Code before.</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;You can found the old repository here: https:<span class="comment">//code.google.com/p/final-bomber/</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

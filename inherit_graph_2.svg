@@ -350,10 +350,10 @@
 </g>
 <!-- Node18 -->
 <g id="node18" class="node"><title>Node18</title>
-<g id="a_node18"><a xlink:href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_test_screen.html" target="_top" xlink:title="FBClient.Screens.GameScreens.\lNetworkTestScreen">
+<g id="a_node18"><a xlink:href="class_f_b_client_1_1_screens_1_1_game_screens_1_1_network_game_play_screen.html" target="_top" xlink:title="FBClient.Screens.GameScreens.\lNetworkGamePlayScreen">
 <polygon fill="white" stroke="black" points="737.5,-294 737.5,-324 898.5,-324 898.5,-294 737.5,-294"/>
 <text text-anchor="start" x="745.5" y="-312" font-family="Helvetica,sans-Serif" font-size="10.00">FBClient.Screens.GameScreens.</text>
-<text text-anchor="middle" x="818" y="-301" font-family="Helvetica,sans-Serif" font-size="10.00">NetworkTestScreen</text>
+<text text-anchor="middle" x="818" y="-301" font-family="Helvetica,sans-Serif" font-size="10.00">NetworkGamePlayScreen</text>
 </a>
 </g>
 </g>

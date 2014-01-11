@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -143,13 +142,13 @@ $(document).ready(function(){initNavTree('_human_player_8cs_source.html','');});
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <span class="keywordflow">if</span> (this.CurrentBombAmount &gt; 0)</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    var bo = GameManager.BombList.Find(<a class="code" href="jquery_8js.html#ac0431efac4d7c393d1e70b86115cb93f">b</a> =&gt; b.CellPosition == this.CellPosition);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    var bo = GameManager.BombList.Find(b =&gt; b.CellPosition == this.CellPosition);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                    <span class="keywordflow">if</span> (bo == null)</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                    {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                        <span class="comment">// Plant a new bomb</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                        var bomb = <span class="keyword">new</span> <a class="code" href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">Bomb</a>(Id, CellPosition, BombPower, BombTimer, <a class="code" href="namespace_f_b_library_1_1_core.html#a058addd0514a136f5c28fa809cbc092aa44877c6aa8e93fa5a91c9361211464fb">Speed</a>);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                        CurrentBombAmount--;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                        bomb.Initialize(GameManager.CurrentMap, GameManager.HazardMap);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                        bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                        GameManager.AddBomb(bomb);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    }</div>
@@ -207,10 +206,9 @@ $(document).ready(function(){initNavTree('_human_player_8cs_source.html','');});
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_player_stats_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_player_stats.html">FBLibrary.Core.PlayerStats</a></div><div class="ttdef"><b>Definition:</b> <a href="_player_stats_8cs_source.html#l00004">PlayerStats.cs:4</a></div></div>
-<div class="ttc" id="jquery_8js_html_ac0431efac4d7c393d1e70b86115cb93f"><div class="ttname"><a href="jquery_8js.html#ac0431efac4d7c393d1e70b86115cb93f">b</a></div><div class="ttdeci">var b</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00016">jquery.js:16</a></div></div>
 <div class="ttc" id="namespace_f_b_library_1_1_core_html_a3f379938b3dedb35940099a0167d7671"><div class="ttname"><a href="namespace_f_b_library_1_1_core.html#a3f379938b3dedb35940099a0167d7671">FBLibrary.Core.BadEffect</a></div><div class="ttdeci">BadEffect</div><div class="ttdef"><b>Definition:</b> <a href="_engine_8cs_source.html#l00027">Engine.cs:27</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_players_1_1_human_player_html"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_players_1_1_human_player.html">FBClient.Core.Players.HumanPlayer</a></div><div class="ttdef"><b>Definition:</b> <a href="_human_player_8cs_source.html#l00011">HumanPlayer.cs:11</a></div></div>
-<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">FBClient.Core.Entities.Bomb</a></div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00020">Bomb.cs:20</a></div></div>
+<div class="ttc" id="class_f_b_client_1_1_core_1_1_entities_1_1_bomb_html"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_entities_1_1_bomb.html">FBClient.Core.Entities.Bomb</a></div><div class="ttdef"><b>Definition:</b> <a href="1_01-_01_final-_bomber_2_final-_bomber_2_core_2_entities_2_bomb_8cs_source.html#l00013">Bomb.cs:13</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_players_1_1_human_player_html_a80bd31eaf558f318ecacd3eac6ef948a"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_players_1_1_human_player.html#a80bd31eaf558f318ecacd3eac6ef948a">FBClient.Core.Players.HumanPlayer.RemoveBadItem</a></div><div class="ttdeci">override void RemoveBadItem()</div><div class="ttdef"><b>Definition:</b> <a href="_human_player_8cs_source.html#l00077">HumanPlayer.cs:77</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_players_1_1_human_player_html_adea067aa96a6f6249874659e7d65e68e"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_players_1_1_human_player.html#adea067aa96a6f6249874659e7d65e68e">FBClient.Core.Players.HumanPlayer.HumanPlayer</a></div><div class="ttdeci">HumanPlayer(int id, PlayerStats stats)</div><div class="ttdef"><b>Definition:</b> <a href="_human_player_8cs_source.html#l00018">HumanPlayer.cs:18</a></div></div>
 <div class="ttc" id="class_f_b_client_1_1_core_1_1_players_1_1_human_player_html_aad77f7ff5f34f68e2dbcb1dda811a07e"><div class="ttname"><a href="class_f_b_client_1_1_core_1_1_players_1_1_human_player.html#aad77f7ff5f34f68e2dbcb1dda811a07e">FBClient.Core.Players.HumanPlayer.ApplyBadItem</a></div><div class="ttdeci">override void ApplyBadItem(BadEffect effect)</div><div class="ttdef"><b>Definition:</b> <a href="_human_player_8cs_source.html#l00051">HumanPlayer.cs:51</a></div></div>
@@ -224,8 +222,8 @@ $(document).ready(function(){initNavTree('_human_player_8cs_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_13de1c1d5733c395d68af7bd121236b9.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_4e7575d70c791e0460116538f4217843.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_58df0a9d625adf303b5f99090eb34aa3.html">Core</a></li><li class="navelem"><a class="el" href="dir_2c2963178a855e8b56ee4b4a59080beb.html">Players</a></li><li class="navelem"><a class="el" href="_human_player_8cs.html">HumanPlayer.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_e189fd6bc21e1e1c5f41cb7391e47c2c.html">1 - Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_c0ac4e292e1706cfe63b0fa58a2c3008.html">Final-Bomber</a></li><li class="navelem"><a class="el" href="dir_3200730fb3b811e0a6993e4b73750277.html">Core</a></li><li class="navelem"><a class="el" href="dir_00bb27fa0ebb45448d1a0c6db2bf2c3c.html">Players</a></li><li class="navelem"><a class="el" href="_human_player_8cs.html">HumanPlayer.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:09 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

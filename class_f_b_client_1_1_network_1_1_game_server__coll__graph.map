@@ -1,2 +1,7 @@
 <map id="FBClient.Network.GameServer" name="FBClient.Network.GameServer">
+<area shape="rect" id="node2" href="$class_f_b_client_1_1_core_1_1_game_manager.html" title="This class is used to regroup common behaviors between network and local game logic. " alt="" coords="107,293,299,320"/>
+<area shape="rect" id="node3" href="$class_f_b_library_1_1_core_1_1_base_game_manager.html" title="BaseGameManager" alt="" coords="39,203,176,229"/>
+<area shape="rect" id="node4" href="$class_f_b_library_1_1_core_1_1_base_entities_1_1_base_map.html" title="FBLibrary.Core.BaseEntities.\lBaseMap" alt="" coords="5,97,195,138"/>
+<area shape="rect" id="node5" href="$interface_f_b_library_1_1_core_1_1_i_entity.html" title="FBLibrary.Core.IEntity" alt="" coords="25,5,175,32"/>
+<area shape="rect" id="node6" href="$class_player_collection.html" title="PlayerCollection" alt="" coords="211,203,327,229"/>
 </map>

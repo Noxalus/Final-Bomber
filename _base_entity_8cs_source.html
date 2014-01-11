@@ -72,7 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -179,7 +178,7 @@ $(document).ready(function(){initNavTree('_base_entity_8cs_source.html','');});
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">if</span> (InDestruction)</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                DestructionTime -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                DestructionTime -= TimeSpan.FromTicks(GameConfiguration.DeltaTime);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">if</span> (DestructionTime &lt; TimeSpan.Zero)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    Remove();</div>
@@ -192,22 +191,22 @@ $(document).ready(function(){initNavTree('_base_entity_8cs_source.html','');});
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            Position = Engine.CellToVector(CellPosition);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entity.html#a14cad08089e37cd7b3e22f80354b8c60">   84</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_base_entity.html#a14cad08089e37cd7b3e22f80354b8c60">ChangePosition</a>(Point <a class="code" href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entity.html#a14cad08089e37cd7b3e22f80354b8c60">   84</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_base_entity.html#a14cad08089e37cd7b3e22f80354b8c60">ChangePosition</a>(Point p)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            _cellPosition = <a class="code" href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            _cellPosition = p;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            Position = Engine.CellToVector(CellPosition);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entity.html#a3d5b176ae0c83eb01a07faf9ecce8987">   90</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_base_entity.html#a3d5b176ae0c83eb01a07faf9ecce8987">ChangePosition</a>(<span class="keywordtype">int</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, <span class="keywordtype">int</span> y)</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entity.html#a3d5b176ae0c83eb01a07faf9ecce8987">   90</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_base_entity.html#a3d5b176ae0c83eb01a07faf9ecce8987">ChangePosition</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y)</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            _cellPosition.X = <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            _cellPosition.X = x;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            _cellPosition.Y = y;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            Position = Engine.CellToVector(CellPosition);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entity.html#ad5ccc30ffae399829f1ab4437043bc0e">   97</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_base_entity.html#ad5ccc30ffae399829f1ab4437043bc0e">ChangePosition</a>(<span class="keywordtype">float</span> <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>, <span class="keywordtype">float</span> y)</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="class_f_b_library_1_1_core_1_1_base_entity.html#ad5ccc30ffae399829f1ab4437043bc0e">   97</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_f_b_library_1_1_core_1_1_base_entity.html#ad5ccc30ffae399829f1ab4437043bc0e">ChangePosition</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y)</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            _position.X = <a class="code" href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            _position.X = x;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            _position.Y = y;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            _cellPosition = Engine.VectorToCell(Position);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
@@ -218,9 +217,7 @@ $(document).ready(function(){initNavTree('_base_entity_8cs_source.html','');});
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entity_html_a3d5b176ae0c83eb01a07faf9ecce8987"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entity.html#a3d5b176ae0c83eb01a07faf9ecce8987">FBLibrary.Core.BaseEntity.ChangePosition</a></div><div class="ttdeci">void ChangePosition(int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="_base_entity_8cs_source.html#l00090">BaseEntity.cs:90</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entity_html_a075f50b2443fe6cff9b083da5b2472d0"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entity.html#a075f50b2443fe6cff9b083da5b2472d0">FBLibrary.Core.BaseEntity.BaseEntity</a></div><div class="ttdeci">BaseEntity(Point cellPosition)</div><div class="ttdef"><b>Definition:</b> <a href="_base_entity_8cs_source.html#l00078">BaseEntity.cs:78</a></div></div>
-<div class="ttc" id="jquery_8js_html_a2335e57f79b6acfb6de59c235dc8a83e"><div class="ttname"><a href="jquery_8js.html#a2335e57f79b6acfb6de59c235dc8a83e">p</a></div><div class="ttdeci">function p(by, bw, bv)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00028">jquery.js:28</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entity_html"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entity.html">FBLibrary.Core.BaseEntity</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_entity_8cs_source.html#l00007">BaseEntity.cs:7</a></div></div>
-<div class="ttc" id="jquery_8js_html_a4c3eadaa5164016d2c340d495fc6e55e"><div class="ttname"><a href="jquery_8js.html#a4c3eadaa5164016d2c340d495fc6e55e">x</a></div><div class="ttdeci">function x(bx)</div><div class="ttdef"><b>Definition:</b> <a href="jquery_8js_source.html#l00030">jquery.js:30</a></div></div>
 <div class="ttc" id="interface_f_b_library_1_1_core_1_1_i_entity_html"><div class="ttname"><a href="interface_f_b_library_1_1_core_1_1_i_entity.html">FBLibrary.Core.IEntity</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_entity_8cs_source.html#l00003">IEntity.cs:3</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entity_html_a463f38506abc7bd32d33f0c4b5beb092"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entity.html#a463f38506abc7bd32d33f0c4b5beb092">FBLibrary.Core.BaseEntity.Update</a></div><div class="ttdeci">virtual void Update()</div><div class="ttdef"><b>Definition:</b> <a href="_base_entity_8cs_source.html#l00067">BaseEntity.cs:67</a></div></div>
 <div class="ttc" id="class_f_b_library_1_1_core_1_1_base_entity_html_ad5ccc30ffae399829f1ab4437043bc0e"><div class="ttname"><a href="class_f_b_library_1_1_core_1_1_base_entity.html#ad5ccc30ffae399829f1ab4437043bc0e">FBLibrary.Core.BaseEntity.ChangePosition</a></div><div class="ttdeci">void ChangePosition(float x, float y)</div><div class="ttdef"><b>Definition:</b> <a href="_base_entity_8cs_source.html#l00097">BaseEntity.cs:97</a></div></div>
@@ -234,8 +231,8 @@ $(document).ready(function(){initNavTree('_base_entity_8cs_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_bd5960241e8193d485052893c86bc07f.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="dir_da8b686cda261f266ae248c50a793773.html">Core</a></li><li class="navelem"><a class="el" href="dir_1c7114abaac0c6e4e07a1e4fd0025efe.html">BaseEntities</a></li><li class="navelem"><a class="el" href="_base_entity_8cs.html">BaseEntity.cs</a></li>
-    <li class="footer">Generated on Fri Jan 10 2014 01:51:36 for Final-Bomber by
+    <li class="navelem"><a class="el" href="dir_ec3ec17c793273d9ae6f2b37deed55ab.html">3 - FBLibrary</a></li><li class="navelem"><a class="el" href="dir_a8587bdd7818fd06d3be4558edcbbcfd.html">Core</a></li><li class="navelem"><a class="el" href="dir_ac01aabf988ace2f2d29a3216e6ff7ee.html">BaseEntities</a></li><li class="navelem"><a class="el" href="_base_entity_8cs.html">BaseEntity.cs</a></li>
+    <li class="footer">Generated on Sat Jan 11 2014 02:07:10 for Final-Bomber by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
