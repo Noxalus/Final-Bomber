@@ -40,7 +40,14 @@ namespace FBClient.Core
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
-        
+
+        #region Events
+
+                public delegate void RoundEndEventHandler();
+        public event RoundEndEventHandler RoundEnd;
+
+        #endregion
+
         #region Properties
 
         public Map CurrentMap
@@ -83,6 +90,14 @@ namespace FBClient.Core
             Engine.Origin = origin;
 
             _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
+
+            // Events
+            RoundEnd += RoundEndAction;
+        }
+
+        public void Dispose()
+        {
+            RoundEnd -= RoundEndAction;
         }
         
         public override void Reset()
@@ -180,6 +195,7 @@ namespace FBClient.Core
                         if (BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] is BasePlayer)
                         {
                             RemovePlayer(BasePlayerList[i]);
+                            OnPlayerDeath();
                         }
                     }
 
@@ -349,6 +365,29 @@ namespace FBClient.Core
             PowerUpList.Remove(powerUp);
 
             base.RemovePowerUp(powerUp);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Events
+
+        #region Round End
+        public virtual void OnRoundEnd()
+        {
+            if (RoundEnd != null)
+                RoundEnd();
+        }
+
+        protected virtual void OnPlayerDeath()
+        {
+            int test = 42;
+        }
+
+        protected virtual void RoundEndAction()
+        {
+            Reset();
         }
 
         #endregion

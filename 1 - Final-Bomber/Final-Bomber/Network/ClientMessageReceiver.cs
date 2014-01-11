@@ -276,19 +276,9 @@ namespace FBClient.Network
             OnSDExplosion(tilePos);
         }
 
-        #region Round End
-        public delegate void RoundEndEventHandler();
-        public event RoundEndEventHandler RoundEnd;
-        protected virtual void OnRoundEnd()
+        private void RecieveRoundEnd()
         {
-            if (RoundEnd != null)
-                RoundEnd();
-        }
-        #endregion
-
-        public void RecieveRoundEnd()
-        {
-            OnRoundEnd();
+            GameServer.Instance.GameManager.OnRoundEnd();
         }
 
         #region End

@@ -50,16 +50,18 @@ namespace FBClient.Screens.GameScreens
 
             //_serverProcess.Start();
 
-            // Server events
-            GameServer.Instance.RoundEnd += GameServer_RoundEnd;
-            GameServer.Instance.End += GameServer_End;
-
             GameManager = GameServer.Instance.GameManager;
+            var manager = GameManager as NetworkGameManager;
+            if (manager != null)
+                manager.SetNetworkManager(NetworkManager);
 
             base.Initialize();
 
             GameManager.Initialize();
             NetworkManager.Initiliaze();
+
+            // Server events
+            GameServer.Instance.End += GameServer_End;
 
             Camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, GameManager.CurrentMap.Size, 1f);
 
@@ -92,12 +94,12 @@ namespace FBClient.Screens.GameScreens
 
             //_serverProcess.Kill();
 
-            NetworkManager.Dispose();
-
             NetworkManager.AddPlayer -= ResizeHud;
 
-            GameServer.Instance.RoundEnd -= GameServer_RoundEnd;
             GameServer.Instance.End -= GameServer_End;
+
+            NetworkManager.Dispose();
+            GameManager.Dispose();
 
             base.UnloadContent();
         }
@@ -401,14 +403,6 @@ namespace FBClient.Screens.GameScreens
                 HudTopSpace + GameManager.Players.Count * Config.HUDPlayerInfoSpace + 15);
 
             TimerWindowBox.Position = new Vector2(HudOrigin.X, ScoresWindowBox.Size.Y);
-        }
-
-        private void GameServer_RoundEnd()
-        {
-            GameManager.Reset();
-            NetworkManager.Reset();
-
-            GameManager.AddPlayer(NetworkManager.Me);
         }
 
         private void GameServer_End(bool won)

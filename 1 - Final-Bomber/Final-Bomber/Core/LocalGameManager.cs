@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using FBClient.Core.Entities;
 using FBLibrary;
 using Microsoft.Xna.Framework;
@@ -23,5 +24,25 @@ namespace FBClient.Core
 
             base.RemoveWall(wall);
         }
+
+        #region Events actions
+
+        protected override void OnPlayerDeath()
+        {
+            // We check if the round is finished
+            if (Players.Count(p => p.IsAlive) < 1)
+                OnRoundEnd();
+
+            base.OnPlayerDeath();
+        }
+
+        protected override void RoundEndAction()
+        {
+            base.RoundEndAction();
+
+            //AddPlayer(Players[0]);
+        }
+
+        #endregion
     }
 }
