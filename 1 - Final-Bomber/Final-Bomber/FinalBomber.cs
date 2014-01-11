@@ -60,7 +60,7 @@ namespace FBClient
         public readonly CreateServerMenuScreen CreateServerMenuScreen;
         public readonly JoinServerMenuScreen JoinServerMenuScreen;
 
-        public readonly NetworkTestScreen NetworkTestScreen;
+        public readonly NetworkGamePlayScreen NetworkTestScreen;
 
         // ~~ Game ~~ //
         public readonly GamePlayScreen GamePlayScreen;
@@ -79,6 +79,14 @@ namespace FBClient
                 };
 
             ScreenRectangle = new Rectangle(0, 0, Config.Resolutions[Config.IndexResolution, 0], Config.Resolutions[Config.IndexResolution, 1]);
+
+#if DEBUG
+            Graphics.SynchronizeWithVerticalRetrace = false;
+#else
+            Graphics.SynchronizeWithVerticalRetrace = true;
+#endif
+            // Don't fix FPS to 60 => this wont work when vsync is ON
+            IsFixedTimeStep = false; 
 
             Graphics.IsFullScreen = Config.FullScreen;
             Graphics.ApplyChanges();
@@ -112,7 +120,7 @@ namespace FBClient
             CreateServerMenuScreen = new CreateServerMenuScreen(this, stateManager);
             JoinServerMenuScreen = new JoinServerMenuScreen(this, stateManager);
 
-            NetworkTestScreen = new NetworkTestScreen(this, stateManager);
+            NetworkTestScreen = new NetworkGamePlayScreen(this, stateManager);
 
             stateManager.ChangeState(TitleScreen);
 
@@ -153,7 +161,7 @@ namespace FBClient
         protected override void Update(GameTime gameTime)
         {
             // Delta time
-            GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Milliseconds;
+            GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Ticks;
 
             UpdatePasswordManagement();
 

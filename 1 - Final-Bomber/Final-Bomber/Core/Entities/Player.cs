@@ -14,6 +14,7 @@ using FBClient.Sprites;
 using FBClient.TileEngine;
 using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FBClient.Entities
@@ -31,10 +32,10 @@ namespace FBClient.Entities
         private float _invincibleBlinkFrequency;
         private TimeSpan _invincibleBlinkTimer;
 
-        // Reference on GameTime
-        private GameTime _gameTime;
-
         public AnimatedSprite Sprite { get; protected set; }
+
+        // Sounds
+        private SoundEffect _playerDeathSound;
 
         #endregion
 
@@ -64,8 +65,6 @@ namespace FBClient.Entities
 
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
-
-            _gameTime = new GameTime();
         }
 
         #region XNA Method Region
@@ -98,12 +97,13 @@ namespace FBClient.Entities
             {
                 IsAnimating = false
             };
+
+            // Sounds
+            _playerDeathSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/playerDeath");
         }
 
         public virtual void Update(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            _gameTime = gameTime;
-
             if (IsAlive && !InDestruction)
             {
                 PreviousDirection = CurrentDirection;
@@ -354,9 +354,9 @@ namespace FBClient.Entities
 
         protected override float GetMovementSpeed()
         {
-            var dt = (float)_gameTime.ElapsedGameTime.TotalSeconds;
-            float rtn = (Speed * dt);
-            return rtn;
+            var deltaTime = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
+            float speedValue = (Speed * deltaTime);
+            return speedValue;
         }
 
         #endregion
@@ -369,7 +369,7 @@ namespace FBClient.Entities
             {
                 Sprite.IsAnimating = false;
                 InDestruction = true;
-                NetworkTestScreen.GameManager.PlayerDeathSound.Play();
+                _playerDeathSound.Play();
                 _playerDeathAnimation.IsAnimating = true;
             }
         }
@@ -425,7 +425,7 @@ namespace FBClient.Entities
 
         protected override int GetTime()
         {
-            return _gameTime.ElapsedGameTime.Milliseconds;
+            return TimeSpan.FromTicks(GameConfiguration.DeltaTime).Milliseconds;
         }
     }
 }

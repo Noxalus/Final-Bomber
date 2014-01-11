@@ -47,8 +47,8 @@ namespace FBClient.Network
             //mainGame = new MainGame();
             //lobbyScreen = new LobbyScreen();
             
-            GameSettings.GameServer.StartInfo += new GameServer.StartInfoEventHandler(GameServer_StartInfo);
-            GameSettings.GameServer.StartGame += new GameServer.StartGameEventHandler(GameServer_StartGame);
+            GameServer.Instance.StartInfo += new GameServer.StartInfoEventHandler(GameServer_StartInfo);
+            GameServer.Instance.StartGame += new GameServer.StartGameEventHandler(GameServer_StartGame);
 
             base.Initialize();
         }
@@ -60,8 +60,8 @@ namespace FBClient.Network
 
         protected override void UnloadContent()
         {
-            if (GameSettings.GameServer.Connected)
-                GameSettings.GameServer.EndClientConnection("byebye");
+            if (GameServer.Instance.Connected)
+                GameServer.Instance.EndClientConnection("byebye");
         }
 
         protected override void Update(GameTime gameTime)
@@ -69,8 +69,8 @@ namespace FBClient.Network
             GameSettings.speed = speedTmr.ElapsedMilliseconds;
             speedTmr.Reset();
             speedTmr.Start();
-            if (GameSettings.GameServer.HasStarted)
-                GameSettings.GameServer.RunClientConnection();
+            if (GameServer.Instance.HasStarted)
+                GameServer.Instance.RunClientConnection();
 
             ProgramStepProccesing();
 

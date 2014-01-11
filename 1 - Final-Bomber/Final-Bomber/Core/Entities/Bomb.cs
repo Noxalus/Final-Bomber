@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
-using FBClient.Controls;
-using FBClient.Entities;
-using FBClient.Screens;
-using FBClient.Screens.GameScreens;
 using FBClient.Sprites;
-using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace FBClient.Core.Entities
 {
@@ -24,6 +17,10 @@ namespace FBClient.Core.Entities
         private readonly Animation[] _explosionAnimations;
         private readonly Dictionary<Point, ExplosionDirection> _explosionAnimationsDirection;
         private readonly Texture2D _explosionSpriteTexture;
+
+        // Sounds
+        private SoundEffect _bombExplosionSound;
+
 
         public AnimatedSprite Sprite { get; protected set; }
 
@@ -60,7 +57,7 @@ namespace FBClient.Core.Entities
 
             // Bomb's explosion animations
             _explosionSpriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/explosion");
-            var explosionAnimationsFramesPerSecond = 10;
+            const int explosionAnimationsFramesPerSecond = 10;
             _explosionAnimations = new[]
             {
                 new Animation(4, 32, 32, 0, 0, explosionAnimationsFramesPerSecond),
@@ -77,6 +74,9 @@ namespace FBClient.Core.Entities
             // Bomb's states
             _cellTeleporting = false;
             _lastPlayerThatPushIt = -1;
+
+            // Sounds
+            _bombExplosionSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/boom");
         }
 
         #endregion
@@ -434,7 +434,7 @@ namespace FBClient.Core.Entities
 
         public override void Destroy()
         {
-            NetworkTestScreen.GameManager.BombExplosionSound.Play();
+            _bombExplosionSound.Play();
 
             base.Destroy();
         }

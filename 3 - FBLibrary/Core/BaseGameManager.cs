@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 

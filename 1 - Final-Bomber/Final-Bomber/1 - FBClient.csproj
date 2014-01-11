@@ -123,6 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\GameManager.cs" />
+    <Compile Include="Core\IDrawableGameComponent.cs" />
+    <Compile Include="Core\LocalGameManager.cs" />
     <Compile Include="Core\Players\AIPlayer.cs" />
     <Compile Include="Core\Players\AI\DifficultlAIStrategy.cs" />
     <Compile Include="Core\Players\AI\NormalAIStrategy.cs" />
@@ -160,6 +162,8 @@
     <Compile Include="Core\Players\OnlineHumanPlayer.cs" />
     <Compile Include="Network\DataProcessing.cs" />
     <Compile Include="Network\GameHandler.cs" />
+    <Compile Include="Network\GameServer.cs" />
+    <Compile Include="Network\NetworkGameManager.cs" />
     <Compile Include="Network\GameSettings.cs" />
     <Compile Include="Network\MainGame.cs" />
     <Compile Include="Network\NetworkManager.cs" />
@@ -174,7 +178,7 @@
     <Compile Include="Screens\GameScreens\BaseGamePlayScreen.cs" />
     <Compile Include="Screens\MenuScreens\BattleMenuScreen.cs" />
     <Compile Include="Screens\MenuScreens\LobbyMenuScreen.cs" />
-    <Compile Include="Screens\GameScreens\NetworkTestScreen.cs" />
+    <Compile Include="Screens\GameScreens\NetworkGamePlayScreen.cs" />
     <Compile Include="Screens\MenuScreens\OnlineGameMenuScreen.cs" />
     <Compile Include="Screens\MenuScreens\SinglePlayerGameModeMenuScreen.cs" />
     <Compile Include="Screens\MenuScreens\CreateServerMenuScreen.cs" />

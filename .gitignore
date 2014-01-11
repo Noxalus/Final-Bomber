@@ -179,3 +179,6 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
+# Documentation (store onto gh-pages branch)
+Documentation/html/*

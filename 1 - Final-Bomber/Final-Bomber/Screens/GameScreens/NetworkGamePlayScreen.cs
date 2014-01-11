@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FBClient.Screens.GameScreens
 {
-    public class NetworkTestScreen : BaseGamePlayScreen
+    public class NetworkGamePlayScreen : BaseGamePlayScreen
     {
         #region Field region
         Process _serverProcess;
@@ -24,7 +24,7 @@ namespace FBClient.Screens.GameScreens
         #endregion
 
         #region Constructor region
-        public NetworkTestScreen(Game game, GameStateManager manager)
+        public NetworkGamePlayScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
             NetworkManager = new NetworkManager(GameManager);
@@ -51,10 +51,12 @@ namespace FBClient.Screens.GameScreens
             //_serverProcess.Start();
 
             // Server events
-            GameSettings.GameServer.RoundEnd += GameServer_RoundEnd;
-            GameSettings.GameServer.End += GameServer_End;
+            GameServer.Instance.RoundEnd += GameServer_RoundEnd;
+            GameServer.Instance.End += GameServer_End;
 
             base.Initialize();
+
+            GameManager = GameServer.Instance.GameManager;
 
             GameManager.Initialize();
             NetworkManager.Initiliaze();
@@ -86,7 +88,7 @@ namespace FBClient.Screens.GameScreens
 
         protected override void UnloadContent()
         {
-            GameSettings.GameServer.EndClientConnection("Quit the game !");
+            GameServer.Instance.EndClientConnection("Quit the game !");
 
             //_serverProcess.Kill();
 
@@ -94,8 +96,8 @@ namespace FBClient.Screens.GameScreens
 
             NetworkManager.AddPlayer -= ResizeHud;
 
-            GameSettings.GameServer.RoundEnd -= GameServer_RoundEnd;
-            GameSettings.GameServer.End -= GameServer_End;
+            GameServer.Instance.RoundEnd -= GameServer_RoundEnd;
+            GameServer.Instance.End -= GameServer_End;
 
             base.UnloadContent();
         }
@@ -255,7 +257,7 @@ namespace FBClient.Screens.GameScreens
                             HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
                         new Rectangle(56, 0, 14, 14), Color.White);
 
-                // Player's bad item timer
+                // Player's bad item GameTimer
                 if (p.HasBadEffect)
                 {
                     FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon, new Vector2(HudOrigin.X + HudMarginLeft,
@@ -288,10 +290,10 @@ namespace FBClient.Screens.GameScreens
             var pos =
                 new Vector2(
                     HudOrigin.X + HudMarginLeft +
-                    (ControlManager.SpriteFont.MeasureString(GameManager.Timer.ToString("mm") + ":" +
-                                                             GameManager.Timer.ToString("ss")).X) + 25,
+                    (ControlManager.SpriteFont.MeasureString(GameManager.GameTimer.ToString("mm") + ":" +
+                                                             GameManager.GameTimer.ToString("ss")).X) + 25,
                     HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 22);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.Timer.ToString("mm") + ":" + GameManager.Timer.ToString("ss"),
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.GameTimer.ToString("mm") + ":" + GameManager.GameTimer.ToString("ss"),
                 pos, Color.Black);
 
             #endregion

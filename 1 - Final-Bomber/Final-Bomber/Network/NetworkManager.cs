@@ -74,16 +74,16 @@ namespace FBClient.Network
             PublicIp = "?";
 
             // Server events
-            GameSettings.GameServer.StartInfo += GameServer_StartInfo;
-            GameSettings.GameServer.StartGame += GameServer_StartGame;
+            GameServer.Instance.StartInfo += GameServer_StartInfo;
+            GameServer.Instance.StartGame += GameServer_StartGame;
 
-            GameSettings.GameServer.UpdatePing += GameServer_UpdatePing;
-            GameSettings.GameServer.NewPlayer += GameServer_NewPlayer;
-            GameSettings.GameServer.RemovePlayer += GameServer_RemovePlayer;
-            GameSettings.GameServer.MovePlayer += GameServer_MovePlayer;
-            GameSettings.GameServer.PlacingBomb += GameServer_PlacingBomb;
-            GameSettings.GameServer.BombExploded += GameServer_BombExploded;
-            GameSettings.GameServer.PowerUpDrop += GameServer_PowerUpDrop;
+            GameServer.Instance.UpdatePing += GameServer_UpdatePing;
+            GameServer.Instance.NewPlayer += GameServer_NewPlayer;
+            GameServer.Instance.RemovePlayer += GameServer_RemovePlayer;
+            GameServer.Instance.MovePlayer += GameServer_MovePlayer;
+            GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
+            GameServer.Instance.BombExploded += GameServer_BombExploded;
+            GameServer.Instance.PowerUpDrop += GameServer_PowerUpDrop;
 
             Me.Name = PlayerInfo.Username;
 
@@ -100,24 +100,24 @@ namespace FBClient.Network
         public void Dispose()
         {
             // Server events
-            GameSettings.GameServer.StartInfo -= GameServer_StartInfo;
-            GameSettings.GameServer.StartGame -= GameServer_StartGame;
+            GameServer.Instance.StartInfo -= GameServer_StartInfo;
+            GameServer.Instance.StartGame -= GameServer_StartGame;
 
-            GameSettings.GameServer.UpdatePing -= GameServer_UpdatePing;
-            GameSettings.GameServer.NewPlayer -= GameServer_NewPlayer;
-            GameSettings.GameServer.RemovePlayer -= GameServer_RemovePlayer;
-            GameSettings.GameServer.MovePlayer -= GameServer_MovePlayer;
-            GameSettings.GameServer.PlacingBomb -= GameServer_PlacingBomb;
-            GameSettings.GameServer.BombExploded -= GameServer_BombExploded;
-            GameSettings.GameServer.PowerUpDrop -= GameServer_PowerUpDrop;
+            GameServer.Instance.UpdatePing -= GameServer_UpdatePing;
+            GameServer.Instance.NewPlayer -= GameServer_NewPlayer;
+            GameServer.Instance.RemovePlayer -= GameServer_RemovePlayer;
+            GameServer.Instance.MovePlayer -= GameServer_MovePlayer;
+            GameServer.Instance.PlacingBomb -= GameServer_PlacingBomb;
+            GameServer.Instance.BombExploded -= GameServer_BombExploded;
+            GameServer.Instance.PowerUpDrop -= GameServer_PowerUpDrop;
         }
 
         public void Update()
         {
             if (!IsConnected)
             {
-                GameSettings.GameServer.RunClientConnection();
-                if (GameSettings.GameServer.Connected)
+                GameServer.Instance.RunClientConnection();
+                if (GameServer.Instance.Connected)
                 {
                     IsConnected = true;
                 }
@@ -129,8 +129,8 @@ namespace FBClient.Network
             }
             else
             {
-                if (GameSettings.GameServer.HasStarted)
-                    GameSettings.GameServer.RunClientConnection();
+                if (GameServer.Instance.HasStarted)
+                    GameServer.Instance.RunClientConnection();
 
                 if (_isReady)
                     ProgramStepProccesing();
@@ -139,11 +139,11 @@ namespace FBClient.Network
 
         private void ProgramStepProccesing()
         {
-            if (!GameSettings.GameServer.Connected)
+            if (!GameServer.Instance.Connected)
             {
                 DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
             }
-            if (GameSettings.GameServer.Connected)
+            if (GameServer.Instance.Connected)
             {
                 ConnectedGameProcessing();
             }
@@ -158,7 +158,7 @@ namespace FBClient.Network
         {
             if (_isReady)
             {
-                GameSettings.GameServer.SendIsReady();
+                GameServer.Instance.SendIsReady();
                 _isReady = false;
             }
         }
@@ -174,7 +174,7 @@ namespace FBClient.Network
         {
             if (!gameInProgress)
             {
-                NetworkTestScreen.NetworkManager.Me.Id = playerId;
+                NetworkGamePlayScreen.NetworkManager.Me.Id = playerId;
                 //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
                 GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
             }

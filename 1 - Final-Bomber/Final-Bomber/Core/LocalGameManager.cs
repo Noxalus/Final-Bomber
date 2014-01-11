@@ -2,124 +2,21 @@
 using System.Collections.Generic;
 using FBClient.Core.Entities;
 using FBClient.Entities;
-using FBClient.WorldEngine;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace FBClient.Core
 {
     /// <summary>
-    /// This class is used to regroup common behaviors between network and local game logic.
+    /// This class is specificaly used for the logic of local games
     /// </summary>
-    public abstract class GameManager : BaseGameManager
+    public class LocalGameManager : GameManager
     {
-        // Game logic
-
-        // Players
-        public readonly PlayerCollection Players;
-
-        // Collections
-        public readonly List<Bomb> BombList;
-        protected readonly List<PowerUp> PowerUpList;
-        protected readonly List<Wall> WallList;
-
-        // Map
-        private readonly Map _currentMap;
-
-        // Songs & sounds effect
-        private Song _mapHurrySong;
-        private Song _mapSong;
-
-        // Timer
-        private TimeSpan _gameTimer;
-
-        protected GameTime GameTime;
-
-        // Sudden Death
-        private SuddenDeath _suddenDeath;
-        
-        #region Properties
-
-        public Map CurrentMap
+        public LocalGameManager()
         {
-            get { return _currentMap; }
         }
 
-        public TimeSpan GameTimer
-        {
-            get { return _gameTimer; }
-        }
-
-        #endregion
-
-        protected GameManager()
-        {
-            Players = new PlayerCollection();
-
-            WallList = new List<Wall>();
-            PowerUpList = new List<PowerUp>();
-            BombList = new List<Bomb>();
-
-            _currentMap = new Map();
-            BaseCurrentMap = _currentMap;
-
-            _gameTimer = TimeSpan.Zero;
-
-            GameTime = new GameTime();
-        }
-
-        public void Initialize()
-        {
-            MediaPlayer.Play(_mapSong);
-
-            _gameTimer = TimeSpan.Zero;
-
-            var origin = new Vector2((FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234) / 2f - ((32 * _currentMap.Size.X) / 2f),
-                FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - ((32 * _currentMap.Size.Y) / 2));
-
-            Engine.Origin = origin;
-
-            _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
-        }
-        
-        public override void Reset()
-        {
-            MediaPlayer.Play(_mapSong);
-
-            _gameTimer = TimeSpan.Zero;
-
-            Players.Clear();
-
-            WallList.Clear();
-            PowerUpList.Clear();
-            BombList.Clear();
-
-            base.Reset();
-        }
-
-        public void LoadContent()
-        {
-            // Musics
-            _mapSong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map2");
-            _mapHurrySong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map1_hurry");
-
-            CurrentMap.LoadContent();
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            _gameTimer += gameTime.ElapsedGameTime;
-
-            GameTime = gameTime;
-
-            base.Update();
-        }
-
-        #region Update entities
-        /*
         protected override void UpdateWalls()
         {
             for (int i = 0; i < WallList.Count; i++)
@@ -148,6 +45,7 @@ namespace FBClient.Core
                     RemoveBomb(BombList[i]);
                 }
             }
+
             base.UpdateBombs();
         }
 
@@ -196,28 +94,6 @@ namespace FBClient.Core
             }
 
             base.UpdatePlayers();
-        }
-        */
-        #endregion
-
-        public void Draw(GameTime gameTime, Camera2D camera)
-        {
-            CurrentMap.Draw(gameTime, FinalBomber.Instance.SpriteBatch, camera);
-
-            foreach (Wall wall in WallList)
-                wall.Draw(gameTime);
-
-            foreach (PowerUp powerUp in PowerUpList)
-                powerUp.Draw(gameTime);
-
-            foreach (Bomb bomb in BombList)
-                bomb.Draw(gameTime);
-
-            foreach (Player player in Players)
-            {
-                if (player.IsAlive)
-                    player.Draw(gameTime);
-            }
         }
 
         #region Entity methods

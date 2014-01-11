@@ -43,7 +43,7 @@ namespace FBClient.Core.Players
                     if (bo == null)
                     {
                         // Send to server that we want to plant a bomb
-                        GameSettings.GameServer.SendBombPlacing();
+                        GameServer.Instance.SendBombPlacing();
                     }
                 }
             }
@@ -110,23 +110,23 @@ namespace FBClient.Core.Players
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveDown);
+                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveDown);
                         break;
                     case LookDirection.Left:
                         Debug.Print("[Client]I want to go left !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveLeft);
+                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveLeft);
                         break;
                     case LookDirection.Right:
                         Debug.Print("[Client]I want to go right !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveRight);
+                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveRight);
                         break;
                     case LookDirection.Up:
                         Debug.Print("[Client]I want to go up !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.MoveUp);
+                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveUp);
                         break;
                     default:
                         Debug.Print("[Client]I want to go stay here !");
-                        GameSettings.GameServer.SendMovement((byte) GameServer.SMT.Standing);
+                        GameServer.Instance.SendMovement((byte) GameServer.SMT.Standing);
                         break;
                 }
             }

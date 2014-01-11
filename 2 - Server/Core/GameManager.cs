@@ -78,11 +78,6 @@ namespace FBServer.Core
                 // We clean the obsolete elements
                 if (!_wallList[i].IsAlive)
                 {
-                    if (GameConfiguration.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
-                    {
-                        AddPowerUp(_wallList[i].CellPosition);
-                    }
-
                     RemoveWall(_wallList[i]);
                 }
             }
@@ -213,6 +208,11 @@ namespace FBServer.Core
 
         private void RemoveWall(Wall wall)
         {
+            if (GameConfiguration.Random.Next(0, 100) < MathHelper.Clamp(GameConfiguration.PowerUpPercentage, 0, 100))
+            {
+                AddPowerUp(wall.CellPosition);
+            }
+
             _wallList.Remove(wall);
 
             base.RemoveWall(wall);

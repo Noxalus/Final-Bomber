@@ -11,7 +11,7 @@ namespace FBClient.Screens.GameScreens
     public abstract class BaseGamePlayScreen : BaseGameState
     {
         // Game manager
-        public static GameManager GameManager;
+        public GameManager GameManager;
 
         // HUD
         protected Texture2D ItemInfoIcon;
@@ -33,7 +33,6 @@ namespace FBClient.Screens.GameScreens
 
         protected BaseGamePlayScreen(Game game, GameStateManager manager) : base(game, manager)
         {
-            GameManager = new GameManager();
         }
 
         protected override void LoadContent()

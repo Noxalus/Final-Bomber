@@ -112,18 +112,18 @@ namespace FBClient.Network
 
             maintheme = E2D_Engine.SoundBank.GetCue("maintheme");
 
-            GameSettings.GameServer.NewPlayer += new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
-            GameSettings.GameServer.RemovePlayer += new GameServer.RemovePlayerEventHandler(GameServer_RemovePlayer);
-            GameSettings.GameServer.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
-            GameSettings.GameServer.PlacingBomb += new GameServer.PlacingBombEventHandler(GameServer_PlacingBomb);
-            GameSettings.GameServer.BombExploded += new GameServer.BombExplodedEventHandler(GameServer_BombExploded);
-            GameSettings.GameServer.Burn += new GameServer.BurnEventHandler(GameServer_Burn);
-            GameSettings.GameServer.ExplodeTile += new GameServer.ExplodeTileEventHandler(GameServer_ExplodeTile);
-            GameSettings.GameServer.PowerupDrop += new GameServer.PowerupDropEventHandler(GameServer_PowerupDrop);
-            GameSettings.GameServer.PowerupPick += new GameServer.PowerupPickEventHandler(GameServer_PowerupPick);
-            GameSettings.GameServer.SuddenDeath += new GameServer.SuddenDeathEventHandler(GameServer_SuddenDeath);
-            GameSettings.GameServer.SDExplosion += new GameServer.SDExplosionEventHandler(GameServer_SDExplosion);
-            GameSettings.GameServer.End += new GameServer.EndEventHandler(GameServer_End);
+            GameServer.Instance.NewPlayer += new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
+            GameServer.Instance.RemovePlayer += new GameServer.RemovePlayerEventHandler(GameServer_RemovePlayer);
+            GameServer.Instance.MovePlayer += new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
+            GameServer.Instance.PlacingBomb += new GameServer.PlacingBombEventHandler(GameServer_PlacingBomb);
+            GameServer.Instance.BombExploded += new GameServer.BombExplodedEventHandler(GameServer_BombExploded);
+            GameServer.Instance.Burn += new GameServer.BurnEventHandler(GameServer_Burn);
+            GameServer.Instance.ExplodeTile += new GameServer.ExplodeTileEventHandler(GameServer_ExplodeTile);
+            GameServer.Instance.PowerupDrop += new GameServer.PowerupDropEventHandler(GameServer_PowerupDrop);
+            GameServer.Instance.PowerupPick += new GameServer.PowerupPickEventHandler(GameServer_PowerupPick);
+            GameServer.Instance.SuddenDeath += new GameServer.SuddenDeathEventHandler(GameServer_SuddenDeath);
+            GameServer.Instance.SDExplosion += new GameServer.SDExplosionEventHandler(GameServer_SDExplosion);
+            GameServer.Instance.End += new GameServer.EndEventHandler(GameServer_End);
 
             endTmr = new Timer();
             base.Load();
@@ -153,18 +153,18 @@ namespace FBClient.Network
 
         public override void Unload()
         {
-            GameSettings.GameServer.NewPlayer -= new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
-            GameSettings.GameServer.RemovePlayer -= new GameServer.RemovePlayerEventHandler(GameServer_RemovePlayer);
-            GameSettings.GameServer.MovePlayer -= new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
-            GameSettings.GameServer.PlacingBomb -= new GameServer.PlacingBombEventHandler(GameServer_PlacingBomb);
-            GameSettings.GameServer.BombExploded -= new GameServer.BombExplodedEventHandler(GameServer_BombExploded);
-            GameSettings.GameServer.Burn -= new GameServer.BurnEventHandler(GameServer_Burn);
-            GameSettings.GameServer.ExplodeTile -= new GameServer.ExplodeTileEventHandler(GameServer_ExplodeTile);
-            GameSettings.GameServer.PowerupDrop -= new GameServer.PowerupDropEventHandler(GameServer_PowerupDrop);
-            GameSettings.GameServer.PowerupPick -= new GameServer.PowerupPickEventHandler(GameServer_PowerupPick);
-            GameSettings.GameServer.SuddenDeath -= new GameServer.SuddenDeathEventHandler(GameServer_SuddenDeath);
-            GameSettings.GameServer.SDExplosion -= new GameServer.SDExplosionEventHandler(GameServer_SDExplosion);
-            GameSettings.GameServer.End -= new GameServer.EndEventHandler(GameServer_End);
+            GameServer.Instance.NewPlayer -= new GameServer.NewPlayerEventHandler(GameServer_NewPlayer);
+            GameServer.Instance.RemovePlayer -= new GameServer.RemovePlayerEventHandler(GameServer_RemovePlayer);
+            GameServer.Instance.MovePlayer -= new GameServer.MovePlayerEventHandler(GameServer_MovePlayer);
+            GameServer.Instance.PlacingBomb -= new GameServer.PlacingBombEventHandler(GameServer_PlacingBomb);
+            GameServer.Instance.BombExploded -= new GameServer.BombExplodedEventHandler(GameServer_BombExploded);
+            GameServer.Instance.Burn -= new GameServer.BurnEventHandler(GameServer_Burn);
+            GameServer.Instance.ExplodeTile -= new GameServer.ExplodeTileEventHandler(GameServer_ExplodeTile);
+            GameServer.Instance.PowerupDrop -= new GameServer.PowerupDropEventHandler(GameServer_PowerupDrop);
+            GameServer.Instance.PowerupPick -= new GameServer.PowerupPickEventHandler(GameServer_PowerupPick);
+            GameServer.Instance.SuddenDeath -= new GameServer.SuddenDeathEventHandler(GameServer_SuddenDeath);
+            GameServer.Instance.SDExplosion -= new GameServer.SDExplosionEventHandler(GameServer_SDExplosion);
+            GameServer.Instance.End -= new GameServer.EndEventHandler(GameServer_End);
             base.Unload();
         }
 
@@ -273,7 +273,7 @@ namespace FBClient.Network
 
         public override void InFrontOfDrawing()
         {
-            E2D_Engine.GetSpriteBatch.DrawString(E2D_Engine.Special.Debug_Font, GameSettings.GameServer.Ping.ToString(),
+            E2D_Engine.GetSpriteBatch.DrawString(E2D_Engine.Special.Debug_Font, GameServer.Instance.Ping.ToString(),
                     new Vector2(E2D_Engine.ScreenWidth - 50, 10), Color.Blue);
 
             if (!Spectator)

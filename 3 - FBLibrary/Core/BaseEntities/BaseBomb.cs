@@ -55,7 +55,7 @@ namespace FBLibrary.Core.BaseEntities
 
             if (Timer >= TimeSpan.Zero)
             {
-                Timer -= TimeSpan.FromMilliseconds(GameConfiguration.DeltaTime);
+                Timer -= TimeSpan.FromTicks(GameConfiguration.DeltaTime);
 
                 // The bomb will explode soon
                 if (CurrentDirection == LookDirection.Idle &&

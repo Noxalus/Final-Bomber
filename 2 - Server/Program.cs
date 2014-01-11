@@ -45,7 +45,7 @@ namespace FBServer
                 while(server.Running)
                 {
                     // Delta time
-                    GameConfiguration.DeltaTime = timer.Elapsed.Milliseconds;
+                    GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
 
                     server.Update();
                     //Program.Log.Info(timer.Elapsed.Milliseconds);

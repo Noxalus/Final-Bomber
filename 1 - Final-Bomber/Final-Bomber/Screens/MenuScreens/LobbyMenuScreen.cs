@@ -13,9 +13,8 @@ namespace FBClient.Screens.MenuScreens
     {
         #region Field region
         TimeSpan _timer;
-        readonly Timer _tmr;
-        readonly Timer _connectedTmr;
-        private Timer _tmrWaitUntilStart;
+        readonly Timer _connectedTimer;
+        private Timer _timerWaitUntilStart;
         private bool _isConnected;
         private bool _isReady;
         #endregion
@@ -25,8 +24,7 @@ namespace FBClient.Screens.MenuScreens
             : base(game, manager)
         {
             _timer = new TimeSpan();
-            _tmr = new Timer();
-            _connectedTmr = new Timer();
+            _connectedTimer = new Timer();
             _isConnected = false;
             _isReady = false;
         }
@@ -36,22 +34,23 @@ namespace FBClient.Screens.MenuScreens
 
         public override void Initialize()
         {
-            GameSettings.GameServer.StartInfo += GameServer_StartInfo;
-            GameSettings.GameServer.StartGame += GameServer_StartGame;
+            GameServer.Instance.StartInfo += GameServer_StartInfo;
+            GameServer.Instance.StartGame += GameServer_StartGame;
 
-            GameSettings.GameServer.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
+            GameServer.Instance.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
 
-            _tmr.Start();
-            _tmrWaitUntilStart = new Timer();
-            _connectedTmr.Start();
+            _timerWaitUntilStart = new Timer();
+            _connectedTimer.Start();
+
+            GameServer.Instance.SetGameManager(new NetworkGameManager());
 
             base.Initialize();
         }
 
         protected override void UnloadContent()
         {
-            GameSettings.GameServer.StartInfo -= GameServer_StartInfo;
-            GameSettings.GameServer.StartGame -= GameServer_StartGame;
+            GameServer.Instance.StartInfo -= GameServer_StartInfo;
+            GameServer.Instance.StartGame -= GameServer_StartGame;
 
             base.UnloadContent();
         }
@@ -67,34 +66,31 @@ namespace FBClient.Screens.MenuScreens
 
             if (!_isConnected)
             {
-                GameSettings.GameServer.RunClientConnection();
-                if (GameSettings.GameServer.Connected)
+                GameServer.Instance.RunClientConnection();
+                if (GameServer.Instance.Connected)
                 {
                     _isConnected = true;
                     //_publicIp = GetPublicIP();
                 }
-                else if (_connectedTmr.Each(5000))
+                else if (_connectedTimer.Each(5000))
                 {
                     Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
-                    FinalBomber.Instance.Exit();
+                    //FinalBomber.Instance.Exit();
                 }
             }
             else
             {
-                if (GameSettings.GameServer.HasStarted)
-                    GameSettings.GameServer.RunClientConnection();
+                if (GameServer.Instance.HasStarted)
+                    GameServer.Instance.RunClientConnection();
 
                 ProgramStepProccesing();
             }
 
+            _timer += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
 
-            if (_tmr.Each(1000))
+            if (_timer.Seconds == 5)
             {
-                _timer = _timer.Add(new TimeSpan(0, 0, 1));
-                if (_timer.Seconds == 5)
-                {
-                    _tmr.Stop();
-                }
+                _timer = TimeSpan.Zero;
             }
 
             base.Update(gameTime);
@@ -102,11 +98,11 @@ namespace FBClient.Screens.MenuScreens
 
         private void ProgramStepProccesing()
         {
-            if (!GameSettings.GameServer.Connected)
+            if (!GameServer.Instance.Connected)
             {
                 DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
             }
-            if (GameSettings.GameServer.Connected)
+            if (GameServer.Instance.Connected)
             {
                 ConnectedGameProcessing();
             }
@@ -123,16 +119,16 @@ namespace FBClient.Screens.MenuScreens
             {
                 _isReady = false;
 
-                _tmrWaitUntilStart = new Timer();
-                GameSettings.GameServer.SendIsReady();
-                _tmrWaitUntilStart.Start();
+                _timerWaitUntilStart = new Timer();
+                GameServer.Instance.SendIsReady();
+                _timerWaitUntilStart.Start();
             }
 
             // Wait 5 seconds before to say to the server that we are ready
-            if (_tmrWaitUntilStart.Each(5000))
+            if (_timerWaitUntilStart.Each(5000))
             {
-                GameSettings.GameServer.SendIsReady();
-                _tmrWaitUntilStart.Stop();
+                GameServer.Instance.SendIsReady();
+                _timerWaitUntilStart.Stop();
             }
         }
 
@@ -191,7 +187,7 @@ namespace FBClient.Screens.MenuScreens
             {
                 if (!gameInProgress)
                 {
-                    NetworkTestScreen.NetworkManager.Me.Id = playerId;
+                    NetworkGamePlayScreen.NetworkManager.Me.Id = playerId;
                     //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
                     GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
                 }
@@ -203,8 +199,8 @@ namespace FBClient.Screens.MenuScreens
                     */
                 }
 
-                NetworkTestScreen.GameManager.LoadMap(GameSettings.CurrentMapName);
-                NetworkTestScreen.GameManager.AddWalls(wallPositions);
+                GameServer.Instance.GameManager.LoadMap(GameSettings.CurrentMapName);
+                GameServer.Instance.GameManager.AddWalls(wallPositions);
 
                 //mainGame.Start();
             }

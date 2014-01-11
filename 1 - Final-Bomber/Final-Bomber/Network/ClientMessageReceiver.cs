@@ -1,10 +1,6 @@
 ﻿using FBLibrary;
 using FBLibrary.Core;
-using FBClient.Core;
-using FBClient.Core.Entities;
-using FBClient.Screens;
 using FBClient.Screens.GameScreens;
-using FBClient.Utils;
 using FBClient.WorldEngine;
 using Lidgren.Network;
 using Lidgren.Network.Xna;
@@ -12,7 +8,6 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FBClient.Network
 {
@@ -57,7 +52,7 @@ namespace FBClient.Network
             string localMapName = MapLoader.NewMap(mapName, data);
 
             var map = new Map();
-            map.Parse(localMapName, NetworkTestScreen.GameManager);
+            map.Parse(localMapName, GameManager);
 
             if (map.GetMd5() != md5)
             {

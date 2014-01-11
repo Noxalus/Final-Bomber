@@ -26,6 +26,7 @@ namespace FBClient.Screens.GameScreens
         public SinglePlayerGamePlayScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
+            GameManager = new LocalGameManager();
         }
         #endregion
 
@@ -209,7 +210,7 @@ namespace FBClient.Screens.GameScreens
                             HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace + 70),
                         new Rectangle(56, 0, 14, 14), Color.White);
 
-                // Player's bad item timer
+                // Player's bad item GameTimer
                 if (p.HasBadEffect)
                 {
                     FinalBomber.Instance.SpriteBatch.Draw(ItemInfoIcon, new Vector2(HudOrigin.X + HudMarginLeft,
@@ -242,10 +243,10 @@ namespace FBClient.Screens.GameScreens
             var pos =
                 new Vector2(
                     HudOrigin.X + HudMarginLeft +
-                    (ControlManager.SpriteFont.MeasureString(GameManager.Timer.ToString("mm") + ":" +
-                                                             GameManager.Timer.ToString("ss")).X) + 25,
+                    (ControlManager.SpriteFont.MeasureString(GameManager.GameTimer.ToString("mm") + ":" +
+                                                             GameManager.GameTimer.ToString("ss")).X) + 25,
                     HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 22);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.Timer.ToString("mm") + ":" + GameManager.Timer.ToString("ss"),
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.GameTimer.ToString("mm") + ":" + GameManager.GameTimer.ToString("ss"),
                 pos, Color.Black);
 
             #endregion

@@ -6,6 +6,7 @@ using FBClient.Screens;
 using FBClient.Screens.GameScreens;
 using FBClient.Sprites;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FBClient.Core.Entities
@@ -16,8 +17,12 @@ namespace FBClient.Core.Entities
     {
         #region Field Region
 
+        // Graphics
         private AnimatedSprite _itemDestroyAnimation;
         public AnimatedSprite Sprite { get; protected set; }
+
+        // Sounds
+        private SoundEffect _powerUpPickUpSound;
 
         #endregion
         
@@ -45,6 +50,9 @@ namespace FBClient.Core.Entities
             {
                 IsAnimating = false
             };
+
+            // Sounds
+            _powerUpPickUpSound = FinalBomber.Instance.Content.Load<SoundEffect>("Audio/Sounds/item");
         }
 
         #region XNA Method Region
@@ -75,7 +83,7 @@ namespace FBClient.Core.Entities
 
         public override void PickUp()
         {
-            NetworkTestScreen.GameManager.PowerUpPickUpSound.Play();
+            _powerUpPickUpSound.Play();
 
             base.PickUp();
         }

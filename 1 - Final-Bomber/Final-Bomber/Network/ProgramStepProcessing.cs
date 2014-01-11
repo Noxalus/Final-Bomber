@@ -13,11 +13,11 @@ namespace FBClient.Network
 
         private void ProgramStepProccesing()
         {
-            if (!GameSettings.GameServer.Connected)
+            if (!GameServer.Instance.Connected)
             {
                 DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
             }
-            if (GameSettings.GameServer.Connected)
+            if (GameServer.Instance.Connected)
             {
                 ConnectedGameProcessing();
             }
@@ -40,7 +40,7 @@ namespace FBClient.Network
             }
             if (tmr_WaitUntilStart.Each(5000)) //Vänta 5 sekunder innan man skickar isready, för att man ska hinna hoppa ur matchen
             {
-                GameSettings.GameServer.SendIsReady();
+                GameServer.Instance.SendIsReady();
                 tmr_WaitUntilStart.Stop();
             }
         }

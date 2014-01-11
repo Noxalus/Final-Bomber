@@ -84,7 +84,7 @@ namespace FBLibrary
         public static Point BaseTileSize = new Point(32, 32);
 
         // Time
-        public static int DeltaTime; // milliseconds
+        public static long DeltaTime; // Ticks
 
         // TO DELETE
         public const int PlayerNumber = 1;
