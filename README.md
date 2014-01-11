@@ -41,16 +41,17 @@ Current features
 
 TODO List
 =========
-* Add the Xbox controller support
+
+* Add the Xbox controller support (with many controllers)
 * Add LAN and online implementation (Lidgren => https://code.google.com/p/lidgren-network-gen3/)
 * Redesign menus (XUI => http://xui.codeplex.com/releases/view/80711)
 * Improve the AI behavior
 * Add a level editor (HTML5 ?)
 * Add a CTF (capture the flag) mode with classes (engineer that can build wall, etc...)
-* Multiplatform (Monogame)
+* Multiplatform (at least Linux and Mac support => Monogame)
 * Replay to save (to see again a finished game)
-* Boss scripts
-* Resources extension
+* Boss scripts (LUA)
+* Easy resources extension (window skins, sprites, etc)
 * Split screen for local multiplayer ?
 * Add logging for networking part (Log4Net => http://logging.apache.org/log4net/index.html)
 * GUI (with Squid ? => http://www.ionstar.org/)
@@ -66,7 +67,15 @@ I've uploaded some videos to show the AI progress:
 * http://www.youtube.com/watch?v=tu7cocmqBj8 (first networking test)
 * http://www.youtube.com/watch?v=tSVHtYrGvsg (second networking test)
 * http://www.youtube.com/watch?v=gkYElxHD3Q8 (simple 2D camera)
- 
+
+Dev blog (french)
+=================
+You can find a dev blog with technical articles here: https://final-bomber.blogspot.com
+
+Documentation
+=============
+A complete documentation generated with Doxygen is available here: http://noxalus.github.io/Final-Bomber
+
 Old repository
 ==============
 This project didn't start here, it was hosted by Google Code before.
