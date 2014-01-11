@@ -16,18 +16,17 @@ namespace FBClient.Screens.GameScreens
     public class NetworkGamePlayScreen : BaseGamePlayScreen
     {
         #region Field region
+        // Game manager
+        private NetworkGameManager _gameManager;
+
         Process _serverProcess;
-
-        // Network
-        public static NetworkManager NetworkManager;
-
+        
         #endregion
 
         #region Constructor region
         public NetworkGamePlayScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            NetworkManager = new NetworkManager();
         }
         #endregion
 
@@ -50,22 +49,18 @@ namespace FBClient.Screens.GameScreens
 
             //_serverProcess.Start();
 
-            GameManager = GameServer.Instance.GameManager;
-            var manager = GameManager as NetworkGameManager;
-            if (manager != null)
-                manager.SetNetworkManager(NetworkManager);
+            _gameManager = (NetworkGameManager)GameServer.Instance.GameManager;
 
             base.Initialize();
 
-            GameManager.Initialize();
-            NetworkManager.Initiliaze();
+            _gameManager.Initialize();
 
             // Server events
             GameServer.Instance.End += GameServer_End;
 
-            Camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, GameManager.CurrentMap.Size, 1f);
+            Camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, _gameManager.CurrentMap.Size, 1f);
 
-            GameManager.AddPlayer(NetworkManager.Me);
+            _gameManager.AddPlayer(_gameManager.NetworkManager.Me);
 
             HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
             HudTopSpace = 15;
@@ -73,43 +68,39 @@ namespace FBClient.Screens.GameScreens
 
             ScoresWindowBox = new WindowBox(WindowSkin, new Vector2(HudOrigin.X, HudOrigin.Y),
                                              new Point(GraphicsDevice.Viewport.Width - (HudOrigin.X),
-                                             HudTopSpace + GameManager.Players.Count * Config.HUDPlayerInfoSpace + 15));
+                                             HudTopSpace + _gameManager.Players.Count * Config.HUDPlayerInfoSpace + 15));
 
             TimerWindowBox = new WindowBox(WindowSkin, new Vector2(HudOrigin.X, ScoresWindowBox.Size.Y),
                 new Point(GraphicsDevice.Viewport.Width - HudOrigin.X, 40));
 
-            NetworkManager.AddPlayer += ResizeHud;
+            _gameManager.NetworkManager.AddPlayer += ResizeHud;
         }
 
         protected override void LoadContent()
         {
-            NetworkManager.LoadContent();
+            _gameManager.LoadContent();
 
             base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            GameServer.Instance.EndClientConnection("Quit the game !");
-
             //_serverProcess.Kill();
 
-            NetworkManager.AddPlayer -= ResizeHud;
+            _gameManager.NetworkManager.AddPlayer -= ResizeHud;
 
             GameServer.Instance.End -= GameServer_End;
 
-            NetworkManager.Dispose();
-            GameManager.Dispose();
+            _gameManager.Dispose();
 
             base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            NetworkManager.Update();
-            GameManager.Update(gameTime);
+            _gameManager.Update(gameTime);
 
-            Camera.Update(gameTime, NetworkManager.Me.Position);
+            Camera.Update(gameTime, _gameManager.NetworkManager.Me.Position);
 
             base.Update(gameTime);
         }
@@ -118,7 +109,7 @@ namespace FBClient.Screens.GameScreens
         {
             FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.GetTransformation());
 
-            GameManager.Draw(gameTime, Camera);
+            _gameManager.Draw(gameTime, Camera);
 
             FinalBomber.Instance.SpriteBatch.End();
 
@@ -132,7 +123,7 @@ namespace FBClient.Screens.GameScreens
             Color.Black);
 
             // Player's ping
-            string ping = "Ping: " + NetworkManager.Me.Ping;
+            string ping = "Ping: " + _gameManager.NetworkManager.Me.Ping;
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20), Color.White);
 
@@ -140,7 +131,7 @@ namespace FBClient.Screens.GameScreens
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
 
-            string playerSpeed = "Player's speed: " + NetworkManager.Me.Speed;
+            string playerSpeed = "Player's speed: " + _gameManager.NetworkManager.Me.Speed;
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(1, 61), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(0, 60), Color.White);
 
@@ -168,7 +159,7 @@ namespace FBClient.Screens.GameScreens
             TimerWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
 
             // Draw player HUD
-            foreach (var p in GameManager.Players)
+            foreach (var p in _gameManager.Players)
             {
                 // HUD => Item Info
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, p.Name + ": "
@@ -177,7 +168,7 @@ namespace FBClient.Screens.GameScreens
 
 #if DEBUG
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "Player " + p.Id + ": " + (p.CellPosition).ToString(),
-                    new Vector2(HudOrigin.X + HudMarginLeft, HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
+                    new Vector2(HudOrigin.X + HudMarginLeft, HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * _gameManager.Players.Count + 60 + 20 * (p.Id)), Color.Black);
 #endif
 
                 // To space the red icons and the "normal color" icons
@@ -292,10 +283,10 @@ namespace FBClient.Screens.GameScreens
             var pos =
                 new Vector2(
                     HudOrigin.X + HudMarginLeft +
-                    (ControlManager.SpriteFont.MeasureString(GameManager.GameTimer.ToString("mm") + ":" +
-                                                             GameManager.GameTimer.ToString("ss")).X) + 25,
-                    HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * GameManager.Players.Count + 22);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.GameTimer.ToString("mm") + ":" + GameManager.GameTimer.ToString("ss"),
+                    (ControlManager.SpriteFont.MeasureString(_gameManager.GameTimer.ToString("mm") + ":" +
+                                                             _gameManager.GameTimer.ToString("ss")).X) + 25,
+                    HudOrigin.Y + HudTopSpace + Config.HUDPlayerInfoSpace * _gameManager.Players.Count + 22);
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _gameManager.GameTimer.ToString("mm") + ":" + _gameManager.GameTimer.ToString("ss"),
                 pos, Color.Black);
 
             #endregion
@@ -305,15 +296,15 @@ namespace FBClient.Screens.GameScreens
 
             if (InputHandler.KeyDown(Keys.O))
             {
-                for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
+                for (int x = 0; x < _gameManager.CurrentMap.Size.X; x++)
                 {
-                    for (int y = 0; y < GameManager.CurrentMap.Size.Y; y++)
+                    for (int y = 0; y < _gameManager.CurrentMap.Size.Y; y++)
                     {
                         string itemMapType = "";
                         Color colorMapItem = Color.White;
-                        if (GameManager.CurrentMap.Board[x, y] != null)
+                        if (_gameManager.CurrentMap.Board[x, y] != null)
                         {
-                            switch (GameManager.CurrentMap.Board[x, y].GetType().Name)
+                            switch (_gameManager.CurrentMap.Board[x, y].GetType().Name)
                             {
                                 case "Wall":
                                     itemMapType = "W";
@@ -359,11 +350,11 @@ namespace FBClient.Screens.GameScreens
             }
             else if (InputHandler.KeyDown(Keys.C))
             {
-                for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
+                for (int x = 0; x < _gameManager.CurrentMap.Size.X; x++)
                 {
-                    for (int y = 0; y < GameManager.CurrentMap.Size.Y; y++)
+                    for (int y = 0; y < _gameManager.CurrentMap.Size.Y; y++)
                     {
-                        if (!GameManager.CurrentMap.CollisionLayer[x, y])
+                        if (!_gameManager.CurrentMap.CollisionLayer[x, y])
                         {
                             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, "0",
                                 new Vector2(x * 20, 80 + 20 * y), Color.ForestGreen);
@@ -378,11 +369,11 @@ namespace FBClient.Screens.GameScreens
             }
             else if (InputHandler.KeyDown(Keys.H))
             {
-                for (int x = 0; x < GameManager.CurrentMap.Size.X; x++)
+                for (int x = 0; x < _gameManager.CurrentMap.Size.X; x++)
                 {
-                    for (int y = 0; y < GameManager.CurrentMap.Size.Y; y++)
+                    for (int y = 0; y < _gameManager.CurrentMap.Size.Y; y++)
                     {
-                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, GameManager.HazardMap[x, y].ToString(),
+                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, _gameManager.HazardMap[x, y].ToString(),
                             new Vector2(x * 30, 80 + 20 * y), Color.Black);
                     }
                 }
@@ -400,7 +391,7 @@ namespace FBClient.Screens.GameScreens
         private void ResizeHud(object sender, EventArgs e)
         {
             ScoresWindowBox.Size = new Point(GraphicsDevice.Viewport.Width - (HudOrigin.X),
-                HudTopSpace + GameManager.Players.Count * Config.HUDPlayerInfoSpace + 15);
+                HudTopSpace + _gameManager.Players.Count * Config.HUDPlayerInfoSpace + 15);
 
             TimerWindowBox.Position = new Vector2(HudOrigin.X, ScoresWindowBox.Size.Y);
         }

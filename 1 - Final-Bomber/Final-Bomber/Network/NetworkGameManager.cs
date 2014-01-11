@@ -7,15 +7,39 @@ namespace FBClient.Network
     /// </summary>
     public class NetworkGameManager : GameManager
     {
-        private NetworkManager _networkManager;
+        public NetworkManager NetworkManager { get; set; }
 
         public NetworkGameManager()
         {
+            NetworkManager = new NetworkManager();
         }
 
-        public void SetNetworkManager(NetworkManager networkManager)
+        public override void Initialize()
         {
-            _networkManager = networkManager;
+            base.Initialize();
+
+            NetworkManager.Initiliaze();
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
+            NetworkManager.LoadContent();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            NetworkManager.Dispose();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            NetworkManager.Update();
         }
 
         #region Events actions
@@ -24,8 +48,8 @@ namespace FBClient.Network
         {
             base.RoundEndAction();
 
-            _networkManager.Reset();
-            AddPlayer(_networkManager.Me);
+            NetworkManager.Reset();
+            AddPlayer(NetworkManager.Me);
         }
 
         #endregion

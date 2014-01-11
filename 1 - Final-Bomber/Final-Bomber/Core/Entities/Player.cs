@@ -117,7 +117,7 @@ namespace FBClient.Entities
                     if (InvincibleTimer >= TimeSpan.Zero)
                     {
                         if (_invincibleBlinkTimer >= TimeSpan.Zero)
-                            _invincibleBlinkTimer -= gameTime.ElapsedGameTime;
+                            _invincibleBlinkTimer -= TimeSpan.FromTicks(GameConfiguration.DeltaTime);
                         else
                             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
                     }

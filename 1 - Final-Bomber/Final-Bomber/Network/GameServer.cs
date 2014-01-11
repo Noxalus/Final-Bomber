@@ -8,7 +8,7 @@ namespace FBClient.Network
         public GameManager GameManager;
 
         private static GameServer _instance;
-
+        
         public static GameServer Instance
         {
             get { return _instance ?? (_instance = new GameServer()); }

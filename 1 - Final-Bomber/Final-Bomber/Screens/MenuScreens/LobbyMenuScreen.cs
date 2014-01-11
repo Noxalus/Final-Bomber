@@ -37,6 +37,8 @@ namespace FBClient.Screens.MenuScreens
             GameServer.Instance.StartInfo += GameServer_StartInfo;
             GameServer.Instance.StartGame += GameServer_StartGame;
 
+            FinalBomber.Instance.Exiting += Instance_Exiting;
+
             GameServer.Instance.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
 
             _timerWaitUntilStart = new Timer();
@@ -45,6 +47,12 @@ namespace FBClient.Screens.MenuScreens
             GameServer.Instance.SetGameManager(new NetworkGameManager());
 
             base.Initialize();
+        }
+
+        void Instance_Exiting(object sender, EventArgs e)
+        {
+            // We have to disconnect from the server and stop all threads
+            GameServer.Instance.EndClientConnection("Client left the game.");            
         }
 
         protected override void UnloadContent()
@@ -187,7 +195,9 @@ namespace FBClient.Screens.MenuScreens
             {
                 if (!gameInProgress)
                 {
-                    NetworkGamePlayScreen.NetworkManager.Me.Id = playerId;
+                    var networkGameManager = GameServer.Instance.GameManager as NetworkGameManager;
+                    if (networkGameManager != null)
+                        networkGameManager.NetworkManager.Me.Id = playerId;
                     //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
                     GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
                 }

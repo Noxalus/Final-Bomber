@@ -1,66 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 
 namespace FBClient.Network
 {
     public class Timer
     {
-        int ticks = 0;
-        Stopwatch timer;
-        bool isStarted = false;
+        readonly Stopwatch _timer;
+        bool _isStarted = false;
+
+        private int Ticks { get; set; }
 
         public bool IsStarted
         {
-            get { return isStarted; }
+            get { return _isStarted; }
         }
 
         public Timer()
         {
-            timer = new Stopwatch();
+            Ticks = 0;
+            _timer = new Stopwatch();
         }
 
         public void Start()
         {
-            if (!isStarted)
+            if (!_isStarted)
             {
-                timer.Start();
-                isStarted = true;
+                _timer.Start();
+                _isStarted = true;
             }
         }
 
         public void Stop()
         {
-            if (isStarted)
+            if (_isStarted)
             {
-                timer.Stop();
-                isStarted = false;
+                _timer.Stop();
+                _isStarted = false;
             }
         }
 
         public void Reset()
         {
-            if (isStarted)
+            if (_isStarted)
             {
-                timer.Reset();
-                timer.Start();
+                _timer.Reset();
+                _timer.Start();
             }
         }
 
         public long ElapsedMilliseconds
         {
-            get { return timer.ElapsedMilliseconds; }
+            get { return _timer.ElapsedMilliseconds; }
         }
 
         public bool Each(int time)
         {
-            if (timer.ElapsedMilliseconds > time)
+            if (_timer.ElapsedMilliseconds > time)
             {
-                timer.Reset();
-                timer.Start();
-                ticks++;
+                _timer.Reset();
+                _timer.Start();
+                Ticks++;
                 return true;
             }
             return false;

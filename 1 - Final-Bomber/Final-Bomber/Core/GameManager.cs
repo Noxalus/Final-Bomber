@@ -78,10 +78,8 @@ namespace FBClient.Core
             GameTime = new GameTime();
         }
 
-        public void Initialize()
+        public virtual void Initialize()
         {
-            MediaPlayer.Play(_mapSong);
-
             _gameTimer = TimeSpan.Zero;
 
             var origin = new Vector2((FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234) / 2f - ((32 * _currentMap.Size.X) / 2f),
@@ -95,7 +93,7 @@ namespace FBClient.Core
             RoundEnd += RoundEndAction;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             RoundEnd -= RoundEndAction;
         }
@@ -115,11 +113,13 @@ namespace FBClient.Core
             base.Reset();
         }
 
-        public void LoadContent()
+        public virtual void LoadContent()
         {
             // Musics
             _mapSong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map2");
             _mapHurrySong = FinalBomber.Instance.Content.Load<Song>("Audio/Musics/map1_hurry");
+
+            MediaPlayer.Play(_mapSong);
 
             CurrentMap.LoadContent();
         }
@@ -238,7 +238,7 @@ namespace FBClient.Core
 
         #region Player methods
 
-        public void AddPlayer(Player player)
+        public virtual void AddPlayer(Player player)
         {
             Players.Add(player);
 

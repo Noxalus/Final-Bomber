@@ -10,9 +10,6 @@ namespace FBClient.Screens.GameScreens
 {
     public abstract class BaseGamePlayScreen : BaseGameState
     {
-        // Game manager
-        public GameManager GameManager;
-
         // HUD
         protected Texture2D ItemInfoIcon;
         protected Texture2D Cross;
@@ -46,8 +43,6 @@ namespace FBClient.Screens.GameScreens
             // Fonts
             GameFont = FinalBomber.Instance.Content.Load<SpriteFont>("Graphics/Fonts/GameFont");
             SmallFont = FinalBomber.Instance.Content.Load<SpriteFont>("Graphics/Fonts/SmallFont");
-
-            GameManager.LoadContent();
 
             base.LoadContent();
         }

@@ -20,6 +20,16 @@ namespace FBClient.Network
     {
         #region Events
 
+        #region NewClient
+        public delegate void AddClientEventHandler(object sender, EventArgs e);
+        public event AddClientEventHandler AddClient;
+        protected virtual void OnAddClient(object sender, EventArgs e)
+        {
+            if (AddClient != null)
+                AddClient(sender, e);
+        }
+        #endregion
+
         #region NewPlayer
         public delegate void AddPlayerEventHandler(object sender, EventArgs e);
         public event AddPlayerEventHandler AddPlayer;
@@ -168,7 +178,7 @@ namespace FBClient.Network
         {
             if (!gameInProgress)
             {
-                NetworkGamePlayScreen.NetworkManager.Me.Id = playerId;
+                Me.Id = playerId;
                 //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
                 GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
             }
