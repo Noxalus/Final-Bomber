@@ -1,3 +1,4 @@
+using System.Media;
 using FBLibrary;
 using FBClient.Screens.GameScreens;
 using FBClient.Screens.MenuScreens;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using FBClient.Screens;
 using FBClient.Controls;
 using FBClient.Utils;
+using Microsoft.Xna.Framework.Media;
 
 namespace FBClient
 {
@@ -137,6 +139,10 @@ namespace FBClient
 
             // We load player info
             StaticClassSerializer.Load(typeof(PlayerInfo), "PlayerInfo.xml", false);
+
+            // Volume
+            MediaPlayer.Volume = Config.MusicVolume;
+            SoundEffect.MasterVolume = Config.SoundVolume;
 
             base.Initialize();
         }

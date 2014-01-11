@@ -126,7 +126,8 @@ namespace FBClient
         };
 
         // Volume
-        public static float Volume = 0.0f;
+        public const float MusicVolume = 0.1f; // 0 to 1 (100%)
+        public const float SoundVolume = 0.01f; // 0 to 1 (100%)
 
         // IA
         public static bool InactiveAI = false;

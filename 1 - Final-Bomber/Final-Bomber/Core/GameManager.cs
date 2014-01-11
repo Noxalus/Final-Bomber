@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FBClient.Core.Entities;
 using FBClient.Entities;
 using FBClient.WorldEngine;
+using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
@@ -122,6 +123,10 @@ namespace FBClient.Core
             MediaPlayer.Play(_mapSong);
 
             CurrentMap.LoadContent();
+
+            // Load players content
+            foreach (var player in Players)
+                player.LoadContent();
         }
 
         public void Update(GameTime gameTime)

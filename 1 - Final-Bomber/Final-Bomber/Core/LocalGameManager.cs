@@ -36,21 +36,11 @@ namespace FBClient.Core
         public override void LoadContent()
         {
             base.LoadContent();
-
-            foreach(var player in Players)
-                player.LoadContent();
         }
 
         public override void Update()
         {
             base.Update();
-
-            foreach (var player in Players)
-            {
-                var gameTime = new GameTime(TimeSpan.Zero, TimeSpan.FromTicks(GameConfiguration.DeltaTime));
-                // TODO: remove first argument => we don't need totalGameTime
-                player.Update(gameTime, CurrentMap, HazardMap); 
-            }
         }
 
         protected override void RemoveWall(Wall wall)
