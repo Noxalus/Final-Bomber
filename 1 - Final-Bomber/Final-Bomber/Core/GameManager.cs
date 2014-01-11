@@ -119,7 +119,6 @@ namespace FBClient.Core
         }
 
         #region Update entities
-        /*
         protected override void UpdateWalls()
         {
             for (int i = 0; i < WallList.Count; i++)
@@ -197,7 +196,6 @@ namespace FBClient.Core
 
             base.UpdatePlayers();
         }
-        */
         #endregion
 
         public void Draw(GameTime gameTime, Camera2D camera)
@@ -279,7 +277,7 @@ namespace FBClient.Core
             base.DestroyWall(wall);
         }
 
-        private void RemoveWall(Wall wall)
+        protected virtual void RemoveWall(Wall wall)
         {
             WallList.Remove(wall);
 
@@ -317,7 +315,10 @@ namespace FBClient.Core
 
         public override void AddPowerUp(Point position)
         {
-            throw new NotImplementedException();
+            var powerUp = new PowerUp(position);
+            PowerUpList.Add(powerUp);
+
+            base.AddPowerUp(powerUp);
         }
 
         public void AddPowerUp(PowerUpType type, Point position)

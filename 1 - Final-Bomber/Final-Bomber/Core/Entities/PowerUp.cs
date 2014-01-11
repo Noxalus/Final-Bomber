@@ -28,6 +28,12 @@ namespace FBClient.Core.Entities
         
         #region Constructor Region
 
+        public PowerUp(Point cellPosition)
+            : base(cellPosition)
+        {
+            Initialize();
+        }
+
         public PowerUp(Point cellPosition, PowerUpType type) : base(cellPosition)
         {
             Type = type;
