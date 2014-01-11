@@ -27,7 +27,7 @@ namespace FBClient.Screens.GameScreens
         public NetworkGamePlayScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            NetworkManager = new NetworkManager(GameManager);
+            NetworkManager = new NetworkManager();
         }
         #endregion
 
@@ -54,9 +54,9 @@ namespace FBClient.Screens.GameScreens
             GameServer.Instance.RoundEnd += GameServer_RoundEnd;
             GameServer.Instance.End += GameServer_End;
 
-            base.Initialize();
-
             GameManager = GameServer.Instance.GameManager;
+
+            base.Initialize();
 
             GameManager.Initialize();
             NetworkManager.Initiliaze();

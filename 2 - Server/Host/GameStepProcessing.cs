@@ -11,28 +11,28 @@ namespace FBServer.Host
         List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
-                && !StartedMatch && GameServer.Instance.Clients.IsClientsReady())
+            if (GameSettings.GameServer.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
+                && !StartedMatch && GameSettings.GameServer.Clients.IsClientsReady())
             {
                 GameInitialize();
             }
 
-            foreach (Client client in GameServer.Instance.Clients)
+            foreach (Client client in GameSettings.GameServer.Clients)
             {
                 if (client.NewClient && StartedMatch && client.isReady)
                 {
-                    GameServer.Instance.SendStartGame(client, true);
-                    GameServer.Instance.SendPlayersToNew(client);
+                    GameSettings.GameServer.SendStartGame(client, true);
+                    GameSettings.GameServer.SendPlayersToNew(client);
                     client.NewClient = false;
                 }
             }
 
             // End of round
-            _alivePlayers = GameServer.Instance.Clients.GetAlivePlayers();
+            _alivePlayers = GameSettings.GameServer.Clients.GetAlivePlayers();
             if (StartedMatch && _alivePlayers.Count <= GameConfiguration.AlivePlayerRemaining)
             {
                 int maxScore = 0;
-                foreach (var player in GameServer.Instance.Clients.GetPlayers())
+                foreach (var player in GameSettings.GameServer.Clients.GetPlayers())
                 {
                     maxScore = Math.Max(maxScore, player.Stats.Score);
                 }
@@ -44,14 +44,14 @@ namespace FBServer.Host
                     GameSettings.CurrentMap++;
                     //MainServer.SendNextMap();
                     EndGame();
-                    foreach (Client client in GameServer.Instance.Clients)
+                    foreach (Client client in GameSettings.GameServer.Clients)
                     {
                         client.isReady = false;
-                        GameServer.Instance.SendEnd(client);
+                        GameSettings.GameServer.SendEnd(client);
                         // Restore the original values
                         var newPlayer = new Player(client.Player.Id);
                         GameManager.AddPlayer(client, newPlayer);
-                        GameServer.Instance.SendGameInfo(client);
+                        GameSettings.GameServer.SendGameInfo(client);
                     }
                 }
                 else
@@ -59,16 +59,16 @@ namespace FBServer.Host
                     // Reset
                     HostGame.GameManager.Reset();
                     EndGame();
-                    foreach (Client client in GameServer.Instance.Clients)
+                    foreach (Client client in GameSettings.GameServer.Clients)
                     {
                         client.isReady = false;
                         client.AlreadyPlayed = true;
-                        GameServer.Instance.SendRoundEnd(client);
+                        GameSettings.GameServer.SendRoundEnd(client);
 
                         var newPlayer = new Player(client.Player.Id, client.Player.Stats);
                         GameManager.AddPlayer(client, newPlayer);
 
-                        GameServer.Instance.SendGameInfo(client);
+                        GameSettings.GameServer.SendGameInfo(client);
                     } 
                 }
             }

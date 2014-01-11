@@ -18,7 +18,7 @@ namespace FBServer.Host
             {
                 if (!client.AlreadyPlayed)
                 {
-                    var playerNames = GameServer.Instance.Clients.Select(c => c.Username).ToList();
+                    var playerNames = GameSettings.GameServer.Clients.Select(c => c.Username).ToList();
 
                     client.Username = username;
                     if (playerNames.Contains(client.Username))

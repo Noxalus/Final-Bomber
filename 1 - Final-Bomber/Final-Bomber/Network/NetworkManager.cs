@@ -44,15 +44,10 @@ namespace FBClient.Network
 
         // Players
         public OnlineHumanPlayer Me;
-
-        // Game manager
-        private readonly GameManager _gameManager;
-
-        public NetworkManager(GameManager gameManager)
+        
+        public NetworkManager()
         {
-            _gameManager = gameManager;
             Me = new OnlineHumanPlayer(0);
-            Me.SetGameManager(_gameManager);
             IsConnected = true;
 
             _timer = new TimeSpan();
@@ -64,7 +59,6 @@ namespace FBClient.Network
         {
             string username = Me.Name;
             Me = new OnlineHumanPlayer(0, Me.Stats) {Name = username};
-            Me.SetGameManager(_gameManager);
 
             LoadContent();
         }
@@ -186,18 +180,18 @@ namespace FBClient.Network
                 */
             }
 
-            _gameManager.AddWalls(wallPositions);
+            GameServer.Instance.GameManager.AddWalls(wallPositions);
         }
 
         private void GameServer_NewPlayer(int playerId, float moveSpeed, string username, int score)
         {
-            if (_gameManager.Players.GetPlayerByID(playerId) == null)
+            if (GameServer.Instance.GameManager.Players.GetPlayerByID(playerId) == null)
             {
                 var player = new OnlinePlayer(playerId) {Name = username, Stats = {Score = score}};
 
                 if (username == Me.Name)
                 {
-                    var playerNames = _gameManager.Players.Select(p => p.Name).ToList();
+                    var playerNames = GameServer.Instance.GameManager.Players.Select(p => p.Name).ToList();
 
                     if (playerNames.Contains(Me.Name))
                     {
@@ -213,7 +207,7 @@ namespace FBClient.Network
 
                 player.LoadContent();
                 //player.MoveSpeed = moveSpeed;
-                _gameManager.AddPlayer(player);
+                GameServer.Instance.GameManager.AddPlayer(player);
 
                 OnAddPlayer(this, EventArgs.Empty);
             }
@@ -221,17 +215,17 @@ namespace FBClient.Network
 
         private void GameServer_RemovePlayer(int playerId)
         {
-            Player player = _gameManager.Players.GetPlayerByID(playerId);
+            Player player = GameServer.Instance.GameManager.Players.GetPlayerByID(playerId);
 
             if (player != null && Me.Id != playerId)
             {
-                _gameManager.RemovePlayer(player);
+                GameServer.Instance.GameManager.RemovePlayer(player);
             }
         }
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
-            Player player = _gameManager.Players.GetPlayerByID(arg.PlayerId);
+            Player player = GameServer.Instance.GameManager.Players.GetPlayerByID(arg.PlayerId);
 
             if (player != null)
             {
@@ -254,21 +248,21 @@ namespace FBClient.Network
 
         private void GameServer_PlacingBomb(int playerId, Point position)
         {
-            Player player = _gameManager.Players.GetPlayerByID(playerId);
+            Player player = GameServer.Instance.GameManager.Players.GetPlayerByID(playerId);
 
             if (player != null)
             {
                 var bomb = new Bomb(playerId, position, player.BombPower, player.BombTimer, player.Speed);
                 player.CurrentBombAmount--;
-                bomb.Initialize(_gameManager.CurrentMap.Size, _gameManager.CurrentMap.CollisionLayer, _gameManager.HazardMap);
+                bomb.Initialize(GameServer.Instance.GameManager.CurrentMap.Size, GameServer.Instance.GameManager.CurrentMap.CollisionLayer, GameServer.Instance.GameManager.HazardMap);
 
-                _gameManager.AddBomb(bomb);
+                GameServer.Instance.GameManager.AddBomb(bomb);
             }
         }
 
         private void GameServer_BombExploded(Point position)
         {
-            Bomb bomb = _gameManager.BombList.Find(b => b.CellPosition == position);
+            Bomb bomb = GameServer.Instance.GameManager.BombList.Find(b => b.CellPosition == position);
 
             //bomb.Destroy();
             /*
@@ -299,7 +293,7 @@ namespace FBClient.Network
 
         private void GameServer_PowerUpDrop(PowerUpType type, Point position)
         {
-            _gameManager.AddPowerUp(type, position);
+            GameServer.Instance.GameManager.AddPowerUp(type, position);
         }
 
         #endregion

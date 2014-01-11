@@ -39,7 +39,7 @@ namespace FBClient.Core.Players
             {
                 if (this.CurrentBombAmount > 0)
                 {
-                    var bo = GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
+                    var bo = GameServer.Instance.GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
                     if (bo == null)
                     {
                         // Send to server that we want to plant a bomb
