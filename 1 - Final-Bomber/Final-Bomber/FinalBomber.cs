@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Media;
 using FBLibrary;
 using FBClient.Screens.GameScreens;
@@ -169,7 +171,33 @@ namespace FBClient
             // Delta time
             GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Ticks;
 
+            // Password to enable debug/cheat mode
             UpdatePasswordManagement();
+
+            // Shortcuts
+            var dt = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
+
+            if (InputHandler.KeyDown(Keys.NumPad9))
+            {
+                Config.MusicVolume = MathHelper.Clamp(Config.MusicVolume + 0.5f * dt, 0, 1);
+                MediaPlayer.Volume = Config.MusicVolume;
+            }
+            else if (InputHandler.KeyDown(Keys.NumPad7))
+            {
+                Config.MusicVolume = MathHelper.Clamp(Config.MusicVolume - 0.5f * dt, 0, 1);
+                MediaPlayer.Volume = Config.MusicVolume;
+            }
+
+            if (InputHandler.KeyDown(Keys.NumPad6))
+            {
+                Config.SoundVolume = MathHelper.Clamp(Config.SoundVolume + 0.5f * dt, 0, 1);
+                SoundEffect.MasterVolume = Config.SoundVolume;
+            }
+            else if (InputHandler.KeyDown(Keys.NumPad4))
+            {
+                Config.SoundVolume = MathHelper.Clamp(Config.SoundVolume - 0.5f * dt, 0, 1);
+                SoundEffect.MasterVolume = Config.SoundVolume;
+            }
 
             base.Update(gameTime);
         }

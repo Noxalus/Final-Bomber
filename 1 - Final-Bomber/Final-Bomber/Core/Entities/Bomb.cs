@@ -19,7 +19,7 @@ namespace FBClient.Core.Entities
         private readonly Texture2D _explosionSpriteTexture;
 
         // Sounds
-        private SoundEffect _bombExplosionSound;
+        private readonly SoundEffect _bombExplosionSound;
 
 
         public AnimatedSprite Sprite { get; protected set; }
@@ -119,8 +119,6 @@ namespace FBClient.Core.Entities
                 foreach (Animation animation in _explosionAnimations)
                     animation.Update(gameTime);
             }
-
-            Debug.Print(Timer.ToString());
 
             #endregion
 

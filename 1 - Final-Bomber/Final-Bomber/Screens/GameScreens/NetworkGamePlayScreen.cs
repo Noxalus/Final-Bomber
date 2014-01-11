@@ -98,7 +98,7 @@ namespace FBClient.Screens.GameScreens
 
         public override void Update(GameTime gameTime)
         {
-            _gameManager.Update(gameTime);
+            _gameManager.Update();
 
             Camera.Update(gameTime, _gameManager.NetworkManager.Me.Position);
 

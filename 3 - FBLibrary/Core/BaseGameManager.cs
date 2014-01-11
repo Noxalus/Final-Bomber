@@ -19,15 +19,29 @@ namespace FBLibrary.Core
         private readonly List<BaseWall> _baseWallList;
         private readonly List<BasePowerUp> _basePowerUpList;
 
+        // Events
+        public BaseGameEventManager GameEventManager;
+
         protected BaseGameManager()
         {
             // Engine
             _engine = new Engine(32, 32, Vector2.Zero);
 
-            _baseBombList = new List<BaseBomb>();
             BasePlayerList = new List<BasePlayer>();
+            _baseBombList = new List<BaseBomb>();
             _baseWallList = new List<BaseWall>();
             _basePowerUpList = new List<BasePowerUp>();
+        }
+
+        public virtual void Reset()
+        {
+            BaseCurrentMap.Reset();
+            HazardMap = new int[BaseCurrentMap.Size.X, BaseCurrentMap.Size.Y];
+
+            BasePlayerList.Clear();
+            _baseBombList.Clear();
+            _basePowerUpList.Clear();
+            _baseWallList.Clear();
         }
 
         #region Updates
@@ -132,6 +146,7 @@ namespace FBLibrary.Core
                         }
 
                         DestroyPlayer(BasePlayerList[i].Id);
+                        GameEventManager.OnPlayerDeath();
                     }
                 }
             }
@@ -287,16 +302,6 @@ namespace FBLibrary.Core
         protected abstract void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp);
 
         #endregion
-
-        public virtual void Reset()
-        {
-            BaseCurrentMap.Reset();
-
-            BasePlayerList.Clear();
-            _baseBombList.Clear();
-            _basePowerUpList.Clear();
-            _baseWallList.Clear();
-        }
 
         #region Map region
         public virtual void LoadMap(string mapName)

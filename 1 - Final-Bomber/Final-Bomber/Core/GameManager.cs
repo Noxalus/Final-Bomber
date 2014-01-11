@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using FBClient.Core.Entities;
 using FBClient.Entities;
 using FBClient.WorldEngine;
@@ -8,7 +7,6 @@ using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 namespace FBClient.Core
@@ -42,10 +40,7 @@ namespace FBClient.Core
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
-
-        // Events
-        public readonly GameEventManager GameEventManager;
-
+        
         #region Properties
 
         public Map CurrentMap
@@ -75,7 +70,6 @@ namespace FBClient.Core
 
             GameTime = new GameTime();
 
-            GameEventManager = new GameEventManager(this);
         }
 
         public virtual void Initialize()
@@ -88,6 +82,10 @@ namespace FBClient.Core
             Engine.Origin = origin;
 
             _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
+
+            GameEventManager = new GameEventManager(this);
+
+            GameEventManager.Initialize();
         }
 
         public virtual void Dispose()
@@ -125,10 +123,11 @@ namespace FBClient.Core
                 player.LoadContent();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update()
         {
-            _gameTimer += gameTime.ElapsedGameTime;
+            _gameTimer += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
 
+            var gameTime = new GameTime(TimeSpan.Zero, TimeSpan.FromTicks(GameConfiguration.DeltaTime));
             GameTime = gameTime;
 
             base.Update();
@@ -192,12 +191,12 @@ namespace FBClient.Core
                 }
                 else
                 {
+                    /*
                     if (!BasePlayerList[i].OnEdge)
                     {
                         if (BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] is BasePlayer)
                         {
                             RemovePlayer(BasePlayerList[i]);
-                            OnPlayerDeath();
                         }
                     }
 
@@ -208,7 +207,7 @@ namespace FBClient.Core
                     else
                     {
                         BasePlayerList[i].OnEdge = true;
-                    }
+                    }*/
                 }
             }
 
@@ -375,9 +374,8 @@ namespace FBClient.Core
 
         #region Events
 
-        protected virtual void OnPlayerDeath()
+        public virtual void PlayerDeathAction()
         {
-            int test = 42;
         }
 
         public virtual void RoundEndAction()

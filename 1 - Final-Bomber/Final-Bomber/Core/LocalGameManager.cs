@@ -15,18 +15,22 @@ namespace FBClient.Core
     /// </summary>
     public class LocalGameManager : GameManager
     {
+        private PlayerCollection _savedPlayers;
         public LocalGameManager()
         {
         }
 
         public override void Initialize()
         {
+            _savedPlayers = new PlayerCollection();
+
             for (var i = 0; i < GameConfiguration.PlayerNumber; i++)
             {
                 var player = new HumanPlayer(i) { Name = PlayerInfo.Username + i };
                 player.SetGameManager(this);
                 player.ChangePosition(this.CurrentMap.PlayerSpawnPoints[player.Id]);
 
+                _savedPlayers.Add(player);
                 AddPlayer(player);
             }
 
@@ -55,20 +59,23 @@ namespace FBClient.Core
 
         #region Events actions
 
-        protected override void OnPlayerDeath()
+        public override void PlayerDeathAction()
         {
             // We check if the round is finished
-            if (Players.Count(p => p.IsAlive) < GameConfiguration.AlivePlayerRemaining)
+            if (Players.Count(p => p.IsAlive) == GameConfiguration.AlivePlayerRemaining + 1)
                 GameEventManager.OnRoundEnd();
 
-            base.OnPlayerDeath();
+            base.PlayerDeathAction();
         }
 
         public override void RoundEndAction()
         {
             base.RoundEndAction();
 
-            //AddPlayer(Players[0]);
+            foreach (var player in _savedPlayers)
+            {
+                AddPlayer(player);
+            }
         }
 
         #endregion

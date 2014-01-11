@@ -1,10 +1,6 @@
 ﻿using FBLibrary.Core;
 using Lidgren.Network;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using Lidgren.Network.Xna;
 
 namespace FBClient.Network

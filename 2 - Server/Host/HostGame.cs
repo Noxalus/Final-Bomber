@@ -77,7 +77,14 @@ namespace FBServer.Host
             }
 
             if (StartedMatch && gameHasBegun)
+            {
                 RunGameLogic();
+
+                /*
+                Console.Clear();
+                GameManager.CurrentMap.DisplayBoard();
+                */
+            }
         }
 
         public void Dispose()

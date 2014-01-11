@@ -66,28 +66,29 @@ namespace FBClient.Network
                 _disconnected = true;
             }
 
-            if (_messagePool.Count > 0)
+            while (_messagePool.Count > 0)
             {
-                NetIncomingMessage message;
-                while (_messagePool.Count > 0)
+                NetIncomingMessage message = _messagePool.Dequeue();
+                byte type;
+
+                switch (message.MessageType)
                 {
-                    message = _messagePool.Dequeue();
-                    byte type;
-                    switch (message.MessageType)
-                    {
-                        case NetIncomingMessageType.Data:
-                            type = message.ReadByte();
-                            DataProcessing(type, message);
-                            break;
-                        case NetIncomingMessageType.ConnectionLatencyUpdated:
-                            float ping = message.ReadFloat() * 1000;
-                            RecievePing(ping);
-                            break;
-                        default:
-                            type = message.ReadByte();
-                            Debug.Print("Unhandle message type (" + type + ")");
-                            break;
-                    }
+                    case NetIncomingMessageType.Data:
+                        Debug.Print("A Data type message has been received from server.");
+                        type = message.ReadByte();
+                        DataProcessing(type, message);
+                        break;
+                    case NetIncomingMessageType.ConnectionLatencyUpdated:
+                        //Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
+                        float ping = message.ReadFloat() * 1000;
+                        RecievePing(ping);
+                        break;
+                    default:
+                        type = message.ReadByte();
+                        var errorMessage = "Unhandle message type (" + type + ")";
+                        Debug.Print(errorMessage);
+                        Program.Log.Error(errorMessage);
+                        break;
                 }
             }
         }

@@ -73,9 +73,14 @@ namespace FBClient.Screens.GameScreens
 
         public override void Update(GameTime gameTime)
         {
-            _gameManager.Update(gameTime);
+            _gameManager.Update();
 
-            Camera.Update(gameTime, _gameManager.Players.First().Position);
+            // Camera position
+            var cameraPosition = Vector2.Zero;
+            if (_gameManager.Players.Any())
+                cameraPosition = _gameManager.Players.First().Position;
+
+            Camera.Update(gameTime, cameraPosition);
 
             base.Update(gameTime);
         }

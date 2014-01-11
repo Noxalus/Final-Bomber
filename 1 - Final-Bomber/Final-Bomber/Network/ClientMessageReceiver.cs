@@ -1,6 +1,5 @@
 ﻿using FBLibrary;
 using FBLibrary.Core;
-using FBClient.Screens.GameScreens;
 using FBClient.WorldEngine;
 using Lidgren.Network;
 using Lidgren.Network.Xna;
