@@ -23,7 +23,7 @@ namespace FBClient.Entities
     {
         #region Field Region
 
-        private AnimatedSprite _playerDeathAnimation;
+        private AnimatedSprite _deathAnimation;
         protected TimeSpan BombTimerSaved;
 
         // Bad item
@@ -67,6 +67,14 @@ namespace FBClient.Entities
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+
+            if (_deathAnimation != null)
+                _deathAnimation.Animation.CurrentFrame = 0;
+        }
+
         #region XNA Method Region
 
         public void LoadContent()
@@ -93,7 +101,7 @@ namespace FBClient.Entities
 
             var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
-            _playerDeathAnimation = new AnimatedSprite(playerDeathTexture, animation)
+            _deathAnimation = new AnimatedSprite(playerDeathTexture, animation)
             {
                 IsAnimating = false
             };
@@ -186,7 +194,7 @@ namespace FBClient.Entities
 
             else if (InDestruction)
             {
-                _playerDeathAnimation.Update(gameTime);
+                _deathAnimation.Update(gameTime);
             }
             #endregion
 
@@ -261,6 +269,8 @@ namespace FBClient.Entities
                 Position.Y + Engine.Origin.Y - 25 -
                 ControlManager.SpriteFont.MeasureString(Name).Y / 2);
 
+            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition, Color.Black);
+
             if ((IsAlive && !InDestruction) || OnEdge)
             {
                 if (IsInvincible)
@@ -268,23 +278,16 @@ namespace FBClient.Entities
                     if (_invincibleBlinkTimer > TimeSpan.FromSeconds(_invincibleBlinkFrequency * 0.5f))
                     {
                         Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
-                        FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name,
-                            playerNamePosition,
-                            Color.Black);
                     }
                 }
                 else
                 {
                     Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
-                    FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
-                        Color.Black);
                 }
             }
             else
             {
-                _playerDeathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
-                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, Name, playerNamePosition,
-                    Color.Black);
+                _deathAnimation.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
             }
         }
 
@@ -370,17 +373,17 @@ namespace FBClient.Entities
                 Sprite.IsAnimating = false;
                 InDestruction = true;
                 _playerDeathSound.Play();
-                _playerDeathAnimation.IsAnimating = true;
+                _deathAnimation.IsAnimating = true;
             }
         }
 
         public override void Remove()
         {
-            _playerDeathAnimation.IsAnimating = false;
-            InDestruction = false;
-            IsAlive = false;
+            _deathAnimation.IsAnimating = false;
 
+            /*
             // Replacing for the gameplay on the edges
+            
             // Right side
             if (Config.MapSize.X - CellPosition.X < Config.MapSize.X / 2)
             {
@@ -393,6 +396,9 @@ namespace FBClient.Entities
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 Position = new Vector2(0, Position.Y);
             }
+            */
+
+            base.Remove();
         }
 
         protected virtual void MoveFromEdgeWall()
@@ -411,7 +417,7 @@ namespace FBClient.Entities
             InDestruction = false;
             Position = position;
             Sprite.CurrentAnimation = AnimationKey.Down;
-            _playerDeathAnimation.IsAnimating = false;
+            _deathAnimation.IsAnimating = false;
 
             Invincibility();
         }

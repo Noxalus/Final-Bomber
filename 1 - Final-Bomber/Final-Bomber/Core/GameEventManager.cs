@@ -1,4 +1,7 @@
-﻿using FBLibrary.Core;
+﻿using System;
+using FBClient.Entities;
+using FBLibrary.Core;
+using FBLibrary.Core.BaseEntities;
 
 namespace FBClient.Core
 {
@@ -20,11 +23,15 @@ namespace FBClient.Core
         protected override void RoundEndAction()
         {
             _gameManager.RoundEndAction();
+
+            base.RoundEndAction();
         }
 
-        protected override void PlayerDeathAction()
+        protected override void PlayerDeathAction(BasePlayer sender, EventArgs args)
         {
-            _gameManager.PlayerDeathAction();
+            _gameManager.PlayerDeathAction(sender, args);
+
+            base.PlayerDeathAction(sender, args);
         }
 
         #endregion

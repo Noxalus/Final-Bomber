@@ -22,10 +22,13 @@ namespace FBServer.Host
                 if (client.ClientConnection.Status == NetConnectionStatus.Connected)
                 {
                     NetOutgoingMessage send = server.CreateMessage();
+
                     send.Write((byte)SMT.GameStartInfo);
                     send.Write(MapLoader.MapFileDictionary.Values.First());
-                    Program.Log.Info("Sended game info map [" + MapLoader.MapFileDictionary.Values.First() + "]");
+
                     server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+
+                    Program.Log.Info("Sended game info map [" + MapLoader.MapFileDictionary.Values.First() + "]");
                 }
             }
             catch (NetException e)
@@ -58,12 +61,12 @@ namespace FBServer.Host
             }
         }
 
-        public void SendStartGame(Client client, bool gameinProgress)
+        public void SendStartGame(Client client, bool gameInProgress)
         {
             NetOutgoingMessage send = server.CreateMessage();
             send.Write((byte)SMT.StartGame);
-            send.Write(gameinProgress);
-            if (!gameinProgress)
+            send.Write(gameInProgress);
+            if (!gameInProgress)
             {
                 send.Write(client.Player.Id);
                 send.Write(client.Player.Speed);
@@ -129,16 +132,16 @@ namespace FBServer.Host
             }
         }
 
-        public void SendRemovePlayer(Player removePlayer)
+        public void SendRemovePlayer(Player removedPlayer)
         {
             NetOutgoingMessage send = server.CreateMessage();
 
             send.Write((byte)SMT.RemovePlayer);
-            send.Write(removePlayer.Id);
+            send.Write(removedPlayer.Id);
 
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send that the player #" + removePlayer.Id + " is dead !");
+            Program.Log.Info("Send that the player #" + removedPlayer.Id + " is dead !");
         }
 
         #region GetPlayerInfo
@@ -162,7 +165,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = server.CreateMessage();
 
-            send.Write((byte)SMT.PlayerPosAndSpeed);
+            send.Write((byte)SMT.PlayerPosition);
 
             send.Write(player.Position.X);
             send.Write(player.Position.Y);
@@ -180,9 +183,11 @@ namespace FBServer.Host
         public void SendPlayerPlacingBomb(Player player, Point position)
         {
             NetOutgoingMessage send = server.CreateMessage();
+
             send.Write((byte)SMT.PlayerPlacingBomb);
             send.Write(player.Id);
             send.Write(position);
+
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Send that player #" + player.Id + " has planted a bomb !");
@@ -196,42 +201,9 @@ namespace FBServer.Host
             send.Write((byte)SMT.BombExploded);
             send.Write(bomb.CellPosition);
 
-            /*
-            send.Write(bomb.Explosion.Count);
-
-            foreach (Explosion ex in bomb.Explosion)
-            {
-                send.Write(ex.Position.GetMapPos().X);
-                send.Write(ex.Position.GetMapPos().Y);
-                send.Write((byte)ex.explosionType);
-            }
-            */
-
             server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Send that bomb exploded to everyone ! (position: " + bomb.Position + ")");
-        }
-
-        public void SendPlayerGotBurned(Player player)
-        {
-            NetOutgoingMessage send = server.CreateMessage();
-
-            send.Write((byte)SMT.Burn);
-            send.Write(player.Id);
-
-            server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
-
-            Program.Log.Info("Send that player #" + player.Id + " has been killed by a bomb !");
-        }
-
-        public void SendExplodeTile(int tilePos)
-        {
-            NetOutgoingMessage send = server.CreateMessage();
-
-            send.Write((byte)SMT.ExplodeTile);
-            send.Write(tilePos);
-
-            server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void SendPowerUpDrop(PowerUp powerUp)

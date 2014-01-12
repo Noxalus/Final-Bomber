@@ -28,7 +28,8 @@ namespace FBServer.Host
             }
 
             // End of round
-            _alivePlayers = GameSettings.GameServer.Clients.GetAlivePlayers();
+            //_alivePlayers = GameSettings.GameServer.Clients.GetAlivePlayers();
+            _alivePlayers = GameManager.PlayerList.FindAll(player => player.IsAlive);
             if (StartedMatch && _alivePlayers.Count <= GameConfiguration.AlivePlayerRemaining)
             {
                 int maxScore = 0;
@@ -50,23 +51,22 @@ namespace FBServer.Host
                         GameSettings.GameServer.SendEnd(client);
                         // Restore the original values
                         var newPlayer = new Player(client.Player.Id);
-                        GameManager.AddPlayer(client, newPlayer);
                         GameSettings.GameServer.SendGameInfo(client);
                     }
                 }
                 else
                 {
                     // Reset
-                    HostGame.GameManager.Reset();
-                    EndGame();
+                    GameManager.Reset();
+                    
                     foreach (Client client in GameSettings.GameServer.Clients)
                     {
                         client.isReady = false;
                         client.AlreadyPlayed = true;
                         GameSettings.GameServer.SendRoundEnd(client);
 
-                        var newPlayer = new Player(client.Player.Id, client.Player.Stats);
-                        GameManager.AddPlayer(client, newPlayer);
+                        //var newPlayer = new Player(client.Player.Id, client.Player.Stats);
+                        //GameManager.AddPlayer(client, newPlayer);
 
                         GameSettings.GameServer.SendGameInfo(client);
                     } 

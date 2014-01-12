@@ -106,6 +106,7 @@ namespace FBClient.Core.Entities
         public override void Remove()
         {
             IsAlive = false;
+            InDestruction = false;
         }
 
         #endregion

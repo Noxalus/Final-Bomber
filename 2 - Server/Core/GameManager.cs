@@ -12,6 +12,7 @@ namespace FBServer.Core
     public class GameManager : BaseGameManager
     {
         // Collections
+        private readonly List<Player> _playerList;
         private readonly List<Bomb> _bombList;
         private readonly List<PowerUp> _powerUpList;
         private readonly List<Wall> _wallList;
@@ -21,6 +22,11 @@ namespace FBServer.Core
         public BaseMap CurrentMap
         {
             get { return BaseCurrentMap; }
+        }
+
+        public List<Player> PlayerList
+        {
+            get { return _playerList; }
         }
 
         public List<Wall> WallList
@@ -42,6 +48,7 @@ namespace FBServer.Core
 
         public GameManager()
         {
+            _playerList = new List<Player>();
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
             _bombList = new List<Bomb>();
@@ -58,8 +65,7 @@ namespace FBServer.Core
             _wallList.Clear();
             _powerUpList.Clear();
             _bombList.Clear();
-            
-            GenerateRandomWalls();
+            _playerList.ForEach(player => player.Reset());
         }
 
         public override void Update()
@@ -112,10 +118,16 @@ namespace FBServer.Core
 
         protected override void UpdatePlayers()
         {
-            var players = GameSettings.GameServer.Clients.GetPlayers();
+            var alivePlayers = _playerList.FindAll(p => p.IsAlive);
+            foreach (var player in alivePlayers)
+            {
+                player.Update();
+            }
 
+            /*
             for (int i = 0; i < players.Count; i++)
             {
+
                 if (!players[i].IsAlive)
                 {
                     if (!BasePlayerList[i].OnEdge)
@@ -126,8 +138,8 @@ namespace FBServer.Core
                         }
                     }
                 }
-
             }
+            */
 
             base.UpdatePlayers();
         }
@@ -146,6 +158,8 @@ namespace FBServer.Core
 
         public void AddPlayer(Client client, Player player)
         {
+            _playerList.Add(player);
+
             player.Name = client.Username;
             client.Player = player;
 
@@ -154,11 +168,12 @@ namespace FBServer.Core
 
         protected override void DestroyPlayer(int playerId)
         {
-            var player = GameSettings.GameServer.Clients.GetPlayerFromId(playerId);
+            var player = _playerList.Find(p => p.Id == playerId);
 
             base.DestroyPlayer(player);
         }
 
+        /*
         public void RemovePlayer(Client client, Player player)
         {
             var p = (BasePlayer)BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y];
@@ -169,6 +184,7 @@ namespace FBServer.Core
 
             base.RemovePlayer(player);
         }
+        */
 
         #endregion
 

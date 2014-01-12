@@ -99,7 +99,7 @@ namespace FBClient.Core
 
             _gameTimer = TimeSpan.Zero;
 
-            Players.Clear();
+            Players.ForEach(player => player.Reset());
 
             WallList.Clear();
             PowerUpList.Clear();
@@ -119,8 +119,7 @@ namespace FBClient.Core
             CurrentMap.LoadContent();
 
             // Load players content
-            foreach (var player in Players)
-                player.LoadContent();
+            Players.ForEach(player => player.LoadContent());
         }
 
         public override void Update()
@@ -183,32 +182,10 @@ namespace FBClient.Core
 
         protected override void UpdatePlayers()
         {
-            for (int i = 0; i < Players.Count; i++)
+            var alivePlayers = Players.FindAll(p => p.IsAlive);
+            foreach (var player in alivePlayers)
             {
-                if (Players[i].IsAlive)
-                {
-                    Players[i].Update(GameTime, CurrentMap, HazardMap);
-                }
-                else
-                {
-                    /*
-                    if (!BasePlayerList[i].OnEdge)
-                    {
-                        if (BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] is BasePlayer)
-                        {
-                            RemovePlayer(BasePlayerList[i]);
-                        }
-                    }
-
-                    if (true)//(Config.ActiveSuddenDeath && SuddenDeath.HasStarted))
-                    {
-                        //BasePlayerList.Remove(BasePlayerList[i]);
-                    }
-                    else
-                    {
-                        BasePlayerList[i].OnEdge = true;
-                    }*/
-                }
+                player.Update(GameTime, CurrentMap, HazardMap);
             }
 
             base.UpdatePlayers();
@@ -253,13 +230,15 @@ namespace FBClient.Core
             base.DestroyPlayer(player);
         }
 
+        /*
         public void RemovePlayer(Player player)
         {
             Players.Remove(player);
 
             base.RemovePlayer(player);
         }
-
+        */
+        
         #endregion
 
         #region Wall methods
@@ -374,8 +353,9 @@ namespace FBClient.Core
 
         #region Events
 
-        public virtual void PlayerDeathAction()
+        public virtual void PlayerDeathAction(BasePlayer sender, EventArgs args)
         {
+            //sender.Remove();
         }
 
         public virtual void RoundEndAction()

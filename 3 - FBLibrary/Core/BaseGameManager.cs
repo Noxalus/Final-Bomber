@@ -14,8 +14,9 @@ namespace FBLibrary.Core
         public int[,] HazardMap;
         protected BaseMap BaseCurrentMap;
 
-        private readonly List<BaseBomb> _baseBombList;
         protected readonly List<BasePlayer> BasePlayerList;
+        private readonly List<BasePlayer> _removedPlayers;
+        private readonly List<BaseBomb> _baseBombList;
         private readonly List<BaseWall> _baseWallList;
         private readonly List<BasePowerUp> _basePowerUpList;
 
@@ -28,6 +29,7 @@ namespace FBLibrary.Core
             _engine = new Engine(32, 32, Vector2.Zero);
 
             BasePlayerList = new List<BasePlayer>();
+            _removedPlayers = new List<BasePlayer>();
             _baseBombList = new List<BaseBomb>();
             _baseWallList = new List<BaseWall>();
             _basePowerUpList = new List<BasePowerUp>();
@@ -36,12 +38,19 @@ namespace FBLibrary.Core
         public virtual void Reset()
         {
             BaseCurrentMap.Reset();
+
             HazardMap = new int[BaseCurrentMap.Size.X, BaseCurrentMap.Size.Y];
 
-            BasePlayerList.Clear();
+            BasePlayerList.ForEach(basePlayer => basePlayer.Reset());
+            _removedPlayers.Clear();
             _baseBombList.Clear();
             _basePowerUpList.Clear();
             _baseWallList.Clear();
+
+            // Generate walls for another game
+            GenerateRandomWalls();
+            // Replace players to their original spawn point
+            BasePlayerList.ForEach(p => p.ChangePosition(BaseCurrentMap.PlayerSpawnPoints[p.Id]));
         }
 
         #region Updates
@@ -92,61 +101,73 @@ namespace FBLibrary.Core
 
         protected virtual void UpdatePlayers()
         {
-            for (int i = 0; i < BasePlayerList.Count; i++)
+            foreach (BasePlayer basePlayer in BasePlayerList)
             {
-                // We clean the obsolete players
-                if (BasePlayerList[i].IsAlive)
+                if (basePlayer.IsAlive)
                 {
-                    // Pick up a power up ?
-                    var powerUp = BaseCurrentMap.Board[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] as BasePowerUp;
-                    if (powerUp != null)
+                    // We clean the obsolete players
+                    if (basePlayer.IsAlive)
                     {
-                        if (!powerUp.InDestruction)
+                        // Pick up a power up ?
+                        var powerUp =
+                            BaseCurrentMap.Board[basePlayer.CellPosition.X, basePlayer.CellPosition.Y] as BasePowerUp;
+                        if (powerUp != null)
                         {
-                            if (!BasePlayerList[i].HasBadEffect ||
-                                (BasePlayerList[i].HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
+                            if (!powerUp.InDestruction)
                             {
-                                PickUpPowerUp(BasePlayerList[i], powerUp);
+                                if (!basePlayer.HasBadEffect ||
+                                    (basePlayer.HasBadEffect && powerUp.Type != PowerUpType.BadEffect))
+                                {
+                                    PickUpPowerUp(basePlayer, powerUp);
+                                }
                             }
+                        }
+
+                        // Is it die ?
+                        if (!basePlayer.InDestruction && !basePlayer.IsInvincible &&
+                            HazardMap[basePlayer.CellPosition.X, basePlayer.CellPosition.Y] == 3)
+                        {
+                            // Bomb
+                            int bombId = -42;
+                            List<BaseBomb> bl = _baseBombList.FindAll(b => b.InDestruction);
+                            foreach (BaseBomb b in bl)
+                            {
+                                if (b.ActionField.Any(po => po == basePlayer.CellPosition))
+                                {
+                                    bombId = b.PlayerId;
+                                }
+                            }
+
+                            // Suicide
+                            if (bombId == basePlayer.Id)
+                            {
+                                basePlayer.Stats.Suicides++;
+                                basePlayer.Stats.Score -= GameConfiguration.ScoreBySuicide;
+                            }
+                                // Kill
+                            else if (bombId >= 0 && bombId < BasePlayerList.Count)
+                            {
+                                GetPlayerById(bombId).Stats.Kills++;
+                                GetPlayerById(bombId).Stats.Score += GameConfiguration.ScoreByKill;
+                                BasePlayer player = BasePlayerList.Find(p => p.Id == bombId);
+                                if (player.OnEdge)
+                                {
+                                    //player.Rebirth(BasePlayerList[i].Position);
+                                    //_deadBasePlayerListNumber--;
+                                }
+                            }
+
+                            DestroyPlayer(basePlayer.Id);
                         }
                     }
-
-                    // Is it die ?
-                    if (!BasePlayerList[i].InDestruction && !BasePlayerList[i].IsInvincible &&
-                        HazardMap[BasePlayerList[i].CellPosition.X, BasePlayerList[i].CellPosition.Y] == 3)
+                }
+                else
+                {
+                    // We check 
+                    if (!_removedPlayers.Contains(basePlayer))
                     {
-                        // Bomb
-                        int bombId = -42;
-                        List<BaseBomb> bl = _baseBombList.FindAll(b => b.InDestruction);
-                        foreach (BaseBomb b in bl)
-                        {
-                            if (b.ActionField.Any(po => po == BasePlayerList[i].CellPosition))
-                            {
-                                bombId = b.PlayerId;
-                            }
-                        }
-
-                        // Suicide
-                        if (bombId == BasePlayerList[i].Id)
-                        {
-                            BasePlayerList[i].Stats.Suicides++;
-                            BasePlayerList[i].Stats.Score -= GameConfiguration.ScoreBySuicide;
-                        }
-                        // Kill
-                        else if (bombId >= 0 && bombId < BasePlayerList.Count)
-                        {
-                            GetPlayerById(bombId).Stats.Kills++;
-                            GetPlayerById(bombId).Stats.Score += GameConfiguration.ScoreByKill;
-                            BasePlayer player = BasePlayerList.Find(p => p.Id == bombId);
-                            if (player.OnEdge)
-                            {
-                                //player.Rebirth(BasePlayerList[i].Position);
-                                //_deadBasePlayerListNumber--;
-                            }
-                        }
-
-                        DestroyPlayer(BasePlayerList[i].Id);
-                        GameEventManager.OnPlayerDeath();
+                        _removedPlayers.Add(basePlayer);
+                        GameEventManager.OnPlayerDeath(basePlayer);
                     }
                 }
             }
@@ -168,6 +189,7 @@ namespace FBLibrary.Core
                 basePlayer.Destroy();
         }
 
+        /* We don't want to delete players from the list, we reset its stats instead
         protected virtual void RemovePlayer(BasePlayer player)
         {
             var p = (BasePlayer)BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y];
@@ -175,7 +197,11 @@ namespace FBLibrary.Core
             if (p != null)
             {
                 if (p.Id == player.Id)
+                {
                     BaseCurrentMap.Board[player.CellPosition.X, player.CellPosition.Y] = null;
+
+                    GameEventManager.OnPlayerDeath();
+                }
             }
             else
             {
@@ -184,7 +210,7 @@ namespace FBLibrary.Core
 
             BasePlayerList.Remove(player);
         }
-
+        */
         #endregion
 
         #region Wall methods
@@ -198,7 +224,7 @@ namespace FBLibrary.Core
             _baseWallList.Add(baseWall);
         }
 
-        protected abstract void DestroyWall(Point position); 
+        protected abstract void DestroyWall(Point position);
         protected virtual void DestroyWall(BaseWall baseWall)
         {
             if (baseWall != null)

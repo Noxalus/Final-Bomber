@@ -12,15 +12,8 @@ namespace FBClient.Network
 {
     partial class GameServer
     {
-        #region StartInfo
-        public delegate void StartInfoEventHandler();
-        public event StartInfoEventHandler StartInfo;
-        protected virtual void OnStartInfo()
-        {
-            if (StartInfo != null)
-                StartInfo();
-        }
-        #endregion
+        #region Recieve methods
+
         public void RecieveGameInfo(string mapMd5)
         {
             // Check that you have the map
@@ -34,7 +27,7 @@ namespace FBClient.Network
                 SendNeedMap();
             }
         }
-        
+
         public void RecieveMap(NetIncomingMessage message)
         {
             string mapName = message.ReadString();
@@ -62,18 +55,6 @@ namespace FBClient.Network
 
             RecieveGameInfo(md5);
         }
-
-        #region 
-
-        public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions);
-        public event StartGameEventHandler StartGame;
-        protected virtual void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
-        {
-            if (StartGame != null)
-                StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime, wallPositions);
-        }
-        #endregion
-
         private void RecieveStartGame(NetIncomingMessage message)
         {
             bool gameInProgress = message.ReadBoolean();
@@ -105,83 +86,33 @@ namespace FBClient.Network
 
             GameServer.Instance.OnConnectedClient(client, EventArgs.Empty);
         }
-
         #endregion
 
-        #region NewPlayer
-        public delegate void NewPlayerEventHandler(int playerID, float moveSpeed, string username, int score);
-        public event NewPlayerEventHandler NewPlayer;
-        protected virtual void OnNewPlayer(int playerID, float moveSpeed, string username, int score)
+        public void RecievePlayerInfo(int playerId, float moveSpeed, string username, int score)
         {
-            if (NewPlayer != null)
-                NewPlayer(playerID, moveSpeed, username, score);
-        }
-        #endregion
-        public void RecievePlayerInfo(int playerID, float moveSpeed, string username, int score)
-        {
-            OnNewPlayer(playerID, moveSpeed, username, score);
+            OnNewPlayer(playerId, moveSpeed, username, score);
         }
 
-        #region RemovePlayer
-        public delegate void RemovePlayerEventHandler(int playerID);
-        public event RemovePlayerEventHandler RemovePlayer;
-        protected virtual void OnRemovePlayer(int playerID)
+        public void RecieveRemovePlayer(int playerId)
         {
-            if (RemovePlayer != null)
-                RemovePlayer(playerID);
-        }
-        #endregion
-
-        public void RecieveRemovePlayer(int playerID)
-        {
-            OnRemovePlayer(playerID);
+            OnRemovePlayer(playerId);
         }
 
-        #region MovePlayerEvent
-        public delegate void MovePlayerEventHandler(object sender, MovePlayerArgs e);
-        public event MovePlayerEventHandler MovePlayer;
-        protected virtual void OnMovePlayerAction(MovePlayerArgs e)
-        {
-            if (MovePlayer != null)
-                MovePlayer(this, e);
-        }
-        #endregion
-
-        private void RecievePositionAndSpeed(float positionX, float positionY, byte action, int playerID)
+        private void RecievePositionAndSpeed(float positionX, float positionY, byte direction, int playerId)
         {
             var arg = new MovePlayerArgs
             {
                 Position = { X = positionX, Y = positionY },
-                Action = action,
-                PlayerId =  playerID
+                Direction = direction,
+                PlayerId = playerId
             };
 
             OnMovePlayerAction(arg);
         }
-
-        #region PlacingBomb
-        public delegate void PlacingBombEventHandler(int playerId, Point position);
-        public event PlacingBombEventHandler PlacingBomb;
-        protected virtual void OnPlacingBomb(int playerId, Point position)
-        {
-            if (PlacingBomb != null)
-                PlacingBomb(playerId, position);
-        }
-        #endregion
         public void RecievePlacingBomb(int playerId, Point position)
         {
             OnPlacingBomb(playerId, position);
         }
-
-        #region BombExploded
-        public delegate void BombExplodedEventHandler(Point position);
-        public event BombExplodedEventHandler BombExploded;
-        protected virtual void OnBombExploded(Point position)
-        {
-            if (BombExploded != null)
-                BombExploded(position);
-        }
-        #endregion
         public void RecieveBombExploded(NetIncomingMessage message)
         {
             Point position = message.ReadPoint();
@@ -197,35 +128,118 @@ namespace FBClient.Network
 
             OnBombExploded(position);
         }
-        /*
-        #region Burn
-        public delegate void BurnEventHandler(int playerId);
-        public event BurnEventHandler Burn;
-        protected virtual void OnBurn(int playerId)
+
+        public void RecievePowerupDrop(PowerUpType type, Point position)
         {
-            if (Burn != null)
-                Burn(playerId);
-        }
-        #endregion
-        public void RecieveBurn(int playerId)
-        {
-            OnBurn(playerId);
+            OnPowerUpDrop(type, position);
         }
 
-        #region ExplodeTile
-        public delegate void ExplodeTileEventHandler(int tilePos);
-        public event ExplodeTileEventHandler ExplodeTile;
-        protected virtual void OnExplodeTile(int tilePos)
+        /*
+        public void RecievePowerupPick(float xPos, float yPos, int playerId, float amount)
         {
-            if (ExplodeTile != null)
-                ExplodeTile(tilePos);
-        }
-        #endregion
-        public void RecieveExplodeTile(int tilePos)
-        {
-            OnExplodeTile(tilePos);
+            OnPowerupPick(xPos, yPos, playerId, amount);
         }
         */
+
+        /*
+        public void RecieveSuddenDeath()
+        {
+            OnSuddenDeath();
+        }
+        */
+
+        private void RecieveRoundEnd()
+        {
+            GameServer.Instance.GameManager.GameEventManager.OnRoundEnd();
+        }
+
+        public void RecieveEnd(bool won)
+        {
+            OnEnd(won);
+        }
+
+        public void RecievePing(float ping)
+        {
+            OnPing(ping);
+        }
+
+        #endregion
+
+
+
+
+
+        #region Events
+
+        #region StartInfo
+        public delegate void StartInfoEventHandler();
+        public event StartInfoEventHandler StartInfo;
+        protected virtual void OnStartInfo()
+        {
+            if (StartInfo != null)
+                StartInfo();
+        }
+        #endregion
+
+        #region StartGame
+        public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions);
+        public event StartGameEventHandler StartGame;
+        protected virtual void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
+        {
+            if (StartGame != null)
+                StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime, wallPositions);
+        }
+        #endregion
+
+        #region NewPlayer
+        public delegate void NewPlayerEventHandler(int playerId, float moveSpeed, string username, int score);
+        public event NewPlayerEventHandler NewPlayer;
+        protected virtual void OnNewPlayer(int playerId, float moveSpeed, string username, int score)
+        {
+            if (NewPlayer != null)
+                NewPlayer(playerId, moveSpeed, username, score);
+        }
+        #endregion
+
+        #region RemovePlayer
+        public delegate void RemovePlayerEventHandler(int playerId);
+        public event RemovePlayerEventHandler RemovePlayer;
+        protected virtual void OnRemovePlayer(int playerId)
+        {
+            if (RemovePlayer != null)
+                RemovePlayer(playerId);
+        }
+        #endregion
+
+        #region MovePlayerEvent
+        public delegate void MovePlayerEventHandler(object sender, MovePlayerArgs e);
+        public event MovePlayerEventHandler MovePlayer;
+        protected virtual void OnMovePlayerAction(MovePlayerArgs e)
+        {
+            if (MovePlayer != null)
+                MovePlayer(this, e);
+        }
+        #endregion
+
+        #region PlacingBomb
+        public delegate void PlacingBombEventHandler(int playerId, Point position);
+        public event PlacingBombEventHandler PlacingBomb;
+        protected virtual void OnPlacingBomb(int playerId, Point position)
+        {
+            if (PlacingBomb != null)
+                PlacingBomb(playerId, position);
+        }
+        #endregion
+
+        #region BombExploded
+        public delegate void BombExplodedEventHandler(Point position);
+        public event BombExplodedEventHandler BombExploded;
+        protected virtual void OnBombExploded(Point position)
+        {
+            if (BombExploded != null)
+                BombExploded(position);
+        }
+        #endregion
 
         #region PowerUpDrop
         public delegate void PowerUpDropEventHandler(PowerUpType type, Point position);
@@ -236,10 +250,6 @@ namespace FBClient.Network
                 PowerUpDrop(type, position);
         }
         #endregion
-        public void RecievePowerupDrop(PowerUpType type, Point position)
-        {
-            OnPowerUpDrop(type, position);
-        }
 
         /*
         #region PowerupPick
@@ -251,12 +261,9 @@ namespace FBClient.Network
                 PowerupPick(xPos, yPos, playerId, amount);
         }
         #endregion
-        public void RecievePowerupPick(float xPos, float yPos, int playerId, float amount)
-        {
-            OnPowerupPick(xPos, yPos, playerId, amount);
-        }
         */
 
+        /*
         #region SuddenDeath
         public delegate void SuddenDeathEventHandler();
         public event SuddenDeathEventHandler SuddenDeath;
@@ -266,29 +273,7 @@ namespace FBClient.Network
                 SuddenDeath();
         }
         #endregion
-        public void RecieveSuddenDeath()
-        {
-            OnSuddenDeath();
-        }
-
-        #region SDExplosion
-        public delegate void SDExplosionEventHandler(int tilePos);
-        public event SDExplosionEventHandler SDExplosion;
-        protected virtual void OnSDExplosion(int tilePos)
-        {
-            if (SDExplosion != null)
-                SDExplosion(tilePos);
-        }
-        #endregion
-        public void RecieveSDExplosion(int tilePos)
-        {
-            OnSDExplosion(tilePos);
-        }
-
-        private void RecieveRoundEnd()
-        {
-            GameServer.Instance.GameManager.GameEventManager.OnRoundEnd();
-        }
+        */
 
         #region End
         public delegate void EndEventHandler(bool Won);
@@ -300,12 +285,6 @@ namespace FBClient.Network
         }
         #endregion
 
-        public void RecieveEnd(bool Won)
-        {
-            OnEnd(Won);
-        }
-
-
         #region Ping
         public delegate void UpdatePingEventHandler(float ping);
         public event UpdatePingEventHandler UpdatePing;
@@ -316,16 +295,13 @@ namespace FBClient.Network
         }
         #endregion
 
-        public void RecievePing(float ping)
-        {
-            OnPing(ping);
-        }
+        #endregion
     }
 
     public class MovePlayerArgs
     {
         public Vector2 Position = new Vector2();
-        public byte Action = 0;
+        public byte Direction = 0;
         public int PlayerId = 0;
     }
 }

@@ -83,7 +83,7 @@ namespace FBClient.Network
 
             GameServer.Instance.UpdatePing += GameServer_UpdatePing;
             GameServer.Instance.NewPlayer += GameServer_NewPlayer;
-            GameServer.Instance.RemovePlayer += GameServer_RemovePlayer;
+            //GameServer.Instance.RemovePlayer += GameServer_RemovePlayer;
             GameServer.Instance.MovePlayer += GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
             GameServer.Instance.BombExploded += GameServer_BombExploded;
@@ -109,7 +109,7 @@ namespace FBClient.Network
 
             GameServer.Instance.UpdatePing -= GameServer_UpdatePing;
             GameServer.Instance.NewPlayer -= GameServer_NewPlayer;
-            GameServer.Instance.RemovePlayer -= GameServer_RemovePlayer;
+            //GameServer.Instance.RemovePlayer -= GameServer_RemovePlayer;
             GameServer.Instance.MovePlayer -= GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb -= GameServer_PlacingBomb;
             GameServer.Instance.BombExploded -= GameServer_BombExploded;
@@ -223,6 +223,7 @@ namespace FBClient.Network
             }
         }
 
+        /*
         private void GameServer_RemovePlayer(int playerId)
         {
             Player player = GameServer.Instance.GameManager.Players.GetPlayerByID(playerId);
@@ -232,6 +233,7 @@ namespace FBClient.Network
                 GameServer.Instance.GameManager.RemovePlayer(player);
             }
         }
+        */
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
@@ -239,15 +241,12 @@ namespace FBClient.Network
 
             if (player != null)
             {
-                // TODO => Move Players on the map
                 player.Position = arg.Position;
-                player.ChangeLookDirection(arg.Action);
-                /*
-                player.MapPosition = arg.pos;
-                if (arg.action != 255)
-                    player.movementAction = (Player.ActionEnum)arg.action;
-                player.UpdateAnimation();
-                */
+                player.ChangeLookDirection(arg.Direction);
+            }
+            else
+            {
+                throw new Exception("This player doesn't exist ! (playerId: " + arg.PlayerId + ")");
             }
         }
 

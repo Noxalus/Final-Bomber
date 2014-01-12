@@ -40,7 +40,14 @@ namespace FBLibrary.Core.BaseEntities
         {
             Id = id;
             Name = "[UNKNOWN]";
+
+            Reset();
+        }
+
+        public virtual void Reset()
+        {
             IsAlive = true;
+            IsInvincible = true;
             OnEdge = false;
             CurrentDirection = LookDirection.Idle;
             InvincibleTime = GameConfiguration.PlayerInvincibleTimer;
@@ -49,8 +56,7 @@ namespace FBLibrary.Core.BaseEntities
             BombPower = GameConfiguration.BasePlayerBombPower;
             BombTimer = GameConfiguration.BaseBombTimer;
             Speed = GameConfiguration.BasePlayerSpeed;
-
-            IsInvincible = true;
+            InDestruction = false;
 
             // Bad power up
             HasBadEffect = false;
@@ -392,10 +398,14 @@ namespace FBLibrary.Core.BaseEntities
             BadEffectTimerLenght = TimeSpan.Zero;
         }
 
-
         #endregion
 
         protected abstract int GetTime();
 
+        public override void Remove()
+        {
+            IsAlive = false;
+            InDestruction = false;
+        }
     }
 }

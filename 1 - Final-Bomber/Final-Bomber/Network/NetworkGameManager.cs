@@ -49,7 +49,6 @@ namespace FBClient.Network
             base.RoundEndAction();
 
             NetworkManager.Reset();
-            AddPlayer(NetworkManager.Me);
         }
 
         #endregion

@@ -115,7 +115,7 @@ namespace FBServer.Core
 
         public override void Remove()
         {
-            IsAlive = false;
+            base.Remove();
         }
     }
 }

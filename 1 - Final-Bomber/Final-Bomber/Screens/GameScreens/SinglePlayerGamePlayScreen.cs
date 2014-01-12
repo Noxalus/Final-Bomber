@@ -33,7 +33,6 @@ namespace FBClient.Screens.GameScreens
 
         public override void Initialize()
         {
-
             // Map
             _gameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
             _gameManager.GenerateRandomWalls();
@@ -43,7 +42,6 @@ namespace FBClient.Screens.GameScreens
             base.Initialize();
 
             HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
-
             
             Camera = new Camera2D(GraphicsDevice.Viewport, _gameManager.CurrentMap.Size, 1f);
 

@@ -1,4 +1,7 @@
 ﻿
+using System;
+using FBLibrary.Core.BaseEntities;
+
 namespace FBLibrary.Core
 {
     /// <summary>
@@ -11,8 +14,10 @@ namespace FBLibrary.Core
         public delegate void RoundEndEventHandler();
         public event RoundEndEventHandler RoundEnd;
 
-        public delegate void PlayerDeathEventHandler();
+        public delegate void PlayerDeathEventHandler(BasePlayer sender, EventArgs args);
         public event PlayerDeathEventHandler PlayerDeath;
+
+
 
         #endregion
 
@@ -38,10 +43,10 @@ namespace FBLibrary.Core
             if (handler != null) handler();
         }
 
-        public void OnPlayerDeath()
+        public void OnPlayerDeath(BasePlayer player)
         {
             PlayerDeathEventHandler handler = PlayerDeath;
-            if (handler != null) handler();
+            if (handler != null) handler(player, EventArgs.Empty);
         }
 
         #endregion
@@ -52,7 +57,7 @@ namespace FBLibrary.Core
         {
         }
 
-        protected virtual void PlayerDeathAction()
+        protected virtual void PlayerDeathAction(BasePlayer sender, EventArgs args)
         {
         }
 

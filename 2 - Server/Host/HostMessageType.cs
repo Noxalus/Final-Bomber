@@ -10,34 +10,31 @@ namespace FBServer.Host
     {
         public enum RMT
         {
-            NeedMap = 6, //Spelaren behöver banan
-            Ready = 7, //Spelaren är färdig för att starta
-            MoveLeft = 0,
-            MoveUp = 1,
-            MoveRight = 2,
-            MoveDown = 3,
-            Standing = 4,
-            PlaceBomb = 5,
+            NeedMap = 6, // Player need to download the map
+            Ready = 7, // Player is ready to start
+            MoveLeft = 0, // Player wants to move to the left
+            MoveUp = 1, // Player wants to move up
+            MoveRight = 2, // Player wants to move to the right
+            MoveDown = 3, // Player wants to move down
+            Standing = 4, // Player wants to stay in place
+            PlaceBomb = 5, // Player wants to plant a bomb
         }
 
         public enum SMT
         {
-            GameStartInfo = 0, //skickar namnet på mapen och PlayerID
-            Map = 1, //skickar mapen
-            StartGame = 9, //Säger åt clienterna att det är dags o starta
-            PlayerInfo = 3, //Skickar en spelares information till de andra spelarna, används tex när man lägger dit nya players
-            PlayerPosAndSpeed = 2, //skickar positionen och speeden på varje spelare
-            RemovePlayer = 4, //Tar bort en disconnected spelare
-            PlayerPlacingBomb = 5, //Säger att en spelare har placerat en bomb
-            BombExploded = 6, //Säger att en bomb har exploderat
-            Burn = 7, //Säger att spelaren blev bränd på en bomb
-            ExplodeTile = 8, //Säger till spelarna att en tile har exploderat
-            PowerUpDrop = 11, //Säger till spelarna att en powerup har droppats
-            PowerUpPick = 12, //Säger till spelarna att en powerup har plockats upp
-            SuddenDeath = 13, //Säger till spelarna när sudden death börjar
-            SDExplosion = 14, //Säger till spelarna vart sudden death explosionen sker
-            End = 10, //Säger till att banan är slut och berättar vem som vann
-            RoundEnd = 15,
+            GameStartInfo = 0, // Sends the map MD5 value
+            Map = 1, // Sends map data (if client didn't already have it)
+            StartGame = 9, // Tells to client that the game will start (also sends generated wall positions) 
+            PlayerInfo = 3, // Sends player's information to other players (used for example when adding new players)
+            PlayerPosition = 2, // Sends the player position
+            RemovePlayer = 4, // Sends that a disconnected player has been removed
+            PlayerPlacingBomb = 5, // Says that a player has planted a bomb
+            BombExploded = 6, // Sends that a bomb has exploded
+            PowerUpDrop = 11, // Sends that a power up has dropped
+            PowerUpPick = 12, // Sens that a player has picked up a power up
+            SuddenDeath = 13, // Tells to players that the sudden death began
+            End = 10, // Sends that the game is finished (with the winner)
+            RoundEnd = 15, // Sends that the round is finished
             ClientInfo = 16
         }
     }

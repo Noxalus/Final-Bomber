@@ -1,11 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using FBClient.Core.Entities;
 using FBClient.Core.Players;
 using FBClient.Entities;
 using FBLibrary;
+using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 
 namespace FBClient.Core
@@ -15,26 +14,29 @@ namespace FBClient.Core
     /// </summary>
     public class LocalGameManager : GameManager
     {
-        private PlayerCollection _savedPlayers;
         public LocalGameManager()
         {
         }
 
         public override void Initialize()
         {
-            _savedPlayers = new PlayerCollection();
-
             for (var i = 0; i < GameConfiguration.PlayerNumber; i++)
             {
                 var player = new HumanPlayer(i) { Name = PlayerInfo.Username + i };
                 player.SetGameManager(this);
                 player.ChangePosition(this.CurrentMap.PlayerSpawnPoints[player.Id]);
 
-                _savedPlayers.Add(player);
                 AddPlayer(player);
             }
 
             base.Initialize();
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+
+
         }
 
         public override void LoadContent()
@@ -59,23 +61,18 @@ namespace FBClient.Core
 
         #region Events actions
 
-        public override void PlayerDeathAction()
+        public override void PlayerDeathAction(BasePlayer sender, EventArgs args)
         {
             // We check if the round is finished
-            if (Players.Count(p => p.IsAlive) == GameConfiguration.AlivePlayerRemaining + 1)
+            if (Players.Count(p => p.IsAlive) == GameConfiguration.AlivePlayerRemaining)
                 GameEventManager.OnRoundEnd();
 
-            base.PlayerDeathAction();
+            base.PlayerDeathAction(sender, args);
         }
 
         public override void RoundEndAction()
         {
             base.RoundEndAction();
-
-            foreach (var player in _savedPlayers)
-            {
-                AddPlayer(player);
-            }
         }
 
         #endregion
