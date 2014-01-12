@@ -155,6 +155,8 @@
     <Compile Include="Controls\Keyboarding.cs" />
     <Compile Include="GUI\WindowBox.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\ClientCollection.cs" />
     <Compile Include="Network\ClientConnection.cs" />
     <Compile Include="Network\ClientMessageReceiver.cs" />
     <Compile Include="Network\ClientMessageSender.cs" />

@@ -25,6 +25,7 @@ namespace FBClient.Network
             SDExplosion = 14, //Säger till spelarna vart sudden death explosionen sker
             End = 10, //Säger till att banan är slut och berättar vem som vann
             RoundEnd = 15,
+            ClientInfo = 16,
         }
 
         public enum SMT

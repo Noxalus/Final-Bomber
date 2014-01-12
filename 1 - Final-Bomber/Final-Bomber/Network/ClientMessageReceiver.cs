@@ -98,6 +98,16 @@ namespace FBClient.Network
             }
         }
 
+        #region New client
+        public void RecieveClientInfo(int id)
+        {
+            var client = new Client(id);
+
+            GameServer.Instance.OnConnectedClient(client, EventArgs.Empty);
+        }
+
+        #endregion
+
         #region NewPlayer
         public delegate void NewPlayerEventHandler(int playerID, float moveSpeed, string username, int score);
         public event NewPlayerEventHandler NewPlayer;

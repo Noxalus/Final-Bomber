@@ -49,7 +49,7 @@ namespace FBServer.Host
             };
 
 #if DEBUG
-            config.PingInterval = 1f;
+            //config.PingInterval = 1f;
             //config.SimulatedLoss = 0.5f;
             config.SimulatedMinimumLatency = 0.05f;
 #endif
