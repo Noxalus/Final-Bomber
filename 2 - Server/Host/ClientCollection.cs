@@ -33,7 +33,7 @@ namespace FBServer.Host
             }
 
             // If it's the first client => it's the host
-            if (Count == 1)
+            if (Count == 0)
             {
                 client.IsHost = true;
                 _hoster = client;

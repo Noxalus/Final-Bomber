@@ -58,6 +58,7 @@
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="Core\StaticEntity.cs" />
     <Compile Include="MapLoader.cs" />
+    <Compile Include="Network\MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

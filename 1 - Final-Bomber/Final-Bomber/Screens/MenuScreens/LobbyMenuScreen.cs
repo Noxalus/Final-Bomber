@@ -66,11 +66,12 @@ namespace FBClient.Screens.MenuScreens
 
         public override void Update(GameTime gameTime)
         {
+            // Read new messages from server and check cconnection status
+            GameServer.Instance.Update();
+
             // First connection
             if (!_isConnected)
             {
-                GameServer.Instance.RunClientConnection();
-
                 if (GameServer.Instance.Connected)
                 {
                     _isConnected = true;
@@ -92,9 +93,6 @@ namespace FBClient.Screens.MenuScreens
             }
             else
             {
-                if (GameServer.Instance.HasStarted)
-                    GameServer.Instance.RunClientConnection();
-
                 if (!GameServer.Instance.Disconnected)
                 {
                     // Send that the player is ready/not ready to start the game
@@ -162,7 +160,6 @@ namespace FBClient.Screens.MenuScreens
 
         private void GameServer_StartInfo()
         {
-            _isReady = true;
         }
 
         private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)

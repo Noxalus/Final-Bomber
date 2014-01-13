@@ -120,7 +120,8 @@ namespace FBClient.Network
         {
             if (!IsConnected)
             {
-                GameServer.Instance.RunClientConnection();
+                GameServer.Instance.Update();
+
                 if (GameServer.Instance.Connected)
                 {
                     IsConnected = true;
@@ -134,7 +135,7 @@ namespace FBClient.Network
             else
             {
                 if (GameServer.Instance.HasStarted)
-                    GameServer.Instance.RunClientConnection();
+                    GameServer.Instance.Update();
 
                 if (_isReady)
                     ProgramStepProccesing();

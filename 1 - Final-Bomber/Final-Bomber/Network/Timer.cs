@@ -53,17 +53,6 @@ namespace FBClient.Network
             get { return _timer.ElapsedMilliseconds; }
         }
 
-        public double TotalSeconds
-        {
-            get
-            {
-                Debug.Print("Elapsed.TotalSeconds: " + _timer.Elapsed);
-                Debug.Print("Elapsed.Seconds: " + _timer.Elapsed.Seconds);
-                Debug.Print("ElapsedMilliseconds: " + _timer.ElapsedMilliseconds);
-                return _timer.Elapsed.TotalSeconds;
-            }
-        }
-
         public bool Each(TimeSpan timeSpan)
         {
             if (_timer.ElapsedMilliseconds > timeSpan.TotalMilliseconds)

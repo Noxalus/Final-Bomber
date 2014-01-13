@@ -12,7 +12,7 @@ namespace FBServer.Host
             Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
         }
 
-        void ReceivePlayerInfo(Client client, string username, string password)
+        void ReceiveClientCredentials(Client client, string username, string password)
         {
             client.Username = username;
             client.Password = password;

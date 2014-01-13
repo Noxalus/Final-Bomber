@@ -170,7 +170,8 @@ namespace FBServer.Host
                             {
                                 if (currentClient != null)
                                 {
-                                    message.ReadByte(); // the message type
+                                    // the message type
+                                    message.ReadByte();
 
                                     Clients.RemoveClient(currentClient);
 

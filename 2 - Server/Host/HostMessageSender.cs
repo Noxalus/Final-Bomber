@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using FBLibrary;
 using FBLibrary.Core;
+using FBLibrary.Network;
 using FBServer.Core;
 using FBServer.Core.Entities;
 using FBServer.Core.WorldEngine;
@@ -23,7 +24,7 @@ namespace FBServer.Host
                 {
                     NetOutgoingMessage send = _server.CreateMessage();
 
-                    send.Write((byte)SMT.GameStartInfo);
+                    send.Write((byte)MessageType.ServerMessage.GameStartInfo);
                     send.Write(MapLoader.MapFileDictionary.Values.First());
 
                     _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
@@ -42,7 +43,7 @@ namespace FBServer.Host
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _server.CreateMessage();
-                send.Write((byte)SMT.Map);
+                send.Write((byte)MessageType.ServerMessage.Map);
 
                 send.Write(Instance.GameManager.CurrentMap.Name);
                 send.Write(Instance.GameManager.CurrentMap.GetMd5());
@@ -64,7 +65,7 @@ namespace FBServer.Host
         public void SendStartGame(Client client, bool gameInProgress)
         {
             NetOutgoingMessage send = _server.CreateMessage();
-            send.Write((byte)SMT.StartGame);
+            send.Write((byte)MessageType.ServerMessage.StartGame);
             send.Write(gameInProgress);
             if (!gameInProgress)
             {
@@ -120,7 +121,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = _server.CreateMessage();
 
-            send.Write((byte)SMT.RemovePlayer);
+            send.Write((byte)MessageType.ServerMessage.RemovePlayer);
             send.Write(removedPlayer.Id);
 
             _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
@@ -133,7 +134,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage rtn = _server.CreateMessage();
             
-            rtn.Write((byte)SMT.PlayerInfo);
+            rtn.Write((byte)MessageType.ServerMessage.PlayerInfo);
 
             rtn.Write(client.Player.Id);
             rtn.Write(client.Player.Speed);
@@ -149,7 +150,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = _server.CreateMessage();
 
-            send.Write((byte)SMT.PlayerPosition);
+            send.Write((byte)MessageType.ServerMessage.PlayerPosition);
 
             send.Write(player.Position.X);
             send.Write(player.Position.Y);
@@ -168,7 +169,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = _server.CreateMessage();
 
-            send.Write((byte)SMT.PlayerPlacingBomb);
+            send.Write((byte)MessageType.ServerMessage.PlayerPlacingBomb);
             send.Write(player.Id);
             send.Write(position);
 
@@ -182,7 +183,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = _server.CreateMessage();
 
-            send.Write((byte)SMT.BombExploded);
+            send.Write((byte)MessageType.ServerMessage.BombExploded);
             send.Write(bomb.CellPosition);
 
             _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
@@ -194,7 +195,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = _server.CreateMessage();
 
-            send.Write((byte)SMT.PowerUpDrop);
+            send.Write((byte)MessageType.ServerMessage.PowerUpDrop);
 
             send.Write((byte)powerUp.Type);
             send.Write(powerUp.CellPosition);
@@ -208,7 +209,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage send = _server.CreateMessage();
 
-            send.Write((byte)SMT.PowerUpPick);
+            send.Write((byte)MessageType.ServerMessage.PowerUpPick);
 
             send.Write(player.Id);
             send.Write(powerUp.CellPosition);
@@ -221,7 +222,7 @@ namespace FBServer.Host
         public void SendSuddenDeath()
         {
             NetOutgoingMessage send = _server.CreateMessage();
-            send.Write((byte)SMT.SuddenDeath);
+            send.Write((byte)MessageType.ServerMessage.SuddenDeath);
             _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
             Program.Log.Info("SUDDEN DEATH!");
         }
@@ -232,7 +233,7 @@ namespace FBServer.Host
             {
                 NetOutgoingMessage send = _server.CreateMessage();
 
-                send.Write((byte)SMT.RoundEnd);
+                send.Write((byte)MessageType.ServerMessage.RoundEnd);
 
                 _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 Program.Log.Info("Send 'RoundEnd' to player #" + client.Player.Id);
@@ -245,7 +246,7 @@ namespace FBServer.Host
             {
                 NetOutgoingMessage send = _server.CreateMessage();
 
-                send.Write((byte)SMT.End);
+                send.Write((byte)MessageType.ServerMessage.End);
 
                 send.Write(client.Player.IsAlive);
 

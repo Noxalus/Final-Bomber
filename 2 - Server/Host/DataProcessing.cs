@@ -1,4 +1,5 @@
 ﻿using FBLibrary.Core;
+using FBLibrary.Network;
 using Lidgren.Network;
 
 namespace FBServer.Host
@@ -9,39 +10,39 @@ namespace FBServer.Host
         {
             switch (message.ReadByte())
             {
-                case (byte)RMT.NeedMap:
+                case (byte)MessageType.ClientMessage.NeedMap:
                     Program.Log.Info("[Client #" + client.ClientId + "] Need map !");
                     ReceiveNeedMap(client);
                     break;
-                case (byte)RMT.PlayerInfo:
-                    Program.Log.Info("[Client #" + client.ClientId + "] Is ready !");
-                    ReceivePlayerInfo(client, message.ReadString(), message.ReadString());
+                case (byte)MessageType.ClientMessage.Credentials:
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sends its credientials info !");
+                    ReceiveClientCredentials(client, message.ReadString(), message.ReadString());
                     break;
-                case (byte)RMT.Ready:
+                case (byte)MessageType.ClientMessage.Ready:
                     Program.Log.Info("[Client #" + client.ClientId + "] Sends ready message !");
                     ReceiveReady(client, message.ReadBoolean());
                     break;
-                case (byte)RMT.MoveDown:
+                case (byte)MessageType.ClientMessage.MoveDown:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move down !");
                     ReceiveMovePlayer(client, LookDirection.Down);
                     break;
-                case (byte)RMT.MoveLeft:
+                case (byte)MessageType.ClientMessage.MoveLeft:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move left !");
                     ReceiveMovePlayer(client, LookDirection.Left);
                     break;
-                case (byte)RMT.MoveRight:
+                case (byte)MessageType.ClientMessage.MoveRight:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move right !");
                     ReceiveMovePlayer(client, LookDirection.Right);
                     break;
-                case (byte)RMT.MoveUp:
+                case (byte)MessageType.ClientMessage.MoveUp:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move up !");
                     ReceiveMovePlayer(client, LookDirection.Up);
                     break;
-                case (byte)RMT.Standing:
+                case (byte)MessageType.ClientMessage.Standing:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to stay here !");
                     ReceiveMovePlayer(client, LookDirection.Idle);
                     break;
-                case (byte)RMT.PlaceBomb:
+                case (byte)MessageType.ClientMessage.PlaceBomb:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to place bomb !");
                     ReceiveBombPlacing(client);
                     break;

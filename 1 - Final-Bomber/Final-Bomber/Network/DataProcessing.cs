@@ -1,4 +1,5 @@
 ﻿using FBLibrary.Core;
+using FBLibrary.Network;
 using Lidgren.Network;
 using System.Diagnostics;
 using Lidgren.Network.Xna;
@@ -15,60 +16,51 @@ namespace FBClient.Network
             Debug.Print("[" + _counter + "]Message received from server !");
             switch (type)
             {
-                case (byte)RMT.GameStartInfo:
+                case (byte)MessageType.ServerMessage.GameStartInfo:
                     Debug.Print("A message type 'GameStartInfo' have been received from server !");
                     RecieveGameInfo(message.ReadString());
                     break;
-                case (byte)RMT.Map:
+                case (byte)MessageType.ServerMessage.Map:
                     Debug.Print("A message type 'Map' have been received from server !");
                     RecieveMap(message);
                     break;
-                case (byte)RMT.StartGame:
+                case (byte)MessageType.ServerMessage.StartGame:
                     Debug.Print("A message type 'StartGame' have been received from server !");
                     RecieveStartGame(message);
                     break;
-                case (byte)RMT.PlayerPosAndSpeed:
+                case (byte)MessageType.ServerMessage.PlayerPosition:
                     Debug.Print("A message type 'PlayerPosAndSpeed' have been received from server !");
                     RecievePositionAndSpeed(message.ReadFloat(), message.ReadFloat(), message.ReadByte(), message.ReadInt32());
                     break;
-                case (byte)RMT.PlayerInfo:
+                case (byte)MessageType.ServerMessage.PlayerInfo:
                     Debug.Print("A message type 'PlayerInfo' have been received from server !");
                     RecievePlayerInfo(message.ReadInt32(), message.ReadFloat(), message.ReadString(), message.ReadInt32());
                     break;
-                case (byte)RMT.RemovePlayer:
+                case (byte)MessageType.ServerMessage.RemovePlayer:
                     Debug.Print("A message type 'RemovePlayer' have been received from server !");
                     RecieveRemovePlayer(message.ReadInt32());
                     break;
-                case (byte)RMT.PlayerPlacingBomb:
+                case (byte)MessageType.ServerMessage.PlayerPlacingBomb:
                     Debug.Print("A message type 'PlayerPlacingBomb' have been received from server !");
                     RecievePlacingBomb(message.ReadInt32(), message.ReadPoint());
                     break;
-                case (byte)RMT.BombExploded:
+                case (byte)MessageType.ServerMessage.BombExploded:
                     RecieveBombExploded(message);
                     break;
-                case (byte)RMT.Burn:
-                    //RecieveBurn(buffer.ReadInt32());
-                    break;
-                case (byte)RMT.ExplodeTile:
-                    //RecieveExplodeTile(buffer.ReadInt32());
-                    break;
-                case (byte)RMT.PowerupDrop:
+                case (byte)MessageType.ServerMessage.PowerUpDrop:
                     RecievePowerupDrop((PowerUpType)message.ReadByte(), message.ReadPoint());
                     break;
-                case (byte)RMT.PowerupPick:
+                case (byte)MessageType.ServerMessage.PowerUpPick:
                     //RecievePowerupPick(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadInt32(), buffer.ReadFloat());
                     break;
-                case (byte)RMT.SuddenDeath:
+                case (byte)MessageType.ServerMessage.SuddenDeath:
                     //RecieveSuddenDeath();
                     break;
-                case (byte)RMT.SDExplosion:
-                    //RecieveSDExplosion(buffer.ReadInt32());
-                    break;
-                case (byte)RMT.RoundEnd:
+                case (byte)MessageType.ServerMessage.RoundEnd:
                     Debug.Print("A message type 'RoundEnd' have been received from server !");
                     RecieveRoundEnd();
                     break;
-                case (byte)RMT.End:
+                case (byte)MessageType.ServerMessage.End:
                     Debug.Print("A message type 'End' have been received from server !");
                     RecieveEnd(message.ReadBoolean());
                     break;

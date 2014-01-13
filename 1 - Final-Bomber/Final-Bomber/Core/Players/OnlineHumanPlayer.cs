@@ -3,6 +3,7 @@ using FBLibrary.Core;
 using FBClient.Controls;
 using FBClient.Network;
 using FBClient.WorldEngine;
+using FBLibrary.Network;
 using Microsoft.Xna.Framework;
 
 namespace FBClient.Core.Players
@@ -82,23 +83,23 @@ namespace FBClient.Core.Players
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");
-                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveDown);
+                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveDown);
                         break;
                     case LookDirection.Left:
                         Debug.Print("[Client]I want to go left !");
-                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveLeft);
+                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveLeft);
                         break;
                     case LookDirection.Right:
                         Debug.Print("[Client]I want to go right !");
-                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveRight);
+                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveRight);
                         break;
                     case LookDirection.Up:
                         Debug.Print("[Client]I want to go up !");
-                        GameServer.Instance.SendMovement((byte) GameServer.SMT.MoveUp);
+                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveUp);
                         break;
                     default:
                         Debug.Print("[Client]I want to go stay here !");
-                        GameServer.Instance.SendMovement((byte) GameServer.SMT.Standing);
+                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.Standing);
                         break;
                 }
             }

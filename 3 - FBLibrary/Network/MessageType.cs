@@ -1,9 +1,9 @@
 ﻿
-namespace FBServer.Host
+namespace FBLibrary.Network
 {
-    sealed partial class GameServer
+    public static class MessageType
     {
-        private enum RMT
+        public enum ClientMessage
         {
             MoveLeft = 0, // Player wants to move to the left
             MoveUp = 1, // Player wants to move up
@@ -13,10 +13,10 @@ namespace FBServer.Host
             PlaceBomb = 5, // Player wants to plant a bomb
             NeedMap = 6, // Player need to download the map
             Ready = 7, // Player is ready to start ?
-            PlayerInfo = 8 // Player info (username, password, etc...)
+            Credentials = 8 // Client credentials info (username, password, etc...)
         }
 
-        private enum SMT
+        public enum ServerMessage
         {
             GameStartInfo = 0, // Sends the map MD5 value
             Map = 1, // Sends map data (if client didn't already have it)

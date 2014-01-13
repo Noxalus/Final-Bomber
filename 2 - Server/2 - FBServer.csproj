@@ -72,7 +72,6 @@
     <Compile Include="Host\HostGame.cs" />
     <Compile Include="Host\HostMessageReceiver.cs" />
     <Compile Include="Host\HostMessageSender.cs" />
-    <Compile Include="Host\HostMessageType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerSettings.cs" />

@@ -69,7 +69,7 @@ namespace FBClient.Network
             _client.Connect(ip, int.Parse(port));
         }
 
-        public void RunClientConnection()
+        public void Update()
         {
             // Connection with server
             if (!_connected && _client.ConnectionStatus == NetConnectionStatus.Connected)

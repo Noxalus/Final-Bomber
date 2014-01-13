@@ -158,7 +158,6 @@
     <Compile Include="Network\ClientConnection.cs" />
     <Compile Include="Network\ClientMessageReceiver.cs" />
     <Compile Include="Network\ClientMessageSender.cs" />
-    <Compile Include="Network\ClientMessageType.cs" />
     <Compile Include="Core\Players\OnlinePlayer.cs" />
     <Compile Include="Core\Players\OnlineHumanPlayer.cs" />
     <Compile Include="Network\DataProcessing.cs" />

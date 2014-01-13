@@ -1,4 +1,5 @@
-﻿using Lidgren.Network;
+﻿using FBLibrary.Network;
+using Lidgren.Network;
 
 namespace FBClient.Network
 {
@@ -9,7 +10,7 @@ namespace FBClient.Network
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
-                send.Write((byte)SMT.NeedMap);
+                send.Write((byte)MessageType.ClientMessage.NeedMap);
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
@@ -20,7 +21,7 @@ namespace FBClient.Network
             {
                 NetOutgoingMessage send = _client.CreateMessage();
 
-                send.Write((byte)SMT.PlayerInfo);
+                send.Write((byte)MessageType.ClientMessage.Credentials);
                 send.Write(PlayerInfo.Username);
                 send.Write(GameSettings.Password);
 
@@ -34,7 +35,7 @@ namespace FBClient.Network
             {
                 NetOutgoingMessage send = _client.CreateMessage();
                 
-                send.Write((byte)SMT.Ready);
+                send.Write((byte)MessageType.ClientMessage.Ready);
                 send.Write(value);
 
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
@@ -56,7 +57,7 @@ namespace FBClient.Network
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
-                send.Write((byte)SMT.PlaceBomb);
+                send.Write((byte)MessageType.ClientMessage.PlaceBomb);
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
