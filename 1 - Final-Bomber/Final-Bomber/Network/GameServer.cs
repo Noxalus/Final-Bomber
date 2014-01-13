@@ -1,12 +1,12 @@
-﻿
-using System;
-using FBClient.Core;
+﻿using FBClient.Core;
 
 namespace FBClient.Network
 {
     sealed partial class GameServer
     {
-        public GameManager GameManager;
+        public NetworkGameManager GameManager;
+
+        public readonly ClientCollection Clients;
 
         // Events
         /*
@@ -50,14 +50,17 @@ namespace FBClient.Network
 
         private GameServer()
         {
+            Clients = new ClientCollection();
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             /*
             ConnectedClient += GameServer_ConnectedClient;
             DisconnectedClient += GameServer_DisconnectedClient;
             */
+
+            GameManager.Initialize();
         }
 
         private void Dispose()
@@ -70,7 +73,7 @@ namespace FBClient.Network
 
         public void SetGameManager(GameManager gameManager)
         {
-            GameManager = gameManager;
+            GameManager = (NetworkGameManager)gameManager;
         }
     }
 }

@@ -80,9 +80,9 @@ namespace FBClient.Network
         }
 
 
-        public void RecievePlayerInfo(int playerId, string username)
+        public void RecieveNewClientInfo(int clientId, string username)
         {
-            OnNewPlayer(playerId, username);
+            OnNewClient(clientId, username);
         }
 
         public void RecieveRemovePlayer(int playerId)
@@ -90,13 +90,13 @@ namespace FBClient.Network
             OnRemovePlayer(playerId);
         }
 
-        private void RecievePosition(float positionX, float positionY, byte direction, int playerId)
+        private void RecievePosition(float positionX, float positionY, byte direction, int clientId)
         {
             var arg = new MovePlayerArgs
             {
                 Position = { X = positionX, Y = positionY },
                 Direction = direction,
-                PlayerId = playerId
+                ClientId = clientId
             };
 
             OnMovePlayerAction(arg);
@@ -186,13 +186,13 @@ namespace FBClient.Network
         #endregion
 
         #region NewPlayer
-        public delegate void NewPlayerEventHandler(int playerId, string username);
-        public event NewPlayerEventHandler NewPlayer;
+        public delegate void NewClientEventHandler(int clientId, string username);
+        public event NewClientEventHandler NewClient;
 
-        private void OnNewPlayer(int playerId, string username)
+        private void OnNewClient(int clientId, string username)
         {
-            if (NewPlayer != null)
-                NewPlayer(playerId, username);
+            if (NewClient != null)
+                NewClient(clientId, username);
         }
         #endregion
 
@@ -304,6 +304,6 @@ namespace FBClient.Network
     {
         public Vector2 Position = new Vector2();
         public byte Direction = 0;
-        public int PlayerId = 0;
+        public int ClientId = 0;
     }
 }

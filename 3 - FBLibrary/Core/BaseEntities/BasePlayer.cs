@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core.BaseEntities
@@ -387,8 +388,6 @@ namespace FBLibrary.Core.BaseEntities
             BadEffect = effect;
             BadEffectTimerLenght = TimeSpan.FromSeconds(15);
             //BadEffectTimerLenght = TimeSpan.FromSeconds(GamePlayScreen.Random.Next(Config.BadItemTimerMin, Config.BadItemTimerMax));
-
-
         }
 
         protected virtual void RemoveBadItem()
@@ -406,6 +405,17 @@ namespace FBLibrary.Core.BaseEntities
         {
             IsAlive = false;
             InDestruction = false;
+        }
+    }
+
+    public class BasicPlayerSorter : Comparer<BasePlayer>
+    {
+        public override int Compare(BasePlayer x, BasePlayer y)
+        {
+            if (x != null && y != null) 
+                return x.Id.CompareTo(y.Id);
+            else
+                throw new Exception("A player doesn't exist and can't be compared.");
         }
     }
 }

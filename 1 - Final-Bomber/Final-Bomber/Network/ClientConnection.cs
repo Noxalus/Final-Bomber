@@ -44,7 +44,7 @@ namespace FBClient.Network
         public void StartClientConnection(string ip, string port)
         {
             _config = new NetPeerConfiguration("Final-Bomber");
-            _config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
+            //_config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
             _hasStarted = true;
             _connected = false;

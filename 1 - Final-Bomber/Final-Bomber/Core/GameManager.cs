@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FBClient.Core.Entities;
 using FBClient.Entities;
+using FBClient.Network;
 using FBClient.WorldEngine;
 using FBLibrary;
 using FBLibrary.Core;

@@ -115,7 +115,7 @@ namespace FBServer.Core
                 if (client.NewClient && GameInitialized && client.IsReady)
                 {
                     GameServer.Instance.SendStartGame(client, true);
-                    GameServer.Instance.SendPlayersToNew(client, true);
+                    GameServer.Instance.SendClientsToNew(client);
 
                     client.NewClient = false;
                 }
@@ -166,7 +166,7 @@ namespace FBServer.Core
                 GameServer.Instance.Clients[i].Spectating = false;
 
                 // Send players info to everyone
-                GameServer.Instance.SendPlayerInfo(GameServer.Instance.Clients[i], true);
+                GameServer.Instance.SendNewClientInfo(GameServer.Instance.Clients[i]);
             }
 
             Program.Log.Info("[INITIALIZED GAME]");
@@ -356,7 +356,8 @@ namespace FBServer.Core
                 client.NewClient = true;
             }
 
-            GameServer.Instance.SendPlayerInfo(client, false);
+            GameServer.Instance.SendNewClientInfo(client);
+            GameServer.Instance.SendClientsToNew(client);
         }
 
         /// <summary>

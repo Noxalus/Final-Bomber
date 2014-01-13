@@ -155,6 +155,8 @@
     <Compile Include="Controls\Keyboarding.cs" />
     <Compile Include="GUI\WindowBox.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\ClientCollection.cs" />
     <Compile Include="Network\ClientConnection.cs" />
     <Compile Include="Network\ClientMessageReceiver.cs" />
     <Compile Include="Network\ClientMessageSender.cs" />
@@ -165,9 +167,7 @@
     <Compile Include="Network\GameServer.cs" />
     <Compile Include="Network\NetworkGameManager.cs" />
     <Compile Include="Network\GameSettings.cs" />
-    <Compile Include="Network\MainGame.cs" />
     <Compile Include="Network\NetworkManager.cs" />
-    <Compile Include="Network\ProgramStepProcessing.cs" />
     <Compile Include="Network\Timer.cs" />
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

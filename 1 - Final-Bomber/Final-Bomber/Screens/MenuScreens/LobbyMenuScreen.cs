@@ -4,6 +4,7 @@ using System.Diagnostics;
 using FBLibrary;
 using FBClient.Controls;
 using FBClient.Network;
+using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -37,7 +38,7 @@ namespace FBClient.Screens.MenuScreens
 
             GameServer.Instance.SetGameManager(new NetworkGameManager());
 
-            GameServer.Instance.GameManager.Initialize();
+            GameServer.Instance.Initialize();
 
             base.Initialize();
 
@@ -100,6 +101,7 @@ namespace FBClient.Screens.MenuScreens
                     if (InputHandler.KeyPressed(Keys.R))
                     {
                         _isReady = !_isReady;
+                        GameServer.Instance.Clients.Me.IsReady = _isReady;
                         GameServer.Instance.SendIsReady(_isReady);
                     }
                 }
@@ -128,13 +130,25 @@ namespace FBClient.Screens.MenuScreens
                         20),
             Color.Black);
 
-            for (var i = 0; i < GameServer.Instance.GameManager.Players.Count; i++)
+            var strColor = Color.Black;
+            GameServer.Instance.GameManager.Players.Sort(new BasicPlayerSorter());
+            for (var i = 0; i < GameServer.Instance.Clients.Count; i++)
             {
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, GameServer.Instance.GameManager.Players[i].Name,
-                    new Vector2(0, 40 + (40 * i)), Color.Black);
+                strColor = Color.Black;
+                if (GameServer.Instance.Clients[i].IsReady)
+                {
+                    strColor = Color.Green;
+                }
+
+                str = GameServer.Instance.GameManager.Players[i].Name;
+                if (GameServer.Instance.GameManager.Players[i].Id == GameServer.Instance.Clients.Me.Id)
+                    str += " (you)";
+
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
+                    new Vector2(0, 40 + (40 * i)), strColor);
             }
 
-            var strColor = Color.Orange;
+            strColor = Color.Orange;
             if (GameServer.Instance.Connected)
             {
                 str = "Connected ! :)";
@@ -173,10 +187,6 @@ namespace FBClient.Screens.MenuScreens
             {
                 if (!gameInProgress)
                 {
-                    var networkGameManager = GameServer.Instance.GameManager as NetworkGameManager;
-                    if (networkGameManager != null)
-                        networkGameManager.NetworkManager.Me.Id = playerId;
-                    //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
                     GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
                 }
                 else

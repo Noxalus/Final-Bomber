@@ -438,13 +438,4 @@ namespace FBClient.Entities
 
 public class PlayerCollection : List<Player>
 {
-    public Player GetPlayerByID(int playerID)
-    {
-        foreach (Player player in this)
-        {
-            if (player.Id == playerID)
-                return player;
-        }
-        return null;
-    }
 }

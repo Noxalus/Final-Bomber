@@ -88,7 +88,7 @@ namespace FBServer.Host
         }
 
         // Send all players to this player
-        public void SendPlayersToNew(Client client, bool sendPosition)
+        public void SendClientsToNew(Client client)
         {
             Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
 
@@ -96,14 +96,9 @@ namespace FBServer.Host
             {
                 if (client != currentClient)
                 {
-                    NetOutgoingMessage message = GetPlayerInfo(currentClient);
+                    NetOutgoingMessage message = GetClientInfo(currentClient);
 
                     _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-
-                    if (sendPosition)
-                    {
-                        SendPlayerPosition(currentClient.Player, false);
-                    }
 
                     Program.Log.Info("Send the player (client #" + currentClient.ClientId + ") to the new player (client #" + client.ClientId + ")");
                 }
@@ -111,21 +106,16 @@ namespace FBServer.Host
 
         }
 
-        // Send this player to all other available
-        public void SendPlayerInfo(Client client, bool sendPosition)
+        // Send this new player to already existing players
+        public void SendNewClientInfo(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage message = GetPlayerInfo(client);
+                NetOutgoingMessage message = GetClientInfo(client);
 
-                _server.SendToAll(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-                if (sendPosition)
-                {
-                    SendPlayerPosition(client.Player, false);
-                }
-
-                Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
+                Program.Log.Info("Send the new player to all other players (client #" + client.ClientId + ")");
             }
         }
 
@@ -142,13 +132,13 @@ namespace FBServer.Host
         }
 
         #region GetPlayerInfo
-        private NetOutgoingMessage GetPlayerInfo(Client client)
+        private NetOutgoingMessage GetClientInfo(Client client)
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
-            message.Write((byte)MessageType.ServerMessage.PlayerInfo);
+            message.Write((byte)MessageType.ServerMessage.NewClientInfo);
 
-            message.Write(client.Player.Id);
+            message.Write(client.ClientId);
             message.Write(client.Username);
 
             return message;

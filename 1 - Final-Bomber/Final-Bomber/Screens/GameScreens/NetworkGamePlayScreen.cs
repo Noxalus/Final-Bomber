@@ -60,8 +60,6 @@ namespace FBClient.Screens.GameScreens
 
             Camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, _gameManager.CurrentMap.Size, 1f);
 
-            _gameManager.AddPlayer(_gameManager.NetworkManager.Me);
-
             HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
             HudTopSpace = 15;
             HudMarginLeft = 15;
@@ -100,7 +98,7 @@ namespace FBClient.Screens.GameScreens
         {
             _gameManager.Update();
 
-            Camera.Update(gameTime, _gameManager.NetworkManager.Me.Position);
+            Camera.Update(gameTime, GameServer.Instance.Clients.Me.Player.Position);
 
             base.Update(gameTime);
         }
@@ -122,18 +120,14 @@ namespace FBClient.Screens.GameScreens
                         0),
             Color.Black);
 
-            // Player's ping
-            string ping = "Ping: " + _gameManager.NetworkManager.Me.Ping;
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21), Color.Black);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20), Color.White);
+            // Players ping
+            for (int i = 0; i < GameServer.Instance.Clients.Count; i++)
+            {
+                string ping = "Ping: " + GameServer.Instance.Clients[i].Ping;
 
-            string cameraPosition = "Camera position: " + Camera.Position;
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
-
-            string playerSpeed = "Player's speed: " + _gameManager.NetworkManager.Me.Speed;
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(1, 61), Color.Black);
-            FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, playerSpeed, new Vector2(0, 60), Color.White);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21 + (20 * i)), Color.Black);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20 + (20 * i)), Color.White);
+            }
 
             /*
             // Draw IP adress

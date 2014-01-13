@@ -1,4 +1,5 @@
 ﻿using FBClient.Core;
+using FBClient.Entities;
 
 namespace FBClient.Network
 {
@@ -24,8 +25,6 @@ namespace FBClient.Network
         public override void LoadContent()
         {
             base.LoadContent();
-
-            NetworkManager.LoadContent();
         }
 
         public override void Dispose()
@@ -47,8 +46,11 @@ namespace FBClient.Network
         public override void RoundEndAction()
         {
             base.RoundEndAction();
+        }
 
-            NetworkManager.Reset();
+        public void AddClient(Client client, bool me = false)
+        {
+            GameServer.Instance.Clients.AddClient(client, me);
         }
 
         #endregion

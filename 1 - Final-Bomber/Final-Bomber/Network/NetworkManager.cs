@@ -52,25 +52,13 @@ namespace FBClient.Network
         public bool IsConnected;
         private bool _isReady;
 
-        // Players
-        public OnlineHumanPlayer Me;
-
         public NetworkManager()
         {
-            Me = new OnlineHumanPlayer(0);
             IsConnected = true;
 
             _timer = new TimeSpan();
             _tmr = new Timer();
             _connectedTmr = new Timer();
-        }
-
-        public void Reset()
-        {
-            string username = Me.Name;
-            Me = new OnlineHumanPlayer(0, Me.Stats) { Name = username };
-
-            LoadContent();
         }
 
         public void Initiliaze()
@@ -82,23 +70,16 @@ namespace FBClient.Network
             GameServer.Instance.StartGame += GameServer_StartGame;
 
             GameServer.Instance.UpdatePing += GameServer_UpdatePing;
-            GameServer.Instance.NewPlayer += GameServer_NewPlayer;
+            GameServer.Instance.NewClient += GameServer_NewClient;
             //GameServer.Instance.RemovePlayer += GameServer_RemovePlayer;
             GameServer.Instance.MovePlayer += GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
             GameServer.Instance.BombExploded += GameServer_BombExploded;
             GameServer.Instance.PowerUpDrop += GameServer_PowerUpDrop;
 
-            Me.Name = PlayerInfo.Username;
-
             _tmr.Start();
             _tmrWaitUntilStart = new Timer();
             _connectedTmr.Start();
-        }
-
-        public void LoadContent()
-        {
-            Me.LoadContent();
         }
 
         public void Dispose()
@@ -108,7 +89,7 @@ namespace FBClient.Network
             GameServer.Instance.StartGame -= GameServer_StartGame;
 
             GameServer.Instance.UpdatePing -= GameServer_UpdatePing;
-            GameServer.Instance.NewPlayer -= GameServer_NewPlayer;
+            GameServer.Instance.NewClient -= GameServer_NewClient;
             //GameServer.Instance.RemovePlayer -= GameServer_RemovePlayer;
             GameServer.Instance.MovePlayer -= GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb -= GameServer_PlacingBomb;
@@ -179,7 +160,6 @@ namespace FBClient.Network
         {
             if (!gameInProgress)
             {
-                Me.Id = playerId;
                 //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
                 GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
             }
@@ -194,33 +174,30 @@ namespace FBClient.Network
             GameServer.Instance.GameManager.AddWalls(wallPositions);
         }
 
-        private void GameServer_NewPlayer(int playerId, string username)
+        private void GameServer_NewClient(int clientId, string username)
         {
-            if (GameServer.Instance.GameManager.Players.GetPlayerByID(playerId) == null)
+            if (GameServer.Instance.Clients.GetClientById(clientId) == null)
             {
-                var player = new OnlinePlayer(playerId) { Name = username };
-
-                if (username == Me.Name)
+                var me = GameServer.Instance.Clients.Me;
+                if (username == me.Username)
                 {
-                    var playerNames = GameServer.Instance.GameManager.Players.Select(p => p.Name).ToList();
+                    var clientUsernames = GameServer.Instance.Clients.Select(c => c.Username).ToList();
 
-                    if (playerNames.Contains(Me.Name))
+                    if (clientUsernames.Contains(me.Username))
                     {
                         var concat = 1;
-                        while (playerNames.Contains(Me.Name + concat))
+                        while (clientUsernames.Contains(me.Username + concat))
                         {
                             concat++;
                         }
 
-                        Me.Name += concat;
+                        me.Username += concat;
                     }
                 }
 
-                player.LoadContent();
+                var client = new Client(clientId);
 
-                GameServer.Instance.GameManager.AddPlayer(player);
-
-                OnAddPlayer(this, EventArgs.Empty);
+                GameServer.Instance.GameManager.AddClient(client);
             }
         }
 
@@ -238,35 +215,56 @@ namespace FBClient.Network
 
         private void GameServer_MovePlayer(object sender, MovePlayerArgs arg)
         {
-            Player player = GameServer.Instance.GameManager.Players.GetPlayerByID(arg.PlayerId);
+            Client client = GameServer.Instance.Clients.GetClientById(arg.ClientId);
 
-            if (player != null)
+            if (client != null)
             {
-                player.Position = arg.Position;
-                player.ChangeLookDirection(arg.Direction);
+                if (client.Player != null)
+                {
+                    client.Player.Position = arg.Position;
+                    client.Player.ChangeLookDirection(arg.Direction);
+                }
+                else
+                {
+                    throw new Exception("This player doesn't exist ! (clientId: " + arg.ClientId + ")");
+                }
             }
             else
             {
-                throw new Exception("This player doesn't exist ! (playerId: " + arg.PlayerId + ")");
+                throw new Exception("This client doesn't exist ! (clientId: " + arg.ClientId + ")");
             }
         }
 
         private void GameServer_UpdatePing(float ping)
         {
-            Me.Ping = ping;
+            GameServer.Instance.Clients.Me.Ping = ping;
         }
 
-        private void GameServer_PlacingBomb(int playerId, Point position)
+        private void GameServer_PlacingBomb(int clientId, Point position)
         {
-            Player player = GameServer.Instance.GameManager.Players.GetPlayerByID(playerId);
+            Client client = GameServer.Instance.Clients.GetClientById(clientId);
 
-            if (player != null)
+            if (client != null)
             {
-                var bomb = new Bomb(playerId, position, player.BombPower, player.BombTimer, player.Speed);
-                player.CurrentBombAmount--;
-                bomb.Initialize(GameServer.Instance.GameManager.CurrentMap.Size, GameServer.Instance.GameManager.CurrentMap.CollisionLayer, GameServer.Instance.GameManager.HazardMap);
+                if (client.Player != null)
+                {
+                    var bomb = new Bomb(clientId, position, client.Player.BombPower, client.Player.BombTimer, client.Player.Speed);
+                    client.Player.CurrentBombAmount--;
 
-                GameServer.Instance.GameManager.AddBomb(bomb);
+                    bomb.Initialize(GameServer.Instance.GameManager.CurrentMap.Size,
+                        GameServer.Instance.GameManager.CurrentMap.CollisionLayer,
+                        GameServer.Instance.GameManager.HazardMap);
+
+                    GameServer.Instance.GameManager.AddBomb(bomb);
+                }
+                else
+                {
+                    throw new Exception("This player doesn't exist ! (clientId: " + clientId + ")");
+                }
+            }
+            else
+            {
+                throw new Exception("This client doesn't exist ! (clientId: " + clientId + ")");
             }
         }
 
