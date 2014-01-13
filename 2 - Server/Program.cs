@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using FBLibrary;
 using FBServer.Core;
-using System;
 using System.Threading;
-using FBServer.Core.WorldEngine;
 using log4net;
 using log4net.Config;
 
@@ -23,10 +21,11 @@ namespace FBServer
 
             if (args.Length > 0)
             {
-                Program.Log.Info("Arguments:");
+                // Arguments like max client number (ex: 32)
+                Log.Info("Arguments:");
                 foreach (string s in args)
                 {
-                    Program.Log.Info(s);
+                    Log.Info(s);
                 }
             }
 
@@ -44,12 +43,12 @@ namespace FBServer
                 timer.Start();
                 while(server.Running)
                 {
-                    // Delta time
+                    // Compute delta time
                     GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
 
                     server.Update();
-                    //Program.Log.Info(timer.Elapsed.Milliseconds);
-                    timer.Restart();
+
+                    // Max 15 milliseconds between 2 main loop
                     Thread.Sleep(15);
                 }
             }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBServer.Host
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         public enum RMT
         {

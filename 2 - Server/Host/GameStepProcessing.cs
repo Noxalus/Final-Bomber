@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
 using FBServer.Core;
@@ -11,64 +12,69 @@ namespace FBServer.Host
         List<Player> _alivePlayers;
         private void GameStepProccesing()
         {
-            if (GameSettings.GameServer.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
-                && !StartedMatch && GameSettings.GameServer.Clients.IsClientsReady())
+            if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TO CHANGE
+                && !StartedMatch && GameServer.Instance.Clients.IsClientsReady())
             {
                 GameInitialize();
             }
 
-            foreach (Client client in GameSettings.GameServer.Clients)
+            foreach (Client client in GameServer.Instance.Clients)
             {
-                if (client.NewClient && StartedMatch && client.isReady)
+                if (client.NewClient && StartedMatch && client.IsReady)
                 {
-                    GameSettings.GameServer.SendStartGame(client, true);
-                    GameSettings.GameServer.SendPlayersToNew(client);
+                    GameServer.Instance.SendStartGame(client, true);
+                    GameServer.Instance.SendPlayersToNew(client);
                     client.NewClient = false;
                 }
             }
 
             // End of round
-            //_alivePlayers = GameSettings.GameServer.Clients.GetAlivePlayers();
-            _alivePlayers = GameManager.PlayerList.FindAll(player => player.IsAlive);
-            if (StartedMatch && _alivePlayers.Count <= GameConfiguration.AlivePlayerRemaining)
+            //_alivePlayers = GameServer.Instance.Clients.GetAlivePlayers();
+            if (StartedMatch && 
+                GameServer.Instance.GameManager.PlayerList.Count(player => player.IsAlive) <= 
+                GameConfiguration.AlivePlayerRemaining)
             {
-                int maxScore = 0;
-                foreach (var player in GameSettings.GameServer.Clients.GetPlayers())
+                int maxScore = GameServer.Instance.GameManager.PlayerList.First().Stats.Score;
+                foreach (var player in GameServer.Instance.GameManager.PlayerList)
                 {
-                    maxScore = Math.Max(maxScore, player.Stats.Score);
+                    if (player.Stats.Score > maxScore)
+                        maxScore = player.Stats.Score;
                 }
 
                 if (maxScore >= ServerSettings.ScoreToWin)
                 {
                     // End of game
                     //MainServer.SendPlayerStats();
+
+                    // Next map
                     GameSettings.CurrentMap++;
-                    //MainServer.SendNextMap();
+
                     EndGame();
-                    foreach (Client client in GameSettings.GameServer.Clients)
+
+                    foreach (Client client in GameServer.Instance.Clients)
                     {
-                        client.isReady = false;
-                        GameSettings.GameServer.SendEnd(client);
+                        client.IsReady = false;
+                        GameServer.Instance.SendEnd(client);
                         // Restore the original values
                         var newPlayer = new Player(client.Player.Id);
-                        GameSettings.GameServer.SendGameInfo(client);
+                        GameServer.Instance.SendGameInfo(client);
                     }
                 }
                 else
                 {
                     // Reset
-                    GameManager.Reset();
+                    GameServer.Instance.GameManager.Reset();
                     
-                    foreach (Client client in GameSettings.GameServer.Clients)
+                    foreach (Client client in GameServer.Instance.Clients)
                     {
-                        client.isReady = false;
+                        client.IsReady = false;
                         client.AlreadyPlayed = true;
-                        GameSettings.GameServer.SendRoundEnd(client);
+                        GameServer.Instance.SendRoundEnd(client);
 
                         //var newPlayer = new Player(client.Player.Id, client.Player.Stats);
                         //GameManager.AddPlayer(client, newPlayer);
 
-                        GameSettings.GameServer.SendGameInfo(client);
+                        GameServer.Instance.SendGameInfo(client);
                     } 
                 }
             }

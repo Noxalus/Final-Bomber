@@ -14,116 +14,103 @@ namespace FBServer.Host
 {
     partial class HostGame
     {
-        bool hasStarted;
-        int playerId = 0;
+        bool _hasStarted;
+        int _playerId = 0;
 
-        Timer tmr_BeginGame;
-        bool gameHasBegun;
+        Timer _beginGameTimer;
+        bool _gameHasBegun;
 
-        bool suddenDeath = false;
-        int suddenDeathTPE;
-        int suddenDeathTileX;
-        int suddenDeathTileY;
-        //H.U.D.Timer tmr_UntilSuddenDeath;
-        //H.U.D.Timer tmr_ExplosionSuddenDeath;
-        Bomb suddenDeathBomb;
-        Vector2 suddenDeathMovement;
-
-        public static GameManager GameManager;
+        bool _suddenDeath = false;
 
         public bool HasStarted
         {
-            get { return hasStarted; }
+            get { return _hasStarted; }
         }
 
         public bool StartedMatch = false;
 
+        public HostGame()
+        {
+        }
+
         public void Initialize()
         {
-            GameSettings.GameServer = new GameServer();
-            GameSettings.GameServer.ConnectedClient += gameServer_ConnectedClient;
-            GameSettings.GameServer.DisconnectedClient += gameServer_DisconnectedClient;
-            GameSettings.GameServer.BombPlacing += gameServer_BombPlacing;
-            GameSettings.GameServer.StartServer();
+            GameServer.Instance.ConnectedClient += GameServer_ConnectedClient;
+            GameServer.Instance.DisconnectedClient += GameServer_DisconnectedClient;
+            GameServer.Instance.BombPlacing += GameServer_BombPlacing;
+            GameServer.Instance.StartServer();
 
-            GameManager = new GameManager();
-
-            GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
+            /*
+            GameServer.Instance.GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
 
             // Display info
-            /*
-            GameManager.CurrentMap.DisplayBoard();
-            GameManager.CurrentMap.DisplayCollisionLayer();
+            GameServer.Instance.GameManager.CurrentMap.DisplayBoard();
+            GameServer.Instance.GameManager.CurrentMap.DisplayCollisionLayer();
             */
-
-            hasStarted = true;
+            
+            _hasStarted = true;
         }
 
         public void Update()
         {
-            GameSettings.GameServer.RunServer();
+            GameServer.Instance.Update();
 
             GameStepProccesing();
 
-            if (tmr_BeginGame != null)
+            if (_beginGameTimer != null)
             {
                 // Game really starts after 3 seconds
-                if (!gameHasBegun /*&& tmr_BeginGame.Each(3000)*/)
+                if (!_gameHasBegun && _beginGameTimer.Each(3000))
                 {
-                    tmr_BeginGame.Stop();
-                    //tmr_UntilSuddenDeath.Start();
-                    gameHasBegun = true;
+                    _beginGameTimer.Stop();
+                    _gameHasBegun = true;
                 }
             }
 
-            if (StartedMatch && gameHasBegun)
+            if (StartedMatch && _gameHasBegun)
             {
                 RunGameLogic();
-
-                /*
-                Console.Clear();
-                GameManager.CurrentMap.DisplayBoard();
-                */
             }
         }
 
         public void Dispose()
         {
-            hasStarted = false;
+            _hasStarted = false;
             StartedMatch = false;
-            GameSettings.GameServer.EndServer("Ending Game");
+
+            GameServer.Instance.EndServer("Ending game");
         }
 
         private void GameInitialize()
         {
-            gameHasBegun = false;
-            tmr_BeginGame = new Timer(true);
+            _gameHasBegun = false;
+            _beginGameTimer = new Timer(true);
             //GameSettings.Get_gameManager.CurrentMap().CreateMap();
             //_gameManager.CurrentMap = GameSettings.Get_gameManager.CurrentMap();
 
-            suddenDeath = false;
+            _suddenDeath = false;
             //suddenDeathTPE = 1000 / ((_gameManager.CurrentMap.mapWidth * _gameManager.CurrentMap.mapHeight) / 30); //Räknar ut tiden mellan varje explosion (i ms)
             //tmr_UntilSuddenDeath = new H.U.D.Timer(false);
-            GameSettings.GameServer.Clients.Sort(new ClientRandomSorter());
+            GameServer.Instance.Clients.Sort(new ClientRandomSorter());
             GameSettings.PlayingClients = new ClientCollection();
 
-            foreach (Client client in GameSettings.GameServer.Clients) //Skickar spelarna till varandra
+            foreach (Client client in GameServer.Instance.Clients) //Skickar spelarna till varandra
             {
-                client.Player.ChangePosition(GameManager.CurrentMap.PlayerSpawnPoints[client.Player.Id]);
-                GameSettings.GameServer.SendStartGame(client, false); //Starta spelet alla Clienter!!
+                client.Player.ChangePosition(GameServer.Instance.GameManager.CurrentMap.PlayerSpawnPoints[client.Player.Id]);
+                GameServer.Instance.SendStartGame(client, false); //Starta spelet alla Clienter!!
                 GameSettings.PlayingClients.Add(client);
             }
 
-            for (int i = 0; i < GameSettings.GameServer.Clients.Count; i++)
+            for (int i = 0; i < GameServer.Instance.Clients.Count; i++)
             {
-                GameSettings.GameServer.Clients[i].NewClient = false;
-                GameSettings.GameServer.Clients[i].Spectating = false;
+                GameServer.Instance.Clients[i].NewClient = false;
+                GameServer.Instance.Clients[i].Spectating = false;
             }
 
             // Send players info to everyone
-            foreach (Client client in GameSettings.GameServer.Clients) 
+            foreach (Client client in GameServer.Instance.Clients) 
             {
-                GameSettings.GameServer.SendPlayerInfo(client);
+                GameServer.Instance.SendPlayerInfo(client);
             }
 
             Program.Log.Info("[INITIALIZED GAME]");
@@ -134,20 +121,20 @@ namespace FBServer.Host
         private void EndGame()
         {
             StartedMatch = false;
-            foreach (Client client in GameSettings.GameServer.Clients)
+            foreach (Client client in GameServer.Instance.Clients)
             {
                 //client.Player.nextDirection = LookDirection.Idle;
-                GameSettings.GameServer.SendPlayerPosition(client.Player, false);
+                GameServer.Instance.SendPlayerPosition(client.Player, false);
             }
         }
 
         private void RunGameLogic()
         {
-            if (gameHasBegun)
+            if (_gameHasBegun)
             {
                 MovePlayers();
 
-                GameManager.Update();
+                GameServer.Instance.GameManager.Update();
 
                 //CheckSuddenDeath();
             }
@@ -156,11 +143,11 @@ namespace FBServer.Host
         #region GameLogic
         private void MovePlayers()
         {
-            foreach (Client client in GameSettings.GameServer.Clients)
+            foreach (Client client in GameServer.Instance.Clients)
             {
                 // Move the player to the next position
                 //Program.Log.Info("Player position: " + client.Player.Position);                
-                client.Player.MovePlayer(GameManager.CurrentMap);
+                client.Player.MovePlayer(GameServer.Instance.GameManager.CurrentMap);
             }
         }
 
@@ -216,14 +203,14 @@ namespace FBServer.Host
                     suddenDeathTileY = 0;
                     suddenDeathMovement = new Vector2(1, 0);
                     //Säger till clienterna att det är sudden death
-                    GameSettings.gameServer.SendSuddenDeath();
+                    GameServer.Instance.SendSuddenDeath();
                     //GameManager.BombList.Add(suddenDeathBomb);
                     //Lägger till första explosionen
                     Explosion ex = new Explosion(Explosion.ExplosionType.Mid, _gameManager.CurrentMap.GetTileByTilePosition(0, 0));
                     suddenDeathBomb.Explosion.Add(ex);
-                    GameSettings.gameServer.SendSDExplosion(ex);
+                    GameServer.Instance.SendSDExplosion(ex);
                     //Sätter allas liv till 1
-                    foreach (Client client in GameSettings.gameServer.Clients)
+                    foreach (Client client in GameServer.Instance.Clients)
                     {
                         //client.Player.lifes = 1;
                     }
@@ -254,7 +241,7 @@ namespace FBServer.Host
                     Explosion ex = new Explosion(Explosion.ExplosionType.Mid, _gameManager.CurrentMap.GetTileByTilePosition(suddenDeathTileX, suddenDeathTileY));
                     suddenDeathBomb.Explosion.Add(ex);
                     ex.Position.walkable = true;
-                    GameSettings.gameServer.SendSDExplosion(ex);
+                    GameServer.Instance.SendSDExplosion(ex);
                 }
             }
             #endregion
@@ -264,14 +251,14 @@ namespace FBServer.Host
         #endregion
 
         #region ServerEvents
-        private void gameServer_ConnectedClient(Client sender, EventArgs e)
+        private void GameServer_ConnectedClient(Client sender, EventArgs e)
         {
-            if (true /*GameSettings.gameServer.clients.Count <= GameSettings.Get_gameManager.CurrentMap().playerAmount*/)
+            if (true /*GameServer.Instance.clients.Count <= GameSettings.Get_gameManager.CurrentMap().playerAmount*/)
             {
-                var player = new Player(playerId);
-                GameManager.AddPlayer(sender, player);
+                var player = new Player(_playerId);
+                GameServer.Instance.GameManager.AddPlayer(sender, player);
 
-                GameSettings.GameServer.SendGameInfo(sender);
+                GameServer.Instance.SendGameInfo(sender);
                 if (StartedMatch)
                 {
                     sender.Player.IsAlive = false;
@@ -279,63 +266,65 @@ namespace FBServer.Host
                     sender.NewClient = true;
                 }
 
-                playerId++;
+                _playerId++;
 
-                GameSettings.GameServer.SendClientInfo(sender);
+                GameServer.Instance.SendClientInfo(sender);
                 //MainServer.SendCurrentPlayerAmount();
             }
             else
             {
-                GameSettings.GameServer.Clients.Remove(sender);
-                GameSettings.GameServer.WriteOutput("[FULLGAME] Client tried to connect");
+                GameServer.Instance.Clients.Remove(sender);
+                Program.Log.Info("[FULLGAME] Client tried to connect");
                 sender.ClientConnection.Disconnect("Full Server");
             }
         }
 
-        private void gameServer_DisconnectedClient(Client sender, EventArgs e)
+        private void GameServer_DisconnectedClient(Client sender, EventArgs e)
         {
             if (StartedMatch)
             {
                 sender.Player.IsAlive = false;
-                GameSettings.GameServer.SendRemovePlayer(sender.Player);
+                GameServer.Instance.SendRemovePlayer(sender.Player);
             }
             //MainServer.SendCurrentPlayerAmount();
         }
 
         // An evil player wants to plant a bomb
-        private void gameServer_BombPlacing(Client sender)
+        private void GameServer_BombPlacing(Client sender)
         {
-            if (gameHasBegun)
+            if (_gameHasBegun)
             {
                 var player = sender.Player;
 
                 if (player.CurrentBombAmount > 0)
                 {
-                    var bo = GameManager.BombList.Find(b => b.CellPosition == player.CellPosition);
+                    var bo = GameServer.Instance.GameManager.BombList.Find(b => b.CellPosition == player.CellPosition);
 
                     if (bo != null) return;
 
                     var bomb = new Bomb(player.Id, player.CellPosition, player.BombPower, player.BombTimer,
                         player.Speed);
 
-                    bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);
+                    bomb.Initialize(GameServer.Instance.GameManager.CurrentMap.Size, 
+                                    GameServer.Instance.GameManager.CurrentMap.CollisionLayer, 
+                                    GameServer.Instance.GameManager.HazardMap);
 
-                    GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
-                    GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
+                    GameServer.Instance.GameManager.CurrentMap.Board[bomb.CellPosition.X, bomb.CellPosition.Y] = bomb;
+                    GameServer.Instance.GameManager.CurrentMap.CollisionLayer[bomb.CellPosition.X, bomb.CellPosition.Y] = true;
 
-                    GameManager.AddBomb(bomb);
+                    GameServer.Instance.GameManager.AddBomb(bomb);
                     player.CurrentBombAmount--;
 
-                    GameSettings.GameServer.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);
+                    GameServer.Instance.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);
                 }
             }
         }
 
-        private void bomb_IsExploded(Bomb bomb)
+        private void Bomb_IsExploded(Bomb bomb)
         {
             /*
             //_gameManager.CurrentMap.CalcBombExplosion(bomb);
-            GameSettings.gameServer.SendBombExploded(bomb);
+            GameServer.Instance.SendBombExploded(bomb);
             bomb.Position.Bombed = null;
 
             //Kollar om bomben exploderar en annan bomb

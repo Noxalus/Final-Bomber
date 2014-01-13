@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace FBClient.Network
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         private bool _hasStarted;
         private bool _connected;

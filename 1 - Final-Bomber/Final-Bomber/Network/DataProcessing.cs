@@ -5,7 +5,7 @@ using Lidgren.Network.Xna;
 
 namespace FBClient.Network
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         int _counter = 0;
         public void DataProcessing(byte type, NetIncomingMessage message)

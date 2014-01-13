@@ -1,10 +1,5 @@
 ﻿using FBServer.Core;
 using Lidgren.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBServer.Host
 {
@@ -12,38 +7,23 @@ namespace FBServer.Host
     {
         public Client(ref NetConnection client, int clientId)
         {
-            this.client = client;
-            this.clientId = clientId;
+            ClientConnection = client;
+            ClientId = clientId;
             AlreadyPlayed = false;
         }
 
-        int clientId;
-        NetConnection client;
-        Player player;
-        public bool isReady = false;
+        public bool IsReady = false;
+        public bool IsHost = false;
         public bool NewClient = true;
         public bool Spectating = false;
         public string Username;
         public bool AlreadyPlayed;
         public float Ping = 0f;
 
-        public int ClientId
-        {
-            get { return clientId; }
-            set { clientId = value; }
-        }
+        public int ClientId { get; private set; }
 
-        public NetConnection ClientConnection
-        {
-            get { return client; }
-            set { client = value; }
-        }
+        public NetConnection ClientConnection { get; private set; }
 
-        public Player Player
-        {
-            get { return player; }
-            set { player = value; }
-        }
-
+        public Player Player { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using FBLibrary.Core;
+﻿using System;
+using FBLibrary;
+using FBLibrary.Core;
 using FBClient.Controls;
 using FBClient.Entities;
 using FBClient.Sprites;
@@ -13,7 +15,7 @@ namespace FBClient.Core.Players
         protected GameManager GameManager;
 
         protected Keys[] KeysSaved;
-        protected Vector2 MotionVector;
+        private Vector2 _motionVector;
 
         protected Keys[] Keys { get; private set; }
         protected Buttons[] Buttons { get; private set; }
@@ -33,7 +35,7 @@ namespace FBClient.Core.Players
         {
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
-            MotionVector = Vector2.Zero;
+            _motionVector = Vector2.Zero;
         }
 
         public void SetGameManager(GameManager gameManager)
@@ -45,7 +47,7 @@ namespace FBClient.Core.Players
         {
             #region Moving input
 
-            MotionVector = Vector2.Zero;
+            _motionVector = Vector2.Zero;
 
             // Up
             if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[0], PlayerIndex.One)) ||
@@ -53,7 +55,7 @@ namespace FBClient.Core.Players
             {
                 Sprite.CurrentAnimation = AnimationKey.Up;
                 CurrentDirection = LookDirection.Up;
-                MotionVector.Y = -1;
+                _motionVector.Y = -1;
             }
             // Down
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[1], PlayerIndex.One)) ||
@@ -61,7 +63,7 @@ namespace FBClient.Core.Players
             {
                 Sprite.CurrentAnimation = AnimationKey.Down;
                 CurrentDirection = LookDirection.Down;
-                MotionVector.Y = 1;
+                _motionVector.Y = 1;
             }
             // Left
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[2], PlayerIndex.One)) ||
@@ -69,7 +71,7 @@ namespace FBClient.Core.Players
             {
                 Sprite.CurrentAnimation = AnimationKey.Left;
                 CurrentDirection = LookDirection.Left;
-                MotionVector.X = -1;
+                _motionVector.X = -1;
             }
             // Right
             else if ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[3], PlayerIndex.One)) ||
@@ -77,7 +79,7 @@ namespace FBClient.Core.Players
             {
                 Sprite.CurrentAnimation = AnimationKey.Right;
                 CurrentDirection = LookDirection.Right;
-                MotionVector.X = 1;
+                _motionVector.X = 1;
             }
             else
             {
@@ -86,11 +88,11 @@ namespace FBClient.Core.Players
 
             #endregion
 
-            if (MotionVector != Vector2.Zero)
+            if (_motionVector != Vector2.Zero)
             {
                 IsMoving = true;
 
-                Position += MotionVector * GetMovementSpeed();
+                Position += _motionVector * GetMovementSpeed();
             }
             else
             {
@@ -100,6 +102,32 @@ namespace FBClient.Core.Players
             Sprite.IsAnimating = IsMoving;
 
             base.Move(gameTime, map, hazardMap);
+        }
+
+        public override void ApplyBadItem(BadEffect effect)
+        {
+            base.ApplyBadItem(effect);
+
+            switch (effect)
+            {
+                case BadEffect.TooSlow:
+                    SpeedSaved = Speed;
+                    Speed = Config.MinSpeed;
+                    break;
+                case BadEffect.TooSpeed:
+                    SpeedSaved = Speed;
+                    Speed = Config.MaxSpeed;
+                    break;
+                case BadEffect.KeysInversion:
+                    break;
+                case BadEffect.BombTimerChanged:
+                    BombTimerSaved = BombTimer;
+                    int randomBombTimer = GameConfiguration.Random.Next(
+                        GameConfiguration.BadItemTimerChangedMin,
+                        GameConfiguration.BadItemTimerChangedMax);
+                    BombTimer = TimeSpan.FromSeconds(randomBombTimer);
+                    break;
+            }
         }
     }
 }

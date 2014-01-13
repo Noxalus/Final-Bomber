@@ -273,7 +273,7 @@ namespace FBServer.Core
             var powerUp = new PowerUp(position);
             _powerUpList.Add(powerUp);
 
-            GameSettings.GameServer.SendPowerUpDrop(powerUp);
+            GameServer.Instance.SendPowerUpDrop(powerUp);
 
             base.AddPowerUp(powerUp);
         }

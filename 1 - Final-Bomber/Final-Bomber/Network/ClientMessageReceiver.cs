@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace FBClient.Network
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         #region Recieve methods
 
@@ -174,7 +174,8 @@ namespace FBClient.Network
         #region StartInfo
         public delegate void StartInfoEventHandler();
         public event StartInfoEventHandler StartInfo;
-        protected virtual void OnStartInfo()
+
+        private void OnStartInfo()
         {
             if (StartInfo != null)
                 StartInfo();
@@ -184,7 +185,8 @@ namespace FBClient.Network
         #region StartGame
         public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions);
         public event StartGameEventHandler StartGame;
-        protected virtual void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
+
+        private void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
         {
             if (StartGame != null)
                 StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime, wallPositions);
@@ -194,7 +196,8 @@ namespace FBClient.Network
         #region NewPlayer
         public delegate void NewPlayerEventHandler(int playerId, float moveSpeed, string username, int score);
         public event NewPlayerEventHandler NewPlayer;
-        protected virtual void OnNewPlayer(int playerId, float moveSpeed, string username, int score)
+
+        private void OnNewPlayer(int playerId, float moveSpeed, string username, int score)
         {
             if (NewPlayer != null)
                 NewPlayer(playerId, moveSpeed, username, score);
@@ -204,7 +207,8 @@ namespace FBClient.Network
         #region RemovePlayer
         public delegate void RemovePlayerEventHandler(int playerId);
         public event RemovePlayerEventHandler RemovePlayer;
-        protected virtual void OnRemovePlayer(int playerId)
+
+        private void OnRemovePlayer(int playerId)
         {
             if (RemovePlayer != null)
                 RemovePlayer(playerId);
@@ -214,7 +218,8 @@ namespace FBClient.Network
         #region MovePlayerEvent
         public delegate void MovePlayerEventHandler(object sender, MovePlayerArgs e);
         public event MovePlayerEventHandler MovePlayer;
-        protected virtual void OnMovePlayerAction(MovePlayerArgs e)
+
+        private void OnMovePlayerAction(MovePlayerArgs e)
         {
             if (MovePlayer != null)
                 MovePlayer(this, e);
@@ -224,7 +229,8 @@ namespace FBClient.Network
         #region PlacingBomb
         public delegate void PlacingBombEventHandler(int playerId, Point position);
         public event PlacingBombEventHandler PlacingBomb;
-        protected virtual void OnPlacingBomb(int playerId, Point position)
+
+        private void OnPlacingBomb(int playerId, Point position)
         {
             if (PlacingBomb != null)
                 PlacingBomb(playerId, position);
@@ -234,7 +240,8 @@ namespace FBClient.Network
         #region BombExploded
         public delegate void BombExplodedEventHandler(Point position);
         public event BombExplodedEventHandler BombExploded;
-        protected virtual void OnBombExploded(Point position)
+
+        private void OnBombExploded(Point position)
         {
             if (BombExploded != null)
                 BombExploded(position);
@@ -244,7 +251,8 @@ namespace FBClient.Network
         #region PowerUpDrop
         public delegate void PowerUpDropEventHandler(PowerUpType type, Point position);
         public event PowerUpDropEventHandler PowerUpDrop;
-        protected virtual void OnPowerUpDrop(PowerUpType type, Point position)
+
+        private void OnPowerUpDrop(PowerUpType type, Point position)
         {
             if (PowerUpDrop != null)
                 PowerUpDrop(type, position);
@@ -278,7 +286,8 @@ namespace FBClient.Network
         #region End
         public delegate void EndEventHandler(bool Won);
         public event EndEventHandler End;
-        protected virtual void OnEnd(bool Won)
+
+        private void OnEnd(bool Won)
         {
             if (End != null)
                 End(Won);
@@ -288,7 +297,8 @@ namespace FBClient.Network
         #region Ping
         public delegate void UpdatePingEventHandler(float ping);
         public event UpdatePingEventHandler UpdatePing;
-        protected virtual void OnPing(float ping)
+
+        private void OnPing(float ping)
         {
             if (UpdatePing != null)
                 UpdatePing(ping);

@@ -4,7 +4,7 @@ using FBClient.Core;
 
 namespace FBClient.Network
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         public ClientCollection Clients;
 
@@ -14,7 +14,8 @@ namespace FBClient.Network
         #region DisconnectedClientEvent
         public delegate void DisconnectedClientEventHandler(Client sender, EventArgs e);
         public event DisconnectedClientEventHandler DisconnectedClient;
-        protected virtual void OnDisconnectedClient(Client sender, EventArgs e)
+
+        private void OnDisconnectedClient(Client sender, EventArgs e)
         {
             if (DisconnectedClient != null)
                 DisconnectedClient(sender, e);
@@ -23,7 +24,8 @@ namespace FBClient.Network
         #region ConnectedClientEvent
         public delegate void ConnectedClientEventHandler(Client sender, EventArgs e);
         public event ConnectedClientEventHandler ConnectedClient;
-        protected virtual void OnConnectedClient(Client sender, EventArgs e)
+
+        private void OnConnectedClient(Client sender, EventArgs e)
         {
             if (ConnectedClient != null)
                 ConnectedClient(sender, e);

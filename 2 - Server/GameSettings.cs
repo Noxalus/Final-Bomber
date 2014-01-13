@@ -43,8 +43,6 @@ namespace FBServer
                 return null;
         }
 
-        public static GameServer GameServer;
-
         public static int Speed;
 
         #region Settings

@@ -1,5 +1,6 @@
 ﻿using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
+using FBServer.Host;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -94,7 +95,7 @@ namespace FBServer.Core
 
         private void SendPosition()
         {
-            GameSettings.GameServer.SendPlayerPosition(this, false);
+            GameServer.Instance.SendPlayerPosition(this, false);
         }
 
         protected override float GetMovementSpeed()

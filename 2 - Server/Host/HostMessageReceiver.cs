@@ -4,7 +4,7 @@ using FBLibrary.Core;
 
 namespace FBServer.Host
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         void ReceiveNeedMap(Client client)
         {
@@ -14,11 +14,11 @@ namespace FBServer.Host
 
         void ReceiveReady(Client client, string username, string password)
         {
-            if (!client.isReady)
+            if (!client.IsReady)
             {
                 if (!client.AlreadyPlayed)
                 {
-                    var playerNames = GameSettings.GameServer.Clients.Select(c => c.Username).ToList();
+                    var playerNames = GameServer.Instance.Clients.Select(c => c.Username).ToList();
 
                     client.Username = username;
                     if (playerNames.Contains(client.Username))
@@ -33,7 +33,7 @@ namespace FBServer.Host
                     }
                 }
 
-                client.isReady = true;
+                client.IsReady = true;
                 //MainServer.SendCheckIfOnline(username, password);
                 Program.Log.Info("Client " + client.ClientId + " is ready to play");
                 client.Player.Name = client.Username;
@@ -53,7 +53,8 @@ namespace FBServer.Host
         #region BombPlacing
         public delegate void BombPlacingEventHandler(Client sender);
         public event BombPlacingEventHandler BombPlacing;
-        protected virtual void OnBombPlacing(Client sender)
+
+        private void OnBombPlacing(Client sender)
         {
             if (BombPlacing != null)
                 BombPlacing(sender);

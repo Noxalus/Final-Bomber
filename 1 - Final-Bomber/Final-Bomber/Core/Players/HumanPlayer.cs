@@ -1,6 +1,4 @@
-﻿using System;
-using FBLibrary;
-using FBLibrary.Core;
+﻿using FBLibrary.Core;
 using FBClient.Controls;
 using FBClient.Core.Entities;
 using FBClient.WorldEngine;
@@ -46,32 +44,6 @@ namespace FBClient.Core.Players
             }
 
             #endregion
-        }
-
-        public override void ApplyBadItem(BadEffect effect)
-        {
-            base.ApplyBadItem(effect);
-
-            switch (effect)
-            {
-                case BadEffect.TooSlow:
-                    SpeedSaved = Speed;
-                    Speed = Config.MinSpeed;
-                    break;
-                case BadEffect.TooSpeed:
-                    SpeedSaved = Speed;
-                    Speed = Config.MaxSpeed;
-                    break;
-                case BadEffect.KeysInversion:
-                    break;
-                case BadEffect.BombTimerChanged:
-                    BombTimerSaved = BombTimer;
-                    int randomBombTimer = GameConfiguration.Random.Next(
-                        GameConfiguration.BadItemTimerChangedMin,
-                        GameConfiguration.BadItemTimerChangedMax);
-                    BombTimer = TimeSpan.FromSeconds(randomBombTimer);
-                    break;
-            }
         }
 
         protected override void RemoveBadItem()

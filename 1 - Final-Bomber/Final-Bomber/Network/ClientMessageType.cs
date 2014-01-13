@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FBClient.Network
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
         public enum RMT
         {

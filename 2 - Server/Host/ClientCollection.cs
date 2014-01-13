@@ -1,4 +1,5 @@
-﻿using FBServer.Core;
+﻿using FBLibrary;
+using FBServer.Core;
 using Lidgren.Network;
 using System;
 using System.Collections.Generic;
@@ -10,133 +11,89 @@ namespace FBServer.Host
 {
     public class ClientCollection : List<Client>
     {
-        //Om man hostar, så håller den reda på vilken bana man hostar just nu
-        string mapName;
-        public string MapName
+        // Keep a reference to hoster
+        private Client _hoster;
+
+        public ClientCollection()
         {
-            get { return mapName; }
-            set { mapName = value; }
+            _hoster = null;
         }
 
-        bool hosting;
-        public bool Hosting
+        public Client Hoster
         {
-            get { return hosting; }
-            set { hosting = value; }
+            get { return _hoster; }
         }
 
         public void AddClient(Client client)
         {
-            foreach (Client con in this)
+            // If client id is already taken
+            if (this.Any(c => client.ClientId == c.ClientId))
             {
-                if (client.ClientId == con.ClientId)
-                {
-                    return;
-                }
+                throw new Exception("Client ID already taken ! (" + client.ClientId + ")");
             }
-            this.Add(client);
-            return;
+
+            // If it's the first client => it's the host
+            if (Count == 1)
+            {
+                client.IsHost = true;
+                _hoster = client;
+            }
+
+            Add(client);
         }
 
         public bool RemoveClient(Client client)
         {
-            foreach (Client con in this)
+            if (this.Any(c => client.ClientId == c.ClientId))
             {
-                if (client.ClientId == con.ClientId)
-                {
-                    this.Remove(client);
-                    return true;
-                }
+                Remove(client);
+
+                return true;
             }
+
             return false;
         }
 
         public bool IsClientsReady()
         {
-            foreach (Client client in this)
-            {
-                if (!client.isReady)
-                    return false;
-            }
-
-            return true;
+            return this.All(client => client.IsReady);
         }
 
         public Client GetClientFromConnection(NetConnection connection)
         {
-            foreach (Client con in this)
-            {
-                if (con.ClientConnection == connection)
-                {
-                    return con;
-                }
-            }
-            return null;
+            return this.FirstOrDefault(con => con.ClientConnection == connection);
         }
 
         public Client GetClientFromPlayer(Player player)
         {
-            foreach (Client client in this)
-            {
-                if (client.Player == player)
-                    return client;
-            }
-            return null;
+            return this.FirstOrDefault(client => client.Player == player);
         }
 
         public Client GetClientFromUsername(string username)
         {
-            foreach (Client client in this)
-            {
-                if (client.Username == username)
-                    return client;
-            }
-            return null;
+            return this.FirstOrDefault(client => client.Username == username);
         }
 
         public Player GetPlayerFromId(int playerId)
         {
-            foreach (var client in this)
-            {
-                if (client.Player.Id == playerId)
-                    return client.Player;
-            }
-
-            return null;
-        }
-        
-        public List<Player> GetAlivePlayers()
-        {
-            var rtn = new List<Player>();
-            foreach (Client client in this)
-            {
-                if (client.Player.IsAlive && !client.Spectating)
-                    rtn.Add(client.Player);
-            }
-            return rtn;
+            return (from client in this where client.Player.Id == playerId select client.Player).FirstOrDefault();
         }
 
         public List<Player> GetPlayers()
         {
-            var players = new List<Player>();
-            foreach (Client client in this)
-            {
-                if (!client.Spectating)
-                    players.Add(client.Player);
-            }
-            return players;
+            return (from client in this where !client.Spectating select client.Player).ToList();
         }
-
     }
 
     public class ClientRandomSorter : Comparer<Client>
     {
-        Random rnd = new Random(Environment.TickCount);
-        public override int Compare(Client x, Client y)
+        public override int Compare(Client client1, Client client2)
         {
-            if (x.ClientId == y.ClientId)
+            if ((client1 != null && client2 != null) && 
+                (client1.ClientId == client2.ClientId))
                 return 0;
-            if (rnd.Next(2) == 0)
+
+            if (GameConfiguration.Random.Next(2) == 0)
             {
                 return 1;
             }

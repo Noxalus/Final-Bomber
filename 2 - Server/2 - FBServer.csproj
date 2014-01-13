@@ -64,7 +64,6 @@
     <Compile Include="Core\Entities\PowerUp.cs" />
     <Compile Include="Core\WorldEngine\Map.cs" />
     <Compile Include="Core\Player.cs" />
-    <Compile Include="Core\ProgramStepProcessing.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Host\Client.cs" />
     <Compile Include="Host\ClientCollection.cs" />

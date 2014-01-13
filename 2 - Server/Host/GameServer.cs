@@ -1,93 +1,138 @@
 ﻿using System;
+using FBServer.Core;
 using Lidgren.Network;
 
 namespace FBServer.Host
 {
-    partial class GameServer
+    sealed partial class GameServer
     {
-        # region Variables/Properties
+        #region Fields
 
-        bool hostStarted = false;
+        // Game manager
+        private readonly GameManager _gameManager;
 
-        NetServer server;
+        // Singleton
+        private static GameServer _instance;
 
-        int clientId = 1;
+        NetServer _server;
+        bool _hostStarted = false;
+        int _clientId = 1;
         public ClientCollection Clients;
 
-        #region DisconnectedClientEvent
+        #endregion
+
+        #region Properties
+
+        public static GameServer Instance
+        {
+            get { return _instance ?? (_instance = new GameServer()); }
+        }
+        public GameManager GameManager
+        {
+            get { return _gameManager; }
+        }
+        public bool HostStarted
+        {
+            get { return _hostStarted; }
+        }
+
+        #endregion
+
+        #region Events
+
+        // Delegates
         public delegate void DisconnectedClientEventHandler(Client sender, EventArgs e);
+        public delegate void ConnectedClientEventHandler(Client sender, EventArgs e);
+
+        // Handlers
         public event DisconnectedClientEventHandler DisconnectedClient;
-        protected virtual void OnDisconnectedClient(Client sender, EventArgs e)
+        public event ConnectedClientEventHandler ConnectedClient;
+
+        #endregion
+
+        #region Constructor
+        
+        private GameServer()
+        {
+            _gameManager = new GameManager();
+        }
+        
+        #endregion
+
+        #region Events handler
+
+        /// <summary>
+        /// Event raised when a client is disconnecting
+        /// </summary>
+        /// <param name="sender">Client that is disconnecting</param>
+        /// <param name="e">Optionnal arguments</param>
+        private void OnDisconnectedClient(Client sender, EventArgs e)
         {
             if (DisconnectedClient != null)
                 DisconnectedClient(sender, e);
         }
-        #endregion
-        #region ConnectedClientEvent
-        public delegate void ConnectedClientEventHandler(Client sender, EventArgs e);
-        public event ConnectedClientEventHandler ConnectedClient;
-        protected virtual void OnConnectedClient(Client sender, EventArgs e)
+
+        /// <summary>
+        /// Event raised when a client is connecting
+        /// </summary>
+        /// <param name="sender">Client that is disconnecting</param>
+        /// <param name="e">Optionnal arguments</param>
+        private void OnConnectedClient(Client sender, EventArgs e)
         {
             if (ConnectedClient != null)
                 ConnectedClient(sender, e);
         }
-        #endregion
-
-        public bool HostStarted
-        {
-            get { return hostStarted; }
-        }
 
         #endregion
 
+        /// <summary>
+        /// Start the server
+        /// </summary>
         public void StartServer()
         {
+            Clients = new ClientCollection();
+
+            // Server basic configuration
             var config = new NetPeerConfiguration("Final-Bomber")
             {
                 MaximumConnections = ServerSettings.MaxConnection, 
-                Port = ServerSettings.Port
+                Port = ServerSettings.Port,
+                #if DEBUG
+                PingInterval = 1f, // send ping every 1 second
+                SimulatedLoss = 0.5f, // half packets lost
+                SimulatedMinimumLatency = 0.05f, // latency of 50 ms
+                #endif
             };
 
-#if DEBUG
-            //config.PingInterval = 1f;
-            //config.SimulatedLoss = 0.5f;
-            config.SimulatedMinimumLatency = 0.05f;
-#endif
+            // To send ping to each player frequently
             config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
 
-            bool checkPort;
-            do
+            try
             {
-                checkPort = false;
-                try
-                {
-                    server = new NetServer(config);
-                    server.Start();
-                }
-                catch (NetException)
-                {
-                    checkPort = true;
-                    config.Port++;
-                    WriteOutput("Can't use old port, trying with Port: " + config.Port);
-                    if (config.Port > 6800)
-                    {
-                        checkPort = false;
-                    }
-                }
-            } while (checkPort);
+                _server = new NetServer(config);
+                _server.Start();
 
-            Clients = new ClientCollection();
+                _hostStarted = true;
 
-            hostStarted = true;
-            WriteOutput("[START]Game server has started");
-            WriteOutput("[PORT]: " + config.Port);
+                Program.Log.Info("[START]Game server has started");
+                Program.Log.Info("[PORT]: " + config.Port);
+            }
+            catch (NetException ex)
+            {
+                Program.Log.Fatal(ex.Message);
+
+                throw;
+            }
         }
 
-        public void RunServer()
+        /// <summary>
+        /// Check for new messages from clients
+        /// </summary>
+        public void Update()
         {
             NetIncomingMessage message;
 
-            while ((message = server.ReadMessage()) != null)
+            while ((message = _server.ReadMessage()) != null)
             {
                 NetConnection sender = message.SenderConnection;
                 Client currentClient = Clients.GetClientFromConnection(sender);
@@ -100,11 +145,14 @@ namespace FBServer.Host
                         {
                             if (currentClient == null)
                             {
-                                var con = new Client(ref sender, clientId);
-                                WriteOutput("[Connected]Client " + con.ClientId + " connected with ip: " + sender.RemoteEndPoint.ToString());
-                                Clients.AddClient(con);
-                                clientId++;
-                                OnConnectedClient(con, new EventArgs());
+                                var newClient = new Client(ref sender, _clientId);
+
+                                Clients.AddClient(newClient);
+
+                                _clientId++;
+
+                                OnConnectedClient(newClient, new EventArgs());
+                                Program.Log.Info("[Connected]Client " + newClient.ClientId + " connected with ip: " + sender.RemoteEndPoint);
                             }
                         }
                         else
@@ -114,10 +162,11 @@ namespace FBServer.Host
                                 if (currentClient != null)
                                 {
                                     message.ReadByte(); // the message type
-                                    WriteOutput("[Disconnected]Client " + currentClient.ClientId + " has disconnected (" + message.ReadString() + ")");
 
                                     Clients.RemoveClient(currentClient);
+
                                     OnDisconnectedClient(currentClient, new EventArgs());
+                                    Program.Log.Info("[Disconnected]Client " + currentClient.ClientId + " has disconnected (" + message.ReadString() + ")");
                                 }
                             }
                         }
@@ -133,10 +182,10 @@ namespace FBServer.Host
                             }
                             catch (Exception e)
                             {
-                                WriteOutput("[ERROR]Client Id: " + '\"' + currentClient.ClientId + '\"' +
-                                    " Ip: " + sender.RemoteEndPoint.ToString() + " caused server exception");
-                                WriteOutput("EXCEPTION: " + e.ToString());
-                                sender.Disconnect("Caused server error");
+                                Program.Log.Fatal("[ERROR]Client Id: " + '\"' + currentClient.ClientId + '\"' + " Ip: " + sender.RemoteEndPoint + " caused server exception");
+                                Program.Log.Fatal("EXCEPTION: " + e);
+
+                                sender.Disconnect("Caused a fatal server error, please check the log.");
                             }
                         }
                         break;
@@ -146,7 +195,7 @@ namespace FBServer.Host
                         Program.Log.Info("Player #" + currentClient.Player.Id + " ping: " + ping + "ms");
                         currentClient.Ping = ping;
 
-                        // TODO: Send this client's ping to everyone
+                        // TODO: Send this client's ping to other clients
 
                         break;
 
@@ -154,20 +203,13 @@ namespace FBServer.Host
             }
         }
 
-        public void EndServer(string reson)
+        public void EndServer(string reason)
         {
-            WriteOutput("[END]Server has ended at " + System.DateTime.Now.ToString());
-            server.Shutdown(reson);
-            hostStarted = false;
+            _server.Shutdown(reason);
+
+            _hostStarted = false;
+
+            Program.Log.Info("[END]Server stopped at " + DateTime.Now);
         }
-
-        #region Private
-
-        public void WriteOutput(string msg)
-        {
-            Program.Log.Info(msg);
-        }
-
-        #endregion
     }
 }

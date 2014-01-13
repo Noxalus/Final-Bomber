@@ -1,64 +1,50 @@
-﻿using System.Threading;
-using FBServer.Core.WorldEngine;
+﻿using FBServer.Core.WorldEngine;
 using FBServer.Host;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBServer.Core
 {
     partial class GameServerHandler
     {
-        HostGame game;
+        HostGame _game;
         public bool Running = false;
-        Stopwatch speedTmr;
+        Stopwatch _speedTimer;
 
         public void Initialize()
         {
-            speedTmr = new Stopwatch();
-            game = new HostGame();
+            _speedTimer = new Stopwatch();
+            _game = new HostGame();
 
-            speedTmr.Start();
             Running = true;
+
+            _speedTimer.Start();
         }
 
         public void Update()
         {
             // This calculates tps, so that the old player's movement is synchronized with the client
-            GameSettings.Speed = speedTmr.Elapsed.Milliseconds; //speedTmr.ElapsedMilliseconds;
+            GameSettings.Speed = _speedTimer.Elapsed.Milliseconds;
 
-            //Program.Log.Info(speedTmr.Elapsed.Ticks + "|" + speedTmr.ElapsedTicks + "|" + test);
-            /*
-            // take the ElapsedTicks, then divide by Frequency to get seconds
-            Program.Log.Info("ElapsedTicks to sec:  {0}",
-                speedTmr.ElapsedTicks / (double)Stopwatch.Frequency);
+            _speedTimer.Restart();
 
-            // take the Elapsed property, and query total number of seconds it represents
-            Program.Log.Info("Elapsed.TotalSeconds: {0}", speedTmr.Elapsed.TotalSeconds);
-            */
-
-            //Program.Log.Info("Speed: " + GameSettings.speed);
-
-            speedTmr.Restart();
-
-            ProgramStepProccesing();
-
-            if (game.HasStarted)
-                game.Update();
+            if (_game.HasStarted)
+                _game.Update();
+            else
+                _game.Initialize();
         }
 
         public void Dispose()
         {
-            if (GameSettings.GameServer.HostStarted)
+            if (GameServer.Instance.HostStarted)
             {
-                GameSettings.GameServer.EndServer("byebye");
-                GameSettings.GameServer = null;
+                GameServer.Instance.EndServer("Bye bye !");
             }
-            //MainServer.EndMainConnection("byebye");
+
+            //MainServer.EndMainConnection("Bye bye !");
+
             Running = false;
+
             GameSettings.CurrentMap = 0;
             GameSettings.mapPlayList = new List<Map>();
         }
