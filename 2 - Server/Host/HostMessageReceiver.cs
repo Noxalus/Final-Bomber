@@ -12,14 +12,14 @@ namespace FBServer.Host
             Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
         }
 
-        void ReceiveClientCredentials(Client client, string username, string password)
+        void ReceiveCredentials(Client client, string username, string password)
         {
             client.Username = username;
             client.Password = password;
 
             //MainServer.SendCheckIfOnline(username, password);
 
-            Program.Log.Info("Client " + client.ClientId + " sent player info. (username: " + username + "|password: " + password);
+            Program.Log.Info("Client " + client.ClientId + " sent player info. (username: " + username + "|password: " + password + ")");
 
             // Create a new player
             var player = new Player(client.ClientId);

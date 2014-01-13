@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FBClient
+﻿namespace FBClient
 {
     static class PlayerInfo
     {
-        public static string Username = "NOOB";
+        public const string Username = "Noob";
+        public const string Password = "COUCOU";
     }
 }

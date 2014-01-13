@@ -54,7 +54,7 @@ namespace FBClient.Network
 
         // Players
         public OnlineHumanPlayer Me;
-        
+
         public NetworkManager()
         {
             Me = new OnlineHumanPlayer(0);
@@ -68,7 +68,7 @@ namespace FBClient.Network
         public void Reset()
         {
             string username = Me.Name;
-            Me = new OnlineHumanPlayer(0, Me.Stats) {Name = username};
+            Me = new OnlineHumanPlayer(0, Me.Stats) { Name = username };
 
             LoadContent();
         }
@@ -194,11 +194,11 @@ namespace FBClient.Network
             GameServer.Instance.GameManager.AddWalls(wallPositions);
         }
 
-        private void GameServer_NewPlayer(int playerId, float moveSpeed, string username, int score)
+        private void GameServer_NewPlayer(int playerId, string username)
         {
             if (GameServer.Instance.GameManager.Players.GetPlayerByID(playerId) == null)
             {
-                var player = new OnlinePlayer(playerId) {Name = username, Stats = {Score = score}};
+                var player = new OnlinePlayer(playerId) { Name = username };
 
                 if (username == Me.Name)
                 {
@@ -217,7 +217,7 @@ namespace FBClient.Network
                 }
 
                 player.LoadContent();
-                //player.MoveSpeed = moveSpeed;
+
                 GameServer.Instance.GameManager.AddPlayer(player);
 
                 OnAddPlayer(this, EventArgs.Empty);

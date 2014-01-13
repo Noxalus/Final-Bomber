@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using FBLibrary.Core;
-using FBClient.Core.Entities;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System.IO;
-using FBClient.Entities;
 
 namespace FBClient
 {   
@@ -22,7 +15,7 @@ namespace FBClient
         // Taille
         public static Point MapSize = new Point(17, 17);
         public static Point MinimumMapSize = new Point(9, 9);
-        public static readonly Point[] MaximumMapSize = new Point[]
+        public static readonly Point[] MaximumMapSize =
         {
             new Point(17, 17),
             new Point(23, 23),
@@ -30,37 +23,36 @@ namespace FBClient
             new Point(53, 33)
         };
 
-
         public static int PlayersNumber = 1;
         public static bool FullScreen = false;
 
-        public static Point[] PlayersPositions = new Point[]
+        public static Point[] PlayersPositions =
         {
             new Point(1, 1),
             new Point(MapSize.X - 2, MapSize.Y - 2),
             new Point(1, MapSize.Y - 2),
             new Point(MapSize.X - 2, 1),
-            new Point((int)Math.Ceiling((double)(MapSize.X - 2)/(double)2), (int)Math.Ceiling((double)(MapSize.Y - 2)/(double)2))
+            new Point((int)Math.Ceiling((double)(MapSize.X - 2)/(double)2), (int)Math.Ceiling((double)(MapSize.Y - 2)/2))
         };
 
-        public static readonly Keys[][] PlayersKeys = new Keys[][]
+        public static readonly Keys[][] PlayersKeys =
         {
-             new Keys[]{ Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl }, 
-             new Keys[]{ Keys.Z, Keys.S, Keys.Q, Keys.D, Keys.LeftControl }, 
-             new Keys[]{ Keys.I, Keys.K, Keys.J, Keys.L, Keys.Space }, 
-             new Keys[]{ Keys.NumPad8, Keys.NumPad5, Keys.NumPad4, Keys.NumPad6, Keys.Enter },
-             new Keys[]{ Keys.T, Keys.G, Keys.F, Keys.H, Keys.Y }
+            new[]{ Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl }, 
+            new[]{ Keys.Z, Keys.S, Keys.Q, Keys.D, Keys.LeftControl }, 
+            new[]{ Keys.I, Keys.K, Keys.J, Keys.L, Keys.Space }, 
+            new[]{ Keys.NumPad8, Keys.NumPad5, Keys.NumPad4, Keys.NumPad6, Keys.Enter },
+            new[]{ Keys.T, Keys.G, Keys.F, Keys.H, Keys.Y }
         };
 
-        public static readonly bool[] PlayersUsingController = new bool[] { true, false, false, false, false };
+        public static readonly bool[] PlayersUsingController = { true, false, false, false, false };
 
-        public static readonly Buttons[][] PlayersButtons = new Buttons[][]
+        public static readonly Buttons[][] PlayersButtons =
         {
-             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
-             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
-             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
-             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
-             new Buttons[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }
+            new[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+            new[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+            new[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+            new[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }, 
+            new[]{ Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A }
         };
 
         public const bool IsThereAIPlayer = true;

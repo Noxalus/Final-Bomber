@@ -105,13 +105,19 @@ namespace FBServer.Host
         }
 
         // Send this player to all other available
-        public void SendPlayerInfo(Client client)
+        public void SendPlayerInfo(Client client, bool sendPosition)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = GetPlayerInfo(client);
+
                 _server.SendToAll(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
-                SendPlayerPosition(client.Player, false);
+
+                if (sendPosition)
+                {
+                    // Send player position
+                    SendPlayerPosition(client.Player, false);
+                }
 
                 Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
             }
@@ -137,9 +143,7 @@ namespace FBServer.Host
             rtn.Write((byte)MessageType.ServerMessage.PlayerInfo);
 
             rtn.Write(client.Player.Id);
-            rtn.Write(client.Player.Speed);
             rtn.Write(client.Username);
-            rtn.Write(client.Player.Stats.Score);
 
             return rtn;
         }

@@ -66,7 +66,7 @@ namespace FBClient.Screens.MenuScreens
 
         public override void Update(GameTime gameTime)
         {
-            // Read new messages from server and check cconnection status
+            // Read new messages from server and check connection status
             GameServer.Instance.Update();
 
             // First connection
@@ -84,11 +84,12 @@ namespace FBClient.Screens.MenuScreens
                     // => ask to reconnect or quit
                     // FinalBomber.Instance.Exit();
 
-                    Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
-
                     // Try to reconnect
-                    GameServer.Instance.FailedToConnect = false;
-                    GameServer.Instance.TryToConnect(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
+                    if (InputHandler.KeyPressed(Keys.Space))
+                    {
+                        GameServer.Instance.FailedToConnect = false;
+                        GameServer.Instance.TryToConnect(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
+                    }
                 }
             }
             else
@@ -133,23 +134,27 @@ namespace FBClient.Screens.MenuScreens
                     new Vector2(0, 40 + (20 * i)), Color.Black);
             }
 
-            str = "Waiting for players...";
+            var strColor = Color.Orange;
+            if (GameServer.Instance.Connected)
+            {
+                str = "Connected ! :)";
+                strColor = Color.Green;
+            }
+            else if (GameServer.Instance.FailedToConnect)
+            {
+                str = "Failed to connect :'(\nPress space to try again.";
+                strColor = Color.Red;
+            }
+            else
+                str = "Connecting to server...";
+
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                 new Vector2(
                     Config.Resolutions[Config.IndexResolution, 0] / 2f -
                     BigFont.MeasureString(str).X / 2,
                     Config.Resolutions[Config.IndexResolution, 1] / 2f -
                     BigFont.MeasureString(str).Y / 2),
-                Color.Black);
-
-            str = "Connecting to server...";
-            FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
-                new Vector2(
-                    Config.Resolutions[Config.IndexResolution, 0] / 2f -
-                    BigFont.MeasureString(str).X / 2,
-                    Config.Resolutions[Config.IndexResolution, 1] / 2f -
-                    BigFont.MeasureString(str).Y / 2 + 60),
-                Color.Black);
+                strColor);
 
             FinalBomber.Instance.SpriteBatch.End();
         }

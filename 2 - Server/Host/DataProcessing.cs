@@ -16,7 +16,7 @@ namespace FBServer.Host
                     break;
                 case (byte)MessageType.ClientMessage.Credentials:
                     Program.Log.Info("[Client #" + client.ClientId + "] Sends its credientials info !");
-                    ReceiveClientCredentials(client, message.ReadString(), message.ReadString());
+                    ReceiveCredentials(client, message.ReadString(), message.ReadString());
                     break;
                 case (byte)MessageType.ClientMessage.Ready:
                     Program.Log.Info("[Client #" + client.ClientId + "] Sends ready message !");

@@ -71,24 +71,6 @@ namespace FBClient.Network
 
         public void Update()
         {
-            // Connection with server
-            if (!_connected && _client.ConnectionStatus == NetConnectionStatus.Connected)
-            {
-                // Send first packet => player info
-                Instance.SendPlayerInfo();
-
-                _connected = true;
-                _disconnected = false;
-                _failedToConnect = true;
-            }
-
-            // Disconnection with server
-            if (_connected && _client.ConnectionStatus == NetConnectionStatus.Disconnected)
-            {
-                _connected = false;
-                _disconnected = true;
-            }
-
             CheckNewServerMessages();
         }
 
@@ -109,8 +91,30 @@ namespace FBClient.Network
                         break;
                     case NetIncomingMessageType.StatusChanged:
                         var statusChangedReason = message.ReadString();
+
+                        // Connection with server
+                        if (!_connected && _client.ConnectionStatus == NetConnectionStatus.Connected)
+                        {
+                            _connected = true;
+                            _disconnected = false;
+
+                            // Send first packet => client credentials
+                            Instance.SendCredentials();
+                        }
+
+                        // Disconnection with server
+                        if (_connected && _client.ConnectionStatus == NetConnectionStatus.Disconnected)
+                        {
+                            _connected = false;
+                            _disconnected = true;
+                        }
+
+                        // Failed to connect
                         if (statusChangedReason.Equals("=Failed"))
+                        {
                             _failedToConnect = true;
+                            Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
+                        }
 
                         Debug.Print("A StatusChanged has been received from server. (" + statusChangedReason + ")");
                         break;

@@ -5,25 +5,28 @@ namespace FBClient.Network
 {
     sealed partial class GameServer
     {
-        public void SendNeedMap()
+        private void SendNeedMap()
         {
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
+
                 send.Write((byte)MessageType.ClientMessage.NeedMap);
+                
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
 
-        public void SendPlayerInfo()
+        private void SendCredentials()
         {
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
 
                 send.Write((byte)MessageType.ClientMessage.Credentials);
+
                 send.Write(PlayerInfo.Username);
-                send.Write(GameSettings.Password);
+                send.Write(PlayerInfo.Password);
 
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }

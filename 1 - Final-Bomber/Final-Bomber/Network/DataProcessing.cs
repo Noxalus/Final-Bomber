@@ -30,11 +30,11 @@ namespace FBClient.Network
                     break;
                 case (byte)MessageType.ServerMessage.PlayerPosition:
                     Debug.Print("A message type 'PlayerPosAndSpeed' have been received from server !");
-                    RecievePositionAndSpeed(message.ReadFloat(), message.ReadFloat(), message.ReadByte(), message.ReadInt32());
+                    RecievePosition(message.ReadFloat(), message.ReadFloat(), message.ReadByte(), message.ReadInt32());
                     break;
                 case (byte)MessageType.ServerMessage.PlayerInfo:
                     Debug.Print("A message type 'PlayerInfo' have been received from server !");
-                    RecievePlayerInfo(message.ReadInt32(), message.ReadFloat(), message.ReadString(), message.ReadInt32());
+                    RecievePlayerInfo(message.ReadInt32(), message.ReadString());
                     break;
                 case (byte)MessageType.ServerMessage.RemovePlayer:
                     Debug.Print("A message type 'RemovePlayer' have been received from server !");

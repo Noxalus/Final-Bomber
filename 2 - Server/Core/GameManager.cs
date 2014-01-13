@@ -166,7 +166,7 @@ namespace FBServer.Core
                 GameServer.Instance.Clients[i].Spectating = false;
 
                 // Send players info to everyone
-                GameServer.Instance.SendPlayerInfo(GameServer.Instance.Clients[i]);
+                GameServer.Instance.SendPlayerInfo(GameServer.Instance.Clients[i], true);
             }
 
             Program.Log.Info("[INITIALIZED GAME]");
@@ -341,12 +341,12 @@ namespace FBServer.Core
 
         public void AddPlayer(Client client, Player player)
         {
-            _playerList.Add(player);
-
             client.Username = CheckUsernameAlreadyTaken(client);
 
             player.Name = client.Username;
             client.Player = player;
+
+            _playerList.Add(player);
 
             base.AddPlayer(player);
 
@@ -356,7 +356,7 @@ namespace FBServer.Core
                 client.NewClient = true;
             }
 
-            GameServer.Instance.SendPlayerInfo(client);
+            GameServer.Instance.SendPlayerInfo(client, false);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace FBServer.Core
         /// <returns>A non-used username</returns>
         private string CheckUsernameAlreadyTaken(Client client)
         {
-            var playerNames = GameServer.Instance.Clients.Select(c => c.Username).ToList();
+            var playerNames = _playerList.Select(p => p.Name).ToList();
 
             if (playerNames.Contains(client.Username))
             {

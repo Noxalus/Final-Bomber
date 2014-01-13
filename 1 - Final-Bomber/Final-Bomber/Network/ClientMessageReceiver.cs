@@ -80,9 +80,9 @@ namespace FBClient.Network
         }
 
 
-        public void RecievePlayerInfo(int playerId, float moveSpeed, string username, int score)
+        public void RecievePlayerInfo(int playerId, string username)
         {
-            OnNewPlayer(playerId, moveSpeed, username, score);
+            OnNewPlayer(playerId, username);
         }
 
         public void RecieveRemovePlayer(int playerId)
@@ -90,7 +90,7 @@ namespace FBClient.Network
             OnRemovePlayer(playerId);
         }
 
-        private void RecievePositionAndSpeed(float positionX, float positionY, byte direction, int playerId)
+        private void RecievePosition(float positionX, float positionY, byte direction, int playerId)
         {
             var arg = new MovePlayerArgs
             {
@@ -186,13 +186,13 @@ namespace FBClient.Network
         #endregion
 
         #region NewPlayer
-        public delegate void NewPlayerEventHandler(int playerId, float moveSpeed, string username, int score);
+        public delegate void NewPlayerEventHandler(int playerId, string username);
         public event NewPlayerEventHandler NewPlayer;
 
-        private void OnNewPlayer(int playerId, float moveSpeed, string username, int score)
+        private void OnNewPlayer(int playerId, string username)
         {
             if (NewPlayer != null)
-                NewPlayer(playerId, moveSpeed, username, score);
+                NewPlayer(playerId, username);
         }
         #endregion
 
