@@ -13,7 +13,7 @@ namespace FBLibrary.Network
             PlaceBomb = 5, // Player wants to plant a bomb
             NeedMap = 6, // Player need to download the map
             Ready = 7, // Player is ready to start ?
-            Credentials = 8 // Client credentials info (username, password, etc...)
+            Credentials = 8, // Client credentials info (username, password, etc...)
         }
 
         public enum ServerMessage
@@ -32,6 +32,7 @@ namespace FBLibrary.Network
             PowerUpPick = 12, // Sens that a player has picked up a power up
             SuddenDeath = 13, // Tells to players that the sudden death began
             RoundEnd = 15, // Sends that the round is finished
+            ClientId = 16, // Sends the server generated id to its corresponding client
         }
     }
 }

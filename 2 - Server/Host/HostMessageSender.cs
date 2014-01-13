@@ -87,6 +87,22 @@ namespace FBServer.Host
             Program.Log.Info("Send start game to client #" + client.ClientId);
         }
 
+        /// <summary>
+        /// Sends the id generate by the server to the corresponding client
+        /// </summary>
+        /// <param name="client">The corresponding client</param>
+        public void SendClientId(Client client)
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.ClientId);
+            message.Write(client.ClientId);
+
+            _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("Sended server generated id to its corresponding client (id: " + client.ClientId + ")");
+        }
+
         // Send all players to this player
         public void SendClientsToNew(Client client)
         {

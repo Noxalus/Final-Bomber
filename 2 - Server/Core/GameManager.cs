@@ -356,6 +356,9 @@ namespace FBServer.Core
                 client.NewClient = true;
             }
 
+            // Send the server generated id to the corresponding client
+            GameServer.Instance.SendClientId(client);
+
             GameServer.Instance.SendNewClientInfo(client);
             GameServer.Instance.SendClientsToNew(client);
         }

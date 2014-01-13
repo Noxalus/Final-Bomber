@@ -195,7 +195,7 @@ namespace FBClient.Network
                     }
                 }
 
-                var client = new Client(clientId);
+                var client = new Client(clientId) {Username = username};
 
                 GameServer.Instance.GameManager.AddClient(client);
             }

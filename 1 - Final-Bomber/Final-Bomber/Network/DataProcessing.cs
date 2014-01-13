@@ -20,6 +20,10 @@ namespace FBClient.Network
                     Debug.Print("A message type 'GameStartInfo' have been received from server !");
                     RecieveGameInfo(message.ReadString());
                     break;
+                case (byte)MessageType.ServerMessage.ClientId:
+                    Debug.Print("A message type 'ClientId' have been received from server !");
+                    RecieveMyClientId(message.ReadInt32());
+                    break;
                 case (byte)MessageType.ServerMessage.Map:
                     Debug.Print("A message type 'Map' have been received from server !");
                     RecieveMap(message);

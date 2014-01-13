@@ -14,7 +14,7 @@ namespace FBClient.Network
     {
         #region Recieve methods
 
-        public void RecieveGameInfo(string mapMd5)
+        private void RecieveGameInfo(string mapMd5)
         {
             // Check that you have the map
             if (MapLoader.MapFileDictionary.ContainsValue(mapMd5))
@@ -28,7 +28,12 @@ namespace FBClient.Network
             }
         }
 
-        public void RecieveMap(NetIncomingMessage message)
+        private void RecieveMyClientId(int clientId)
+        {
+            Instance.Clients.CreateMe(clientId);
+        }
+
+        private void RecieveMap(NetIncomingMessage message)
         {
             string mapName = message.ReadString();
             string md5 = message.ReadString();
@@ -78,7 +83,6 @@ namespace FBClient.Network
                 OnStartGame(true, 0, 0, 0, null);
             }
         }
-
 
         public void RecieveNewClientInfo(int clientId, string username)
         {

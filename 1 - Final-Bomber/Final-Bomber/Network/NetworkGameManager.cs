@@ -48,9 +48,9 @@ namespace FBClient.Network
             base.RoundEndAction();
         }
 
-        public void AddClient(Client client, bool me = false)
+        public void AddClient(Client client)
         {
-            GameServer.Instance.Clients.AddClient(client, me);
+            GameServer.Instance.Clients.AddClient(client);
         }
 
         #endregion

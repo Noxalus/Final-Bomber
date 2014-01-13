@@ -38,8 +38,6 @@ namespace FBClient.Screens.MenuScreens
 
             GameServer.Instance.SetGameManager(new NetworkGameManager());
 
-            GameServer.Instance.Initialize();
-
             base.Initialize();
 
             // Start connexion with server
@@ -131,7 +129,7 @@ namespace FBClient.Screens.MenuScreens
             Color.Black);
 
             var strColor = Color.Black;
-            GameServer.Instance.GameManager.Players.Sort(new BasicPlayerSorter());
+            GameServer.Instance.Clients.Sort(new BasicClientSorter());
             for (var i = 0; i < GameServer.Instance.Clients.Count; i++)
             {
                 strColor = Color.Black;
@@ -140,12 +138,12 @@ namespace FBClient.Screens.MenuScreens
                     strColor = Color.Green;
                 }
 
-                str = GameServer.Instance.GameManager.Players[i].Name;
-                if (GameServer.Instance.GameManager.Players[i].Id == GameServer.Instance.Clients.Me.Id)
+                str = "[id: " + GameServer.Instance.Clients[i].Id + "]" + GameServer.Instance.Clients[i].Username;
+                if (GameServer.Instance.Clients[i].Id == GameServer.Instance.Clients.Me.Id)
                     str += " (you)";
 
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
-                    new Vector2(0, 40 + (40 * i)), strColor);
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, str,
+                    new Vector2(0, 60 + (20 * i)), strColor);
             }
 
             strColor = Color.Orange;
