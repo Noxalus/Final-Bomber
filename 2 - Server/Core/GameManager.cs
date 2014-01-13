@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
@@ -17,7 +18,17 @@ namespace FBServer.Core
         private readonly List<PowerUp> _powerUpList;
         private readonly List<Wall> _wallList;
 
+        private bool _gameInitialized;
+        private bool _hasStarted;
+        private bool _gameHasBegun;
+        private bool _suddenDeath;
+
         #region Properties
+
+        public bool HasStarted
+        {
+            get { return _hasStarted; }
+        }
 
         public BaseMap CurrentMap
         {
@@ -44,10 +55,27 @@ namespace FBServer.Core
             get { return _powerUpList; }
         }
 
+        public bool GameHasBegun
+        {
+            get { return _gameHasBegun; }
+            set { _gameHasBegun = value; }
+        }
+
+        public bool GameInitialized
+        {
+            get { return _gameInitialized; }
+        }
+
         #endregion
 
         public GameManager()
         {
+            _gameInitialized = false;
+            _gameHasBegun = false;
+            _hasStarted = false;
+            _suddenDeath = false;
+
+            // Collections
             _playerList = new List<Player>();
             _wallList = new List<Wall>();
             _powerUpList = new List<PowerUp>();
@@ -56,6 +84,11 @@ namespace FBServer.Core
             BaseCurrentMap = new Map();
 
             GameEventManager = new GameEventManager(this);
+        }
+
+        public void Initialize()
+        {
+            _hasStarted = true;
         }
 
         public override void Reset()
@@ -70,9 +103,160 @@ namespace FBServer.Core
 
         public override void Update()
         {
+            var test = GameServer.Instance.Clients.IsClientsReady();
+
+            // Game has to be initialized ?
+            if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TODO: Change this, that was just for quick testing
+                && !GameInitialized && GameServer.Instance.Clients.IsClientsReady())
+            {
+                GameInitialize();
+            }
+
+            foreach (Client client in GameServer.Instance.Clients)
+            {
+                if (client.NewClient && GameInitialized && client.IsReady)
+                {
+                    GameServer.Instance.SendStartGame(client, true);
+                    GameServer.Instance.SendPlayersToNew(client);
+
+                    client.NewClient = false;
+                }
+            }
+
+            if (GameServer.Instance.GameManager.GameInitialized && GameHasBegun)
+            {
+                RunGameLogic();
+            }
+
+            CheckRoundEnd();
+            
             base.Update();
         }
 
+        private void GameInitialize()
+        {
+            // Load the map chosen
+            GameServer.Instance.GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
+
+            // Display map info
+            /*
+            GameServer.Instance.GameManager.CurrentMap.DisplayBoard();
+            GameServer.Instance.GameManager.CurrentMap.DisplayCollisionLayer();
+            */
+
+            Program.Log.Info("[LOADED MAP]");
+
+            GameHasBegun = false;
+
+            // Sort randomly players
+            GameServer.Instance.Clients.Sort(new ClientRandomSorter());
+
+            for (int i = 0; i < GameServer.Instance.Clients.Count; i++)
+            {
+                // Puts each player on their respective spawn points
+                GameServer.Instance.Clients[i].Player.ChangePosition(
+                    GameServer.Instance.GameManager.CurrentMap.PlayerSpawnPoints[i]);
+
+                // Sends that the game start to all clients
+                GameServer.Instance.SendStartGame(GameServer.Instance.Clients[i], false);
+
+                // These clients are neither new either spectator
+                GameServer.Instance.Clients[i].NewClient = false;
+                GameServer.Instance.Clients[i].Spectating = false;
+
+                // Send players info to everyone
+                GameServer.Instance.SendPlayerInfo(GameServer.Instance.Clients[i]);
+            }
+
+            Program.Log.Info("[INITIALIZED GAME]");
+
+            _gameInitialized = true;
+        }
+
+        private void CheckRoundEnd()
+        {
+            // Round end ?
+            if (GameInitialized &&
+                GameServer.Instance.GameManager.PlayerList.Count(player => player.IsAlive) <=
+                GameConfiguration.AlivePlayerRemaining)
+            {
+                int maxScore = GameServer.Instance.GameManager.PlayerList.First().Stats.Score;
+                foreach (var player in GameServer.Instance.GameManager.PlayerList)
+                {
+                    if (player.Stats.Score > maxScore)
+                        maxScore = player.Stats.Score;
+                }
+
+                if (maxScore >= ServerSettings.ScoreToWin)
+                {
+                    // End of game
+                    //MainServer.SendPlayerStats();
+
+                    // Next map
+                    GameSettings.CurrentMap++;
+
+                    EndGame();
+
+                    foreach (Client client in GameServer.Instance.Clients)
+                    {
+                        client.IsReady = false;
+                        GameServer.Instance.SendEnd(client);
+                        // Restore the original values
+                        var newPlayer = new Player(client.Player.Id);
+                        GameServer.Instance.SendGameInfo(client);
+                    }
+                }
+                else
+                {
+                    // Reset
+                    GameServer.Instance.GameManager.Reset();
+
+                    foreach (Client client in GameServer.Instance.Clients)
+                    {
+                        client.IsReady = false;
+                        client.AlreadyPlayed = true;
+                        GameServer.Instance.SendRoundEnd(client);
+
+                        //var newPlayer = new Player(client.Player.Id, client.Player.Stats);
+                        //GameManager.AddPlayer(client, newPlayer);
+
+                        GameServer.Instance.SendGameInfo(client);
+                    }
+                }
+            }
+        }
+
+        private void EndGame()
+        {
+            _gameInitialized = false;
+            foreach (Client client in GameServer.Instance.Clients)
+            {
+                //client.Player.nextDirection = LookDirection.Idle;
+                GameServer.Instance.SendPlayerPosition(client.Player, false);
+            }
+        }
+
+        private void RunGameLogic()
+        {
+            if (GameHasBegun)
+            {
+                MovePlayers();
+
+                //CheckSuddenDeath();
+            }
+        }
+
+        private void MovePlayers()
+        {
+            foreach (Client client in GameServer.Instance.Clients)
+            {
+                // Move the player to the next position
+                //Program.Log.Info("Player position: " + client.Player.Position);                
+                client.Player.MovePlayer(GameServer.Instance.GameManager.CurrentMap);
+            }
+        }
+
+        #region Update entities
         protected override void UpdateWalls()
         {
             for (int i = 0; i < _wallList.Count; i++)
@@ -143,6 +327,7 @@ namespace FBServer.Core
 
             base.UpdatePlayers();
         }
+        #endregion
 
         public override void LoadMap(string mapName)
         {
@@ -291,7 +476,7 @@ namespace FBServer.Core
         protected override void DestroyPowerUp(Point position)
         {
             var powerUp = _powerUpList.Find(pu => pu.CellPosition == position);
-            
+
             base.DestroyPowerUp(powerUp);
 
             if (powerUp == null)

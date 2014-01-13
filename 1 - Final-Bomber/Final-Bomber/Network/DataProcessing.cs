@@ -8,7 +8,8 @@ namespace FBClient.Network
     sealed partial class GameServer
     {
         int _counter = 0;
-        public void DataProcessing(byte type, NetIncomingMessage message)
+
+        private void DataProcessing(byte type, NetIncomingMessage message)
         {
             _counter++;
             Debug.Print("[" + _counter + "]Message received from server !");

@@ -28,7 +28,7 @@ namespace FBServer.Core
 
             _speedTimer.Restart();
 
-            if (_game.HasStarted)
+            if (GameServer.Instance.GameManager.HasStarted)
                 _game.Update();
             else
                 _game.Initialize();

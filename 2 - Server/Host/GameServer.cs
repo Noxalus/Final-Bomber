@@ -114,6 +114,8 @@ namespace FBServer.Host
 
                 _hostStarted = true;
 
+                GameManager.Initialize();
+
                 Program.Log.Info("[START]Game server has started");
                 Program.Log.Info("[PORT]: " + config.Port);
             }
@@ -129,6 +131,15 @@ namespace FBServer.Host
         /// Check for new messages from clients
         /// </summary>
         public void Update()
+        {
+            // Read messages from clients
+            CheckNewClientMessages();
+
+            // Update the game manager
+            GameManager.Update();
+        }
+
+        private void CheckNewClientMessages()
         {
             NetIncomingMessage message;
 

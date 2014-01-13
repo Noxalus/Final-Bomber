@@ -69,7 +69,6 @@
     <Compile Include="Host\ClientCollection.cs" />
     <Compile Include="Host\DataProcessing.cs" />
     <Compile Include="Host\GameServer.cs" />
-    <Compile Include="Host\GameStepProcessing.cs" />
     <Compile Include="Host\HostGame.cs" />
     <Compile Include="Host\HostMessageReceiver.cs" />
     <Compile Include="Host\HostMessageSender.cs" />
