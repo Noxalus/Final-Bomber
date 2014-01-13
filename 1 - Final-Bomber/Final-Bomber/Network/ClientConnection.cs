@@ -10,8 +10,11 @@ namespace FBClient.Network
         private bool _hasStarted;
         private bool _connected;
         private bool _disconnected;
+        private bool _failedToConnect;
 
         private NetClient _client;
+
+        private NetPeerConfiguration _config;
 
         // Message pool
         private Thread _messagePooling;
@@ -30,42 +33,68 @@ namespace FBClient.Network
             get { return _disconnected; }
         }
 
+        public bool FailedToConnect
+        {
+            get { return _failedToConnect; }
+            set { _failedToConnect = value; }
+        }
+
         public const int Ping = 10;
 
         public void StartClientConnection(string ip, string port)
         {
-            var config = new NetPeerConfiguration("Final-Bomber");
-            config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
-
-            _client = new NetClient(config);
-
-            _client.Start();
-            _client.Connect(ip, int.Parse(port));
+            _config = new NetPeerConfiguration("Final-Bomber");
+            _config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
             _hasStarted = true;
             _connected = false;
             _disconnected = false;
+
+            // Client initialize 
+            _client = new NetClient(_config);
+            _client.Start();
 
             _messagePool = new Queue<NetIncomingMessage>();
 
             var threadStart = new ThreadStart(MessagePooling);
             _messagePooling = new Thread(threadStart);
             _messagePooling.Start();
+
+            TryToConnect(ip, port);
+        }
+
+
+        public void TryToConnect(string ip, string port)
+        {
+            _client.Connect(ip, int.Parse(port));
         }
 
         public void RunClientConnection()
         {
+            // Connection with server
             if (!_connected && _client.ConnectionStatus == NetConnectionStatus.Connected)
             {
+                // Send first packet => player info
+                Instance.SendPlayerInfo();
+
                 _connected = true;
                 _disconnected = false;
+                _failedToConnect = true;
             }
+
+            // Disconnection with server
             if (_connected && _client.ConnectionStatus == NetConnectionStatus.Disconnected)
             {
                 _connected = false;
                 _disconnected = true;
             }
 
+            CheckNewServerMessages();
+        }
+
+        private void CheckNewServerMessages()
+        {
+            // Check new messages from server
             while (_messagePool.Count > 0)
             {
                 NetIncomingMessage message = _messagePool.Dequeue();
@@ -78,10 +107,21 @@ namespace FBClient.Network
                         type = message.ReadByte();
                         DataProcessing(type, message);
                         break;
+                    case NetIncomingMessageType.StatusChanged:
+                        var statusChangedReason = message.ReadString();
+                        if (statusChangedReason.Equals("=Failed"))
+                            _failedToConnect = true;
+
+                        Debug.Print("A StatusChanged has been received from server. (" + statusChangedReason + ")");
+                        break;
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
-                        //Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
+                        Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
                         float ping = message.ReadFloat() * 1000;
                         RecievePing(ping);
+                        break;
+                    case NetIncomingMessageType.DebugMessage:
+                        var debugMessage = message.ReadString();
+                        Debug.Print("A DebugMessage has been received from server. (" + debugMessage + ")");
                         break;
                     default:
                         type = message.ReadByte();
@@ -101,7 +141,7 @@ namespace FBClient.Network
                 NetIncomingMessage message;
                 while ((message = _client.ReadMessage()) != null)
                 {
-                    Debug.Print("Packet received from server !");
+                    //Debug.Print("Packet received from server !");
                     _messagePool.Enqueue(message);
                 }
 

@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace FBServer.Host
 {
     sealed partial class GameServer
     {
-        public enum RMT
+        private enum RMT
         {
-            NeedMap = 6, // Player need to download the map
-            Ready = 7, // Player is ready to start
             MoveLeft = 0, // Player wants to move to the left
             MoveUp = 1, // Player wants to move up
             MoveRight = 2, // Player wants to move to the right
             MoveDown = 3, // Player wants to move down
             Standing = 4, // Player wants to stay in place
             PlaceBomb = 5, // Player wants to plant a bomb
+            NeedMap = 6, // Player need to download the map
+            Ready = 7, // Player is ready to start ?
+            PlayerInfo = 8 // Player info (username, password, etc...)
         }
 
-        public enum SMT
+        private enum SMT
         {
             GameStartInfo = 0, // Sends the map MD5 value
             Map = 1, // Sends map data (if client didn't already have it)
@@ -35,7 +31,6 @@ namespace FBServer.Host
             SuddenDeath = 13, // Tells to players that the sudden death began
             End = 10, // Sends that the game is finished (with the winner)
             RoundEnd = 15, // Sends that the round is finished
-            ClientInfo = 16
         }
     }
 }

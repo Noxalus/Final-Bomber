@@ -17,6 +17,7 @@ namespace FBServer.Host
         public bool NewClient = true;
         public bool Spectating = false;
         public string Username;
+        public string Password;
         public bool AlreadyPlayed;
         public float Ping = 0f;
 

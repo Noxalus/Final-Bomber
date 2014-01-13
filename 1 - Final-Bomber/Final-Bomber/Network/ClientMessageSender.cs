@@ -1,8 +1,4 @@
 ﻿using Lidgren.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FBClient.Network
 {
@@ -18,14 +14,29 @@ namespace FBClient.Network
             }
         }
 
-        public void SendIsReady()
+        public void SendPlayerInfo()
         {
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
-                send.Write((byte)SMT.Ready);
+
+                send.Write((byte)SMT.PlayerInfo);
                 send.Write(PlayerInfo.Username);
                 send.Write(GameSettings.Password);
+
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+            }
+        }
+
+        public void SendIsReady(bool value = true)
+        {
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
+            {
+                NetOutgoingMessage send = _client.CreateMessage();
+                
+                send.Write((byte)SMT.Ready);
+                send.Write(value);
+
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }

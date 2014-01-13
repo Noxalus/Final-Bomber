@@ -103,8 +103,6 @@ namespace FBServer.Core
 
         public override void Update()
         {
-            var test = GameServer.Instance.Clients.IsClientsReady();
-
             // Game has to be initialized ?
             if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TODO: Change this, that was just for quick testing
                 && !GameInitialized && GameServer.Instance.Clients.IsClientsReady())
@@ -129,8 +127,8 @@ namespace FBServer.Core
             }
 
             CheckRoundEnd();
-            
-            base.Update();
+
+            //base.Update();
         }
 
         private void GameInitialize()
@@ -157,10 +155,13 @@ namespace FBServer.Core
                 GameServer.Instance.Clients[i].Player.ChangePosition(
                     GameServer.Instance.GameManager.CurrentMap.PlayerSpawnPoints[i]);
 
+                // Send game info (map name, etc...)
+                GameServer.Instance.SendGameInfo(GameServer.Instance.Clients[i]);
+
                 // Sends that the game start to all clients
                 GameServer.Instance.SendStartGame(GameServer.Instance.Clients[i], false);
 
-                // These clients are neither new either spectator
+                // These clients already exist, they are neither new either spectator
                 GameServer.Instance.Clients[i].NewClient = false;
                 GameServer.Instance.Clients[i].Spectating = false;
 
@@ -200,9 +201,9 @@ namespace FBServer.Core
                     foreach (Client client in GameServer.Instance.Clients)
                     {
                         client.IsReady = false;
+
                         GameServer.Instance.SendEnd(client);
-                        // Restore the original values
-                        var newPlayer = new Player(client.Player.Id);
+
                         GameServer.Instance.SendGameInfo(client);
                     }
                 }
@@ -216,9 +217,6 @@ namespace FBServer.Core
                         client.IsReady = false;
                         client.AlreadyPlayed = true;
                         GameServer.Instance.SendRoundEnd(client);
-
-                        //var newPlayer = new Player(client.Player.Id, client.Player.Stats);
-                        //GameManager.AddPlayer(client, newPlayer);
 
                         GameServer.Instance.SendGameInfo(client);
                     }
@@ -345,10 +343,43 @@ namespace FBServer.Core
         {
             _playerList.Add(player);
 
+            client.Username = CheckUsernameAlreadyTaken(client);
+
             player.Name = client.Username;
             client.Player = player;
 
             base.AddPlayer(player);
+
+            if (GameServer.Instance.GameManager.GameInitialized)
+            {
+                client.Spectating = true;
+                client.NewClient = true;
+            }
+
+            GameServer.Instance.SendPlayerInfo(client);
+        }
+
+        /// <summary>
+        /// Check if the client's username is already taken and provide a new unique username
+        /// </summary>
+        /// <param name="client">Client we want to check the username</param>
+        /// <returns>A non-used username</returns>
+        private string CheckUsernameAlreadyTaken(Client client)
+        {
+            var playerNames = GameServer.Instance.Clients.Select(c => c.Username).ToList();
+
+            if (playerNames.Contains(client.Username))
+            {
+                var concat = 1;
+                while (playerNames.Contains(client.Username + concat))
+                {
+                    concat++;
+                }
+
+                client.Username = client.Username + concat;
+            }
+
+            return client.Username;
         }
 
         protected override void DestroyPlayer(int playerId)

@@ -79,14 +79,6 @@ namespace FBClient.Network
             }
         }
 
-        #region New client
-        public void RecieveClientInfo(int id)
-        {
-            var client = new Client(id);
-
-            GameServer.Instance.OnConnectedClient(client, EventArgs.Empty);
-        }
-        #endregion
 
         public void RecievePlayerInfo(int playerId, float moveSpeed, string username, int score)
         {

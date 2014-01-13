@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace FBClient.Network
 {
@@ -52,15 +53,42 @@ namespace FBClient.Network
             get { return _timer.ElapsedMilliseconds; }
         }
 
+        public double TotalSeconds
+        {
+            get
+            {
+                Debug.Print("Elapsed.TotalSeconds: " + _timer.Elapsed);
+                Debug.Print("Elapsed.Seconds: " + _timer.Elapsed.Seconds);
+                Debug.Print("ElapsedMilliseconds: " + _timer.ElapsedMilliseconds);
+                return _timer.Elapsed.TotalSeconds;
+            }
+        }
+
+        public bool Each(TimeSpan timeSpan)
+        {
+            if (_timer.ElapsedMilliseconds > timeSpan.TotalMilliseconds)
+            {
+                Reset();
+
+                Ticks++;
+
+                return true;
+            }
+
+            return false;
+        }
+
         public bool Each(int time)
         {
             if (_timer.ElapsedMilliseconds > time)
             {
-                _timer.Reset();
-                _timer.Start();
+                Reset();
+
                 Ticks++;
+                
                 return true;
             }
+
             return false;
         }
     }

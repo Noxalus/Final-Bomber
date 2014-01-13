@@ -4,17 +4,15 @@ using System.Diagnostics;
 using FBLibrary;
 using FBClient.Controls;
 using FBClient.Network;
-using FBClient.Screens.GameScreens;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace FBClient.Screens.MenuScreens
 {
     public class LobbyMenuScreen : BaseGameState
     {
         #region Field region
-        TimeSpan _timer;
-        readonly Timer _connectedTimer;
-        private Timer _timerWaitUntilStart;
+
         private bool _isConnected;
         private bool _isReady;
         #endregion
@@ -23,8 +21,6 @@ namespace FBClient.Screens.MenuScreens
         public LobbyMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            _timer = new TimeSpan();
-            _connectedTimer = new Timer();
             _isConnected = false;
             _isReady = false;
         }
@@ -39,20 +35,20 @@ namespace FBClient.Screens.MenuScreens
 
             FinalBomber.Instance.Exiting += Instance_Exiting;
 
-            GameServer.Instance.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
-
-            _timerWaitUntilStart = new Timer();
-            _connectedTimer.Start();
-
             GameServer.Instance.SetGameManager(new NetworkGameManager());
 
+            GameServer.Instance.GameManager.Initialize();
+
             base.Initialize();
+
+            // Start connexion with server
+            GameServer.Instance.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
         }
 
         void Instance_Exiting(object sender, EventArgs e)
         {
             // We have to disconnect from the server and stop all threads
-            GameServer.Instance.EndClientConnection("Client left the game.");            
+            GameServer.Instance.EndClientConnection("Client left the game.");
         }
 
         protected override void UnloadContent()
@@ -70,20 +66,28 @@ namespace FBClient.Screens.MenuScreens
 
         public override void Update(GameTime gameTime)
         {
-            ControlManager.Update(gameTime, PlayerIndex.One);
-
+            // First connection
             if (!_isConnected)
             {
                 GameServer.Instance.RunClientConnection();
+
                 if (GameServer.Instance.Connected)
                 {
                     _isConnected = true;
+                    // TODO: Find a good way to display client IP
                     //_publicIp = GetPublicIP();
                 }
-                else if (_connectedTimer.Each(5000))
+                else if (GameServer.Instance.FailedToConnect)
                 {
+                    // TODO: Display a disconnection message when connection time out is done
+                    // => ask to reconnect or quit
+                    // FinalBomber.Instance.Exit();
+
                     Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
-                    //FinalBomber.Instance.Exit();
+
+                    // Try to reconnect
+                    GameServer.Instance.FailedToConnect = false;
+                    GameServer.Instance.TryToConnect(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
                 }
             }
             else
@@ -91,53 +95,22 @@ namespace FBClient.Screens.MenuScreens
                 if (GameServer.Instance.HasStarted)
                     GameServer.Instance.RunClientConnection();
 
-                ProgramStepProccesing();
-            }
-
-            _timer += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
-
-            if (_timer.Seconds == 5)
-            {
-                _timer = TimeSpan.Zero;
+                if (!GameServer.Instance.Disconnected)
+                {
+                    // Send that the player is ready/not ready to start the game
+                    if (InputHandler.KeyPressed(Keys.R))
+                    {
+                        _isReady = !_isReady;
+                        GameServer.Instance.SendIsReady(_isReady);
+                    }
+                }
+                else
+                {
+                    throw new Exception("Exit ! (not connected to the server !)");
+                }
             }
 
             base.Update(gameTime);
-        }
-
-        private void ProgramStepProccesing()
-        {
-            if (!GameServer.Instance.Connected)
-            {
-                DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
-            }
-            if (GameServer.Instance.Connected)
-            {
-                ConnectedGameProcessing();
-            }
-        }
-
-        private void DisplayStatusBeforeExiting(string status)
-        {
-            throw new Exception("Exit ! (not connected to the server !)");
-        }
-
-        private void ConnectedGameProcessing()
-        {
-            if (_isReady)
-            {
-                _isReady = false;
-
-                _timerWaitUntilStart = new Timer();
-                GameServer.Instance.SendIsReady();
-                _timerWaitUntilStart.Start();
-            }
-
-            // Wait 5 seconds before to say to the server that we are ready
-            if (_timerWaitUntilStart.Each(5000))
-            {
-                GameServer.Instance.SendIsReady();
-                _timerWaitUntilStart.Stop();
-            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -156,6 +129,12 @@ namespace FBClient.Screens.MenuScreens
                         20),
             Color.Black);
 
+            for (var i = 0; i < GameServer.Instance.GameManager.Players.Count; i++)
+            {
+                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, GameServer.Instance.GameManager.Players[i].Name,
+                    new Vector2(0, 40 + (20 * i)), Color.Black);
+            }
+
             str = "Waiting for players...";
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                 new Vector2(
@@ -165,17 +144,14 @@ namespace FBClient.Screens.MenuScreens
                     BigFont.MeasureString(str).Y / 2),
                 Color.Black);
 
-            if (_timer.Seconds != 5)
-            {
-                str = "Quit Timer: " + (5 - _timer.Seconds).ToString();
-                FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
-                    new Vector2(
-                        Config.Resolutions[Config.IndexResolution, 0] / 2f -
-                        BigFont.MeasureString(str).X / 2,
-                        Config.Resolutions[Config.IndexResolution, 1] / 2f -
-                        BigFont.MeasureString(str).Y / 2 + 60),
-                    Color.Black);
-            }
+            str = "Connecting to server...";
+            FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
+                new Vector2(
+                    Config.Resolutions[Config.IndexResolution, 0] / 2f -
+                    BigFont.MeasureString(str).X / 2,
+                    Config.Resolutions[Config.IndexResolution, 1] / 2f -
+                    BigFont.MeasureString(str).Y / 2 + 60),
+                Color.Black);
 
             FinalBomber.Instance.SpriteBatch.End();
         }

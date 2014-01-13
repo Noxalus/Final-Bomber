@@ -16,7 +16,7 @@ namespace FBServer.Host
 
         NetServer _server;
         bool _hostStarted = false;
-        int _clientId = 1;
+        int _clientId = 0;
         public ClientCollection Clients;
 
         #endregion
@@ -98,14 +98,14 @@ namespace FBServer.Host
                 MaximumConnections = ServerSettings.MaxConnection, 
                 Port = ServerSettings.Port,
                 #if DEBUG
-                PingInterval = 1f, // send ping every 1 second
-                SimulatedLoss = 0.5f, // half packets lost
+                //PingInterval = 1f, // send ping every 1 second
+                //SimulatedLoss = 0.5f, // half packets lost
                 SimulatedMinimumLatency = 0.05f, // latency of 50 ms
                 #endif
             };
 
             // To send ping to each player frequently
-            config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
+            //config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
 
             try
             {
@@ -157,8 +157,6 @@ namespace FBServer.Host
                             if (currentClient == null)
                             {
                                 var newClient = new Client(ref sender, _clientId);
-
-                                Clients.AddClient(newClient);
 
                                 _clientId++;
 

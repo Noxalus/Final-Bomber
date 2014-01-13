@@ -103,22 +103,6 @@ namespace FBServer.Host
 
         }
 
-        // Send this client to all other available
-        public void SendClientInfo(Client client)
-        {
-            if (client.ClientConnection.Status == NetConnectionStatus.Connected)
-            {
-                NetOutgoingMessage send = _server.CreateMessage();
-
-                send.Write((byte)SMT.PlayerInfo);
-                send.Write(client.ClientId);
-                
-                _server.SendToAll(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
-                
-                Program.Log.Info("Send the clients to the new client (client #" + client.ClientId + ")");
-            }
-        }
-
         // Send this player to all other available
         public void SendPlayerInfo(Client client)
         {

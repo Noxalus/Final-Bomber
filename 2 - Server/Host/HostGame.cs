@@ -1,12 +1,10 @@
-﻿using FBServer.Core;
-using FBServer.Core.Entities;
+﻿using FBServer.Core.Entities;
 using System;
 
 namespace FBServer.Host
 {
     public class HostGame
     {
-        int _playerId = 0;
         readonly Timer _beginGameTimer;
 
         public HostGame()
@@ -49,31 +47,20 @@ namespace FBServer.Host
 
         #region Server events
 
-        private void GameServer_ConnectedClient(Client sender, EventArgs e)
+        private void GameServer_ConnectedClient(Client client, EventArgs e)
         {
-            if (true /*GameServer.Instance.clients.Count <= GameSettings.Get_gameManager.CurrentMap().playerAmount*/)
+            if (true) // TODO: Check that the server is not full
             {
-                var player = new Player(_playerId);
-                GameServer.Instance.GameManager.AddPlayer(sender, player);
+                // Add client to the list
+                GameServer.Instance.Clients.AddClient(client);
 
-                GameServer.Instance.SendGameInfo(sender);
-                if (GameServer.Instance.GameManager.GameInitialized)
-                {
-                    sender.Player.IsAlive = false;
-                    sender.Spectating = true;
-                    sender.NewClient = true;
-                }
-
-                _playerId++;
-
-                GameServer.Instance.SendClientInfo(sender);
                 //MainServer.SendCurrentPlayerAmount();
             }
             else
             {
-                GameServer.Instance.Clients.Remove(sender);
-                Program.Log.Info("[FULLGAME] Client tried to connect");
-                sender.ClientConnection.Disconnect("Full Server");
+                client.ClientConnection.Disconnect("Full Server");
+
+                Program.Log.Info("[FULLGAME] Client tried to connect but server is full !");
             }
         }
 

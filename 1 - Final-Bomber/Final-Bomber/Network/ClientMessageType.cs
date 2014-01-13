@@ -25,19 +25,19 @@ namespace FBClient.Network
             SDExplosion = 14, //Säger till spelarna vart sudden death explosionen sker
             End = 10, //Säger till att banan är slut och berättar vem som vann
             RoundEnd = 15,
-            ClientInfo = 16,
         }
 
         public enum SMT
         {
-            NeedMap = 6, //Spelaren behöver banan
-            Ready = 7, //Spelaren är färdig för att starta
             MoveLeft = 0,
             MoveUp = 1,
             MoveRight = 2,
             MoveDown = 3,
             Standing = 4,
-            PlaceBomb = 5,
+            PlaceBomb = 5, 
+            NeedMap = 6, // Indicate that the client doesn't have tha server map and need to download it
+            Ready = 7, // Message to notice to server that the player is ready or not to start the game
+            PlayerInfo = 8, // Send player info (username, password, etc...)
         }
     }
 }

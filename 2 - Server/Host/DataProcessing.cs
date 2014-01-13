@@ -13,9 +13,13 @@ namespace FBServer.Host
                     Program.Log.Info("[Client #" + client.ClientId + "] Need map !");
                     ReceiveNeedMap(client);
                     break;
-                case (byte)RMT.Ready:
+                case (byte)RMT.PlayerInfo:
                     Program.Log.Info("[Client #" + client.ClientId + "] Is ready !");
-                    ReceiveReady(client, message.ReadString(), message.ReadString());
+                    ReceivePlayerInfo(client, message.ReadString(), message.ReadString());
+                    break;
+                case (byte)RMT.Ready:
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sends ready message !");
+                    ReceiveReady(client, message.ReadBoolean());
                     break;
                 case (byte)RMT.MoveDown:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move down !");

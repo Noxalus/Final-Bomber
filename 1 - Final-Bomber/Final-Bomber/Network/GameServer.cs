@@ -6,11 +6,10 @@ namespace FBClient.Network
 {
     sealed partial class GameServer
     {
-        public ClientCollection Clients;
-
         public GameManager GameManager;
 
         // Events
+        /*
         #region DisconnectedClientEvent
         public delegate void DisconnectedClientEventHandler(Client sender, EventArgs e);
         public event DisconnectedClientEventHandler DisconnectedClient;
@@ -31,6 +30,7 @@ namespace FBClient.Network
                 ConnectedClient(sender, e);
         }
         #endregion
+        */
 
         private static GameServer _instance;
         
@@ -50,44 +50,27 @@ namespace FBClient.Network
 
         private GameServer()
         {
-            Clients = new ClientCollection();
         }
 
         private void Initialize()
         {
+            /*
             ConnectedClient += GameServer_ConnectedClient;
             DisconnectedClient += GameServer_DisconnectedClient;
+            */
         }
 
         private void Dispose()
         {
+            /*
             ConnectedClient -= GameServer_ConnectedClient;
             DisconnectedClient -= GameServer_DisconnectedClient;
+            */
         }
 
         public void SetGameManager(GameManager gameManager)
         {
             GameManager = gameManager;
-        }
-
-        public void AddClient(Client client)
-        {
-            Clients.Add(client);
-        }
-
-        public void RemoveClient(Client client)
-        {
-            Clients.Remove(client);
-        }
-
-        private void GameServer_ConnectedClient(Client sender, EventArgs e)
-        {
-            Clients.Add(sender);
-        }
-
-        private void GameServer_DisconnectedClient(Client sender, EventArgs e)
-        {
-            Clients.Remove(sender);
         }
     }
 }

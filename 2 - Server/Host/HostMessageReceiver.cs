@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FBLibrary.Core;
+using FBServer.Core;
 
 namespace FBServer.Host
 {
@@ -12,31 +12,29 @@ namespace FBServer.Host
             Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
         }
 
-        void ReceiveReady(Client client, string username, string password)
+        void ReceivePlayerInfo(Client client, string username, string password)
+        {
+            client.Username = username;
+            client.Password = password;
+
+            //MainServer.SendCheckIfOnline(username, password);
+
+            Program.Log.Info("Client " + client.ClientId + " sent player info. (username: " + username + "|password: " + password);
+
+            // Create a new player
+            var player = new Player(client.ClientId);
+
+            Instance.GameManager.AddPlayer(client, player);
+        }
+
+        void ReceiveReady(Client client, bool value)
         {
             if (!client.IsReady)
             {
-                if (!client.AlreadyPlayed)
-                {
-                    var playerNames = GameServer.Instance.Clients.Select(c => c.Username).ToList();
+                client.IsReady = value;
 
-                    client.Username = username;
-                    if (playerNames.Contains(client.Username))
-                    {
-                        var concat = 1;
-                        while (playerNames.Contains(client.Username + concat))
-                        {
-                            concat++;
-                        }
-
-                        client.Username = username + concat;
-                    }
-                }
-
-                client.IsReady = true;
-                //MainServer.SendCheckIfOnline(username, password);
-                Program.Log.Info("Client " + client.ClientId + " is ready to play");
-                client.Player.Name = client.Username;
+                var isReadyText = (value) ? "ready" : "not ready";
+                Program.Log.Info("Client " + client.ClientId + " is " + isReadyText + " !");
             }
             else
             {
