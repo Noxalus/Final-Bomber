@@ -103,6 +103,19 @@ namespace FBServer.Host
             Program.Log.Info("Sended server generated id to its corresponding client (id: " + client.ClientId + ")");
         }
 
+        private void SendIsReady(Client client, bool ready)
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.IsReady);
+            message.Write(client.ClientId);
+            message.Write(ready);
+
+            _server.SendToAll(message, client.ClientConnection, NetDeliveryMethod.ReliableUnordered, 0);
+
+            Program.Log.Info("Sended that this client is ready or not (id: " + client.ClientId + "|ready: " + ready + ")");
+        }
+
         // Send all players to this player
         public void SendClientsToNew(Client client)
         {
@@ -156,6 +169,7 @@ namespace FBServer.Host
 
             message.Write(client.ClientId);
             message.Write(client.Username);
+            message.Write(client.IsReady);
 
             return message;
         }

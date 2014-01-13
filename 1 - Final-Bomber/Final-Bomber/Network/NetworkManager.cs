@@ -174,7 +174,7 @@ namespace FBClient.Network
             GameServer.Instance.GameManager.AddWalls(wallPositions);
         }
 
-        private void GameServer_NewClient(int clientId, string username)
+        private void GameServer_NewClient(int clientId, string username, bool isReady)
         {
             if (GameServer.Instance.Clients.GetClientById(clientId) == null)
             {
@@ -195,7 +195,11 @@ namespace FBClient.Network
                     }
                 }
 
-                var client = new Client(clientId) {Username = username};
+                var client = new Client(clientId)
+                {
+                    Username = username, 
+                    IsReady = isReady
+                };
 
                 GameServer.Instance.GameManager.AddClient(client);
             }

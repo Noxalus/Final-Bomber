@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using FBLibrary;
 using FBLibrary.Core;
 using FBServer.Core;
 
@@ -27,9 +27,9 @@ namespace FBServer.Host
             Instance.GameManager.AddPlayer(client, player);
         }
 
-        void ReceiveReady(Client client, bool value)
+        void ReceiveReady(Client client, bool ready)
         {
-            client.IsReady = value;
+            client.IsReady = ready;
 
             if (client.IsReady)
             {
@@ -39,6 +39,13 @@ namespace FBServer.Host
             {
                 Program.Log.Info("Client " + client.ClientId + " is not ready actually !");
             }
+
+            SendIsReady(client, ready);
+        }
+
+        private void ReceiveStartGame()
+        {
+            Instance.GameManager.StartGame();
         }
 
         void ReceiveMovePlayer(Client client, LookDirection movement)

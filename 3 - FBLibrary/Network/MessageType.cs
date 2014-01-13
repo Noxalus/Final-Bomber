@@ -14,6 +14,7 @@ namespace FBLibrary.Network
             NeedMap = 6, // Player need to download the map
             Ready = 7, // Player is ready to start ?
             Credentials = 8, // Client credentials info (username, password, etc...)
+            StartGame = 9, // Host want to start game
         }
 
         public enum ServerMessage
@@ -33,6 +34,7 @@ namespace FBLibrary.Network
             SuddenDeath = 13, // Tells to players that the sudden death began
             RoundEnd = 15, // Sends that the round is finished
             ClientId = 16, // Sends the server generated id to its corresponding client
+            IsReady = 17, // Sends that a specific client is ready or not
         }
     }
 }

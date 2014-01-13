@@ -102,6 +102,18 @@ namespace FBClient.Screens.MenuScreens
                         GameServer.Instance.Clients.Me.IsReady = _isReady;
                         GameServer.Instance.SendIsReady(_isReady);
                     }
+
+                    if (GameServer.Instance.Clients.Me != null)
+                    {
+                        if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
+                        {
+                            if (GameServer.Instance.Clients.Me.IsHost && InputHandler.KeyPressed(Keys.Space))
+                            {
+                                // Start the game
+                                GameServer.Instance.SendStartGame();
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -138,14 +150,18 @@ namespace FBClient.Screens.MenuScreens
                     strColor = Color.Green;
                 }
 
-                str = "[id: " + GameServer.Instance.Clients[i].Id + "]" + GameServer.Instance.Clients[i].Username;
+                str = GameServer.Instance.Clients[i].Username;
                 if (GameServer.Instance.Clients[i].Id == GameServer.Instance.Clients.Me.Id)
                     str += " (you)";
+
+                if (GameServer.Instance.Clients[i].IsHost)
+                    str = "[*] " + str;
 
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, str,
                     new Vector2(0, 60 + (20 * i)), strColor);
             }
 
+            // Connecting message
             strColor = Color.Orange;
             if (GameServer.Instance.Connected)
             {
@@ -168,6 +184,32 @@ namespace FBClient.Screens.MenuScreens
                     BigFont.MeasureString(str).Y / 2),
                 strColor);
 
+            if (GameServer.Instance.Clients.Me != null)
+            {
+                // Start game message
+                if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
+                {
+                    if (GameServer.Instance.Clients.Me.IsHost)
+                    {
+                        str = "Press Space to launch the game !";
+                        strColor = Color.Green;
+                    }
+                    else
+                    {
+                        str = "Please wait that the host starts the game...";
+                        strColor = Color.Orange;
+                    }
+
+                    FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
+                        new Vector2(
+                            Config.Resolutions[Config.IndexResolution, 0]/2f -
+                            BigFont.MeasureString(str).X/2,
+                            Config.Resolutions[Config.IndexResolution, 1]/2f -
+                            BigFont.MeasureString(str).Y/2 + 60),
+                        strColor);
+                }
+            }
+
             FinalBomber.Instance.SpriteBatch.End();
         }
 
@@ -183,24 +225,9 @@ namespace FBClient.Screens.MenuScreens
         {
             if (true /*!mainGame.IsStarted*/)
             {
-                if (!gameInProgress)
-                {
-                    GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
-                }
-                else
-                {
-                    /*
-                    mainGame.me.Kill();
-                    mainGame.Spectator = true;
-                    */
-                }
-
                 GameServer.Instance.GameManager.LoadMap(GameSettings.CurrentMapName);
                 GameServer.Instance.GameManager.AddWalls(wallPositions);
-
-                //mainGame.Start();
             }
-
 
             StateManager.ChangeState(FinalBomber.Instance.NetworkTestScreen);
             UnloadContent();

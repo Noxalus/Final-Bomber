@@ -103,24 +103,6 @@ namespace FBServer.Core
 
         public override void Update()
         {
-            // Game has to be initialized ?
-            if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TODO: Change this, that was just for quick testing
-                && !GameInitialized && GameServer.Instance.Clients.IsClientsReady())
-            {
-                GameInitialize();
-            }
-
-            foreach (Client client in GameServer.Instance.Clients)
-            {
-                if (client.NewClient && GameInitialized && client.IsReady)
-                {
-                    GameServer.Instance.SendStartGame(client, true);
-                    GameServer.Instance.SendClientsToNew(client);
-
-                    client.NewClient = false;
-                }
-            }
-
             if (GameServer.Instance.GameManager.GameInitialized && GameHasBegun)
             {
                 RunGameLogic();
@@ -129,6 +111,24 @@ namespace FBServer.Core
             CheckRoundEnd();
 
             //base.Update();
+        }
+
+        public void StartGame()
+        {
+            if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
+            {
+                // Game has to be initialized ?
+                if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TODO: Change this, that was just for quick testing
+                    && !GameInitialized && GameServer.Instance.Clients.IsClientsReady())
+                {
+                    GameInitialize();
+                }
+
+                foreach (Client client in GameServer.Instance.Clients)
+                {
+                    GameServer.Instance.SendStartGame(client, true);
+                }
+            }
         }
 
         private void GameInitialize()

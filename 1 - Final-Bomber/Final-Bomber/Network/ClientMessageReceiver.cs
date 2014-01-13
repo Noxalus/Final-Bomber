@@ -84,14 +84,28 @@ namespace FBClient.Network
             }
         }
 
-        public void RecieveNewClientInfo(int clientId, string username)
+        private void RecieveNewClientInfo(int clientId, string username, bool isReady)
         {
-            OnNewClient(clientId, username);
+            OnNewClient(clientId, username, isReady);
         }
 
-        public void RecieveRemovePlayer(int playerId)
+        private void RecieveRemovePlayer(int playerId)
         {
             OnRemovePlayer(playerId);
+        }
+
+        private void RecieveIsReady(int clientId, bool ready)
+        {
+            var client = Instance.Clients.GetClientById(clientId);
+
+            if (client != null)
+            {
+                client.IsReady = ready;
+            }
+            else
+            {
+                throw new Exception("This client doesn't exist. (id: " + clientId + ")");
+            }
         }
 
         private void RecievePosition(float positionX, float positionY, byte direction, int clientId)
@@ -190,13 +204,13 @@ namespace FBClient.Network
         #endregion
 
         #region NewPlayer
-        public delegate void NewClientEventHandler(int clientId, string username);
+        public delegate void NewClientEventHandler(int clientId, string username, bool isReady);
         public event NewClientEventHandler NewClient;
 
-        private void OnNewClient(int clientId, string username)
+        private void OnNewClient(int clientId, string username, bool isReady)
         {
             if (NewClient != null)
-                NewClient(clientId, username);
+                NewClient(clientId, username, isReady);
         }
         #endregion
 

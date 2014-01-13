@@ -19,8 +19,12 @@ namespace FBServer.Host
                     ReceiveCredentials(client, message.ReadString(), message.ReadString());
                     break;
                 case (byte)MessageType.ClientMessage.Ready:
-                    Program.Log.Info("[Client #" + client.ClientId + "] Sent ready message !");
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sent Ready message !");
                     ReceiveReady(client, message.ReadBoolean());
+                    break;
+                case (byte)MessageType.ClientMessage.StartGame:
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sent StartGame message !");
+                    ReceiveStartGame();
                     break;
                 case (byte)MessageType.ClientMessage.MoveDown:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move down !");

@@ -8,8 +8,9 @@ namespace FBClient.Network
         public string Username;
         public bool IsReady;
         public float Ping;
-
         public Player Player;
+
+        public bool IsHost { get { return Id == 0; } }
 
         public Client(int id)
         {

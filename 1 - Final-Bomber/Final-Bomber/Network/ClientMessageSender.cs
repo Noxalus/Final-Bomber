@@ -45,6 +45,18 @@ namespace FBClient.Network
             }
         }
 
+        public void SendStartGame()
+        {
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
+            {
+                NetOutgoingMessage send = _client.CreateMessage();
+
+                send.Write((byte)MessageType.ClientMessage.StartGame);
+
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+            }
+        }
+
         public void SendMovement(byte direction)
         {
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
