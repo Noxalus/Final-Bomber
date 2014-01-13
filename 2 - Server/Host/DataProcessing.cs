@@ -11,15 +11,15 @@ namespace FBServer.Host
             switch (message.ReadByte())
             {
                 case (byte)MessageType.ClientMessage.NeedMap:
-                    Program.Log.Info("[Client #" + client.ClientId + "] Need map !");
+                    Program.Log.Info("[Client #" + client.ClientId + "] Need map ! Let's give it to him :)");
                     ReceiveNeedMap(client);
                     break;
                 case (byte)MessageType.ClientMessage.Credentials:
-                    Program.Log.Info("[Client #" + client.ClientId + "] Sends its credientials info !");
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sent its credientials info !");
                     ReceiveCredentials(client, message.ReadString(), message.ReadString());
                     break;
                 case (byte)MessageType.ClientMessage.Ready:
-                    Program.Log.Info("[Client #" + client.ClientId + "] Sends ready message !");
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sent ready message !");
                     ReceiveReady(client, message.ReadBoolean());
                     break;
                 case (byte)MessageType.ClientMessage.MoveDown:

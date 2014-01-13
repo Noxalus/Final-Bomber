@@ -131,7 +131,7 @@ namespace FBClient.Screens.MenuScreens
             for (var i = 0; i < GameServer.Instance.GameManager.Players.Count; i++)
             {
                 FinalBomber.Instance.SpriteBatch.DrawString(BigFont, GameServer.Instance.GameManager.Players[i].Name,
-                    new Vector2(0, 40 + (20 * i)), Color.Black);
+                    new Vector2(0, 40 + (40 * i)), Color.Black);
             }
 
             var strColor = Color.Orange;
@@ -142,7 +142,7 @@ namespace FBClient.Screens.MenuScreens
             }
             else if (GameServer.Instance.FailedToConnect)
             {
-                str = "Failed to connect :'(\nPress space to try again.";
+                str = "Failed to connect :'( (Press space to try again)";
                 strColor = Color.Red;
             }
             else

@@ -22,12 +22,12 @@ namespace FBServer.Host
             {
                 if (client.ClientConnection.Status == NetConnectionStatus.Connected)
                 {
-                    NetOutgoingMessage send = _server.CreateMessage();
+                    NetOutgoingMessage message = _server.CreateMessage();
 
-                    send.Write((byte)MessageType.ServerMessage.GameStartInfo);
-                    send.Write(MapLoader.MapFileDictionary.Values.First());
+                    message.Write((byte)MessageType.ServerMessage.GameStartInfo);
+                    message.Write(MapLoader.MapFileDictionary.Values.First());
 
-                    _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                    _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
 
                     Program.Log.Info("Sended game info map [" + MapLoader.MapFileDictionary.Values.First() + "]");
                 }
@@ -42,63 +42,70 @@ namespace FBServer.Host
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = _server.CreateMessage();
-                send.Write((byte)MessageType.ServerMessage.Map);
+                NetOutgoingMessage message = _server.CreateMessage();
+                message.Write((byte)MessageType.ServerMessage.Map);
 
-                send.Write(Instance.GameManager.CurrentMap.Name);
-                send.Write(Instance.GameManager.CurrentMap.GetMd5());
+                message.Write(Instance.GameManager.CurrentMap.Name);
+                message.Write(Instance.GameManager.CurrentMap.GetMd5());
 
                 string path = "Content/Maps/" + Instance.GameManager.CurrentMap.Name;
                 byte[] mapData = File.ReadAllBytes(path);
 
-                send.Write(mapData.Length);
+                message.Write(mapData.Length);
                 foreach (var bt in mapData)
                 {
-                    send.Write(bt);
+                    message.Write(bt);
                 }
 
-                _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 Program.Log.Info("Send the map to client #" + client.ClientId);
             }
         }
 
         public void SendStartGame(Client client, bool gameInProgress)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
-            send.Write((byte)MessageType.ServerMessage.StartGame);
-            send.Write(gameInProgress);
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.StartGame);
+            message.Write(gameInProgress);
+            
             if (!gameInProgress)
             {
-                send.Write(client.Player.Id);
-                send.Write(client.Player.Speed);
-                send.Write(GameConfiguration.SuddenDeathTimer.Milliseconds);
+                message.Write(client.Player.Id);
+                message.Write(client.Player.Speed);
+                message.Write(GameConfiguration.SuddenDeathTimer.Milliseconds);
 
                 List<Wall> walls = GameServer.Instance.GameManager.WallList;
-                send.Write(walls.Count);
+                message.Write(walls.Count);
                 foreach (var wall in walls)
                 {
-                    send.Write(wall.CellPosition);
+                    message.Write(wall.CellPosition);
                 }
             }
 
-            _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+            _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
             Program.Log.Info("Send start game to client #" + client.ClientId);
         }
 
         // Send all players to this player
-        public void SendPlayersToNew(Client client)
+        public void SendPlayersToNew(Client client, bool sendPosition)
         {
             Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
 
-            foreach (Client player in Clients)
+            foreach (Client currentClient in Clients)
             {
-                if (client != player)
+                if (client != currentClient)
                 {
-                    NetOutgoingMessage send = GetPlayerInfo(player);
-                    _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-                    SendPlayerPosition(player.Player, false);
+                    NetOutgoingMessage message = GetPlayerInfo(currentClient);
 
-                    Program.Log.Info("Send the player (client #" + player.ClientId + ") to the new player (client #" + client.ClientId + ")");
+                    _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+
+                    if (sendPosition)
+                    {
+                        SendPlayerPosition(currentClient.Player, false);
+                    }
+
+                    Program.Log.Info("Send the player (client #" + currentClient.ClientId + ") to the new player (client #" + client.ClientId + ")");
                 }
             }
 
@@ -109,13 +116,12 @@ namespace FBServer.Host
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = GetPlayerInfo(client);
+                NetOutgoingMessage message = GetPlayerInfo(client);
 
-                _server.SendToAll(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                _server.SendToAll(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
 
                 if (sendPosition)
                 {
-                    // Send player position
                     SendPlayerPosition(client.Player, false);
                 }
 
@@ -125,12 +131,12 @@ namespace FBServer.Host
 
         public void SendRemovePlayer(Player removedPlayer)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            send.Write((byte)MessageType.ServerMessage.RemovePlayer);
-            send.Write(removedPlayer.Id);
+            message.Write((byte)MessageType.ServerMessage.RemovePlayer);
+            message.Write(removedPlayer.Id);
 
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Send that the player #" + removedPlayer.Id + " is dead !");
         }
@@ -138,32 +144,32 @@ namespace FBServer.Host
         #region GetPlayerInfo
         private NetOutgoingMessage GetPlayerInfo(Client client)
         {
-            NetOutgoingMessage rtn = _server.CreateMessage();
-            
-            rtn.Write((byte)MessageType.ServerMessage.PlayerInfo);
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            rtn.Write(client.Player.Id);
-            rtn.Write(client.Username);
+            message.Write((byte)MessageType.ServerMessage.PlayerInfo);
 
-            return rtn;
+            message.Write(client.Player.Id);
+            message.Write(client.Username);
+
+            return message;
         }
         #endregion
 
         // Send the player's movement to all other players
         public void SendPlayerPosition(Player player, bool notDir)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            send.Write((byte)MessageType.ServerMessage.PlayerPosition);
+            message.Write((byte)MessageType.ServerMessage.PlayerPosition);
 
-            send.Write(player.Position.X);
-            send.Write(player.Position.Y);
+            message.Write(player.Position.X);
+            message.Write(player.Position.Y);
 
-            send.Write((byte)player.CurrentDirection);
+            message.Write((byte)player.CurrentDirection);
 
-            send.Write(player.Id);
+            message.Write(player.Id);
 
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Send position of player #" + player.Id + " !");
         }
@@ -171,13 +177,13 @@ namespace FBServer.Host
         // Send to all players that this player has placed a bomb
         public void SendPlayerPlacingBomb(Player player, Point position)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            send.Write((byte)MessageType.ServerMessage.PlayerPlacingBomb);
-            send.Write(player.Id);
-            send.Write(position);
+            message.Write((byte)MessageType.ServerMessage.PlayerPlacingBomb);
+            message.Write(player.Id);
+            message.Write(position);
 
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Send that player #" + player.Id + " has planted a bomb !");
         }
@@ -185,49 +191,52 @@ namespace FBServer.Host
         // Send to all players that a bomb has blow up
         public void SendBombExploded(Bomb bomb)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            send.Write((byte)MessageType.ServerMessage.BombExploded);
-            send.Write(bomb.CellPosition);
+            message.Write((byte)MessageType.ServerMessage.BombExploded);
+            message.Write(bomb.CellPosition);
 
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Send that bomb exploded to everyone ! (position: " + bomb.Position + ")");
         }
 
         public void SendPowerUpDrop(PowerUp powerUp)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            send.Write((byte)MessageType.ServerMessage.PowerUpDrop);
+            message.Write((byte)MessageType.ServerMessage.PowerUpDrop);
 
-            send.Write((byte)powerUp.Type);
-            send.Write(powerUp.CellPosition);
+            message.Write((byte)powerUp.Type);
+            message.Write(powerUp.CellPosition);
 
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Power up dropped ! (type: " + powerUp.Type + "|position: " + powerUp.CellPosition + ")");
         }
 
         public void SendPowerUpPick(Player player, PowerUp powerUp)
         {
-            NetOutgoingMessage send = _server.CreateMessage();
+            NetOutgoingMessage message = _server.CreateMessage();
 
-            send.Write((byte)MessageType.ServerMessage.PowerUpPick);
+            message.Write((byte)MessageType.ServerMessage.PowerUpPick);
 
-            send.Write(player.Id);
-            send.Write(powerUp.CellPosition);
+            message.Write(player.Id);
+            message.Write(powerUp.CellPosition);
 
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
             Program.Log.Info("Power up pick by player #" + player.Id + " !");
         }
 
         public void SendSuddenDeath()
         {
-            NetOutgoingMessage send = _server.CreateMessage();
-            send.Write((byte)MessageType.ServerMessage.SuddenDeath);
-            _server.SendToAll(send, NetDeliveryMethod.ReliableOrdered);
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.SuddenDeath);
+
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+            
             Program.Log.Info("SUDDEN DEATH!");
         }
 
@@ -235,11 +244,12 @@ namespace FBServer.Host
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = _server.CreateMessage();
+                NetOutgoingMessage message = _server.CreateMessage();
 
-                send.Write((byte)MessageType.ServerMessage.RoundEnd);
+                message.Write((byte)MessageType.ServerMessage.RoundEnd);
 
-                _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+
                 Program.Log.Info("Send 'RoundEnd' to player #" + client.Player.Id);
             }
         }
@@ -248,13 +258,12 @@ namespace FBServer.Host
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage send = _server.CreateMessage();
+                NetOutgoingMessage message = _server.CreateMessage();
 
-                send.Write((byte)MessageType.ServerMessage.End);
+                message.Write((byte)MessageType.ServerMessage.End);
+                message.Write(client.Player.IsAlive);
 
-                send.Write(client.Player.IsAlive);
-
-                _server.SendMessage(send, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
                 Program.Log.Info("Send 'End' to player #" + client.Player.Id);
             }
         }

@@ -29,16 +29,15 @@ namespace FBServer.Host
 
         void ReceiveReady(Client client, bool value)
         {
-            if (!client.IsReady)
-            {
-                client.IsReady = value;
+            client.IsReady = value;
 
-                var isReadyText = (value) ? "ready" : "not ready";
-                Program.Log.Info("Client " + client.ClientId + " is " + isReadyText + " !");
+            if (client.IsReady)
+            {
+                Program.Log.Info("Client " + client.ClientId + " is ready !");
             }
             else
             {
-                Program.Log.Info("Client " + client.ClientId + " send again that he is ready !");
+                Program.Log.Info("Client " + client.ClientId + " is not ready actually !");
             }
         }
 

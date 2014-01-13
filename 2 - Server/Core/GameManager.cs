@@ -115,7 +115,7 @@ namespace FBServer.Core
                 if (client.NewClient && GameInitialized && client.IsReady)
                 {
                     GameServer.Instance.SendStartGame(client, true);
-                    GameServer.Instance.SendPlayersToNew(client);
+                    GameServer.Instance.SendPlayersToNew(client, true);
 
                     client.NewClient = false;
                 }
