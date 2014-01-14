@@ -9,7 +9,7 @@ namespace FBLibrary.Core.BaseEntities
         public int Id;
         public string Name;
         public bool OnEdge;
-        public TimeSpan InvincibleTime;
+        private TimeSpan _invincibleTime;
         public int CurrentBombAmount;
         public int TotalBombAmount;
         public int BombPower;
@@ -51,7 +51,7 @@ namespace FBLibrary.Core.BaseEntities
             IsInvincible = true;
             OnEdge = false;
             CurrentDirection = LookDirection.Idle;
-            InvincibleTime = GameConfiguration.PlayerInvincibleTimer;
+            _invincibleTime = GameConfiguration.PlayerInvincibleTimer;
             TotalBombAmount = GameConfiguration.BasePlayerBombAmount;
             CurrentBombAmount = TotalBombAmount;
             BombPower = GameConfiguration.BasePlayerBombPower;

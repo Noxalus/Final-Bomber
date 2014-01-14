@@ -25,10 +25,13 @@ namespace FBClient.Network
             if (client.Id == _me.Id)
             {
                 _me = client;
+                _me.Player = new HumanPlayer(0);
+                _me.Player.Name = _me.Username;
             }
             else
             {
                 client.Player = new OnlinePlayer(Count);
+                client.Player.Name = client.Username;
             }
 
             Add(client);
@@ -36,7 +39,7 @@ namespace FBClient.Network
 
         public void CreateMe(int clientId)
         {
-            _me = new Client(clientId) {Player = new HumanPlayer(0)};
+            _me = new Client(clientId);
         }
 
         public Client GetClientById(int id)

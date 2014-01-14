@@ -137,7 +137,6 @@
     <Compile Include="Core\Players\AI\AIFunction.cs" />
     <Compile Include="Core\EntityCollection.cs" />
     <Compile Include="Core\Players\BaseHumanPlayer.cs" />
-    <Compile Include="Core\Players\HumanPlayer%28OLD%29.cs" />
     <Compile Include="Core\Players\HumanPlayer.cs" />
     <Compile Include="Core\Entities\PowerUp.cs" />
     <Compile Include="Core\Entities\Player.cs" />

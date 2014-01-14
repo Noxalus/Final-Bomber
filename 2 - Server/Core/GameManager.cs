@@ -106,28 +106,31 @@ namespace FBServer.Core
             if (GameServer.Instance.GameManager.GameInitialized && GameHasBegun)
             {
                 RunGameLogic();
+
+                CheckRoundEnd();
+            }
+            else
+            {
+                if (GameServer.Instance.Clients.Any() && 
+                    (GameServer.Instance.Clients.TrueForAll(client => client.IsReady) &&
+                    GameServer.Instance.Clients.TrueForAll(client => client.HasMap)))
+                {
+                    StartGame();
+                }
             }
 
-            CheckRoundEnd();
 
             //base.Update();
         }
 
         public void StartGame()
         {
-            if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
+            // Game has to be initialized ?
+            if (GameServer.Instance.Clients.Count >= GameConfiguration.MinimumPlayerNumber &&
+                GameServer.Instance.Clients.Count <= ServerSettings.MaxConnection && 
+                !GameInitialized)
             {
-                // Game has to be initialized ?
-                if (GameServer.Instance.Clients.Count == GameConfiguration.PlayerNumber // TODO: Change this, that was just for quick testing
-                    && !GameInitialized && GameServer.Instance.Clients.IsClientsReady())
-                {
-                    GameInitialize();
-                }
-
-                foreach (Client client in GameServer.Instance.Clients)
-                {
-                    GameServer.Instance.SendStartGame(client, true);
-                }
+                GameInitialize();
             }
         }
 
@@ -155,23 +158,19 @@ namespace FBServer.Core
                 GameServer.Instance.Clients[i].Player.ChangePosition(
                     GameServer.Instance.GameManager.CurrentMap.PlayerSpawnPoints[i]);
 
-                // Send game info (map name, etc...)
-                GameServer.Instance.SendGameInfo(GameServer.Instance.Clients[i]);
-
-                // Sends that the game start to all clients
-                GameServer.Instance.SendStartGame(GameServer.Instance.Clients[i], false);
-
                 // These clients already exist, they are neither new either spectator
                 GameServer.Instance.Clients[i].NewClient = false;
                 GameServer.Instance.Clients[i].Spectating = false;
 
                 // Send players info to everyone
-                GameServer.Instance.SendNewClientInfo(GameServer.Instance.Clients[i]);
+                //GameServer.Instance.SendNewClientInfo(GameServer.Instance.Clients[i]);
             }
 
             Program.Log.Info("[INITIALIZED GAME]");
 
             _gameInitialized = true;
+
+            GameServer.Instance.SendStartGame(false);
         }
 
         private void CheckRoundEnd()
@@ -204,7 +203,8 @@ namespace FBServer.Core
 
                         GameServer.Instance.SendEnd(client);
 
-                        GameServer.Instance.SendGameInfo(client);
+                        // TODO: Start the game again
+                        // GameServer.Instance.SendGameInfo(client);
                     }
                 }
                 else
@@ -218,7 +218,8 @@ namespace FBServer.Core
                         client.AlreadyPlayed = true;
                         GameServer.Instance.SendRoundEnd(client);
 
-                        GameServer.Instance.SendGameInfo(client);
+                        // TODO: Start the game again
+                        // GameServer.Instance.SendGameInfo(client);
                     }
                 }
             }

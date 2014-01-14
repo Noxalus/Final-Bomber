@@ -2,89 +2,83 @@
 using System.Collections.Generic;
 using System.IO;
 using FBLibrary;
-using FBLibrary.Core;
 using FBLibrary.Network;
 using FBServer.Core;
 using FBServer.Core.Entities;
-using FBServer.Core.WorldEngine;
 using Lidgren.Network;
 using Lidgren.Network.Xna;
 using Microsoft.Xna.Framework;
-using System.Linq;
 
 namespace FBServer.Host
 {
     sealed partial class GameServer
     {
-        public void SendGameInfo(Client client)
-        {
-            try
-            {
-                if (client.ClientConnection.Status == NetConnectionStatus.Connected)
-                {
-                    NetOutgoingMessage message = _server.CreateMessage();
-
-                    message.Write((byte)MessageType.ServerMessage.GameStartInfo);
-                    message.Write(MapLoader.MapFileDictionary.Values.First());
-
-                    _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-
-                    Program.Log.Info("Sended game info map [" + MapLoader.MapFileDictionary.Values.First() + "]");
-                }
-            }
-            catch (NetException e)
-            {
-                Program.Log.Info("NET EXCEPTION: " + e.ToString());
-            }
-        }
-
         public void SendCurrentMap(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
-                NetOutgoingMessage message = _server.CreateMessage();
-                message.Write((byte)MessageType.ServerMessage.Map);
-
-                message.Write(Instance.GameManager.CurrentMap.Name);
-                message.Write(Instance.GameManager.CurrentMap.GetMd5());
-
-                string path = "Content/Maps/" + Instance.GameManager.CurrentMap.Name;
-                byte[] mapData = File.ReadAllBytes(path);
-
-                message.Write(mapData.Length);
-                foreach (var bt in mapData)
+                try
                 {
-                    message.Write(bt);
+                    NetOutgoingMessage message = _server.CreateMessage();
+                    message.Write((byte)MessageType.ServerMessage.Map);
+
+                    message.Write(Instance.SelectedMapName);
+                    message.Write(MapLoader.MapFileDictionary[Instance.SelectedMapName]);
+
+                    string path = "Content/Maps/" + Instance.SelectedMapName;
+
+                    byte[] mapData = File.ReadAllBytes(path);
+
+                    message.Write(mapData.Length);
+                    foreach (var bt in mapData)
+                    {
+                        message.Write(bt);
+                    }
+
+                    _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+                    Program.Log.Info("Send the map to client #" + client.ClientId);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    throw new Exception("This map doesn't exist !");
                 }
 
-                _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-                Program.Log.Info("Send the map to client #" + client.ClientId);
             }
         }
 
-        public void SendStartGame(Client client, bool gameInProgress)
+        public void SendGameWillStart()
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.GameWillStart);
+
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendStartGame(bool gameInProgress)
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
             message.Write((byte)MessageType.ServerMessage.StartGame);
             message.Write(gameInProgress);
-            
+
             if (!gameInProgress)
             {
-                message.Write(client.Player.Id);
-                message.Write(client.Player.Speed);
-                message.Write(GameConfiguration.SuddenDeathTimer.Milliseconds);
-
-                List<Wall> walls = GameServer.Instance.GameManager.WallList;
+                List<Wall> walls = Instance.GameManager.WallList;
                 message.Write(walls.Count);
+                
                 foreach (var wall in walls)
                 {
                     message.Write(wall.CellPosition);
                 }
             }
 
-            _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-            Program.Log.Info("Send start game to client #" + client.ClientId);
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("Send start game to all clients");
+
+            // Send players postions
+            SendPlayersPosition();
         }
 
         public void SendAvailableMaps(Client client)
@@ -231,6 +225,14 @@ namespace FBServer.Host
             Program.Log.Info("Send position of player #" + player.Id + " !");
         }
 
+        public void SendPlayersPosition()
+        {
+            foreach (var client in Instance.Clients)
+            {
+                SendPlayerPosition(client.Player, false);
+            }
+        }
+
         // Send to all players that this player has placed a bomb
         public void SendPlayerPlacingBomb(Player player, Point position)
         {
@@ -293,7 +295,7 @@ namespace FBServer.Host
             message.Write((byte)MessageType.ServerMessage.SuddenDeath);
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
-            
+
             Program.Log.Info("SUDDEN DEATH!");
         }
 
@@ -329,7 +331,7 @@ namespace FBServer.Host
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
-            message.Write((byte) MessageType.ServerMessage.Pings);
+            message.Write((byte)MessageType.ServerMessage.Pings);
             message.Write(Clients.Count);
             foreach (Client client in Clients)
             {

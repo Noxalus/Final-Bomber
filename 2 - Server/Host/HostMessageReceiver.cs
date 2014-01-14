@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using FBLibrary;
+﻿using FBLibrary;
 using FBLibrary.Core;
 using FBServer.Core;
 
@@ -7,22 +6,6 @@ namespace FBServer.Host
 {
     sealed partial class GameServer
     {
-        void ReceiveNeedMap(Client client)
-        {
-            SendCurrentMap(client);
-            Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
-        }
-
-        void ReceiveMapSelection(Client client, string md5)
-        {
-            if (client.IsHost)
-            {
-                Instance.SelectedMapName = MapLoader.GetMapNameFromMd5(md5);
-
-                SendSelectedMap(client);
-            }
-        }
-
         void ReceiveCredentials(Client client, string username, string password)
         {
             client.Username = username;
@@ -36,6 +19,16 @@ namespace FBServer.Host
             var player = new Player(client.ClientId);
 
             Instance.GameManager.AddPlayer(client, player);
+        }
+
+        void ReceiveMapSelection(Client client, string md5)
+        {
+            if (client.IsHost)
+            {
+                Instance.SelectedMapName = MapLoader.GetMapNameFromMd5(md5);
+
+                SendSelectedMap(client);
+            }
         }
 
         void ReceiveReady(Client client, bool ready)
@@ -54,9 +47,20 @@ namespace FBServer.Host
             SendIsReady(client, ready);
         }
 
-        private void ReceiveStartGame()
+        private void ReceiveWantToStartGame()
         {
-            Instance.GameManager.StartGame();
+            Instance.SendGameWillStart();
+        }
+
+        void ReceiveNeedMap(Client client)
+        {
+            SendCurrentMap(client);
+            Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
+        }
+
+        void ReceiveHasMap(Client client)
+        {
+            client.HasMap = true;
         }
 
         void ReceiveMovePlayer(Client client, LookDirection movement)

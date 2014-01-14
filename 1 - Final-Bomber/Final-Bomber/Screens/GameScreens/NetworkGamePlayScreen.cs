@@ -49,11 +49,12 @@ namespace FBClient.Screens.GameScreens
 
             //_serverProcess.Start();
 
-            _gameManager = (NetworkGameManager)GameServer.Instance.GameManager;
+            _gameManager = GameServer.Instance.GameManager;
+
+            _gameManager.Initialize();
 
             base.Initialize();
 
-            _gameManager.Initialize();
 
             // Server events
             GameServer.Instance.End += GameServer_End;
@@ -157,7 +158,7 @@ namespace FBClient.Screens.GameScreens
             {
                 // HUD => Item Info
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, p.Name + ": "
-                     + p.Stats.Score + " pt(s)",
+                     + p.Stats.Score + " pt(s)|" + _gameManager.GetClientFromPlayer(p).GetRoundedPing(),
                     new Vector2(HudOrigin.X + HudMarginLeft, HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
 #if DEBUG

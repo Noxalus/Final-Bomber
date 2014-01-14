@@ -16,10 +16,11 @@ namespace FBServer.Host
         public bool IsHost = false;
         public bool NewClient = true;
         public bool Spectating = false;
-        public string Username;
-        public string Password;
+        public string Username = "[Unknown]";
+        public string Password = "";
         public bool AlreadyPlayed;
         public float Ping = 0f;
+        public bool HasMap = false;
 
         public int ClientId { get; private set; }
 

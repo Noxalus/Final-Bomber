@@ -23,6 +23,8 @@ namespace FBClient.Entities
     {
         #region Field Region
 
+        protected GameManager GameManager;
+
         private AnimatedSprite _deathAnimation;
         protected TimeSpan BombTimerSaved;
 
@@ -65,6 +67,10 @@ namespace FBClient.Entities
 
             _invincibleBlinkFrequency = Config.InvincibleBlinkFrequency;
             _invincibleBlinkTimer = TimeSpan.FromSeconds(_invincibleBlinkFrequency);
+        }
+        public void SetGameManager(GameManager gameManager)
+        {
+            GameManager = gameManager;
         }
 
         public override void Reset()

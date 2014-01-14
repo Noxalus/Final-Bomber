@@ -26,9 +26,13 @@ namespace FBServer.Host
                     Program.Log.Info("[Client #" + client.ClientId + "] Sent Ready message !");
                     ReceiveReady(client, message.ReadBoolean());
                     break;
-                case (byte)MessageType.ClientMessage.StartGame:
-                    Program.Log.Info("[Client #" + client.ClientId + "] Sent StartGame message !");
-                    ReceiveStartGame();
+                case (byte)MessageType.ClientMessage.WantToStartGame:
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sent WantToStartGame message !");
+                    ReceiveWantToStartGame();
+                    break;
+                case (byte)MessageType.ClientMessage.HasMap:
+                    Program.Log.Info("[Client #" + client.ClientId + "] Sent HasMap message !");
+                    ReceiveHasMap(client);
                     break;
                 case (byte)MessageType.ClientMessage.MoveDown:
                     Program.Log.Info("[Client #" + client.ClientId + "] Want to move down !");

@@ -12,8 +12,6 @@ namespace FBClient.Core.Players
 {
     public abstract class BaseHumanPlayer : Player
     {
-        protected GameManager GameManager;
-
         protected Keys[] KeysSaved;
         private Vector2 _motionVector;
 
@@ -36,11 +34,6 @@ namespace FBClient.Core.Players
             Keys = Config.PlayersKeys[Id];
             Buttons = Config.PlayersButtons[Id];
             _motionVector = Vector2.Zero;
-        }
-
-        public void SetGameManager(GameManager gameManager)
-        {
-            GameManager = gameManager;
         }
 
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)

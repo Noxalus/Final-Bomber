@@ -17,6 +17,12 @@ namespace FBClient.Network
 
         public override void Initialize()
         {
+            foreach (var client in GameServer.Instance.Clients)
+            {
+                client.Player.SetGameManager(this);
+                AddPlayer(client.Player);
+            }
+
             base.Initialize();
 
             NetworkManager.Initiliaze();
@@ -51,6 +57,11 @@ namespace FBClient.Network
         public void AddClient(Client client)
         {
             GameServer.Instance.Clients.AddClient(client);
+        }
+
+        public Client GetClientFromPlayer(Player player)
+        {
+            return GameServer.Instance.Clients.Find(c => c.Player == player);
         }
 
         #endregion

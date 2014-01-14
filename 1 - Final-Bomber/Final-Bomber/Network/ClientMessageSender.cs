@@ -58,13 +58,25 @@ namespace FBClient.Network
             }
         }
 
-        public void SendStartGame()
+        public void SendWantToStartGame()
         {
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
 
-                send.Write((byte)MessageType.ClientMessage.StartGame);
+                send.Write((byte)MessageType.ClientMessage.WantToStartGame);
+
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+            }
+        }
+
+        public void SendHasMap()
+        {
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
+            {
+                NetOutgoingMessage send = _client.CreateMessage();
+
+                send.Write((byte)MessageType.ClientMessage.HasMap);
 
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }

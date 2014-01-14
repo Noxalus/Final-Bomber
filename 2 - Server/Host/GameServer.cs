@@ -108,7 +108,7 @@ namespace FBServer.Host
                 #if DEBUG
                 //PingInterval = 1f, // send ping every 1 second
                 //SimulatedLoss = 0.5f, // half packets lost
-                SimulatedMinimumLatency = 0.05f, // latency of 50 ms
+                //SimulatedMinimumLatency = 0.05f, // latency of 50 ms
                 #endif
             };
 
@@ -146,11 +146,12 @@ namespace FBServer.Host
             // Update the game manager
             GameManager.Update();
 
+            // Every 2 seconds we send the pings of all players to all players
             if (Clients.Count > 0 && _pingsTimer.Each(1000))
             {
-                _pingsTimer.Reset();
-                // Send players' pings to all players
                 SendPings();
+
+                _pingsTimer.Reset();
             }
         }
 
@@ -211,6 +212,8 @@ namespace FBServer.Host
                                 Program.Log.Fatal("EXCEPTION: " + e);
 
                                 sender.Disconnect("Caused a fatal server error, please check the log.");
+
+                                throw;
                             }
                         }
                         break;

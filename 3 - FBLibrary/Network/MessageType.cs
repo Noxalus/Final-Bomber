@@ -14,8 +14,9 @@ namespace FBLibrary.Network
             NeedMap = 6, // Player need to download the map
             Ready = 7, // Player is ready to start ?
             Credentials = 8, // Client credentials info (username, password, etc...)
-            StartGame = 9, // Host want to start game
+            WantToStartGame = 9, // Host want to start game
             MapSelection = 10, // Host has selected a map to play
+            HasMap = 11, // Player has already the selected map, no need to download it
         }
 
         public enum ServerMessage
@@ -37,7 +38,8 @@ namespace FBLibrary.Network
             IsReady = 17, // Sends that a specific client is ready or not
             AvailableMaps = 18, // Sends the list of available maps on the server
             SelectedMap = 19, // Sends the md5 of the map selected by the host
-            Pings = 20 // Sends players pings to all players
+            Pings = 20, // Sends players pings to all players
+            GameWillStart = 21, // Sends to all players that the game is going to start
         }
     }
 }

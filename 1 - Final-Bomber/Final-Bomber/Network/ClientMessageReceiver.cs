@@ -7,27 +7,12 @@ using Lidgren.Network.Xna;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FBClient.Network
 {
     sealed partial class GameServer
     {
-        #region Recieve methods
-
-        private void RecieveGameInfo(string mapMd5)
-        {
-            // Check that you have the map
-            if (MapLoader.MapFileDictionary.ContainsValue(mapMd5))
-            {
-                GameSettings.CurrentMapName = MapLoader.MapFileDictionary.FirstOrDefault(x => x.Value == mapMd5).Key;
-                OnStartInfo();
-            }
-            else
-            {
-                SendNeedMap();
-            }
-        }
+        #region Receive methods
 
         private void RecieveMyClientId(int clientId)
         {
@@ -74,29 +59,41 @@ namespace FBClient.Network
 
             MapLoader.LoadMapFiles();
 
-            RecieveGameInfo(md5);
+            SendHasMap();
         }
+
+        private void RecieveGameWillStart()
+        {
+            // Check that we have the selected map else ask to download it ! :)
+            if (!MapLoader.MapFileDictionary.ContainsValue(Instance.SelectedMapMd5))
+            {
+                SendNeedMap();
+            }
+            else
+            {
+                SendHasMap();
+            }
+        }
+
         private void RecieveStartGame(NetIncomingMessage message)
         {
             bool gameInProgress = message.ReadBoolean();
+
             if (!gameInProgress)
             {
-                int playerId = message.ReadInt32();
-                float moveSpeed = message.ReadFloat();
-                int suddenDeathTime = message.ReadInt32();
-                int wallNumber = message.ReadInt32();
                 var wallPositions = new List<Point>();
+                int wallNumber = message.ReadInt32();
 
                 for (int i = 0; i < wallNumber; i++)
                 {
                     wallPositions.Add(message.ReadPoint());
                 }
 
-                OnStartGame(false, playerId, moveSpeed, suddenDeathTime, wallPositions);
+                OnStartGame(false, wallPositions);
             }
             else
             {
-                OnStartGame(true, 0, 0, 0, null);
+                OnStartGame(true, null);
             }
         }
 
@@ -214,30 +211,16 @@ namespace FBClient.Network
         #endregion
 
 
-
-
-
         #region Events
 
-        #region StartInfo
-        public delegate void StartInfoEventHandler();
-        public event StartInfoEventHandler StartInfo;
-
-        private void OnStartInfo()
-        {
-            if (StartInfo != null)
-                StartInfo();
-        }
-        #endregion
-
         #region StartGame
-        public delegate void StartGameEventHandler(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions);
+        public delegate void StartGameEventHandler(bool gameInProgress, List<Point> wallPositions);
         public event StartGameEventHandler StartGame;
 
-        private void OnStartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
+        private void OnStartGame(bool gameInProgress, List<Point> wallPositions)
         {
             if (StartGame != null)
-                StartGame(gameInProgress, playerId, moveSpeed, suddenDeathTime, wallPositions);
+                StartGame(gameInProgress, wallPositions);
         }
         #endregion
 

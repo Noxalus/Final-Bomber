@@ -86,8 +86,15 @@ namespace FBLibrary
         // Time
         public static long DeltaTime; // Ticks
 
+#if DEBUG
+        public const int MinimumPlayerNumber = 1;
+#endif
+#if RELEASE
+        public const int MinimumPlayerNumber = 2;
+#endif
+
         // TO DELETE
-        public const int PlayerNumber = 5;
+        public const int PlayerNumber = 1;
         public const string ServerIp = "localhost";
         public const string ServerPort = "2643";
         public const int AlivePlayerRemaining = PlayerNumber - 1;

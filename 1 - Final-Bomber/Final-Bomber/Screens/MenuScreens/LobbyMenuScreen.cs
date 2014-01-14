@@ -32,7 +32,6 @@ namespace FBClient.Screens.MenuScreens
 
         public override void Initialize()
         {
-            GameServer.Instance.StartInfo += GameServer_StartInfo;
             GameServer.Instance.StartGame += GameServer_StartGame;
 
             FinalBomber.Instance.Exiting += Instance_Exiting;
@@ -53,7 +52,6 @@ namespace FBClient.Screens.MenuScreens
 
         protected override void UnloadContent()
         {
-            GameServer.Instance.StartInfo -= GameServer_StartInfo;
             GameServer.Instance.StartGame -= GameServer_StartGame;
 
             base.UnloadContent();
@@ -96,38 +94,43 @@ namespace FBClient.Screens.MenuScreens
             {
                 if (!GameServer.Instance.Disconnected)
                 {
-                    // Send that the player is ready/not ready to start the game
-                    if (InputHandler.KeyPressed(Keys.R))
-                    {
-                        _isReady = !_isReady;
-                        GameServer.Instance.Clients.Me.IsReady = _isReady;
-                        GameServer.Instance.SendIsReady(_isReady);
-                    }
-
                     if (GameServer.Instance.Clients.Me != null)
                     {
-                        if (GameServer.Instance.Clients.Me.IsHost)
+                        // Send that the player is ready/not ready to start the game
+                        if (InputHandler.KeyPressed(Keys.R))
                         {
-                            // Select map
-                            if (InputHandler.KeyPressed(Keys.Up))
+                            _isReady = !_isReady;
+                            GameServer.Instance.Clients.Me.IsReady = _isReady;
+                            GameServer.Instance.SendIsReady(_isReady);
+                        }
+
+                        if (!_isReady)
+                        {
+                            if (GameServer.Instance.Clients.Me.IsHost)
                             {
-                                var mapList = GameServer.Instance.Maps.Values.ToList();
-                                var mapIndex = mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
+                                // Select map
+                                if (InputHandler.KeyPressed(Keys.Up))
+                                {
+                                    var mapList = GameServer.Instance.Maps.Values.ToList();
+                                    var mapIndex =
+                                        mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
 
-                                mapIndex = (mapIndex - 1);
-                                if (mapIndex < 0)
-                                    mapIndex = mapList.Count - 1;
+                                    mapIndex = (mapIndex - 1);
+                                    if (mapIndex < 0)
+                                        mapIndex = mapList.Count - 1;
 
-                                GameServer.Instance.SendMapSelection(mapList[mapIndex]);
-                            }
-                            else if (InputHandler.KeyPressed(Keys.Down))
-                            {
-                                var mapList = GameServer.Instance.Maps.Values.ToList();
-                                var mapIndex = mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
+                                    GameServer.Instance.SendMapSelection(mapList[mapIndex]);
+                                }
+                                else if (InputHandler.KeyPressed(Keys.Down))
+                                {
+                                    var mapList = GameServer.Instance.Maps.Values.ToList();
+                                    var mapIndex =
+                                        mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
 
-                                mapIndex = (mapIndex + 1) % mapList.Count;
+                                    mapIndex = (mapIndex + 1)%mapList.Count;
 
-                                GameServer.Instance.SendMapSelection(mapList[mapIndex]);
+                                    GameServer.Instance.SendMapSelection(mapList[mapIndex]);
+                                }
                             }
                         }
 
@@ -136,9 +139,10 @@ namespace FBClient.Screens.MenuScreens
                             if (GameServer.Instance.Clients.Me.IsHost && InputHandler.KeyPressed(Keys.Space))
                             {
                                 // Start the game
-                                GameServer.Instance.SendStartGame();
+                                GameServer.Instance.SendWantToStartGame();
                             }
                         }
+}
                     }
                 }
                 else
@@ -265,19 +269,16 @@ namespace FBClient.Screens.MenuScreens
 
         #region Server events
 
-        private void GameServer_StartInfo()
+        private void GameServer_StartGame(bool gameInProgress, List<Point> wallPositions)
         {
-        }
+            // Load the selected map
+            GameServer.Instance.GameManager.LoadMap(MapLoader.GetMapNameFromMd5(GameServer.Instance.SelectedMapMd5));
+            // Add the wall from server
+            GameServer.Instance.GameManager.AddWalls(wallPositions);
 
-        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
-        {
-            if (true /*!mainGame.IsStarted*/)
-            {
-                GameServer.Instance.GameManager.LoadMap(GameSettings.CurrentMapName);
-                GameServer.Instance.GameManager.AddWalls(wallPositions);
-            }
-
+            // Go to gameplay screen and let's start the battle ! :)
             StateManager.ChangeState(FinalBomber.Instance.NetworkTestScreen);
+            
             UnloadContent();
         }
 

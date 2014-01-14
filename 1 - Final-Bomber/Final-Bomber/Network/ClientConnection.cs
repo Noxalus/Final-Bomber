@@ -43,7 +43,15 @@ namespace FBClient.Network
 
         public void StartClientConnection(string ip, string port)
         {
-            _config = new NetPeerConfiguration("Final-Bomber");
+            _config = new NetPeerConfiguration("Final-Bomber")
+            {
+#if DEBUG
+                //PingInterval = 1f, // send ping every 1 second
+                //SimulatedLoss = 0.5f, // half packets lost
+                SimulatedMinimumLatency = 0.5f, // latency of 50 ms
+#endif
+            };
+
             _config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
             _hasStarted = true;

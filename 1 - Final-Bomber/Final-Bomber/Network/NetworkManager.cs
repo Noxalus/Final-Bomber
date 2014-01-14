@@ -66,7 +66,6 @@ namespace FBClient.Network
             PublicIp = "?";
 
             // Server events
-            GameServer.Instance.StartInfo += GameServer_StartInfo;
             GameServer.Instance.StartGame += GameServer_StartGame;
 
             GameServer.Instance.UpdatePing += GameServer_UpdatePing;
@@ -85,7 +84,6 @@ namespace FBClient.Network
         public void Dispose()
         {
             // Server events
-            GameServer.Instance.StartInfo -= GameServer_StartInfo;
             GameServer.Instance.StartGame -= GameServer_StartGame;
 
             GameServer.Instance.UpdatePing -= GameServer_UpdatePing;
@@ -156,21 +154,8 @@ namespace FBClient.Network
             _isReady = true;
         }
 
-        private void GameServer_StartGame(bool gameInProgress, int playerId, float moveSpeed, int suddenDeathTime, List<Point> wallPositions)
+        private void GameServer_StartGame(bool gameInProgress, List<Point> wallPositions)
         {
-            if (!gameInProgress)
-            {
-                //NetworkTestScreen.NetworkManager.MoveSpeed = moveSpeed;
-                GameConfiguration.SuddenDeathTimer = TimeSpan.FromMilliseconds(suddenDeathTime);
-            }
-            else
-            {
-                /*
-                mainGame.me.Kill();
-                mainGame.Spectator = true;
-                */
-            }
-
             GameServer.Instance.GameManager.AddWalls(wallPositions);
         }
 

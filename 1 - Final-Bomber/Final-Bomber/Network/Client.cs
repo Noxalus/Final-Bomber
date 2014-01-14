@@ -1,4 +1,5 @@
-﻿using FBClient.Entities;
+﻿using System;
+using FBClient.Entities;
 
 namespace FBClient.Network
 {
@@ -10,6 +11,9 @@ namespace FBClient.Network
         public float Ping;
         public Player Player;
 
+        public bool Spectating;
+        public bool NewPlayer;
+
         public bool IsHost { get { return Id == 0; } }
 
         public Client(int id)
@@ -20,6 +24,14 @@ namespace FBClient.Network
             Ping = 0f;
 
             Player = null;
+
+            Spectating = false;
+            NewPlayer = false;
+        }
+
+        public double GetRoundedPing()
+        {
+            return Math.Round(Ping);
         }
     }
 }
