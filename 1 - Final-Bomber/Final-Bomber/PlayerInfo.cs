@@ -2,7 +2,8 @@
 {
     static class PlayerInfo
     {
-        public const string Username = "Noob";
-        public const string Password = "COUCOU";
+        // Let them in static ! (modified by PlayerInfo.xml file)
+        public static string Username = "Noob";
+        public static string Password = "COUCOU";
     }
 }

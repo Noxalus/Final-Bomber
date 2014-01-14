@@ -51,10 +51,9 @@ namespace FBClient.Screens.GameScreens
 
             _gameManager = GameServer.Instance.GameManager;
 
-            _gameManager.Initialize();
+            _gameManager.AddPlayers();
 
             base.Initialize();
-
 
             // Server events
             GameServer.Instance.End += GameServer_End;

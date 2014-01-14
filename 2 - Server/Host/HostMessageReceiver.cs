@@ -6,6 +6,8 @@ namespace FBServer.Host
 {
     sealed partial class GameServer
     {
+        #region Pre game actions
+
         void ReceiveCredentials(Client client, string username, string password)
         {
             client.Username = username;
@@ -63,6 +65,9 @@ namespace FBServer.Host
             client.HasMap = true;
         }
 
+        #endregion
+
+        #region Game actions
         void ReceiveMovePlayer(Client client, LookDirection movement)
         {
             // Receives the player's current direction
@@ -70,20 +75,12 @@ namespace FBServer.Host
                 client.Player.SetMovement(movement); 
         }
 
-        #region BombPlacing
-        public delegate void BombPlacingEventHandler(Client sender);
-        public event BombPlacingEventHandler BombPlacing;
-
-        private void OnBombPlacing(Client sender)
-        {
-            if (BombPlacing != null)
-                BombPlacing(sender);
-        }
-        #endregion
         void ReceiveBombPlacing(Client client)
         {
             if (client.Player.IsAlive)
                 OnBombPlacing(client);
         }
+
+        #endregion
     }
 }

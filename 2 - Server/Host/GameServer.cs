@@ -50,10 +50,12 @@ namespace FBServer.Host
         // Delegates
         public delegate void DisconnectedClientEventHandler(Client sender, EventArgs e);
         public delegate void ConnectedClientEventHandler(Client sender, EventArgs e);
+        public delegate void BombPlacingEventHandler(Client sender);
 
         // Handlers
         public event DisconnectedClientEventHandler DisconnectedClient;
         public event ConnectedClientEventHandler ConnectedClient;
+        public event BombPlacingEventHandler BombPlacing;
 
         #endregion
 
@@ -246,5 +248,15 @@ namespace FBServer.Host
 
             Program.Log.Info("[END]Server stopped at " + DateTime.Now);
         }
+
+        #region Events
+
+        private void OnBombPlacing(Client sender)
+        {
+            if (BombPlacing != null)
+                BombPlacing(sender);
+        }
+
+        #endregion
     }
 }

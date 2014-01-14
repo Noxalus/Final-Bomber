@@ -67,10 +67,8 @@ namespace FBClient.Network
 
             // Server events
             GameServer.Instance.StartGame += GameServer_StartGame;
-
             GameServer.Instance.UpdatePing += GameServer_UpdatePing;
             GameServer.Instance.NewClient += GameServer_NewClient;
-            //GameServer.Instance.RemovePlayer += GameServer_RemovePlayer;
             GameServer.Instance.MovePlayer += GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
             GameServer.Instance.BombExploded += GameServer_BombExploded;
@@ -85,10 +83,8 @@ namespace FBClient.Network
         {
             // Server events
             GameServer.Instance.StartGame -= GameServer_StartGame;
-
             GameServer.Instance.UpdatePing -= GameServer_UpdatePing;
             GameServer.Instance.NewClient -= GameServer_NewClient;
-            //GameServer.Instance.RemovePlayer -= GameServer_RemovePlayer;
             GameServer.Instance.MovePlayer -= GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb -= GameServer_PlacingBomb;
             GameServer.Instance.BombExploded -= GameServer_BombExploded;
@@ -229,7 +225,7 @@ namespace FBClient.Network
             GameServer.Instance.Clients.Me.Ping = ping;
         }
 
-        private void GameServer_PlacingBomb(int clientId, Point position)
+        public void GameServer_PlacingBomb(int clientId, Point position)
         {
             Client client = GameServer.Instance.Clients.GetClientById(clientId);
 

@@ -13,6 +13,8 @@ namespace FBServer.Host
 {
     sealed partial class GameServer
     {
+        #region Pre game
+
         private void SendCurrentMap(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
@@ -206,6 +208,10 @@ namespace FBServer.Host
         }
         #endregion
 
+        #endregion
+
+        #region Game actions
+
         // Send the player's movement to all other players
         public void SendPlayerPosition(Player player, bool notDir)
         {
@@ -234,17 +240,17 @@ namespace FBServer.Host
         }
 
         // Send to all players that this player has placed a bomb
-        public void SendPlayerPlacingBomb(Player player, Point position)
+        public void SendPlayerPlacingBomb(Client client, Point position)
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
             message.Write((byte)MessageType.ServerMessage.PlayerPlacingBomb);
-            message.Write(player.Id);
+            message.Write(client.ClientId);
             message.Write(position);
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send that player #" + player.Id + " has planted a bomb !");
+            Program.Log.Info("[SEND][Client #" + client.ClientId + "] Planted a bomb !");
         }
 
         // Send to all players that a bomb has blow up
@@ -313,6 +319,10 @@ namespace FBServer.Host
             }
         }
 
+        #endregion
+
+        #region Post game actions
+
         public void SendEnd(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
@@ -326,6 +336,8 @@ namespace FBServer.Host
                 Program.Log.Info("[SEND] 'End' to player #" + client.Player.Id);
             }
         }
+
+        #endregion
 
         public void SendPings()
         {

@@ -132,13 +132,17 @@ namespace FBClient.Network
 
             OnMovePlayerAction(arg);
         }
-        public void ReceivePlacingBomb(int playerId, Point position)
+
+        private void ReceivePlacingBomb(int playerId, Point position)
         {
-            OnPlacingBomb(playerId, position);
+            //OnPlacingBomb(playerId, position);
+
+            GameManager.NetworkManager.GameServer_PlacingBomb(playerId, position);
         }
-        public void ReceiveBombExploded(NetIncomingMessage message)
+
+        private void ReceiveBombExploded(NetIncomingMessage message)
         {
-            Point position = message.ReadPoint();
+            var position = message.ReadPoint();
 
             /*
             int count = buffer.ReadInt32();

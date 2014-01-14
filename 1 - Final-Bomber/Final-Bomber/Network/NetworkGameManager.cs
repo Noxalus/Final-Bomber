@@ -17,15 +17,18 @@ namespace FBClient.Network
 
         public override void Initialize()
         {
+            base.Initialize();
+
+            NetworkManager.Initiliaze();
+        }
+
+        public void AddPlayers()
+        {
             foreach (var client in GameServer.Instance.Clients)
             {
                 client.Player.SetGameManager(this);
                 AddPlayer(client.Player);
             }
-
-            base.Initialize();
-
-            NetworkManager.Initiliaze();
         }
 
         public override void LoadContent()

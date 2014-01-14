@@ -100,7 +100,7 @@ namespace FBServer.Host
                     GameServer.Instance.GameManager.AddBomb(bomb);
                     player.CurrentBombAmount--;
 
-                    GameServer.Instance.SendPlayerPlacingBomb(sender.Player, bomb.CellPosition);
+                    GameServer.Instance.SendPlayerPlacingBomb(sender, bomb.CellPosition);
                 }
             }
         }

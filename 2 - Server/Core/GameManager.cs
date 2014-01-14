@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
@@ -473,7 +475,7 @@ namespace FBServer.Core
             base.DestroyBomb(bomb);
 
             if (bomb == null)
-                Program.Log.Error("Bomb at " + position + "doesn't exist !");
+                Program.Log.Error("Bomb at " + position + " doesn't exist !");
             else
                 Program.Log.Info("Bomb exploded at " + position);
         }
