@@ -108,6 +108,8 @@ namespace FBServer.Core
                 RunGameLogic();
 
                 CheckRoundEnd();
+
+                base.Update();
             }
             else
             {
@@ -118,9 +120,6 @@ namespace FBServer.Core
                     StartGame();
                 }
             }
-
-
-            //base.Update();
         }
 
         public void StartGame()
@@ -240,8 +239,6 @@ namespace FBServer.Core
             if (GameHasBegun)
             {
                 MovePlayers();
-
-                //CheckSuddenDeath();
             }
         }
 

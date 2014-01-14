@@ -39,16 +39,14 @@ namespace FBClient.Network
             set { _failedToConnect = value; }
         }
 
-        public const int Ping = 10;
-
         public void StartClientConnection(string ip, string port)
         {
             _config = new NetPeerConfiguration("Final-Bomber")
             {
 #if DEBUG
                 //PingInterval = 1f, // send ping every 1 second
-                //SimulatedLoss = 0.5f, // half packets lost
-                SimulatedMinimumLatency = 0.5f, // latency of 50 ms
+                //SimulatedLoss = 0.5f, // from 0 to 1
+                SimulatedMinimumLatency = 0.05f, // 0.05f for a latency of 50 ms
 #endif
             };
 
@@ -93,7 +91,7 @@ namespace FBClient.Network
                 switch (message.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        Debug.Print("A Data type message has been received from server.");
+                        //Debug.Print("A Data type message has been received from server.");
                         type = message.ReadByte();
                         DataProcessing(type, message);
                         break;
@@ -127,7 +125,7 @@ namespace FBClient.Network
                         Debug.Print("A StatusChanged has been received from server. (" + statusChangedReason + ")");
                         break;
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
-                        Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
+                        //Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
                         float ping = message.ReadFloat() * 1000;
 
                         //RecievePing(ping);

@@ -127,7 +127,7 @@ namespace FBClient.Screens.MenuScreens
                                     var mapIndex =
                                         mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
 
-                                    mapIndex = (mapIndex + 1)%mapList.Count;
+                                    mapIndex = (mapIndex + 1) % mapList.Count;
 
                                     GameServer.Instance.SendMapSelection(mapList[mapIndex]);
                                 }
@@ -142,7 +142,6 @@ namespace FBClient.Screens.MenuScreens
                                 GameServer.Instance.SendWantToStartGame();
                             }
                         }
-}
                     }
                 }
                 else
@@ -278,7 +277,7 @@ namespace FBClient.Screens.MenuScreens
 
             // Go to gameplay screen and let's start the battle ! :)
             StateManager.ChangeState(FinalBomber.Instance.NetworkTestScreen);
-            
+
             UnloadContent();
         }
 

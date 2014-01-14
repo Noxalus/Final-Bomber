@@ -81,7 +81,7 @@ namespace FBClient.Network
                     RecieveEnd(message.ReadBoolean());
                     break;
                 case (byte)MessageType.ServerMessage.Pings:
-                    Debug.Print("A message type 'Pings have been received from server !");
+                    //Debug.Print("A message type 'Pings have been received from server !");
                     RecievePings(message);
                     break;
             }

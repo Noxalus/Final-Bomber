@@ -223,7 +223,6 @@ namespace FBLibrary.Core.BaseEntities
         #region Displaying region
         public void DisplayBoard()
         {
-
             for (int y = 0; y < Size.Y; y++)
             {
                 for (int x = 0; x < Size.X; x++)

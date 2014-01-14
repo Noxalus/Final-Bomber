@@ -13,7 +13,7 @@ namespace FBServer.Host
 {
     sealed partial class GameServer
     {
-        public void SendCurrentMap(Client client)
+        private void SendCurrentMap(Client client)
         {
             if (client.ClientConnection.Status == NetConnectionStatus.Connected)
             {
@@ -36,7 +36,7 @@ namespace FBServer.Host
                     }
 
                     _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-                    Program.Log.Info("Send the map to client #" + client.ClientId);
+                    Program.Log.Info("[SEND] Sent the map to client #" + client.ClientId);
                 }
                 catch (FileNotFoundException ex)
                 {
@@ -46,7 +46,7 @@ namespace FBServer.Host
             }
         }
 
-        public void SendGameWillStart()
+        private void SendGameWillStart()
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
@@ -75,7 +75,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send start game to all clients");
+            Program.Log.Info("[SEND] Sent start game to all clients");
 
             // Send players postions
             SendPlayersPosition();
@@ -132,7 +132,7 @@ namespace FBServer.Host
 
             _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Sended server generated id to its corresponding client (id: " + client.ClientId + ")");
+            Program.Log.Info("[SEND] Sent server generated id to its corresponding client (id: " + client.ClientId + ")");
         }
 
         private void SendIsReady(Client client, bool ready)
@@ -145,7 +145,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, client.ClientConnection, NetDeliveryMethod.ReliableUnordered, 0);
 
-            Program.Log.Info("Sended that this client is ready or not (id: " + client.ClientId + "|ready: " + ready + ")");
+            //Program.Log.Info("[SEND] Sent that this client is ready or not (id: " + client.ClientId + "|ready: " + ready + ")");
         }
 
         // Send all players to this player
@@ -159,11 +159,11 @@ namespace FBServer.Host
 
                     _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
 
-                    Program.Log.Info("Send the player (client #" + currentClient.ClientId + ") to the new player (client #" + client.ClientId + ")");
+                    Program.Log.Info("[SEND] Sent the player (client #" + currentClient.ClientId + ") to the new player (client #" + client.ClientId + ")");
                 }
             }
 
-            Program.Log.Info("Sent the players to the new player (client #" + client.ClientId + ")");
+            Program.Log.Info("[SEND] Sent the players to the new player (client #" + client.ClientId + ")");
         }
 
         // Send this new player to already existing players
@@ -175,7 +175,7 @@ namespace FBServer.Host
 
                 _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-                Program.Log.Info("Send the new player to all other players (client #" + client.ClientId + ")");
+                Program.Log.Info("[SEND] Sent the new player to all other players (client #" + client.ClientId + ")");
             }
         }
 
@@ -188,7 +188,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send that the player #" + removedPlayer.Id + " is dead !");
+            Program.Log.Info("[SEND] Sent that the player #" + removedPlayer.Id + " is dead !");
         }
 
         #region GetPlayerInfo
@@ -222,7 +222,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send position of player #" + player.Id + " !");
+            Program.Log.Info("[SEND] Sent position of player #" + player.Id + " !");
         }
 
         public void SendPlayersPosition()
@@ -257,7 +257,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Send that bomb exploded to everyone ! (position: " + bomb.Position + ")");
+            Program.Log.Info("[SEND] Sent that bomb exploded to everyone ! (position: " + bomb.Position + ")");
         }
 
         public void SendPowerUpDrop(PowerUp powerUp)
@@ -271,7 +271,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Power up dropped ! (type: " + powerUp.Type + "|position: " + powerUp.CellPosition + ")");
+            Program.Log.Info("[SEND] Power up dropped ! (type: " + powerUp.Type + "|position: " + powerUp.CellPosition + ")");
         }
 
         public void SendPowerUpPick(Player player, PowerUp powerUp)
@@ -285,7 +285,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("Power up pick by player #" + player.Id + " !");
+            Program.Log.Info("[SENT] Power up pick by player #" + player.Id + " !");
         }
 
         public void SendSuddenDeath()
@@ -296,7 +296,7 @@ namespace FBServer.Host
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("SUDDEN DEATH!");
+            Program.Log.Info("[SEND] SUDDEN DEATH!");
         }
 
         public void SendRoundEnd(Client client)
@@ -309,7 +309,7 @@ namespace FBServer.Host
 
                 _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
 
-                Program.Log.Info("Send 'RoundEnd' to player #" + client.Player.Id);
+                Program.Log.Info("[SEND] Sent 'RoundEnd' to player #" + client.Player.Id);
             }
         }
 
@@ -323,7 +323,7 @@ namespace FBServer.Host
                 message.Write(client.Player.IsAlive);
 
                 _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-                Program.Log.Info("Sent 'End' to player #" + client.Player.Id);
+                Program.Log.Info("[SEND] 'End' to player #" + client.Player.Id);
             }
         }
 
@@ -340,7 +340,8 @@ namespace FBServer.Host
             }
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
-            Program.Log.Info("Sent pings of all players to all players !");
+            
+            //Program.Log.Info("[SEND] Pings of all players to all players !");
         }
     }
 }

@@ -177,7 +177,7 @@ namespace FBServer.Host
                                 _clientId++;
 
                                 OnConnectedClient(newClient, new EventArgs());
-                                Program.Log.Info("[Connected]Client " + newClient.ClientId + " connected with ip: " + sender.RemoteEndPoint);
+                                Program.Log.Info("[RECEIVE][Client #" + newClient.ClientId + "] Just connected with ip: " + sender.RemoteEndPoint);
                             }
                         }
                         else
@@ -220,7 +220,7 @@ namespace FBServer.Host
 
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
                         float ping = message.ReadFloat() * 1000;
-                        Program.Log.Info("Client #" + currentClient.ClientId + " ping: " + ping + "ms");
+                        //Program.Log.Info("Client #" + currentClient.ClientId + " ping: " + ping + "ms");
                         currentClient.Ping = ping;
 
                         break;

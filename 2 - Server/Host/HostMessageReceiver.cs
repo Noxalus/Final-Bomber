@@ -13,7 +13,7 @@ namespace FBServer.Host
 
             //MainServer.SendCheckIfOnline(username, password);
 
-            Program.Log.Info("Client " + client.ClientId + " sent player info. (username: " + username + "|password: " + password + ")");
+            Program.Log.Info("[RECEIVE][Client #" + client.ClientId + "] Credentials. (username: " + username + "|password: " + password + ")");
 
             // Create a new player
             var player = new Player(client.ClientId);
@@ -37,11 +37,11 @@ namespace FBServer.Host
 
             if (client.IsReady)
             {
-                Program.Log.Info("Client " + client.ClientId + " is ready !");
+                Program.Log.Info("[RECEIVE][Client #" + client.ClientId + "] Client is ready !");
             }
             else
             {
-                Program.Log.Info("Client " + client.ClientId + " is not ready actually !");
+                Program.Log.Info("[RECEIVE][Client #" + client.ClientId + "]  Client is not ready actually !");
             }
 
             SendIsReady(client, ready);
@@ -55,7 +55,7 @@ namespace FBServer.Host
         void ReceiveNeedMap(Client client)
         {
             SendCurrentMap(client);
-            Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
+            Program.Log.Info("[RECEIVE][Client #" + client.ClientId + "] Client needs the current map, sending it to him ! :)");
         }
 
         void ReceiveHasMap(Client client)
@@ -65,8 +65,9 @@ namespace FBServer.Host
 
         void ReceiveMovePlayer(Client client, LookDirection movement)
         {
+            // Receives the player's current direction
             if (client.Player.IsAlive)
-                client.Player.SetMovement(movement); // Receives the player's current direction
+                client.Player.SetMovement(movement); 
         }
 
         #region BombPlacing
