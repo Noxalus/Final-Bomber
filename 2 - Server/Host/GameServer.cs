@@ -154,7 +154,7 @@ namespace FBServer.Host
             {
                 // Synchronize clients (players positions)
                 if (_sendPlayersPositionTimer.Each(ServerSettings.SendPlayersPositionTime))
-                    SendPlayersPosition();
+                    SendPlayersPosition(false);
             }
 
             // Every 2 seconds we send the pings of all players to all players

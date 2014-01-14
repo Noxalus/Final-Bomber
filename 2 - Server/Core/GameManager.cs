@@ -232,7 +232,7 @@ namespace FBServer.Core
             foreach (Client client in GameServer.Instance.Clients)
             {
                 //client.Player.nextDirection = LookDirection.Idle;
-                GameServer.Instance.SendPlayerPosition(client.Player, false);
+                GameServer.Instance.SendPlayerPosition(client, false, false);
             }
         }
 

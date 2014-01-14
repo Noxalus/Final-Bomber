@@ -68,7 +68,7 @@ namespace FBServer.Host
             {
                 List<Wall> walls = Instance.GameManager.WallList;
                 message.Write(walls.Count);
-                
+
                 foreach (var wall in walls)
                 {
                     message.Write(wall.CellPosition);
@@ -80,7 +80,7 @@ namespace FBServer.Host
             Program.Log.Info("[SEND] Sent start game to all clients");
 
             // Send players postions
-            SendPlayersPosition();
+            SendPlayersPosition(false);
         }
 
         public void SendAvailableMaps(Client client)
@@ -213,29 +213,39 @@ namespace FBServer.Host
         #region Game actions
 
         // Send the player's movement to all other players
-        public void SendPlayerPosition(Player player, bool notDir)
+        public void SendPlayerPosition(Client client, bool notDir, bool exceptHim)
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
             message.Write((byte)MessageType.ServerMessage.PlayerPosition);
 
-            message.Write(player.Position.X);
-            message.Write(player.Position.Y);
+            message.Write(client.Player.Position.X);
+            message.Write(client.Player.Position.Y);
 
-            message.Write((byte)player.CurrentDirection);
+            message.Write((byte)client.Player.CurrentDirection);
 
-            message.Write(player.Id);
+            message.Write(client.ClientId);
 
-            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+            string logMessage = "[SEND] Sent position of client #" + client.ClientId + " !";
+            if (exceptHim)
+            {
+                _server.SendToAll(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                logMessage += " (except him)";
+            }
+            else
+            {
+                _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+            }
 
-            Program.Log.Info("[SEND] Sent position of player #" + player.Id + " !");
+            Program.Log.Info(logMessage);
+
         }
 
-        private void SendPlayersPosition()
+        private void SendPlayersPosition(bool exceptHim)
         {
             foreach (var client in Instance.Clients)
             {
-                SendPlayerPosition(client.Player, false);
+                SendPlayerPosition(client, false, exceptHim);
             }
         }
 
@@ -352,7 +362,7 @@ namespace FBServer.Host
             }
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
-            
+
             //Program.Log.Info("[SEND] Pings of all players to all players !");
         }
     }

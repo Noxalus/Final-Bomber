@@ -29,6 +29,7 @@ namespace FBServer.Core
             if (PreviousDirection == LookDirection.Idle && direction != LookDirection.Idle)
             {
                 PreviousDirection = direction;
+                // TODO: Send position to all players except him
                 SendPosition();
             }
         }
@@ -66,6 +67,7 @@ namespace FBServer.Core
 
                 if (CurrentDirection != PreviousDirection)
                 {
+                    // TODO: Same
                     SendPosition();
                 }
                 
@@ -88,7 +90,8 @@ namespace FBServer.Core
 
         private void SendPosition()
         {
-            GameServer.Instance.SendPlayerPosition(this, false);
+            var client = GameServer.Instance.Clients.GetClientFromPlayer(this);
+            GameServer.Instance.SendPlayerPosition(client, false, true);
         }
 
         protected override float GetMovementSpeed()
