@@ -15,7 +15,7 @@ namespace FBLibrary
         public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
 
         // Base characteristics
-        public const int BasePlayerBombPower = 1;
+        public const int BasePlayerBombPower = 10;
         public const float BasePlayerSpeed = 150f;
         public const float BaseBombSpeed = 3f;
         public const int BasePlayerBombAmount = 1;
@@ -89,7 +89,8 @@ namespace FBLibrary
 #if DEBUG
         public const int MinimumPlayerNumber = 1;
 #endif
-#if RELEASE
+
+#if !DEBUG
         public const int MinimumPlayerNumber = 2;
 #endif
 

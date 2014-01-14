@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using FBClient.Sprites;
@@ -40,7 +41,7 @@ namespace FBClient.Core.Entities
         };
 
         #endregion
-        
+
         #region Constructor Region
 
         public Bomb(int playerId, Point cellPosition, int pow, TimeSpan timer, float playerSpeed)
@@ -259,7 +260,7 @@ namespace FBClient.Core.Entities
                         if (!CollisionLayer[p.X, p.Y] || p == CellPosition)
                         {
                             // We choose the sprite of explosion for each cell
-                            _explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p, HazardMap);
+                            _explosionAnimationsDirection[p] = ComputeExplosionSpriteDirections(p);
                         }
                     }
                 }
@@ -268,8 +269,8 @@ namespace FBClient.Core.Entities
                     foreach (Point p in _explosionAnimationsDirection.Keys)
                     {
                         FinalBomber.Instance.SpriteBatch.Draw(_explosionSpriteTexture,
-                            new Vector2(Engine.Origin.X + p.X*Engine.TileWidth, Engine.Origin.Y + p.Y*Engine.TileHeight),
-                            _explosionAnimations[(int) _explosionAnimationsDirection[p]].CurrentFrameRect, Color.White);
+                            new Vector2(Engine.Origin.X + p.X * Engine.TileWidth, Engine.Origin.Y + p.Y * Engine.TileHeight),
+                            _explosionAnimations[(int)_explosionAnimationsDirection[p]].CurrentFrameRect, Color.White);
                     }
                 }
             }
@@ -316,81 +317,49 @@ namespace FBClient.Core.Entities
         #endregion
 
         // 0 => Down, 1 => Left, 2 => Right, 3 => Up, 4 => Middle, 5 => Horizontal, 6 => Vertical 
-        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell, int[,] hazardMap)
+        private ExplosionDirection ComputeExplosionSpriteDirections(Point cell)
         {
             int downCell = cell.Y + 1, leftCell = cell.X - 1, rightCell = cell.X + 1, upCell = cell.Y - 1;
 
-            // ~ The middle ~ //
+            // The middle
             if (cell.X == CellPosition.X && cell.Y == CellPosition.Y)
                 return ExplosionDirection.Middle;
 
             // ~ Vertical axis ~ //
+            if ((ActionField.Any(c => c.X == cell.X && c.Y == downCell)) ||
+                (ActionField.Any(c => c.X == cell.X && c.Y == upCell)))
+            {
+                // Top extremity
+                if (!ActionField.Any(c => c.X == cell.X && c.Y == upCell))
+                    return ExplosionDirection.Up;
 
-            // Top extremity
-            if (hazardMap[cell.X, upCell] == 0 &&
-                (ActionField.Find(c => c.X == cell.X && c.Y == downCell) != Point.Zero))
-                return ExplosionDirection.Up;
-                // Vertical
-            if ((ActionField.Find(c => c.X == cell.X && c.Y == downCell) != Point.Zero) &&
-                (ActionField.Find(c => c.X == cell.X && c.Y == upCell) != Point.Zero))
-                return ExplosionDirection.Vertical;
                 // Bottom extremity
-            if (hazardMap[cell.X, downCell] == 0 &&
-                (ActionField.Find(c => c.X == cell.X && c.Y == upCell) != Point.Zero))
-                return ExplosionDirection.Down;
+                if (!ActionField.Any(c => c.X == cell.X && c.Y == downCell))
+                    return ExplosionDirection.Down;
 
-                // ~ Horizontal axis ~ //
+                // Vertical
+                return ExplosionDirection.Vertical;
+            }
 
-                // Left extremity
-            if (hazardMap[leftCell, cell.Y] == 0 &&
-                (ActionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero))
-                return ExplosionDirection.Left;
-                // Left - Right
-            if ((ActionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero) &&
-                (ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero))
-                return ExplosionDirection.Horizontal;
-                // Right extremity
-            if (hazardMap[rightCell, cell.Y] == 0 &&
-                (ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero))
-                return ExplosionDirection.Right;
-
-                // ~ Corners ~ //
-
-                // Corner Top - Left
-            if (cell.Y == 1 && cell.X == 1)
+            // ~ Horizontal axis ~ //
+            if ((ActionField.Any(c => c.X == rightCell && c.Y == cell.Y)) ||
+                (ActionField.Any(c => c.X == leftCell && c.Y == cell.Y)))
             {
                 // Left extremity
-                if (ActionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero)
+                if (!ActionField.Any(c => c.X == leftCell && c.Y == cell.Y))
                     return ExplosionDirection.Left;
-                    // Top extremity
-                return ExplosionDirection.Up;
-            }
-                // Corner Bottom - Left
-            if (cell.Y == MapSize.Y - 2 && cell.X == 1)
-            {
-                // Left extremity
-                return ActionField.Find(c => c.X == rightCell && c.Y == cell.Y) != Point.Zero
-                    ? ExplosionDirection.Left
-                    : ExplosionDirection.Down;
+
+                // Right extremity
+                if (!ActionField.Any(c => c.X == rightCell && c.Y == cell.Y))
+                    return ExplosionDirection.Right;
+
+                // Left - Right
+                return ExplosionDirection.Horizontal;
             }
 
-                // Corner Top - Right
-            if (cell.X == MapSize.X - 2 && cell.Y == 1)
-            {
-                // Right extremity
-                return ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero
-                    ? ExplosionDirection.Right
-                    : ExplosionDirection.Up;
-            }
-                // Corner Bottom - Right
-            if (cell.Y == MapSize.Y - 2 && cell.X == MapSize.X - 2)
-            {
-                // Right extremity
-                return ActionField.Find(c => c.X == leftCell && c.Y == cell.Y) != Point.Zero
-                    ? ExplosionDirection.Right
-                    : ExplosionDirection.Down;
-            }
-                // Error case
+            Debug.Print("No sprite found for this case ! (" + cell.X + "," + cell.Y + ")");
+
+            // Error case
             return ExplosionDirection.Middle;
         }
 

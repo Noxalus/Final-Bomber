@@ -14,12 +14,12 @@ namespace FBClient.Network
     {
         #region Receive methods
 
-        private void RecieveMyClientId(int clientId)
+        private void ReceiveMyClientId(int clientId)
         {
             Instance.Clients.CreateMe(clientId);
         }
 
-        private void RecieveAvailableMaps(NetIncomingMessage message)
+        private void ReceiveAvailableMaps(NetIncomingMessage message)
         {
             int mapNumber = message.ReadInt32();
 
@@ -29,12 +29,12 @@ namespace FBClient.Network
             }
         }
 
-        private void RecieveSelectedMap(string md5)
+        private void ReceiveSelectedMap(string md5)
         {
             Instance.SelectedMapMd5 = md5;
         }
 
-        private void RecieveMap(NetIncomingMessage message)
+        private void ReceiveMap(NetIncomingMessage message)
         {
             string mapName = message.ReadString();
             string md5 = message.ReadString();
@@ -62,7 +62,7 @@ namespace FBClient.Network
             SendHasMap();
         }
 
-        private void RecieveGameWillStart()
+        private void ReceiveGameWillStart()
         {
             // Check that we have the selected map else ask to download it ! :)
             if (!MapLoader.MapFileDictionary.ContainsValue(Instance.SelectedMapMd5))
@@ -75,7 +75,7 @@ namespace FBClient.Network
             }
         }
 
-        private void RecieveStartGame(NetIncomingMessage message)
+        private void ReceiveStartGame(NetIncomingMessage message)
         {
             bool gameInProgress = message.ReadBoolean();
 
@@ -97,17 +97,17 @@ namespace FBClient.Network
             }
         }
 
-        private void RecieveNewClientInfo(int clientId, string username, bool isReady)
+        private void ReceiveNewClientInfo(int clientId, string username, bool isReady)
         {
             OnNewClient(clientId, username, isReady);
         }
 
-        private void RecieveRemovePlayer(int playerId)
+        private void ReceiveRemovePlayer(int playerId)
         {
             OnRemovePlayer(playerId);
         }
 
-        private void RecieveIsReady(int clientId, bool ready)
+        private void ReceiveIsReady(int clientId, bool ready)
         {
             var client = Instance.Clients.GetClientById(clientId);
 
@@ -121,7 +121,7 @@ namespace FBClient.Network
             }
         }
 
-        private void RecievePosition(float positionX, float positionY, byte direction, int clientId)
+        private void ReceivePosition(float positionX, float positionY, byte direction, int clientId)
         {
             var arg = new MovePlayerArgs
             {
@@ -132,11 +132,11 @@ namespace FBClient.Network
 
             OnMovePlayerAction(arg);
         }
-        public void RecievePlacingBomb(int playerId, Point position)
+        public void ReceivePlacingBomb(int playerId, Point position)
         {
             OnPlacingBomb(playerId, position);
         }
-        public void RecieveBombExploded(NetIncomingMessage message)
+        public void ReceiveBombExploded(NetIncomingMessage message)
         {
             Point position = message.ReadPoint();
 
@@ -149,44 +149,44 @@ namespace FBClient.Network
             }
             */
 
-            OnBombExploded(position);
+            //OnBombExploded(position);
         }
 
-        public void RecievePowerupDrop(PowerUpType type, Point position)
+        private void ReceivePowerupDrop(PowerUpType type, Point position)
         {
             OnPowerUpDrop(type, position);
         }
 
         /*
-        public void RecievePowerupPick(float xPos, float yPos, int playerId, float amount)
+        public void ReceivePowerupPick(float xPos, float yPos, int playerId, float amount)
         {
             OnPowerupPick(xPos, yPos, playerId, amount);
         }
         */
 
         /*
-        public void RecieveSuddenDeath()
+        public void ReceiveSuddenDeath()
         {
             OnSuddenDeath();
         }
         */
 
-        private void RecieveRoundEnd()
+        private void ReceiveRoundEnd()
         {
             GameServer.Instance.GameManager.GameEventManager.OnRoundEnd();
         }
 
-        private void RecieveEnd(bool won)
+        private void ReceiveEnd(bool won)
         {
             OnEnd(won);
         }
 
-        public void RecievePing(float ping)
+        public void ReceivePing(float ping)
         {
             OnPing(ping);
         }
 
-        private void RecievePings(NetIncomingMessage message)
+        private void ReceivePings(NetIncomingMessage message)
         {
             int clientNumber = message.ReadInt32();
 

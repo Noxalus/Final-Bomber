@@ -23,7 +23,8 @@ namespace FBServer.Host
 
         public string SelectedMapName;
 
-        private Timer _pingsTimer;
+        private readonly Timer _pingsTimer;
+        private readonly Timer _sendPlayersPositionTimer;
 
         #endregion
 
@@ -63,6 +64,7 @@ namespace FBServer.Host
             _gameManager = new GameManager();
             SelectedMapName = MapLoader.MapFileDictionary.Keys.First();
             _pingsTimer = new Timer(true);
+            _sendPlayersPositionTimer = new Timer(true);
         }
         
         #endregion
@@ -145,6 +147,13 @@ namespace FBServer.Host
 
             // Update the game manager
             GameManager.Update();
+
+            if (GameManager.GameHasBegun)
+            {
+                // Synchronize clients (players positions)
+                if (_sendPlayersPositionTimer.Each(ServerSettings.SendPlayersPositionTime))
+                    SendPlayersPosition();
+            }
 
             // Every 2 seconds we send the pings of all players to all players
             if (Clients.Count > 0 && _pingsTimer.Each(1000))

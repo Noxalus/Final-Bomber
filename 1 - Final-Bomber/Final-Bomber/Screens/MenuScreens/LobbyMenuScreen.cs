@@ -134,7 +134,8 @@ namespace FBClient.Screens.MenuScreens
                             }
                         }
 
-                        if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
+                        if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady) &&
+                            GameServer.Instance.Clients.Count >= GameConfiguration.MinimumPlayerNumber)
                         {
                             if (GameServer.Instance.Clients.Me.IsHost && InputHandler.KeyPressed(Keys.Space))
                             {
@@ -221,15 +222,25 @@ namespace FBClient.Screens.MenuScreens
                 // Start game message
                 if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
                 {
-                    if (GameServer.Instance.Clients.Me.IsHost)
+                    var missingPlayerNumber = GameConfiguration.MinimumPlayerNumber - GameServer.Instance.Clients.Count;
+                    if (missingPlayerNumber > 0)
                     {
-                        str = "Press Space to launch the game !";
-                        strColor = Color.Green;
+                        str = "Not enough players :'(\n(" + missingPlayerNumber + " more player(s) to play)";
+                        strColor = Color.Red;
                     }
                     else
                     {
-                        str = "Please wait that the host starts the game...";
-                        strColor = Color.Orange;
+
+                        if (GameServer.Instance.Clients.Me.IsHost)
+                        {
+                            str = "Press Space to launch the game !";
+                            strColor = Color.Green;
+                        }
+                        else
+                        {
+                            str = "Please wait that the host starts the game...";
+                            strColor = Color.Orange;
+                        }
                     }
 
                     FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,

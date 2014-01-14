@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Media;
 using FBLibrary;
 using FBClient.Screens.GameScreens;
 using FBClient.Screens.MenuScreens;
@@ -8,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using FBClient.Screens;
 using FBClient.Controls;
 using FBClient.Utils;
 using Microsoft.Xna.Framework.Media;
@@ -90,7 +87,7 @@ namespace FBClient
             Graphics.SynchronizeWithVerticalRetrace = true;
 #endif
             // Don't fix FPS to 60 => this wont work when vsync is ON
-            IsFixedTimeStep = false; 
+            IsFixedTimeStep = true; 
 
             Graphics.IsFullScreen = Config.FullScreen;
             Graphics.ApplyChanges();

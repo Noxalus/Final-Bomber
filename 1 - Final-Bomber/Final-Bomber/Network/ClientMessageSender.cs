@@ -97,7 +97,9 @@ namespace FBClient.Network
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
+
                 send.Write((byte)MessageType.ClientMessage.PlaceBomb);
+                
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }

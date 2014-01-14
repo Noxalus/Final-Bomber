@@ -18,71 +18,71 @@ namespace FBClient.Network
             {
                 case (byte)MessageType.ServerMessage.ClientId:
                     Debug.Print("A message type 'ClientId' have been received from server !");
-                    RecieveMyClientId(message.ReadInt32());
+                    ReceiveMyClientId(message.ReadInt32());
                     break;
                 case (byte)MessageType.ServerMessage.NewClientInfo:
                     Debug.Print("A message type 'NewClientInfo' have been received from server !");
-                    RecieveNewClientInfo(message.ReadInt32(), message.ReadString(), message.ReadBoolean());
+                    ReceiveNewClientInfo(message.ReadInt32(), message.ReadString(), message.ReadBoolean());
                     break;
                 case (byte)MessageType.ServerMessage.IsReady:
                     Debug.Print("A message type 'IsReady' have been received from server !");
-                    RecieveIsReady(message.ReadInt32(), message.ReadBoolean());
+                    ReceiveIsReady(message.ReadInt32(), message.ReadBoolean());
                     break;
                 case (byte)MessageType.ServerMessage.AvailableMaps:
                     Debug.Print("A message type 'AvailableMaps' have been received from server !");
-                    RecieveAvailableMaps(message);
+                    ReceiveAvailableMaps(message);
                     break;
                 case (byte)MessageType.ServerMessage.SelectedMap:
                     Debug.Print("A message type 'SelectedMap' have been received from server !");
-                    RecieveSelectedMap(message.ReadString());
+                    ReceiveSelectedMap(message.ReadString());
                     break;
                 case (byte)MessageType.ServerMessage.Map:
                     Debug.Print("A message type 'Map' have been received from server !");
-                    RecieveMap(message);
+                    ReceiveMap(message);
                     break;
                 case (byte)MessageType.ServerMessage.GameWillStart:
                     Debug.Print("A message type 'GameWillStart' have been received from server !");
-                    RecieveGameWillStart();
+                    ReceiveGameWillStart();
                     break;
                 case (byte)MessageType.ServerMessage.StartGame:
                     Debug.Print("A message type 'StartGame' have been received from server !");
-                    RecieveStartGame(message);
+                    ReceiveStartGame(message);
                     break;
                 case (byte)MessageType.ServerMessage.PlayerPosition:
                     Debug.Print("A message type 'PlayerPosition' have been received from server !");
-                    RecievePosition(message.ReadFloat(), message.ReadFloat(), message.ReadByte(), message.ReadInt32());
+                    ReceivePosition(message.ReadFloat(), message.ReadFloat(), message.ReadByte(), message.ReadInt32());
                     break;
                 case (byte)MessageType.ServerMessage.RemovePlayer:
                     Debug.Print("A message type 'RemovePlayer' have been received from server !");
-                    RecieveRemovePlayer(message.ReadInt32());
+                    ReceiveRemovePlayer(message.ReadInt32());
                     break;
                 case (byte)MessageType.ServerMessage.PlayerPlacingBomb:
                     Debug.Print("A message type 'PlayerPlacingBomb' have been received from server !");
-                    RecievePlacingBomb(message.ReadInt32(), message.ReadPoint());
+                    ReceivePlacingBomb(message.ReadInt32(), message.ReadPoint());
                     break;
                 case (byte)MessageType.ServerMessage.BombExploded:
-                    RecieveBombExploded(message);
+                    ReceiveBombExploded(message);
                     break;
                 case (byte)MessageType.ServerMessage.PowerUpDrop:
-                    RecievePowerupDrop((PowerUpType)message.ReadByte(), message.ReadPoint());
+                    ReceivePowerupDrop((PowerUpType)message.ReadByte(), message.ReadPoint());
                     break;
                 case (byte)MessageType.ServerMessage.PowerUpPick:
-                    //RecievePowerupPick(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadInt32(), buffer.ReadFloat());
+                    //ReceivePowerupPick(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadInt32(), buffer.ReadFloat());
                     break;
                 case (byte)MessageType.ServerMessage.SuddenDeath:
-                    //RecieveSuddenDeath();
+                    //ReceiveSuddenDeath();
                     break;
                 case (byte)MessageType.ServerMessage.RoundEnd:
                     Debug.Print("A message type 'RoundEnd' have been received from server !");
-                    RecieveRoundEnd();
+                    ReceiveRoundEnd();
                     break;
                 case (byte)MessageType.ServerMessage.End:
                     Debug.Print("A message type 'End' have been received from server !");
-                    RecieveEnd(message.ReadBoolean());
+                    ReceiveEnd(message.ReadBoolean());
                     break;
                 case (byte)MessageType.ServerMessage.Pings:
                     //Debug.Print("A message type 'Pings have been received from server !");
-                    RecievePings(message);
+                    ReceivePings(message);
                     break;
             }
         }

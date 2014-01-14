@@ -10,8 +10,6 @@ namespace FBServer.Core
     {
         private TimeSpan _destructionTimer;
 
-        private readonly Timer _tmrSendPos = new Timer(true);
-
         public Player(int id)
             : base(id)
         {
@@ -69,11 +67,6 @@ namespace FBServer.Core
                 if (CurrentDirection != PreviousDirection)
                 {
                     SendPosition();
-                }
-                else
-                {
-                    if (_tmrSendPos.Each(ServerSettings.SendPlayerPositionTime))
-                        SendPosition();
                 }
                 
                 if (InDestruction)

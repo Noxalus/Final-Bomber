@@ -225,7 +225,7 @@ namespace FBServer.Host
             Program.Log.Info("[SEND] Sent position of player #" + player.Id + " !");
         }
 
-        public void SendPlayersPosition()
+        private void SendPlayersPosition()
         {
             foreach (var client in Instance.Clients)
             {

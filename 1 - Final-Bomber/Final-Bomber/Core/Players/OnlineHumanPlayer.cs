@@ -28,8 +28,6 @@ namespace FBClient.Core.Players
 
             SendMovement();
 
-            //UpdatePlayerPosition();
-
             #region Bomb
 
             if ((HasBadEffect && BadEffect == BadEffect.BombDrop) ||

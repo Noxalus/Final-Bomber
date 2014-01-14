@@ -7,10 +7,10 @@ namespace FBServer
         public const int MaxConnection = 50;
         public const int Port = 2643;
 
-        public const int SendPlayerPositionTime = 50000; // milliseconds
+        public const int SendPlayersPositionTime = 10000; // milliseconds
 
         // Gameplay
-        public const int WallPercentage = 80; // From 0% to 100%
+        public const int WallPercentage = 0; // From 0% to 100%
         public const int ScoreToWin = 20;
     }
 }

@@ -46,7 +46,7 @@ namespace FBClient.Network
 #if DEBUG
                 //PingInterval = 1f, // send ping every 1 second
                 //SimulatedLoss = 0.5f, // from 0 to 1
-                SimulatedMinimumLatency = 0.05f, // 0.05f for a latency of 50 ms
+                SimulatedMinimumLatency = 0.100f, // 0.05f for a latency of 50 ms
 #endif
             };
 
@@ -128,7 +128,7 @@ namespace FBClient.Network
                         //Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
                         float ping = message.ReadFloat() * 1000;
 
-                        //RecievePing(ping);
+                        //ReceivePing(ping);
                         break;
                     case NetIncomingMessageType.DebugMessage:
                         var debugMessage = message.ReadString();

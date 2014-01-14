@@ -1,37 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using FBClient.Core.Players;
 
 namespace FBClient.Network
 {
     class ClientCollection : List<Client>
     {
-        private Client _me;
-
-        public Client Me
-        {
-            get { return _me; }
-        }
+        public Client Me { get; private set; }
 
         public ClientCollection()
         {
-            _me = null;
+            Me = null;
         }
 
         public void AddClient(Client client)
         {
-            if (client.Id == _me.Id)
+            if (client.Id == Me.Id)
             {
-                _me = client;
-                _me.Player = new HumanPlayer(0);
-                _me.Player.Name = _me.Username;
+                Me = client;
+                Me.Player = new OnlineHumanPlayer(0) {Name = Me.Username};
             }
             else
             {
-                client.Player = new OnlinePlayer(Count);
-                client.Player.Name = client.Username;
+                client.Player = new OnlinePlayer(Count) {Name = client.Username};
             }
 
             Add(client);
@@ -39,7 +31,7 @@ namespace FBClient.Network
 
         public void CreateMe(int clientId)
         {
-            _me = new Client(clientId);
+            Me = new Client(clientId);
         }
 
         public Client GetClientById(int id)
