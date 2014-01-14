@@ -87,6 +87,44 @@ namespace FBServer.Host
             Program.Log.Info("Send start game to client #" + client.ClientId);
         }
 
+        public void SendAvailableMaps(Client client)
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.AvailableMaps);
+
+            // Number of maps
+            message.Write(MapLoader.MapFileDictionary.Count);
+
+            foreach (var map in MapLoader.MapFileDictionary)
+            {
+                message.Write(map.Key);
+                message.Write(map.Value);
+            }
+
+            _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendSelectedMap(Client client)
+        {
+            try
+            {
+                NetOutgoingMessage message = _server.CreateMessage();
+
+                message.Write((byte)MessageType.ServerMessage.SelectedMap);
+
+                string currentMapMd5 = MapLoader.MapFileDictionary[Instance.SelectedMapName];
+
+                message.Write(currentMapMd5);
+
+                _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error sending the md5 hash of the selected map !");
+            }
+        }
+
         /// <summary>
         /// Sends the id generate by the server to the corresponding client
         /// </summary>

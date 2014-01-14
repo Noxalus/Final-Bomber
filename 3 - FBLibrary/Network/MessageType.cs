@@ -15,6 +15,7 @@ namespace FBLibrary.Network
             Ready = 7, // Player is ready to start ?
             Credentials = 8, // Client credentials info (username, password, etc...)
             StartGame = 9, // Host want to start game
+            MapSelection = 10, // Host has selected a map to play
         }
 
         public enum ServerMessage
@@ -35,6 +36,8 @@ namespace FBLibrary.Network
             RoundEnd = 15, // Sends that the round is finished
             ClientId = 16, // Sends the server generated id to its corresponding client
             IsReady = 17, // Sends that a specific client is ready or not
+            AvailableMaps = 18, // Sends the list of available maps on the server
+            SelectedMap = 19, // Sends the md5 of the map selected by the host
         }
     }
 }

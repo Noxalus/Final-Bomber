@@ -24,9 +24,21 @@ namespace FBClient.Network
                     Debug.Print("A message type 'ClientId' have been received from server !");
                     RecieveMyClientId(message.ReadInt32());
                     break;
+                case (byte)MessageType.ServerMessage.NewClientInfo:
+                    Debug.Print("A message type 'NewClientInfo' have been received from server !");
+                    RecieveNewClientInfo(message.ReadInt32(), message.ReadString(), message.ReadBoolean());
+                    break;
                 case (byte)MessageType.ServerMessage.IsReady:
                     Debug.Print("A message type 'IsReady' have been received from server !");
                     RecieveIsReady(message.ReadInt32(), message.ReadBoolean());
+                    break;
+                case (byte)MessageType.ServerMessage.AvailableMaps:
+                    Debug.Print("A message type 'AvailableMaps' have been received from server !");
+                    RecieveAvailableMaps(message);
+                    break;
+                case (byte)MessageType.ServerMessage.SelectedMap:
+                    Debug.Print("A message type 'SelectedMap' have been received from server !");
+                    RecieveSelectedMap(message.ReadString());
                     break;
                 case (byte)MessageType.ServerMessage.Map:
                     Debug.Print("A message type 'Map' have been received from server !");
@@ -39,10 +51,6 @@ namespace FBClient.Network
                 case (byte)MessageType.ServerMessage.PlayerPosition:
                     Debug.Print("A message type 'PlayerPosition' have been received from server !");
                     RecievePosition(message.ReadFloat(), message.ReadFloat(), message.ReadByte(), message.ReadInt32());
-                    break;
-                case (byte)MessageType.ServerMessage.NewClientInfo:
-                    Debug.Print("A message type 'NewClientInfo' have been received from server !");
-                    RecieveNewClientInfo(message.ReadInt32(), message.ReadString(), message.ReadBoolean());
                     break;
                 case (byte)MessageType.ServerMessage.RemovePlayer:
                     Debug.Print("A message type 'RemovePlayer' have been received from server !");

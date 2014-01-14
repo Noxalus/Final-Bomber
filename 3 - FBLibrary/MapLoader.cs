@@ -58,5 +58,10 @@ namespace FBLibrary
 
             return mapName + mapNr + ".map";
         }
+
+        public static string GetMapNameFromMd5(string md5)
+        {
+            return MapFileDictionary.FirstOrDefault(map => map.Value == md5).Key;
+        }
     }
 }

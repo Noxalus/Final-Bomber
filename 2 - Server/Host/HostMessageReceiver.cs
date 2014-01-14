@@ -1,4 +1,5 @@
-﻿using FBLibrary;
+﻿using System.Linq;
+using FBLibrary;
 using FBLibrary.Core;
 using FBServer.Core;
 
@@ -10,6 +11,16 @@ namespace FBServer.Host
         {
             SendCurrentMap(client);
             Program.Log.Info("Client " + client.ClientId + " need the current map, sending it to him");
+        }
+
+        void ReceiveMapSelection(Client client, string md5)
+        {
+            if (client.IsHost)
+            {
+                Instance.SelectedMapName = MapLoader.GetMapNameFromMd5(md5);
+
+                SendSelectedMap(client);
+            }
         }
 
         void ReceiveCredentials(Client client, string username, string password)

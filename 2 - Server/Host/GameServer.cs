@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using FBLibrary;
 using FBServer.Core;
 using Lidgren.Network;
 
@@ -18,6 +20,8 @@ namespace FBServer.Host
         bool _hostStarted = false;
         int _clientId = 0;
         public ClientCollection Clients;
+
+        public string SelectedMapName;
 
         #endregion
 
@@ -55,6 +59,7 @@ namespace FBServer.Host
         private GameServer()
         {
             _gameManager = new GameManager();
+            SelectedMapName = MapLoader.MapFileDictionary.Keys.First();
         }
         
         #endregion

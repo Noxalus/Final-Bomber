@@ -45,6 +45,19 @@ namespace FBClient.Network
             }
         }
 
+        public void SendMapSelection(string md5)
+        {
+            if (_client.ConnectionStatus == NetConnectionStatus.Connected)
+            {
+                NetOutgoingMessage send = _client.CreateMessage();
+
+                send.Write((byte)MessageType.ClientMessage.MapSelection);
+                send.Write(md5);
+
+                _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
+            }
+        }
+
         public void SendStartGame()
         {
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)

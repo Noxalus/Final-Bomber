@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using FBLibrary;
 using FBClient.Controls;
 using FBClient.Network;
@@ -105,6 +106,31 @@ namespace FBClient.Screens.MenuScreens
 
                     if (GameServer.Instance.Clients.Me != null)
                     {
+                        if (GameServer.Instance.Clients.Me.IsHost)
+                        {
+                            // Select map
+                            if (InputHandler.KeyPressed(Keys.Up))
+                            {
+                                var mapList = GameServer.Instance.Maps.Values.ToList();
+                                var mapIndex = mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
+
+                                mapIndex = (mapIndex - 1);
+                                if (mapIndex < 0)
+                                    mapIndex = mapList.Count - 1;
+
+                                GameServer.Instance.SendMapSelection(mapList[mapIndex]);
+                            }
+                            else if (InputHandler.KeyPressed(Keys.Down))
+                            {
+                                var mapList = GameServer.Instance.Maps.Values.ToList();
+                                var mapIndex = mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
+
+                                mapIndex = (mapIndex + 1) % mapList.Count;
+
+                                GameServer.Instance.SendMapSelection(mapList[mapIndex]);
+                            }
+                        }
+
                         if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady))
                         {
                             if (GameServer.Instance.Clients.Me.IsHost && InputHandler.KeyPressed(Keys.Space))
@@ -202,12 +228,31 @@ namespace FBClient.Screens.MenuScreens
 
                     FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                         new Vector2(
-                            Config.Resolutions[Config.IndexResolution, 0]/2f -
-                            BigFont.MeasureString(str).X/2,
-                            Config.Resolutions[Config.IndexResolution, 1]/2f -
-                            BigFont.MeasureString(str).Y/2 + 60),
+                            Config.Resolutions[Config.IndexResolution, 0] / 2f -
+                            BigFont.MeasureString(str).X / 2,
+                            Config.Resolutions[Config.IndexResolution, 1] / 2f -
+                            BigFont.MeasureString(str).Y / 2 + 80),
                         strColor);
                 }
+            }
+
+            // Available maps list
+            for (int i = 0; i < GameServer.Instance.Maps.Count; i++)
+            {
+                str = GameServer.Instance.Maps.Keys.ElementAt(i);
+
+                strColor = MapLoader.MapFileDictionary.Values.Contains(GameServer.Instance.Maps.Values.ElementAt(i)) ? Color.Green : Color.Red;
+
+                if (GameServer.Instance.Maps.Values.ElementAt(i) == GameServer.Instance.SelectedMapMd5)
+                    strColor = Color.White;
+
+                FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, str,
+                        new Vector2(
+                            Config.Resolutions[Config.IndexResolution, 0] / 2f -
+                            ControlManager.SpriteFont.MeasureString(str).X / 2,
+                            Config.Resolutions[Config.IndexResolution, 1] / 2f -
+                            ControlManager.SpriteFont.MeasureString(str).Y / 2 + 140 + (20 * i)),
+                        strColor);
             }
 
             FinalBomber.Instance.SpriteBatch.End();

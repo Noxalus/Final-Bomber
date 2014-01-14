@@ -134,7 +134,7 @@ namespace FBServer.Core
         private void GameInitialize()
         {
             // Load the map chosen
-            GameServer.Instance.GameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
+            GameServer.Instance.GameManager.LoadMap(GameServer.Instance.SelectedMapName);
 
             // Display map info
             /*
@@ -358,6 +358,11 @@ namespace FBServer.Core
 
             // Send the server generated id to the corresponding client
             GameServer.Instance.SendClientId(client);
+            // Send list of available map
+            GameServer.Instance.SendAvailableMaps(client);
+
+            // Send selected map
+            GameServer.Instance.SendSelectedMap(client);
 
             GameServer.Instance.SendNewClientInfo(client);
             GameServer.Instance.SendClientsToNew(client);

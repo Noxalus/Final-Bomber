@@ -33,6 +33,21 @@ namespace FBClient.Network
             Instance.Clients.CreateMe(clientId);
         }
 
+        private void RecieveAvailableMaps(NetIncomingMessage message)
+        {
+            int mapNumber = message.ReadInt32();
+
+            for (int i = 0; i < mapNumber; i++)
+            {
+                Instance.Maps.Add(message.ReadString(), message.ReadString());
+            }
+        }
+
+        private void RecieveSelectedMap(string md5)
+        {
+            Instance.SelectedMapMd5 = md5;
+        }
+
         private void RecieveMap(NetIncomingMessage message)
         {
             string mapName = message.ReadString();

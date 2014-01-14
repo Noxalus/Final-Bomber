@@ -14,6 +14,10 @@ namespace FBServer.Host
                     Program.Log.Info("[Client #" + client.ClientId + "] Need map ! Let's give it to him :)");
                     ReceiveNeedMap(client);
                     break;
+                case (byte)MessageType.ClientMessage.MapSelection:
+                    Program.Log.Info("[Client #" + client.ClientId + "] Has selected a map to play ! :)");
+                    ReceiveMapSelection(client, message.ReadString());
+                    break;
                 case (byte)MessageType.ClientMessage.Credentials:
                     Program.Log.Info("[Client #" + client.ClientId + "] Sent its credientials info !");
                     ReceiveCredentials(client, message.ReadString(), message.ReadString());
