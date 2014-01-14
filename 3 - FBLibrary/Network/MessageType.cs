@@ -27,7 +27,6 @@ namespace FBLibrary.Network
             RemovePlayer = 4, // Sends that a disconnected player has been removed
             PlayerPlacingBomb = 5, // Says that a player has planted a bomb
             BombExploded = 6, // Sends that a bomb has exploded
-            PlayerReady = 7, // Sends that a player is ready
             StartGame = 9, // Tells to client that the game will start (also sends generated wall positions) 
             End = 10, // Sends that the game is finished (with the winner)
             PowerUpDrop = 11, // Sends that a power up has dropped
@@ -38,6 +37,7 @@ namespace FBLibrary.Network
             IsReady = 17, // Sends that a specific client is ready or not
             AvailableMaps = 18, // Sends the list of available maps on the server
             SelectedMap = 19, // Sends the md5 of the map selected by the host
+            Pings = 20 // Sends players pings to all players
         }
     }
 }

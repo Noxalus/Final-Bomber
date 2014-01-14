@@ -1,4 +1,5 @@
-﻿using FBLibrary;
+﻿using System.Diagnostics;
+using FBLibrary;
 using FBLibrary.Core;
 using FBClient.WorldEngine;
 using Lidgren.Network;
@@ -178,7 +179,7 @@ namespace FBClient.Network
             GameServer.Instance.GameManager.GameEventManager.OnRoundEnd();
         }
 
-        public void RecieveEnd(bool won)
+        private void RecieveEnd(bool won)
         {
             OnEnd(won);
         }
@@ -186,6 +187,28 @@ namespace FBClient.Network
         public void RecievePing(float ping)
         {
             OnPing(ping);
+        }
+
+        private void RecievePings(NetIncomingMessage message)
+        {
+            int clientNumber = message.ReadInt32();
+
+            for (int i = 0; i < clientNumber; i++)
+            {
+                int clientId = message.ReadInt32();
+                float ping = message.ReadFloat();
+
+                var client = Instance.Clients.GetClientById(clientId);
+
+                if (client != null)
+                {
+                    client.Ping = ping;
+                }
+                else
+                {
+                    Debug.Print("This client doesn't exist here ! (id: " + clientId + ")");
+                }
+            }
         }
 
         #endregion

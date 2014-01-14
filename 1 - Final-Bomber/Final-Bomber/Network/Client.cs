@@ -17,7 +17,7 @@ namespace FBClient.Network
             Id = id;
             Username = "[Unknown]";
             IsReady = false;
-            Ping = 0;
+            Ping = 0f;
 
             Player = null;
         }

@@ -44,7 +44,7 @@ namespace FBClient.Network
         public void StartClientConnection(string ip, string port)
         {
             _config = new NetPeerConfiguration("Final-Bomber");
-            //_config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
+            _config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
             _hasStarted = true;
             _connected = false;
@@ -121,7 +121,8 @@ namespace FBClient.Network
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
                         Debug.Print("A ConnectionLatencyUpdated type message has been received from server.");
                         float ping = message.ReadFloat() * 1000;
-                        RecievePing(ping);
+
+                        //RecievePing(ping);
                         break;
                     case NetIncomingMessageType.DebugMessage:
                         var debugMessage = message.ReadString();

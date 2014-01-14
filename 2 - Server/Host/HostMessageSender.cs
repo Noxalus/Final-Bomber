@@ -157,8 +157,6 @@ namespace FBServer.Host
         // Send all players to this player
         public void SendClientsToNew(Client client)
         {
-            Program.Log.Info("Send the players to the new player (client #" + client.ClientId + ")");
-
             foreach (Client currentClient in Clients)
             {
                 if (client != currentClient)
@@ -171,6 +169,7 @@ namespace FBServer.Host
                 }
             }
 
+            Program.Log.Info("Sent the players to the new player (client #" + client.ClientId + ")");
         }
 
         // Send this new player to already existing players
@@ -322,8 +321,24 @@ namespace FBServer.Host
                 message.Write(client.Player.IsAlive);
 
                 _server.SendMessage(message, client.ClientConnection, NetDeliveryMethod.ReliableOrdered);
-                Program.Log.Info("Send 'End' to player #" + client.Player.Id);
+                Program.Log.Info("Sent 'End' to player #" + client.Player.Id);
             }
+        }
+
+        public void SendPings()
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte) MessageType.ServerMessage.Pings);
+            message.Write(Clients.Count);
+            foreach (Client client in Clients)
+            {
+                message.Write(client.ClientId);
+                message.Write(client.Ping);
+            }
+
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+            Program.Log.Info("Sent pings of all players to all players !");
         }
     }
 }

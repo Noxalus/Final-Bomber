@@ -183,6 +183,9 @@ namespace FBClient.Screens.MenuScreens
                 if (GameServer.Instance.Clients[i].IsHost)
                     str = "[*] " + str;
 
+                // Ping
+                str += " | Ping: " + GameServer.Instance.Clients[i].Ping;
+
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, str,
                     new Vector2(0, 60 + (20 * i)), strColor);
             }

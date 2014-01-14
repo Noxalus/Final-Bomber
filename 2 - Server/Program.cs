@@ -47,7 +47,7 @@ namespace FBServer
                     GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
 
                     server.Update();
-
+                    
                     // Max 15 milliseconds between 2 main loop
                     Thread.Sleep(15);
                 }

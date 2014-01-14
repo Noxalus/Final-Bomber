@@ -23,6 +23,8 @@ namespace FBServer.Host
 
         public string SelectedMapName;
 
+        private Timer _pingsTimer;
+
         #endregion
 
         #region Properties
@@ -60,6 +62,7 @@ namespace FBServer.Host
         {
             _gameManager = new GameManager();
             SelectedMapName = MapLoader.MapFileDictionary.Keys.First();
+            _pingsTimer = new Timer(true);
         }
         
         #endregion
@@ -110,7 +113,7 @@ namespace FBServer.Host
             };
 
             // To send ping to each player frequently
-            //config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
+            config.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated, true);
 
             try
             {
@@ -142,6 +145,13 @@ namespace FBServer.Host
 
             // Update the game manager
             GameManager.Update();
+
+            if (Clients.Count > 0 && _pingsTimer.Each(1000))
+            {
+                _pingsTimer.Reset();
+                // Send players' pings to all players
+                SendPings();
+            }
         }
 
         private void CheckNewClientMessages()
@@ -207,10 +217,8 @@ namespace FBServer.Host
 
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
                         float ping = message.ReadFloat() * 1000;
-                        Program.Log.Info("Player #" + currentClient.Player.Id + " ping: " + ping + "ms");
+                        Program.Log.Info("Client #" + currentClient.ClientId + " ping: " + ping + "ms");
                         currentClient.Ping = ping;
-
-                        // TODO: Send this client's ping to other clients
 
                         break;
 
