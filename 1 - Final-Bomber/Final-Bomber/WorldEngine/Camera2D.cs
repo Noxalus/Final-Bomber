@@ -1,13 +1,15 @@
 ﻿using System;
 using FBLibrary;
-using FBLibrary.Core;
 using FBClient.Controls;
+using FBLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace FBClient.WorldEngine
 {
+    public enum CameraMode { Fixed, FollowPlayer }
+
     public class Camera2D
     {
         #region Fields
@@ -22,10 +24,10 @@ namespace FBClient.WorldEngine
         private Vector2 _positionLag;
         private float _rotation;
         private Viewport _viewport;
-        private readonly int _worldWidth;
-        private readonly int _worldHeight;
+        private readonly Point _mapSize;
+        private readonly Vector2 _realMapSize;
 
-        private Vector2 _center;
+        private CameraMode _cameraMode;
 
         #endregion
 
@@ -83,7 +85,7 @@ namespace FBClient.WorldEngine
         #endregion
 
 
-        public Camera2D(Viewport viewport, Point worldSize, float initialZoom)
+        public Camera2D(Viewport viewport, Point mapSize, float initialZoom)
         {
             _initialZoom = initialZoom;
             _zoom = _initialZoom;
@@ -91,15 +93,30 @@ namespace FBClient.WorldEngine
             _position = Vector2.Zero;
             _positionLag = Vector2.Zero;
             _viewport = viewport;
-            _worldWidth = worldSize.X;
-            _worldHeight = worldSize.Y;
+            _mapSize = mapSize;
+
+            _realMapSize = Engine.CellToVector(mapSize);
+
+            _cameraMode = CameraMode.FollowPlayer;
         }
 
         public void Update(Vector2 position)
         {
             var dt = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
 
-            Position = position;
+            if (_cameraMode == CameraMode.FollowPlayer)
+                Position = position;
+            else
+            {
+                // Move the camera to map center 
+                // (and a little bit to the right to see the players' stats)
+                if (Math.Abs(Zoom - _initialZoom) > 0.1f)
+                {
+                    Position = new Vector2((_realMapSize.X / 2) + (125 / Zoom), _realMapSize.Y / 2);
+                }
+                else
+                    Position = new Vector2((_realMapSize.X / 2) + 150, _realMapSize.Y / 2);
+            }
 
             // Adjust zoom if the mouse wheel has moved
             if (InputHandler.ScrollUp())
@@ -127,22 +144,22 @@ namespace FBClient.WorldEngine
             Vector2 movement = Vector2.Zero;
 
             if (InputHandler.KeyDown(Keys.J))
-                movement.X += 1f;
-            if (InputHandler.KeyDown(Keys.L))
                 movement.X -= 1f;
+            if (InputHandler.KeyDown(Keys.L))
+                movement.X += 1f;
             if (InputHandler.KeyDown(Keys.I))
-                movement.Y += 1f;
-            if (InputHandler.KeyDown(Keys.K))
                 movement.Y -= 1f;
+            if (InputHandler.KeyDown(Keys.K))
+                movement.Y += 1f;
 
             // Reset camera lag
             if (InputHandler.KeyPressed(Keys.Delete))
             {
                 _positionLag = Vector2.Zero;
             }
-            else
+            else if (movement != Vector2.Zero)
             {
-                _positionLag += movement * 150 * dt;
+                _positionLag += movement * (300 * dt);
             }
 
             Position += _positionLag;
@@ -169,22 +186,51 @@ namespace FBClient.WorldEngine
                 Rotation = 0;
             }
 
-            /*
-            // Center camera on the player
-            Position = new Vector2(
-                Position.X + Engine.Origin.X + Engine.TileWidth / 2f,
-                Position.Y + Engine.Origin.Y + Engine.TileHeight / 2f
-            );*/
+            // Change camera mode
+            if (InputHandler.KeyPressed(Keys.C))
+            {
+                if (_cameraMode == CameraMode.FollowPlayer)
+                {
+                    _cameraMode = CameraMode.Fixed;
+
+                    // If the map doesn't fit the entire screen => we dezoom
+                    if (_realMapSize.X > _viewport.Width)
+                    {
+                        Zoom /= 1.5f * (_realMapSize.X / _viewport.Width);
+                    }
+                    else if(_realMapSize.Y > _viewport.Height)
+                    {
+                        Zoom /=  1.5f * (_realMapSize.Y / _viewport.Height);
+                    }
+                }
+                else
+                {
+                    _cameraMode = CameraMode.FollowPlayer;
+                    Zoom = _initialZoom;
+                }
+            }
         }
 
         public Matrix GetTransformation()
         {
-            _transform =
-               Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
-               Matrix.CreateRotationZ(Rotation) *
-               Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-               Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0)
-               );
+            switch (_cameraMode)
+            {
+                case CameraMode.Fixed:
+                    _transform =
+                       Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
+                       Matrix.CreateRotationZ(Rotation) *
+                       Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+                       Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
+                    break;
+                case CameraMode.FollowPlayer:
+                    _transform =
+                       Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
+                       Matrix.CreateRotationZ(Rotation) *
+                       Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+                       Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
+                    break;
+            }
+
 
             return _transform;
         }

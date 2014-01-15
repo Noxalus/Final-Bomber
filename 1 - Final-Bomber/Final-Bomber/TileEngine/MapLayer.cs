@@ -69,11 +69,12 @@ namespace FBClient.TileEngine
 
         public void Draw(Camera2D camera, List<Tileset> tilesets, bool[,] collisionLayer)
         {
+            var min = Point.Zero;
+            var max = new Point(Width, Height);
+
+            /*
             // Change camera position according to zoom
             Vector2 cameraPosition = camera.Position;
-
-            var min = Point.Zero;
-            var max = Point.Zero;
 
             var cameraViewportSize = new Vector2(camera.ViewportRectangle.Width, camera.ViewportRectangle.Height);
             var cameraRealPosition = cameraViewportSize / 2f - cameraPosition;
@@ -89,7 +90,7 @@ namespace FBClient.TileEngine
 
             min.X = Math.Max(0, -(cameraMaxCellNumbers.X) + max.X + Math.Max(0, maxCellNumberToDraw.X - Width) - 1);
             min.Y = Math.Max(0, -(cameraMaxCellNumbers.Y) + max.Y + Math.Max(0, maxCellNumberToDraw.Y - Height) - 2);
-
+            */
 
             var destination = new Rectangle(0, 0, Engine.TileWidth, Engine.TileHeight);
 

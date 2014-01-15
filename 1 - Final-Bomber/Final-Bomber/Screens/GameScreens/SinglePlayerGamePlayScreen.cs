@@ -31,7 +31,7 @@ namespace FBClient.Screens.GameScreens
         public override void Initialize()
         {
             // Map
-            _gameManager.LoadMap("classic3.map"/*MapLoader.MapFileDictionary.Keys.First()*/);
+            _gameManager.LoadMap("generated.map"/*MapLoader.MapFileDictionary.Keys.First()*/);
             _gameManager.GenerateRandomWalls();
 
             _gameManager.Initialize();

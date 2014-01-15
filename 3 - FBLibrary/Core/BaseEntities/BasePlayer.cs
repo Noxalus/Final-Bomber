@@ -344,7 +344,13 @@ namespace FBLibrary.Core.BaseEntities
 
         #endregion
 
-        protected abstract float GetMovementSpeed();
+        protected float GetMovementSpeed()
+        {
+            var deltaTime = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
+
+            float speedValue = (Speed * deltaTime);
+            return speedValue;
+        }
 
         #region Public Method Region
 
@@ -410,7 +416,7 @@ namespace FBLibrary.Core.BaseEntities
     {
         public override int Compare(BasePlayer x, BasePlayer y)
         {
-            if (x != null && y != null) 
+            if (x != null && y != null)
                 return x.Id.CompareTo(y.Id);
             else
                 throw new Exception("A player doesn't exist and can't be compared.");

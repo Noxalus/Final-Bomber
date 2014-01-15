@@ -249,7 +249,7 @@ namespace FBClient.Core
             base.RemovePlayer(player);
         }
         */
-        
+
         #endregion
 
         #region Wall methods

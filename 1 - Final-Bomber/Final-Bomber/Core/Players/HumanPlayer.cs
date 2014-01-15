@@ -8,13 +8,13 @@ namespace FBClient.Core.Players
 {
     public class HumanPlayer : BaseHumanPlayer
     {
-        public HumanPlayer(int id)
-            : base(id)
+        public HumanPlayer(int id, int controlSettingsId)
+            : base(id, controlSettingsId)
         {
         }
 
-        public HumanPlayer(int id, PlayerStats stats)
-            : base(id, stats)
+        public HumanPlayer(int id, int controlSettingsId, PlayerStats stats)
+            : base(id, controlSettingsId, stats)
         {
         }
 

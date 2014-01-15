@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using FBClient.Network;
 using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
@@ -45,7 +43,8 @@ namespace FBClient.Entities
 
         #region Constructor Region
 
-        protected Player(int id) : base(id)
+        protected Player(int id)
+            : base(id)
         {
             Initiliaze();
         }
@@ -358,13 +357,6 @@ namespace FBClient.Entities
             #endregion
         }
 
-        protected override float GetMovementSpeed()
-        {
-            var deltaTime = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
-            float speedValue = (Speed * deltaTime);
-            return speedValue;
-        }
-
         #endregion
 
         #region Override Method Region
@@ -442,18 +434,12 @@ public class PlayerOverlappingSort : Comparer<Player>
 {
     public override int Compare(Player x, Player y)
     {
-        if (x != null && y != null)
-        {
-            if (x.PositionY <= y.PositionY)
-            {
-                return -1;
-            }
-            else if (x.PositionY > y.PositionY)
-            {
-                return 1;
-            }
-        }
+        if (x == null || y == null)
+            return 0;
 
-        return 0;
+        if (x.PositionY <= y.PositionY)
+            return -1;
+
+        return 1;
     }
 }

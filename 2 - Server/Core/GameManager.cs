@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
@@ -171,7 +169,10 @@ namespace FBServer.Core
 
             _gameInitialized = true;
 
+            // We send to players that the game has begun
             GameServer.Instance.SendStartGame(false);
+
+            GameServer.Instance.GameManager.GameHasBegun = true;
         }
 
         private void CheckRoundEnd()

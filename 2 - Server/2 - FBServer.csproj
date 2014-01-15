@@ -84,6 +84,9 @@
     <None Include="Content\Maps\classic1.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Maps\big.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Maps\classic3.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -5,39 +5,23 @@ namespace FBServer.Host
 {
     public class HostGame
     {
-        readonly Timer _beginGameTimer;
-
         public HostGame()
         {
-            _beginGameTimer = new Timer(false);
         }
 
         public void Initialize()
         {
+            // Events
             GameServer.Instance.ConnectedClient += GameServer_ConnectedClient;
             GameServer.Instance.DisconnectedClient += GameServer_DisconnectedClient;
             GameServer.Instance.BombPlacing += GameServer_BombPlacing;
+
             GameServer.Instance.StartServer();
-            
-            _beginGameTimer.Start();
         }
 
         public void Update()
         {
             GameServer.Instance.Update();
-
-            if (GameServer.Instance.GameManager.GameInitialized && _beginGameTimer != null)
-            {
-                if (!_beginGameTimer.IsStarted)
-                    _beginGameTimer.Start();
-
-                // Game really starts after 3 seconds
-                if (!GameServer.Instance.GameManager.GameHasBegun && _beginGameTimer.Each(3000))
-                {
-                    _beginGameTimer.Stop();
-                    GameServer.Instance.GameManager.GameHasBegun = true;
-                }
-            }
         }
 
         public void Dispose()

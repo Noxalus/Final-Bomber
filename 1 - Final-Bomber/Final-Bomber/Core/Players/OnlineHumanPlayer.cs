@@ -12,13 +12,13 @@ namespace FBClient.Core.Players
     {
         public float Ping = 0f;
 
-        public OnlineHumanPlayer(int id)
-            : base(id)
+        public OnlineHumanPlayer(int id, int controlSettingsId)
+            : base(id, controlSettingsId)
         {
         }
 
-        public OnlineHumanPlayer(int id, PlayerStats stats)
-            : base(id, stats)
+        public OnlineHumanPlayer(int id, int controlSettingsId, PlayerStats stats)
+            : base(id, controlSettingsId, stats)
         {
         }
 

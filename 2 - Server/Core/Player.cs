@@ -85,12 +85,6 @@ namespace FBServer.Core
             GameServer.Instance.SendPlayerPosition(client, false, true);
         }
 
-        protected override float GetMovementSpeed()
-        {
-            float rtn = (Speed * GameConfiguration.DeltaTime) / 1000f;
-            return rtn;
-        }
-
         public override void Destroy()
         {
             InDestruction = true;

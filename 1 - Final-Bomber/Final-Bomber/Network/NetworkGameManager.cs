@@ -13,6 +13,8 @@ namespace FBClient.Network
         public NetworkGameManager()
         {
             NetworkManager = new NetworkManager();
+
+            WaitServerResponse = true;
         }
 
         public override void Initialize()

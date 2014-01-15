@@ -34,19 +34,25 @@ namespace FBServer
 
             if (!server.Running)
             {
-                Log.Info("Player Number: " + GameConfiguration.PlayerNumber);
+                Log.Info("[CONFIG] Player Number: " + GameConfiguration.PlayerNumber);
 
                 server = new GameServerHandler();
                 server.Initialize();
 
                 var timer = new Stopwatch();
                 timer.Start();
+                TimeSpan timerTest = TimeSpan.Zero;
                 while(server.Running)
                 {
                     server.Update();
 
                     // Compute delta time
                     GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
+
+                    /*
+                    timerTest += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
+                    Console.WriteLine("Timer test: " + timerTest);
+                    */
 
                     timer.Restart();
 

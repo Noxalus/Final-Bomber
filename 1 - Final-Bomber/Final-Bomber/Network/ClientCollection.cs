@@ -19,11 +19,11 @@ namespace FBClient.Network
             if (client.Id == Me.Id)
             {
                 Me = client;
-                Me.Player = new OnlineHumanPlayer(0) {Name = Me.Username};
+                Me.Player = new OnlineHumanPlayer(Me.Id, 0) {Name = Me.Username};
             }
             else
             {
-                client.Player = new OnlinePlayer(Count) {Name = client.Username};
+                client.Player = new OnlinePlayer(client.Id) { Name = client.Username };
             }
 
             Add(client);

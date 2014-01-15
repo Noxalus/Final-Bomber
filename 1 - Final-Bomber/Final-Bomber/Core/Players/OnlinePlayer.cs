@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using FBLibrary.Core;
+﻿using FBLibrary.Core;
 using FBClient.Entities;
 using FBClient.Sprites;
 using FBClient.WorldEngine;
@@ -21,7 +20,6 @@ namespace FBClient.Core.Players
 
         protected override void Move(GameTime gameTime, Map map, int[,] hazardMap)
         {
-            Debug.Print("Look Direction: " + CurrentDirection);
             Vector2 motionVector = Vector2.Zero;
 
             switch (CurrentDirection)

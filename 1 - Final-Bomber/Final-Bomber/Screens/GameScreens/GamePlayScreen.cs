@@ -1192,7 +1192,7 @@ namespace FBClient.Screens.GameScreens
                 }
                 else
                 {
-                    var player = new HumanPlayer(Math.Abs(playerID));
+                    var player = new HumanPlayer(Math.Abs(playerID), playerID);
                     PlayerList.Add(player);
                     map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                 }
@@ -1287,7 +1287,7 @@ namespace FBClient.Screens.GameScreens
                     }
                     else
                     {
-                        var player = new HumanPlayer(Math.Abs(playerID));
+                        var player = new HumanPlayer(Math.Abs(playerID), playerID);
                         PlayerList.Add(player);
                         map[playerPositions[playerID].X, playerPositions[playerID].Y] = player;
                     }

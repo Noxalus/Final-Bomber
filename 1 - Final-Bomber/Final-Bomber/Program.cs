@@ -24,8 +24,7 @@ namespace FBClient
             Assembly asm = Assembly.GetExecutingAssembly();
             using (var mutex = new Mutex(false, @"Global\" + asm.GetType().GUID))
             {
-
-#if !DEBUG
+#if FALSE
                 if (!mutex.WaitOne(0, false))
                 {
                     Log.Error("Instance already running");
@@ -37,7 +36,15 @@ namespace FBClient
 
                 using (var game = new FinalBomber())
                 {
-                    game.Run();
+                    try
+                    {
+                        game.Run();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex.Message);  
+                        throw;
+                    }
                 }
             }
         }

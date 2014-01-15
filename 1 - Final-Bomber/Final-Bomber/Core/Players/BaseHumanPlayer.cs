@@ -19,21 +19,21 @@ namespace FBClient.Core.Players
         protected Keys[] Keys { get; private set; }
         protected Buttons[] Buttons { get; private set; }
 
-        protected BaseHumanPlayer(int id) : base(id)
+        protected BaseHumanPlayer(int id, int controlSettingsId) : base(id)
         {
-            Initialize();
+            Initialize(controlSettingsId);
         }
 
-        protected BaseHumanPlayer(int id, PlayerStats stats)
+        protected BaseHumanPlayer(int id, int controlSettingsId, PlayerStats stats)
             : base(id, stats)
         {
-            Initialize();
+            Initialize(controlSettingsId);
         }
 
-        private void Initialize()
+        private void Initialize(int controlSettingsId)
         {
-            Keys = Config.PlayersKeys[Id];
-            Buttons = Config.PlayersButtons[Id];
+            Keys = Config.PlayersKeys[controlSettingsId];
+            Buttons = Config.PlayersButtons[controlSettingsId];
             _motionVector = Vector2.Zero;
         }
 
