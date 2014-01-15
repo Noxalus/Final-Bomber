@@ -37,9 +37,8 @@ namespace FBClient.Core
         private Song _mapSong;
 
         // Timer
-        private TimeSpan _gameTimer;
-
-        protected GameTime GameTime;
+        private TimeSpan _gameStopWatch;
+        private GameTime _gameTime;
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
@@ -56,7 +55,7 @@ namespace FBClient.Core
 
         public TimeSpan GameTimer
         {
-            get { return _gameTimer; }
+            get { return _gameStopWatch; }
         }
 
         #endregion
@@ -72,20 +71,15 @@ namespace FBClient.Core
             _currentMap = new Map();
             BaseCurrentMap = _currentMap;
 
-            _gameTimer = TimeSpan.Zero;
+            _gameStopWatch = TimeSpan.Zero;
 
-            GameTime = new GameTime();
+            _gameTime = new GameTime();
 
         }
 
         public virtual void Initialize()
         {
-            _gameTimer = TimeSpan.Zero;
-
-            var origin = new Vector2((FinalBomber.Instance.GraphicsDevice.Viewport.Width - 234) / 2f - ((32 * _currentMap.Size.X) / 2f),
-                FinalBomber.Instance.GraphicsDevice.Viewport.Height / 2 - ((32 * _currentMap.Size.Y) / 2));
-
-            Engine.Origin = origin;
+            _gameStopWatch = TimeSpan.Zero;
 
             _suddenDeath = new SuddenDeath(FinalBomber.Instance, Config.PlayersPositions[0]);
 
@@ -105,7 +99,7 @@ namespace FBClient.Core
         {
             MediaPlayer.Play(_mapSong);
 
-            _gameTimer = TimeSpan.Zero;
+            _gameStopWatch = TimeSpan.Zero;
 
             Players.ForEach(player => player.Reset());
 
@@ -132,17 +126,18 @@ namespace FBClient.Core
 
         public override void Update()
         {
-            _gameTimer += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
+            _gameStopWatch += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
 
             var gameTime = new GameTime(TimeSpan.Zero, TimeSpan.FromTicks(GameConfiguration.DeltaTime));
-            GameTime = gameTime;
+            _gameTime = gameTime;
 
             // Camera position
             var cameraPosition = Vector2.Zero;
-            if (Players.Any())
-                cameraPosition = Players.First().Position;
+            var firstPlayer = Players.Find(p => p.Id == 0);
+            if (firstPlayer != null)
+                cameraPosition = firstPlayer.Position;
 
-            Camera.Update(gameTime, cameraPosition);
+            Camera.Update(cameraPosition);
 
             base.Update();
         }
@@ -152,7 +147,7 @@ namespace FBClient.Core
         {
             for (int i = 0; i < WallList.Count; i++)
             {
-                WallList[i].Update(GameTime);
+                WallList[i].Update(_gameTime);
 
                 // We clean the obsolete elements
                 if (!WallList[i].IsAlive)
@@ -168,7 +163,7 @@ namespace FBClient.Core
         {
             for (int i = 0; i < BombList.Count; i++)
             {
-                BombList[i].Update(GameTime);
+                BombList[i].Update(_gameTime);
 
                 // Do we delete the bomb
                 if (!BombList[i].IsAlive)
@@ -184,7 +179,7 @@ namespace FBClient.Core
         {
             for (int i = 0; i < PowerUpList.Count; i++)
             {
-                PowerUpList[i].Update(GameTime);
+                PowerUpList[i].Update(_gameTime);
 
                 if (!PowerUpList[i].IsAlive)
                 {
@@ -200,7 +195,7 @@ namespace FBClient.Core
             var alivePlayers = Players.FindAll(p => p.IsAlive);
             foreach (var player in alivePlayers)
             {
-                player.Update(GameTime, CurrentMap, HazardMap);
+                player.Update(_gameTime, CurrentMap, HazardMap);
             }
 
             base.UpdatePlayers();

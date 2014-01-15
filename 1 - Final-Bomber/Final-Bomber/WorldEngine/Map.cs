@@ -42,6 +42,7 @@ namespace FBClient.WorldEngine
 
         #region Constructor Region
 
+        // TODO: Move entities (arrow, teleporter, etc...) from this class to game manager
         public Map()
         {
             _edgeWallList = new List<EdgeWall>();
@@ -76,6 +77,7 @@ namespace FBClient.WorldEngine
                 Engine.Origin.X - (int)(Engine.Origin.X / Engine.TileWidth) * Engine.TileWidth - Engine.TileWidth,
                 Engine.Origin.Y - (int)(Engine.Origin.Y / Engine.TileHeight) * Engine.TileHeight - Engine.TileHeight);
 
+            /*
             // Draw additional unbreakable walls to fill the resolution
             for (int i = 0; i < (FinalBomber.Instance.GraphicsDevice.Viewport.Width / Engine.TileWidth) + 2; i++)
             {
@@ -90,6 +92,7 @@ namespace FBClient.WorldEngine
                     }
                 }
             }
+            */
 
             if (_tileMap != null)
             _tileMap.Draw(spriteBatch, camera, CollisionLayer);

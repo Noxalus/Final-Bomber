@@ -1,4 +1,6 @@
-﻿using FBLibrary.Core;
+﻿using System;
+using FBLibrary;
+using FBLibrary.Core;
 using FBClient.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,10 +10,13 @@ namespace FBClient.WorldEngine
 {
     public class Camera2D
     {
+        #region Fields
+
         private const float ZoomUpperLimit = 5.0f;
         private const float ZoomLowerLimit = .01f;
 
         private float _zoom;
+        private float _initialZoom;
         private Matrix _transform;
         private Vector2 _position;
         private Vector2 _positionLag;
@@ -22,16 +27,7 @@ namespace FBClient.WorldEngine
 
         private Vector2 _center;
 
-        public Camera2D(Viewport viewport, Point worldSize, float initialZoom)
-        {
-            _zoom = initialZoom;
-            _rotation = 0.0f;
-            _position = Vector2.Zero;
-            _positionLag = Vector2.Zero;
-            _viewport = viewport;
-            _worldWidth = worldSize.X;
-            _worldHeight = worldSize.Y;
-        }
+        #endregion
 
         #region Properties
 
@@ -66,15 +62,16 @@ namespace FBClient.WorldEngine
             {
                 _position = value;
 
-                
+                /*
                 float leftBarrier = (float)_viewport.Width * .5f / _zoom;
                 float rightBarrier = _worldWidth - (float)_viewport.Width * .5f / _zoom;
                 float topBarrier = _worldHeight - (float)_viewport.Height * .5f / _zoom;
                 float bottomBarrier = (float)_viewport.Height * .5f / _zoom;
 
-                
+
                 _position.X = MathHelper.Clamp(_position.X, leftBarrier, rightBarrier);
                 _position.Y = MathHelper.Clamp(_position.Y, bottomBarrier, topBarrier);
+                */
             }
         }
 
@@ -85,9 +82,22 @@ namespace FBClient.WorldEngine
 
         #endregion
 
-        public void Update(GameTime gameTime, Vector2 position)
+
+        public Camera2D(Viewport viewport, Point worldSize, float initialZoom)
         {
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _initialZoom = initialZoom;
+            _zoom = _initialZoom;
+            _rotation = 0.0f;
+            _position = Vector2.Zero;
+            _positionLag = Vector2.Zero;
+            _viewport = viewport;
+            _worldWidth = worldSize.X;
+            _worldHeight = worldSize.Y;
+        }
+
+        public void Update(Vector2 position)
+        {
+            var dt = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
 
             Position = position;
 
@@ -107,6 +117,12 @@ namespace FBClient.WorldEngine
                     Zoom -= 0.1f;
             }
 
+            // Reset zoom
+            if (InputHandler.KeyPressed(Keys.Home))
+            {
+                Zoom = _initialZoom;
+            }
+
             // Move the camera when the arrow keys are pressed
             Vector2 movement = Vector2.Zero;
 
@@ -120,7 +136,7 @@ namespace FBClient.WorldEngine
                 movement.Y -= 1f;
 
             // Reset camera lag
-            if (InputHandler.KeyPressed(Keys.End))
+            if (InputHandler.KeyPressed(Keys.Delete))
             {
                 _positionLag = Vector2.Zero;
             }
@@ -147,17 +163,24 @@ namespace FBClient.WorldEngine
                     Rotation += dt;
             }
 
-            _center = new Vector2(
+            // Reset rotation
+            if (InputHandler.KeyPressed(Keys.End))
+            {
+                Rotation = 0;
+            }
+
+            /*
+            // Center camera on the player
+            Position = new Vector2(
                 Position.X + Engine.Origin.X + Engine.TileWidth / 2f,
                 Position.Y + Engine.Origin.Y + Engine.TileHeight / 2f
-            );
-
+            );*/
         }
 
         public Matrix GetTransformation()
         {
             _transform =
-               Matrix.CreateTranslation(new Vector3(-_center.X, -_center.Y, 0)) *
+               Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
                Matrix.CreateRotationZ(Rotation) *
                Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
                Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0)

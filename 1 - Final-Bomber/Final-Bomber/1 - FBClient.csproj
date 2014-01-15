@@ -165,7 +165,6 @@
     <Compile Include="Network\GameHandler.cs" />
     <Compile Include="Network\GameServer.cs" />
     <Compile Include="Network\NetworkGameManager.cs" />
-    <Compile Include="Network\GameSettings.cs" />
     <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Network\Timer.cs" />
     <Compile Include="PlayerInfo.cs" />

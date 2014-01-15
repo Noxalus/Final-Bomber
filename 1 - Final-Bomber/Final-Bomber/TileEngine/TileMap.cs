@@ -82,7 +82,7 @@ namespace FBClient.TileEngine
         {
             foreach (MapLayer layer in mapLayers)
             {
-                layer.Draw(spriteBatch, camera, tilesets, collisionLayer);
+                layer.Draw(camera, tilesets, collisionLayer);
             }
         }
 

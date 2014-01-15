@@ -83,9 +83,9 @@ namespace FBLibrary.Core
 
         public Engine(int tileWidth, int tileHeight, Vector2 origin)
         {
-            Engine._tileWidth = tileWidth;
-            Engine._tileHeight = tileHeight;
-            Engine._origin = origin;
+            _tileWidth = tileWidth;
+            _tileHeight = tileHeight;
+            _origin = origin;
         }
 
         #endregion

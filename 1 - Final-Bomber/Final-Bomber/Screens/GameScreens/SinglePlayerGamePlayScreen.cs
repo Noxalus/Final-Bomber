@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
 using FBClient.Controls;
 using FBClient.Core;
-using FBClient.Core.Players;
 using FBClient.GUI;
-using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -34,7 +31,7 @@ namespace FBClient.Screens.GameScreens
         public override void Initialize()
         {
             // Map
-            _gameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
+            _gameManager.LoadMap("classic3.map"/*MapLoader.MapFileDictionary.Keys.First()*/);
             _gameManager.GenerateRandomWalls();
 
             _gameManager.Initialize();

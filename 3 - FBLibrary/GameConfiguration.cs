@@ -49,7 +49,7 @@ namespace FBLibrary
 
         // Game info
         public const float PlayerSpeedIncrementeurPercentage = 5; // Percentage of base player speed
-        public static int WallPercentage = 100; // From 0% to 100%
+        public static int WallPercentage = 0; // From 0% to 100%
         public const int PowerUpPercentage = 50;
 
         public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
@@ -96,7 +96,7 @@ namespace FBLibrary
 #endif
 
         // TO DELETE
-        public const int PlayerNumber = 4;
+        public const int PlayerNumber = 1;
         public const string ServerIp = "localhost";
         public const string ServerPort = "2643";
         public const int AlivePlayerRemaining = PlayerNumber - 1;
