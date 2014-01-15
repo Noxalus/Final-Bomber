@@ -45,8 +45,7 @@ namespace FBClient.Entities
 
         #region Constructor Region
 
-        protected Player(int id)
-            : base(id)
+        protected Player(int id) : base(id)
         {
             Initiliaze();
         }
@@ -430,12 +429,6 @@ namespace FBClient.Entities
         {
             PreviousDirection = CurrentDirection;
             CurrentDirection = (LookDirection)newLookDirection;
-            Debug.Print("New look direction: " + (LookDirection)newLookDirection);
-        }
-
-        protected override int GetTime()
-        {
-            return TimeSpan.FromTicks(GameConfiguration.DeltaTime).Milliseconds;
         }
     }
 }

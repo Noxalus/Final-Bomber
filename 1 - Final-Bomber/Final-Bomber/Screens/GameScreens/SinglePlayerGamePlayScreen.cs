@@ -43,8 +43,6 @@ namespace FBClient.Screens.GameScreens
 
             HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
             
-            Camera = new Camera2D(GraphicsDevice.Viewport, _gameManager.CurrentMap.Size, 1f);
-
             HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
             HudTopSpace = 15;
             HudMarginLeft = 15;
@@ -73,21 +71,14 @@ namespace FBClient.Screens.GameScreens
         {
             _gameManager.Update();
 
-            // Camera position
-            var cameraPosition = Vector2.Zero;
-            if (_gameManager.Players.Any())
-                cameraPosition = _gameManager.Players.First().Position;
-
-            Camera.Update(gameTime, cameraPosition);
-
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.GetTransformation());
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _gameManager.Camera.GetTransformation());
 
-            _gameManager.Draw(gameTime, Camera);
+            _gameManager.Draw(gameTime, _gameManager.Camera);
 
             FinalBomber.Instance.SpriteBatch.End();
 
@@ -100,7 +91,7 @@ namespace FBClient.Screens.GameScreens
                         0),
             Color.Black);
 
-            string cameraPosition = "Camera position: " + Camera.Position;
+            string cameraPosition = "Camera position: " + _gameManager.Camera.Position;
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(1, 41), Color.Black);
             FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, cameraPosition, new Vector2(0, 40), Color.White);
 

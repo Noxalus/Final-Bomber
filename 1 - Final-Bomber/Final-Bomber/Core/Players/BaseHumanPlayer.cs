@@ -12,6 +12,7 @@ namespace FBClient.Core.Players
 {
     public abstract class BaseHumanPlayer : Player
     {
+        public int ControlSettingsId;
         protected Keys[] KeysSaved;
         private Vector2 _motionVector;
 

@@ -24,7 +24,7 @@ namespace FBClient.Core
             {
                 var player = new HumanPlayer(i) { Name = PlayerInfo.Username + i };
                 player.SetGameManager(this);
-                player.ChangePosition(this.CurrentMap.PlayerSpawnPoints[player.Id]);
+                player.ChangePosition(CurrentMap.PlayerSpawnPoints[player.Id]);
 
                 AddPlayer(player);
             }

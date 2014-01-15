@@ -46,7 +46,7 @@ namespace FBClient.Network
 #if DEBUG
                 //PingInterval = 1f, // send ping every 1 second
                 //SimulatedLoss = 0.5f, // from 0 to 1
-                SimulatedMinimumLatency = 0.05f, // 0.05f for a latency of 50 ms
+                SimulatedMinimumLatency = 0f, // 0.05f for a ping of 50 ms
 #endif
             };
 

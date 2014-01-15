@@ -8,8 +8,8 @@ namespace FBClient.WorldEngine
 {
     public class Camera2D
     {
-        private const float zoomUpperLimit = 5.0f;
-        private const float zoomLowerLimit = .01f;
+        private const float ZoomUpperLimit = 5.0f;
+        private const float ZoomLowerLimit = .01f;
 
         private float _zoom;
         private Matrix _transform;
@@ -17,8 +17,8 @@ namespace FBClient.WorldEngine
         private Vector2 _positionLag;
         private float _rotation;
         private Viewport _viewport;
-        private int _worldWidth;
-        private int _worldHeight;
+        private readonly int _worldWidth;
+        private readonly int _worldHeight;
 
         private Vector2 _center;
 
@@ -41,10 +41,10 @@ namespace FBClient.WorldEngine
             set
             {
                 _zoom = value;
-                if (_zoom < zoomLowerLimit)
-                    _zoom = zoomLowerLimit;
-                if (_zoom > zoomUpperLimit)
-                    _zoom = zoomUpperLimit;
+                if (_zoom < ZoomLowerLimit)
+                    _zoom = ZoomLowerLimit;
+                if (_zoom > ZoomUpperLimit)
+                    _zoom = ZoomUpperLimit;
             }
         }
 

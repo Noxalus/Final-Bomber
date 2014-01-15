@@ -6,9 +6,7 @@ namespace FBLibrary.Core.BaseEntities
 {
     public abstract class BasePlayer : DynamicEntity
     {
-        // Only used for players control input config
-        // TODO: Move Id to BaseHumanPlayer
-        public int Id;
+        public int Id; // Used for bomb propery
         public string Name;
         public bool OnEdge;
         private TimeSpan _invincibleTime;
@@ -79,7 +77,7 @@ namespace FBLibrary.Core.BaseEntities
             // Have caught a bad item
             if (HasBadEffect)
             {
-                BadEffectTimer += TimeSpan.FromMilliseconds(GetTime());
+                BadEffectTimer += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
                 if (BadEffectTimer >= BadEffectTimerLenght)
                 {
                     RemoveBadItem();
@@ -401,8 +399,6 @@ namespace FBLibrary.Core.BaseEntities
 
         #endregion
 
-        protected abstract int GetTime();
-
         public override void Remove()
         {
             IsAlive = false;
@@ -410,7 +406,7 @@ namespace FBLibrary.Core.BaseEntities
         }
     }
 
-    public class BasicPlayerSorter : Comparer<BasePlayer>
+    public class PlayerBasicSorter : Comparer<BasePlayer>
     {
         public override int Compare(BasePlayer x, BasePlayer y)
         {
@@ -418,6 +414,24 @@ namespace FBLibrary.Core.BaseEntities
                 return x.Id.CompareTo(y.Id);
             else
                 throw new Exception("A player doesn't exist and can't be compared.");
+        }
+    }
+
+    public class PlayerRandomSorter : Comparer<BasePlayer>
+    {
+        public override int Compare(BasePlayer x, BasePlayer y)
+        {
+            if (x != null && y != null)
+                return 0;
+
+            if (GameConfiguration.Random.Next(2) == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }

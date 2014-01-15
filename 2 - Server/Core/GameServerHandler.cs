@@ -9,25 +9,16 @@ namespace FBServer.Core
     {
         HostGame _game;
         public bool Running = false;
-        Stopwatch _speedTimer;
 
         public void Initialize()
         {
-            _speedTimer = new Stopwatch();
             _game = new HostGame();
 
             Running = true;
-
-            _speedTimer.Start();
         }
 
         public void Update()
         {
-            // This calculates tps, so that the old player's movement is synchronized with the client
-            GameSettings.Speed = _speedTimer.Elapsed.Milliseconds;
-
-            _speedTimer.Restart();
-
             if (GameServer.Instance.GameManager.HasStarted)
                 _game.Update();
             else
@@ -44,9 +35,6 @@ namespace FBServer.Core
             //MainServer.EndMainConnection("Bye bye !");
 
             Running = false;
-
-            GameSettings.CurrentMap = 0;
-            GameSettings.mapPlayList = new List<Map>();
         }
     }
 }

@@ -34,7 +34,6 @@ namespace FBServer
 
             if (!server.Running)
             {
-                GameSettings.GameName = "Final-Server";
                 Log.Info("Player Number: " + GameConfiguration.PlayerNumber);
 
                 server = new GameServerHandler();

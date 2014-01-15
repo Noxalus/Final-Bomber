@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using FBClient.Core.Entities;
 using FBClient.Entities;
 using FBClient.WorldEngine;
@@ -8,6 +9,7 @@ using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
 namespace FBClient.Core
@@ -41,7 +43,10 @@ namespace FBClient.Core
 
         // Sudden Death
         private SuddenDeath _suddenDeath;
-        
+
+        // Camera
+        public Camera2D Camera;
+
         #region Properties
 
         public Map CurrentMap
@@ -87,6 +92,8 @@ namespace FBClient.Core
             GameEventManager = new GameEventManager(this);
 
             GameEventManager.Initialize();
+
+            Camera = new Camera2D(FinalBomber.Instance.Graphics.GraphicsDevice.Viewport, CurrentMap.Size, 1f);
         }
 
         public virtual void Dispose()
@@ -129,6 +136,13 @@ namespace FBClient.Core
 
             var gameTime = new GameTime(TimeSpan.Zero, TimeSpan.FromTicks(GameConfiguration.DeltaTime));
             GameTime = gameTime;
+
+            // Camera position
+            var cameraPosition = Vector2.Zero;
+            if (Players.Any())
+                cameraPosition = Players.First().Position;
+
+            Camera.Update(gameTime, cameraPosition);
 
             base.Update();
         }

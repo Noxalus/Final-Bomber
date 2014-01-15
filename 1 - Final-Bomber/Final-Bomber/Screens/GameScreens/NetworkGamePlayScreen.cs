@@ -58,8 +58,6 @@ namespace FBClient.Screens.GameScreens
             // Server events
             GameServer.Instance.End += GameServer_End;
 
-            Camera = new Camera2D(FinalBomber.Instance.GraphicsDevice.Viewport, _gameManager.CurrentMap.Size, 1f);
-
             HudOrigin = new Point(GraphicsDevice.Viewport.Width - 234, 0);
             HudTopSpace = 15;
             HudMarginLeft = 15;
@@ -98,16 +96,16 @@ namespace FBClient.Screens.GameScreens
         {
             _gameManager.Update();
 
-            Camera.Update(gameTime, GameServer.Instance.Clients.Me.Player.Position);
+            _gameManager.Camera.Update(gameTime, GameServer.Instance.Clients.Me.Player.Position);
 
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.GetTransformation());
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _gameManager.Camera.GetTransformation());
 
-            _gameManager.Draw(gameTime, Camera);
+            _gameManager.Draw(gameTime, _gameManager.Camera);
 
             FinalBomber.Instance.SpriteBatch.End();
 

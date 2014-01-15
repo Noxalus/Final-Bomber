@@ -177,7 +177,8 @@ namespace FBServer.Core
         private void CheckRoundEnd()
         {
             // Round end ?
-            if (GameInitialized &&
+            if (false && // TODO: Remove this
+                GameInitialized && 
                 GameServer.Instance.GameManager.PlayerList.Count(player => player.IsAlive) <=
                 GameConfiguration.AlivePlayerRemaining)
             {
@@ -192,9 +193,6 @@ namespace FBServer.Core
                 {
                     // End of game
                     //MainServer.SendPlayerStats();
-
-                    // Next map
-                    GameSettings.CurrentMap++;
 
                     EndGame();
 

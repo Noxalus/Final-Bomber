@@ -64,7 +64,6 @@
     <Compile Include="Core\Entities\PowerUp.cs" />
     <Compile Include="Core\WorldEngine\Map.cs" />
     <Compile Include="Core\Player.cs" />
-    <Compile Include="GameSettings.cs" />
     <Compile Include="Host\Client.cs" />
     <Compile Include="Host\ClientCollection.cs" />
     <Compile Include="Host\DataProcessing.cs" />
@@ -89,6 +88,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Maps\classic2.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Maps\sync test.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

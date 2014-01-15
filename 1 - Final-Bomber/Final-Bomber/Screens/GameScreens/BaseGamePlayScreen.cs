@@ -24,10 +24,7 @@ namespace FBClient.Screens.GameScreens
         protected Texture2D WindowSkin;
         protected WindowBox ScoresWindowBox;
         protected WindowBox TimerWindowBox;
-
-        // Camera
-        protected Camera2D Camera;
-
+        
         protected BaseGamePlayScreen(Game game, GameStateManager manager) : base(game, manager)
         {
         }

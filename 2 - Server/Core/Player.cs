@@ -1,4 +1,5 @@
-﻿using FBLibrary.Core;
+﻿using FBLibrary;
+using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using FBServer.Host;
 using Microsoft.Xna.Framework;
@@ -70,16 +71,6 @@ namespace FBServer.Core
                     // TODO: Same
                     SendPosition();
                 }
-                
-                if (InDestruction)
-                {
-                    _destructionTimer -= TimeSpan.FromMilliseconds(GameSettings.Speed);
-
-                    if (_destructionTimer <= TimeSpan.Zero)
-                    {
-                        Remove();
-                    }
-                }
 
                 // Call Update method of DynamicEntity class
                 base.Update();
@@ -96,13 +87,8 @@ namespace FBServer.Core
 
         protected override float GetMovementSpeed()
         {
-            float rtn = (Speed * GameSettings.Speed) / 1000f;
+            float rtn = (Speed * GameConfiguration.DeltaTime) / 1000f;
             return rtn;
-        }
-
-        protected override int GetTime()
-        {
-            return GameSettings.Speed;
         }
 
         public override void Destroy()

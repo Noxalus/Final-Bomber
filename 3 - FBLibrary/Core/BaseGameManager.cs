@@ -49,8 +49,15 @@ namespace FBLibrary.Core
 
             // Generate walls for another game
             GenerateRandomWalls();
+
+            // Randomize players position
+            BasePlayerList.Sort(new PlayerRandomSorter());
+
             // Replace players to their original spawn point
-            BasePlayerList.ForEach(p => p.ChangePosition(BaseCurrentMap.PlayerSpawnPoints[p.Id]));
+            for (int i = 0; i < BasePlayerList.Count; i++)
+            {
+                BasePlayerList[i].ChangePosition(BaseCurrentMap.PlayerSpawnPoints[i]);
+            }
         }
 
         #region Updates
@@ -101,8 +108,9 @@ namespace FBLibrary.Core
 
         protected virtual void UpdatePlayers()
         {
-            foreach (BasePlayer basePlayer in BasePlayerList)
+            for (var i = 0; i < BasePlayerList.Count; i++)
             {
+                var basePlayer = BasePlayerList[i];
                 if (basePlayer.IsAlive)
                 {
                     // We clean the obsolete players
