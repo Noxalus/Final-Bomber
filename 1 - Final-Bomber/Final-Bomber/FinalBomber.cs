@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FBLibrary;
 using FBClient.Screens.GameScreens;
 using FBClient.Screens.MenuScreens;
@@ -20,6 +21,9 @@ namespace FBClient
         // Password
         string _password;
         SoundEffect _debugModeEnabled;
+
+        // Timing
+        private Stopwatch _timer;
 
         // Net
         //public MainServer Server;
@@ -87,7 +91,7 @@ namespace FBClient
             Graphics.SynchronizeWithVerticalRetrace = true;
 #endif
             // Don't fix FPS to 60 => this wont work when vsync is ON
-            IsFixedTimeStep = true; 
+            IsFixedTimeStep = true;
 
             Graphics.IsFullScreen = Config.FullScreen;
             Graphics.ApplyChanges();
@@ -143,6 +147,9 @@ namespace FBClient
             MediaPlayer.Volume = Config.MusicVolume;
             SoundEffect.MasterVolume = Config.SoundVolume;
 
+            _timer = new Stopwatch();
+            _timer.Start();
+
             base.Initialize();
         }
 
@@ -165,9 +172,6 @@ namespace FBClient
 
         protected override void Update(GameTime gameTime)
         {
-            // Delta time
-            GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Ticks;
-
             // Password to enable debug/cheat mode
             UpdatePasswordManagement();
 
@@ -197,6 +201,12 @@ namespace FBClient
             }
 
             base.Update(gameTime);
+
+            // Delta time
+            //GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Ticks;
+            GameConfiguration.DeltaTime = _timer.Elapsed.Ticks;
+
+            _timer.Restart();
         }
 
         private void UpdatePasswordManagement()

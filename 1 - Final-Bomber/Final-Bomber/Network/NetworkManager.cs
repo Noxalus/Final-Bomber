@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using FBLibrary;
 using FBLibrary.Core;
-using FBClient.Core;
 using FBClient.Core.Entities;
-using FBClient.Core.Players;
-using FBClient.Entities;
-using FBClient.Screens.GameScreens;
 using Microsoft.Xna.Framework;
 
 namespace FBClient.Network
@@ -41,24 +36,15 @@ namespace FBClient.Network
         #endregion
 
         #endregion
-
-        // Timers
-        TimeSpan _timer;
-        readonly Timer _tmr;
-        readonly Timer _connectedTmr;
-        private Timer _tmrWaitUntilStart;
-
+        
         public string PublicIp;
         public bool IsConnected;
-        private bool _isReady;
+        public bool IsReady;
 
         public NetworkManager()
         {
-            IsConnected = true;
-
-            _timer = new TimeSpan();
-            _tmr = new Timer();
-            _connectedTmr = new Timer();
+            IsConnected = false;
+            IsReady = false;
         }
 
         public void Initiliaze()
@@ -66,23 +52,17 @@ namespace FBClient.Network
             PublicIp = "?";
 
             // Server events
-            GameServer.Instance.StartGame += GameServer_StartGame;
             GameServer.Instance.UpdatePing += GameServer_UpdatePing;
             GameServer.Instance.NewClient += GameServer_NewClient;
             GameServer.Instance.MovePlayer += GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
             GameServer.Instance.BombExploded += GameServer_BombExploded;
             GameServer.Instance.PowerUpDrop += GameServer_PowerUpDrop;
-
-            _tmr.Start();
-            _tmrWaitUntilStart = new Timer();
-            _connectedTmr.Start();
         }
 
         public void Dispose()
         {
             // Server events
-            GameServer.Instance.StartGame -= GameServer_StartGame;
             GameServer.Instance.UpdatePing -= GameServer_UpdatePing;
             GameServer.Instance.NewClient -= GameServer_NewClient;
             GameServer.Instance.MovePlayer -= GameServer_MovePlayer;
@@ -93,67 +73,29 @@ namespace FBClient.Network
 
         public void Update()
         {
+            // Read new messages from server and check connection status
+            GameServer.Instance.Update();
+
+            // First connection
             if (!IsConnected)
             {
-                GameServer.Instance.Update();
-
                 if (GameServer.Instance.Connected)
                 {
                     IsConnected = true;
-                }
-                else if (_connectedTmr.Each(5000))
-                {
-                    Debug.Print("Couldn't connect to the Game Server, please refresh the game list");
-                    FinalBomber.Instance.Exit();
+                    // TODO: Find a good way to display client IP
+                    //_publicIp = GetPublicIP();
                 }
             }
             else
             {
-                if (GameServer.Instance.HasStarted)
-                    GameServer.Instance.Update();
-
-                if (_isReady)
-                    ProgramStepProccesing();
-            }
-        }
-
-        private void ProgramStepProccesing()
-        {
-            if (!GameServer.Instance.Connected)
-            {
-                DisplayStatusBeforeExiting("The Game Server has closed/disconnected");
-            }
-            if (GameServer.Instance.Connected)
-            {
-                ConnectedGameProcessing();
-            }
-        }
-
-        private void DisplayStatusBeforeExiting(string status)
-        {
-            throw new Exception("Exit ! (not connected to the server !)");
-        }
-
-        private void ConnectedGameProcessing()
-        {
-            if (_isReady)
-            {
-                GameServer.Instance.SendIsReady();
-                _isReady = false;
+                if (GameServer.Instance.Disconnected)
+                {
+                    throw new Exception("Exit ! (not connected to the server !)");
+                }
             }
         }
 
         #region Server events
-
-        private void GameServer_StartInfo()
-        {
-            _isReady = true;
-        }
-
-        private void GameServer_StartGame(bool gameInProgress, List<Point> wallPositions)
-        {
-            GameServer.Instance.GameManager.AddWalls(wallPositions);
-        }
 
         private void GameServer_NewClient(int clientId, string username, bool isReady)
         {

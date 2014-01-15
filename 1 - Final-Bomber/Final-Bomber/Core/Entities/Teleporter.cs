@@ -31,7 +31,7 @@ namespace FBClient.Core.Entities
         public Teleporter(Point cellPosition)
             : base(cellPosition)
         {
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/teleporter");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/teleporter");
             var animation = new Animation(2, 32, 32, 0, 0, 2);
             Sprite = new AnimatedSprite(spriteTexture, animation) { IsAnimating = true };
 

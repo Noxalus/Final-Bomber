@@ -112,6 +112,7 @@ namespace FBClient.Screens.GameScreens
             FinalBomber.Instance.SpriteBatch.End();
 
             FinalBomber.Instance.SpriteBatch.Begin();
+
             const string str = "Networking Tests";
             FinalBomber.Instance.SpriteBatch.DrawString(BigFont, str,
                     new Vector2(

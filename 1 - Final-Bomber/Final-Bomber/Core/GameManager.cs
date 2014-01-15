@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FBClient.Core.Entities;
 using FBClient.Entities;
 using FBClient.WorldEngine;
@@ -246,13 +247,6 @@ namespace FBClient.Core
         public override void AddWall(Point position)
         {
             var wall = new Wall(position);
-            WallList.Add(wall);
-
-            base.AddWall(wall);
-        }
-
-        public void AddWall(Wall wall)
-        {
             WallList.Add(wall);
 
             base.AddWall(wall);

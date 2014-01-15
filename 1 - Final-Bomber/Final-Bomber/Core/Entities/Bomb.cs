@@ -49,7 +49,7 @@ namespace FBClient.Core.Entities
         {
             // TODO: Move all loading of content into a LoadContent XNA method like
             // Bomb Sprite
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/bomb");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/bomb");
             var animation = new Animation(3, 32, 32, 0, 0, 3);
             Sprite = new AnimatedSprite(spriteTexture, animation)
             {
@@ -57,7 +57,7 @@ namespace FBClient.Core.Entities
             };
 
             // Bomb's explosion animations
-            _explosionSpriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/explosion");
+            _explosionSpriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/explosion");
             const int explosionAnimationsFramesPerSecond = 10;
             _explosionAnimations = new[]
             {
@@ -86,10 +86,20 @@ namespace FBClient.Core.Entities
 
         public void Update(GameTime gameTime)
         {
-            Sprite.Update(gameTime);
+            // Bomb is exploding
+            if (InDestruction)
+            {
+                foreach (Animation animation in _explosionAnimations)
+                    animation.Update(gameTime);
+            }
+            else
+            {
 
-            #region Is moving ?
-            /*
+                Sprite.Update(gameTime);
+
+                #region Is moving ?
+
+                /*
             if (IsChangingCell())
             {
                 if (Map.Board[PreviousCellPosition.X, PreviousCellPosition.Y] == this)
@@ -111,20 +121,12 @@ namespace FBClient.Core.Entities
                 Position = Engine.CellToVector(CellPosition);
             }
             */
-            #endregion
 
-            #region Destruction
+                #endregion
 
-            if (InDestruction)
-            {
-                foreach (Animation animation in _explosionAnimations)
-                    animation.Update(gameTime);
-            }
+                #region When the bomb moves
 
-            #endregion
-
-            #region When the bomb moves
-            /*
+                /*
             // Control
             if (InputHandler.KeyDown(Keys.NumPad8))
                 CurrentDirection = LookDirection.Up;
@@ -216,10 +218,12 @@ namespace FBClient.Core.Entities
                     Position = Engine.CellToVector(CellPosition);
             }
             */
-            #endregion
 
-            #region Teleporter
-            /*
+                #endregion
+
+                #region Teleporter
+
+                /*
             if (!_cellTeleporting && Map.
                 Board[CellPosition.X, CellPosition.Y] is Teleporter)
             {
@@ -230,10 +234,12 @@ namespace FBClient.Core.Entities
                 _cellTeleporting = true;
             }
             */
-            #endregion
 
-            #region Arrow
-            /*
+                #endregion
+
+                #region Arrow
+
+                /*
             if (!_cellTeleporting && Map.
                 Board[CellPosition.X, CellPosition.Y] is Arrow)
             {
@@ -242,7 +248,9 @@ namespace FBClient.Core.Entities
                 arrow.ChangeDirection(this);
             }
             */
-            #endregion
+
+                #endregion
+            }
 
             // Call Update method of DynamicEntity class
             base.Update();

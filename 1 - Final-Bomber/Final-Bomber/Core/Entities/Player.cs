@@ -100,12 +100,12 @@ namespace FBClient.Entities
             animation = new Animation(4, 23, 23, 0, 69, animationFramesPerSecond);
             animations.Add(AnimationKey.Up, animation);
 
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/player1");
 
             Sprite = new AnimatedSprite(spriteTexture, animations);
             Sprite.ChangeFramesPerSecond(animationFramesPerSecond);
 
-            var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/player1Death");
+            var playerDeathTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/player1Death");
             animation = new Animation(8, 23, 23, 0, 0, 4);
             _deathAnimation = new AnimatedSprite(playerDeathTexture, animation)
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace FBLibrary.Core.BaseEntities
 {
@@ -7,10 +8,23 @@ namespace FBLibrary.Core.BaseEntities
         protected BaseWall(Point cellPosition)
             : base(cellPosition)
         {
+            DestructionTime = GameConfiguration.WallDestructionTime;
         }
 
-        public void Update()
+        public override void Update()
         {
+            base.Update();
+        }
+
+        public override void Destroy()
+        {
+            InDestruction = true;
+        }
+
+        public override void Remove()
+        {
+            IsAlive = false;
+            InDestruction = false;
         }
     }
 }

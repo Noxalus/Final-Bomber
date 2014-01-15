@@ -53,8 +53,8 @@ namespace FBClient.Core
         {
             _gameRef = game;
             _hasStarted = false;
-            _suddenDeathShadow = _gameRef.Content.Load<Texture2D>("Graphics/Characters/suddenDeathShadow");
-            _suddenDeathWall = _gameRef.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _suddenDeathShadow = _gameRef.Content.Load<Texture2D>("Graphics/Sprites/suddenDeathShadow");
+            _suddenDeathWall = _gameRef.Content.Load<Texture2D>("Graphics/Sprites/edgeWall");
             _currentPosition = pos;
             _previousPosition = Point.Zero;
 

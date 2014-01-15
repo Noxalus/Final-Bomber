@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using FBLibrary;
 using FBClient.Controls;
 using FBClient.Network;
-using FBLibrary.Core.BaseEntities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -13,18 +11,10 @@ namespace FBClient.Screens.MenuScreens
 {
     public class LobbyMenuScreen : BaseGameState
     {
-        #region Field region
-
-        private bool _isConnected;
-        private bool _isReady;
-        #endregion
-
         #region Constructor region
         public LobbyMenuScreen(Game game, GameStateManager manager)
             : base(game, manager)
         {
-            _isConnected = false;
-            _isReady = false;
         }
         #endregion
 
@@ -64,90 +54,76 @@ namespace FBClient.Screens.MenuScreens
 
         public override void Update(GameTime gameTime)
         {
+            GameServer.Instance.GameManager.NetworkManager.Update();
+
             // Read new messages from server and check connection status
             GameServer.Instance.Update();
 
-            // First connection
-            if (!_isConnected)
+            if (GameServer.Instance.FailedToConnect)
             {
-                if (GameServer.Instance.Connected)
-                {
-                    _isConnected = true;
-                    // TODO: Find a good way to display client IP
-                    //_publicIp = GetPublicIP();
-                }
-                else if (GameServer.Instance.FailedToConnect)
-                {
-                    // TODO: Display a disconnection message when connection time out is done
-                    // => ask to reconnect or quit
-                    // FinalBomber.Instance.Exit();
+                // TODO: Display a disconnection message when connection time out is done
+                // => ask to reconnect or quit
+                // FinalBomber.Instance.Exit();
 
-                    // Try to reconnect
-                    if (InputHandler.KeyPressed(Keys.Space))
-                    {
-                        GameServer.Instance.FailedToConnect = false;
-                        GameServer.Instance.TryToConnect(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
-                    }
+                // Try to reconnect
+                if (InputHandler.KeyPressed(Keys.Space))
+                {
+                    GameServer.Instance.FailedToConnect = false;
+                    GameServer.Instance.TryToConnect(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
                 }
             }
-            else
+
+            else if (!GameServer.Instance.Disconnected)
             {
-                if (!GameServer.Instance.Disconnected)
+                if (GameServer.Instance.Clients.Me != null)
                 {
-                    if (GameServer.Instance.Clients.Me != null)
+                    // Send that the player is ready/not ready to start the game
+                    if (InputHandler.KeyPressed(Keys.R))
                     {
-                        // Send that the player is ready/not ready to start the game
-                        if (InputHandler.KeyPressed(Keys.R))
-                        {
-                            _isReady = !_isReady;
-                            GameServer.Instance.Clients.Me.IsReady = _isReady;
-                            GameServer.Instance.SendIsReady(_isReady);
-                        }
+                        GameServer.Instance.GameManager.NetworkManager.IsReady = !GameServer.Instance.GameManager.NetworkManager.IsReady;
+                        GameServer.Instance.Clients.Me.IsReady = GameServer.Instance.GameManager.NetworkManager.IsReady;
+                        GameServer.Instance.SendIsReady(GameServer.Instance.GameManager.NetworkManager.IsReady);
+                    }
 
-                        if (!_isReady)
+                    if (!GameServer.Instance.GameManager.NetworkManager.IsReady)
+                    {
+                        if (GameServer.Instance.Clients.Me.IsHost)
                         {
-                            if (GameServer.Instance.Clients.Me.IsHost)
+                            // Select map
+                            if (InputHandler.KeyPressed(Keys.Up))
                             {
-                                // Select map
-                                if (InputHandler.KeyPressed(Keys.Up))
-                                {
-                                    var mapList = GameServer.Instance.Maps.Values.ToList();
-                                    var mapIndex =
-                                        mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
+                                var mapList = GameServer.Instance.Maps.Values.ToList();
+                                var mapIndex =
+                                    mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
 
-                                    mapIndex = (mapIndex - 1);
-                                    if (mapIndex < 0)
-                                        mapIndex = mapList.Count - 1;
+                                mapIndex = (mapIndex - 1);
+                                if (mapIndex < 0)
+                                    mapIndex = mapList.Count - 1;
 
-                                    GameServer.Instance.SendMapSelection(mapList[mapIndex]);
-                                }
-                                else if (InputHandler.KeyPressed(Keys.Down))
-                                {
-                                    var mapList = GameServer.Instance.Maps.Values.ToList();
-                                    var mapIndex =
-                                        mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
-
-                                    mapIndex = (mapIndex + 1) % mapList.Count;
-
-                                    GameServer.Instance.SendMapSelection(mapList[mapIndex]);
-                                }
+                                GameServer.Instance.SendMapSelection(mapList[mapIndex]);
                             }
-                        }
-
-                        if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady) &&
-                            GameServer.Instance.Clients.Count >= GameConfiguration.MinimumPlayerNumber)
-                        {
-                            if (GameServer.Instance.Clients.Me.IsHost && InputHandler.KeyPressed(Keys.Space))
+                            else if (InputHandler.KeyPressed(Keys.Down))
                             {
-                                // Start the game
-                                GameServer.Instance.SendWantToStartGame();
+                                var mapList = GameServer.Instance.Maps.Values.ToList();
+                                var mapIndex =
+                                    mapList.FindIndex(mapName => mapName == GameServer.Instance.SelectedMapMd5);
+
+                                mapIndex = (mapIndex + 1)%mapList.Count;
+
+                                GameServer.Instance.SendMapSelection(mapList[mapIndex]);
                             }
                         }
                     }
-                }
-                else
-                {
-                    throw new Exception("Exit ! (not connected to the server !)");
+
+                    if (GameServer.Instance.Clients.TrueForAll(client => client.IsReady) &&
+                        GameServer.Instance.Clients.Count >= GameConfiguration.MinimumPlayerNumber)
+                    {
+                        if (GameServer.Instance.Clients.Me.IsHost && InputHandler.KeyPressed(Keys.Space))
+                        {
+                            // Start the game
+                            GameServer.Instance.SendWantToStartGame();
+                        }
+                    }
                 }
             }
 
@@ -283,6 +259,7 @@ namespace FBClient.Screens.MenuScreens
         {
             // Load the selected map
             GameServer.Instance.GameManager.LoadMap(MapLoader.GetMapNameFromMd5(GameServer.Instance.SelectedMapMd5));
+
             // Add the wall from server
             GameServer.Instance.GameManager.AddWalls(wallPositions);
 

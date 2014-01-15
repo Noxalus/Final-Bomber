@@ -49,7 +49,7 @@ namespace FBClient.Core.Entities
             animation = new Animation(1, 32, 32, 0, 96, animationFramesPerSecond);
             animations.Add(AnimationKey.Up, animation);
 
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/arrow");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/arrow");
 
             Sprite = new AnimatedSprite(spriteTexture, animations)
             {

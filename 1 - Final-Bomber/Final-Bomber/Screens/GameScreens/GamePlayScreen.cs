@@ -147,7 +147,7 @@ namespace FBClient.Screens.GameScreens
             _itemInfoIcon = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Pictures/ItemInfo");
             _cross = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Pictures/Cross");
             _badItemTimerBar = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Pictures/BadItemTimerCross");
-            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/edgeWall");
             _windowSkin = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Windowskins/Windowskin1");
 
             // Sound Effects & Musics

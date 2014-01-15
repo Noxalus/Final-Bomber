@@ -47,10 +47,10 @@ namespace FBClient.Core.Entities
             var animations = new Dictionary<AnimationKey, Animation>();
             var animation = new Animation(2, 32, 32, 0, Config.ItemTypeIndex[Type] * 32, 5);
 
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/item");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/item");
             Sprite = new AnimatedSprite(spriteTexture, animation) { IsAnimating = true };
 
-            var itemDestroyTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/itemDestroy");
+            var itemDestroyTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/itemDestroy");
             animation = new Animation(7, 31, 28, 0, 0, 8);
             _itemDestroyAnimation = new AnimatedSprite(itemDestroyTexture, animation)
             {

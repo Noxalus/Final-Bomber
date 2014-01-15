@@ -18,7 +18,7 @@ namespace FBClient.Core.Entities
 
         public UnbreakableWall(Point cellPosition) : base(cellPosition)
         {
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/edgeWall");
             Sprite = new BaseSprite(spriteTexture, new Rectangle(0, 0, 32, 32));
         }
 

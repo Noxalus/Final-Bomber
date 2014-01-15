@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using FBClient.Sprites;
@@ -20,10 +22,8 @@ namespace FBClient.Core.Entities
         public Wall(Point cellPosition)
             : base(cellPosition)
         {
-            var animations = new Dictionary<AnimationKey, Animation>();
-
-            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/wall");
-            var animation = new Animation(6, 32, 32, 0, 0, 20);
+            var spriteTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/wall");
+            var animation = new Animation(6, 32, 32, 0, 0, 20) {FramesPerSecond = 20};
 
             Sprite = new AnimatedSprite(spriteTexture, animation);
         }
@@ -36,11 +36,10 @@ namespace FBClient.Core.Entities
         {
             Sprite.Update(gameTime);
 
-            if (Sprite.Animation.CurrentFrame == Sprite.Animation.FrameCount - 1)
-                Remove();
-
-            if (InDestruction)
+            if (InDestruction && !Sprite.IsAnimating)
                 Sprite.IsAnimating = true;
+
+            base.Update();
         }
 
         public void Draw(GameTime gameTime)
@@ -54,13 +53,12 @@ namespace FBClient.Core.Entities
 
         public override void Destroy()
         {
-            InDestruction = true;
+            base.Destroy();
         }
 
         public override void Remove()
         {
-            IsAlive = false;
-            InDestruction = false;
+            base.Remove();
         }
 
         #endregion

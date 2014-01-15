@@ -37,6 +37,7 @@ namespace FBClient.Sprites
                     framesPerSecond = 60;
                 else
                     framesPerSecond = value;
+
                 frameLength = TimeSpan.FromSeconds(1 / (double)framesPerSecond);
             }
         }

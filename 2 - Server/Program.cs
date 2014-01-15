@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using FBLibrary;
 using FBServer.Core;
 using System.Threading;
@@ -43,10 +44,10 @@ namespace FBServer
                 timer.Start();
                 while(server.Running)
                 {
+                    server.Update();
+
                     // Compute delta time
                     GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
-
-                    server.Update();
 
                     timer.Restart();
 

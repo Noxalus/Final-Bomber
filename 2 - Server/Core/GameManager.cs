@@ -255,10 +255,13 @@ namespace FBServer.Core
         }
 
         #region Update entities
+
         protected override void UpdateWalls()
         {
             for (int i = 0; i < _wallList.Count; i++)
             {
+                _wallList[i].Update();
+
                 // We clean the obsolete elements
                 if (!_wallList[i].IsAlive)
                 {

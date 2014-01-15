@@ -13,12 +13,12 @@ namespace FBServer.Core.Entities
 
         public override void Destroy()
         {
-            Remove();
+            base.Destroy();
         }
 
         public override void Remove()
         {
-            IsAlive = false;
+            base.Remove();
         }
     }
 }

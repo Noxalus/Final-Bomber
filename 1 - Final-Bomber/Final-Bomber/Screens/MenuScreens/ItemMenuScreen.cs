@@ -44,7 +44,7 @@ namespace FBClient.Screens.MenuScreens
 
         protected override void LoadContent()
         {
-            _itemsTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/item");
+            _itemsTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/item");
             base.LoadContent();
         }
 

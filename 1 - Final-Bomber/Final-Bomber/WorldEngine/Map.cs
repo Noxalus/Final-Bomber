@@ -56,7 +56,7 @@ namespace FBClient.WorldEngine
 
         public void LoadContent()
         {
-            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Characters/edgeWall");
+            _wallTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Sprites/edgeWall");
             _mapTexture = FinalBomber.Instance.Content.Load<Texture2D>("Graphics/Tilesets/tileset1");
 
             var tilesets = new List<Tileset>() { new Tileset(_mapTexture, 64, 32, 32, 32) };
@@ -76,6 +76,7 @@ namespace FBClient.WorldEngine
                 Engine.Origin.X - (int)(Engine.Origin.X / Engine.TileWidth) * Engine.TileWidth - Engine.TileWidth,
                 Engine.Origin.Y - (int)(Engine.Origin.Y / Engine.TileHeight) * Engine.TileHeight - Engine.TileHeight);
 
+            // Draw additional unbreakable walls to fill the resolution
             for (int i = 0; i < (FinalBomber.Instance.GraphicsDevice.Viewport.Width / Engine.TileWidth) + 2; i++)
             {
                 for (int j = 0; j < (FinalBomber.Instance.GraphicsDevice.Viewport.Height / Engine.TileHeight) + 2; j++)

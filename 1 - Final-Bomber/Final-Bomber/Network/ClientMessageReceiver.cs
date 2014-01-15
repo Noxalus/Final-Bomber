@@ -135,9 +135,7 @@ namespace FBClient.Network
 
         private void ReceivePlacingBomb(int playerId, Point position)
         {
-            //OnPlacingBomb(playerId, position);
-
-            GameManager.NetworkManager.GameServer_PlacingBomb(playerId, position);
+            OnPlacingBomb(playerId, position);
         }
 
         private void ReceiveBombExploded(NetIncomingMessage message)
@@ -218,6 +216,7 @@ namespace FBClient.Network
         #region Events
 
         #region StartGame
+        
         public delegate void StartGameEventHandler(bool gameInProgress, List<Point> wallPositions);
         public event StartGameEventHandler StartGame;
 
@@ -226,6 +225,7 @@ namespace FBClient.Network
             if (StartGame != null)
                 StartGame(gameInProgress, wallPositions);
         }
+
         #endregion
 
         #region NewPlayer

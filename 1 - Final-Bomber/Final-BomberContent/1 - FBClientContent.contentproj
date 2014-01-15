@@ -86,28 +86,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\bomb.png">
+    <Compile Include="Graphics\Sprites\bomb.png">
       <Name>bomb</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\wall.png">
+    <Compile Include="Graphics\Sprites\wall.png">
       <Name>wall</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\item.png">
+    <Compile Include="Graphics\Sprites\item.png">
       <Name>item</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\explosion.png">
+    <Compile Include="Graphics\Sprites\explosion.png">
       <Name>explosion</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -121,21 +121,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\player1.png">
+    <Compile Include="Graphics\Sprites\player1.png">
       <Name>player1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\itemDestroy.png">
+    <Compile Include="Graphics\Sprites\itemDestroy.png">
       <Name>itemDestroy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\player1Death.png">
+    <Compile Include="Graphics\Sprites\player1Death.png">
       <Name>player1Death</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -149,28 +149,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\edgeWall.png">
+    <Compile Include="Graphics\Sprites\edgeWall.png">
       <Name>edgeWall</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\suddenDeathShadow.png">
+    <Compile Include="Graphics\Sprites\suddenDeathShadow.png">
       <Name>suddenDeathShadow</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\teleporter.png">
+    <Compile Include="Graphics\Sprites\teleporter.png">
       <Name>teleporter</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\Characters\arrow.png">
+    <Compile Include="Graphics\Sprites\arrow.png">
       <Name>arrow</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

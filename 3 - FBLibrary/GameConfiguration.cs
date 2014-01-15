@@ -15,8 +15,8 @@ namespace FBLibrary
         public static TimeSpan PlayerInvincibleTimer = TimeSpan.FromSeconds(3);
 
         // Base characteristics
-        public const int BasePlayerBombPower = 10;
-        public const float BasePlayerSpeed = 150f;
+        public const int BasePlayerBombPower = 1;
+        public const float BasePlayerSpeed = 150;
         public const float BaseBombSpeed = 3f;
         public const int BasePlayerBombAmount = 1;
         // Initially => 2
@@ -49,10 +49,11 @@ namespace FBLibrary
 
         // Game info
         public const float PlayerSpeedIncrementeurPercentage = 5; // Percentage of base player speed
-        public static int WallPercentage = 50; // From 0% to 100%
+        public static int WallPercentage = 100; // From 0% to 100%
         public const int PowerUpPercentage = 50;
 
         public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
+        public static TimeSpan WallDestructionTime = TimeSpan.FromMilliseconds(300);
         public static TimeSpan PowerUpDestructionTime = TimeSpan.FromMilliseconds(750);
         public static TimeSpan PlayerDestructionTime = TimeSpan.FromMilliseconds(1750);
 
