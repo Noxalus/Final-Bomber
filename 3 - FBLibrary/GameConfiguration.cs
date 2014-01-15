@@ -96,7 +96,7 @@ namespace FBLibrary
 #endif
 
         // TO DELETE
-        public const int PlayerNumber = 1;
+        public const int PlayerNumber = 2;
         public const string ServerIp = "localhost";
         public const string ServerPort = "2643";
         public const int AlivePlayerRemaining = PlayerNumber - 1;

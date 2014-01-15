@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using FBClient.Network;
 using FBLibrary;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
@@ -8,10 +9,7 @@ using FBClient.Controls;
 using FBClient.Core;
 using FBClient.Core.Entities;
 using FBClient.Entities;
-using FBClient.Screens;
-using FBClient.Screens.GameScreens;
 using FBClient.Sprites;
-using FBClient.TileEngine;
 using FBClient.WorldEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -444,4 +442,25 @@ namespace FBClient.Entities
 
 public class PlayerCollection : List<Player>
 {
+}
+
+
+public class PlayerOverlappingSort : Comparer<Player>
+{
+    public override int Compare(Player x, Player y)
+    {
+        if (x != null && y != null)
+        {
+            if (x.PositionY <= y.PositionY)
+            {
+                return -1;
+            }
+            else if (x.PositionY > y.PositionY)
+            {
+                return 1;
+            }
+        }
+
+        return 0;
+    }
 }

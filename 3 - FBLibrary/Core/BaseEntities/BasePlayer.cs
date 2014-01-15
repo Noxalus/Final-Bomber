@@ -6,6 +6,8 @@ namespace FBLibrary.Core.BaseEntities
 {
     public abstract class BasePlayer : DynamicEntity
     {
+        // Only used for players control input config
+        // TODO: Move Id to BaseHumanPlayer
         public int Id;
         public string Name;
         public bool OnEdge;

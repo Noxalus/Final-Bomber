@@ -206,6 +206,7 @@ namespace FBClient.Core
             foreach (Bomb bomb in BombList)
                 bomb.Draw(gameTime);
 
+            Players.Sort(new PlayerOverlappingSort());
             foreach (Player player in Players)
             {
                 if (player.IsAlive)

@@ -234,7 +234,10 @@ namespace FBClient.Screens.MenuScreens
             {
                 str = GameServer.Instance.Maps.Keys.ElementAt(i);
 
-                strColor = MapLoader.MapFileDictionary.Values.Contains(GameServer.Instance.Maps.Values.ElementAt(i)) ? Color.Green : Color.Red;
+                strColor = Color.Black;
+
+                if (!MapLoader.MapFileDictionary.Values.Contains(GameServer.Instance.Maps.Values.ElementAt(i)))
+                    str += " (need to be downloaded)";
 
                 if (GameServer.Instance.Maps.Values.ElementAt(i) == GameServer.Instance.SelectedMapMd5)
                     strColor = Color.White;
