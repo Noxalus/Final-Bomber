@@ -142,7 +142,7 @@ namespace FBLibrary.Core
                             if (!basePlayer.InDestruction && !basePlayer.IsInvincible &&
                                 HazardMap[basePlayer.CellPosition.X, basePlayer.CellPosition.Y] == 3)
                             {
-                                // Bomb
+                                // Get the bomb that destroyed this player
                                 int bombId = -42;
                                 List<BaseBomb> bl = _baseBombList.FindAll(b => b.InDestruction);
                                 foreach (BaseBomb b in bl)
@@ -156,23 +156,15 @@ namespace FBLibrary.Core
                                 // Suicide
                                 if (bombId == basePlayer.Id)
                                 {
-                                    basePlayer.Stats.Suicides++;
-                                    basePlayer.Stats.Score -= GameConfiguration.ScoreBySuicide;
+                                    SuicidePlayer(basePlayer);
                                 }
+
                                 // Kill
                                 else if (bombId >= 0 && bombId < _basePlayerList.Count)
                                 {
-                                    GetPlayerById(bombId).Stats.Kills++;
-                                    GetPlayerById(bombId).Stats.Score += GameConfiguration.ScoreByKill;
-                                    BasePlayer player = _basePlayerList.Find(p => p.Id == bombId);
-                                    if (player.OnEdge)
-                                    {
-                                        //player.Rebirth(BasePlayerList[i].Position);
-                                        //_deadBasePlayerListNumber--;
-                                    }
+                                    KillPlayer(basePlayer.Id, bombId);
                                 }
 
-                                DestroyPlayer(basePlayer.Id);
                             }
                         }
                     }
@@ -341,6 +333,34 @@ namespace FBLibrary.Core
             _basePowerUpList.Remove(basePowerUp);
         }
 
+
+        public virtual void KillPlayer(int victimId, int killerId)
+        {
+            // Change player's stats
+            GetPlayerById(killerId).Stats.Kills++;
+            GetPlayerById(killerId).Stats.Score += GameConfiguration.ScoreByKill;
+
+            // Killer resurrection from edges ?
+            /*
+            BasePlayer killer = _basePlayerList.Find(p => p.Id == killerId);
+            if (killer.OnEdge)
+            {
+                killer.Rebirth(BasePlayerList[i].Position);
+                _deadBasePlayerListNumber--;
+            }
+            */
+
+            DestroyPlayer(victimId);
+        }
+
+        public virtual void SuicidePlayer(BasePlayer player)
+        {
+            player.Stats.Suicides++;
+            player.Stats.Score -= GameConfiguration.ScoreBySuicide;
+
+            DestroyPlayer(player.Id);
+        }
+
         public abstract void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp);
 
         #endregion
@@ -380,10 +400,10 @@ namespace FBLibrary.Core
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1))
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y))
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y))
-                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1))
-                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1))
-                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1))
-                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1))
                 ;
         }
         #endregion

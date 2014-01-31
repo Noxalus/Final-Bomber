@@ -276,6 +276,36 @@ namespace FBServer.Host
             Program.Log.Info("[SEND] Sent that bomb exploded to everyone ! (position: " + bomb.Position + ")");
         }
 
+
+        // Send to all player that a player has been killed by someone
+        public void SendKillPlayer(Client victimClient, Client killerClient)
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.PlayerKill);
+
+            message.Write(victimClient.ClientId);
+            message.Write(killerClient.ClientId);
+
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("[SEND] " + victimClient.Player.Name + " has been killed by " + killerClient.Player.Name + " !");
+        }
+
+        // Send to all player that a player committed suicide
+        public void SendSuicidePlayer(Client suicidalClient)
+        {
+            NetOutgoingMessage message = _server.CreateMessage();
+
+            message.Write((byte)MessageType.ServerMessage.PlayerSuicide);
+
+            message.Write(suicidalClient.ClientId);
+
+            _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
+
+            Program.Log.Info("[SEND] " + suicidalClient.Player.Name + " committed suicide !");
+        }
+
         public void SendPowerUpDrop(PowerUp powerUp)
         {
             NetOutgoingMessage message = _server.CreateMessage();

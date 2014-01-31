@@ -69,6 +69,16 @@ namespace FBClient.Network
             return GameServer.Instance.Clients.Find(c => c.Player == player);
         }
 
+        public Player GetPlayerFromClientId(int clientId)
+        {
+            return GetClientFromId(clientId).Player;
+        }
+
+        public Client GetClientFromId(int clientId)
+        {
+            return GameServer.Instance.Clients.Find(c => c.Id == clientId);
+        }
+
         #endregion
     }
 }

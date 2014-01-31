@@ -113,7 +113,7 @@ namespace FBServer.Core
             }
             else
             {
-                if (GameServer.Instance.Clients.Any() && 
+                if (GameServer.Instance.Clients.Any() &&
                     (GameServer.Instance.Clients.TrueForAll(client => client.IsReady) &&
                     GameServer.Instance.Clients.TrueForAll(client => client.HasMap)))
                 {
@@ -126,7 +126,7 @@ namespace FBServer.Core
         {
             // Game has to be initialized ?
             if (GameServer.Instance.Clients.Count >= GameConfiguration.MinimumPlayerNumber &&
-                GameServer.Instance.Clients.Count <= ServerSettings.MaxConnection && 
+                GameServer.Instance.Clients.Count <= ServerSettings.MaxConnection &&
                 !GameInitialized)
             {
                 GameInitialize();
@@ -179,7 +179,7 @@ namespace FBServer.Core
         {
             // Round end ?
             if (false && // TODO: Remove this
-                GameInitialized && 
+                GameInitialized &&
                 GameServer.Instance.GameManager.PlayerList.Count(player => player.IsAlive) <=
                 GameConfiguration.AlivePlayerRemaining)
             {
@@ -413,6 +413,25 @@ namespace FBServer.Core
         }
         */
 
+        public override void KillPlayer(int victimId, int killerId)
+        {
+            base.KillPlayer(victimId, killerId);
+
+            Client victimClient = GetClientFromId(victimId);
+            Client killerClient = GetClientFromId(killerId);
+
+            GameServer.Instance.SendKillPlayer(victimClient, killerClient);
+        }
+
+        public override void SuicidePlayer(BasePlayer suicidalPlayer)
+        {
+            base.SuicidePlayer(suicidalPlayer);
+
+            Client suicidalClient = GetClientFromPlayer(suicidalPlayer);
+
+            GameServer.Instance.SendSuicidePlayer(suicidalClient);
+        }
+
         #endregion
 
         #region Wall methods
@@ -546,6 +565,11 @@ namespace FBServer.Core
         private Client GetClientFromPlayer(BasePlayer player)
         {
             return GameServer.Instance.Clients.Find(c => c.Player == player);
+        }
+
+        private Client GetClientFromId(int clientId)
+        {
+            return GameServer.Instance.Clients.Find(c => c.ClientId == clientId);
         }
     }
 }

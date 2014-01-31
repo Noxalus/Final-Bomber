@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using FBClient.Entities;
-using FBLibrary;
 using FBLibrary.Core;
 using FBClient.Core.Entities;
 using Microsoft.Xna.Framework;
@@ -58,6 +56,8 @@ namespace FBClient.Network
             GameServer.Instance.MovePlayer += GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
             GameServer.Instance.BombExploded += GameServer_BombExploded;
+            GameServer.Instance.PlayerKilled += GameServer_PlayerKilled;
+            GameServer.Instance.PlayerSuicide += GameServer_PlayerSuicide;
             GameServer.Instance.PowerUpDrop += GameServer_PowerUpDrop;
             GameServer.Instance.PowerUpPickUp += GameServer_PowerUpPickUp;
         }
@@ -70,6 +70,8 @@ namespace FBClient.Network
             GameServer.Instance.MovePlayer -= GameServer_MovePlayer;
             GameServer.Instance.PlacingBomb -= GameServer_PlacingBomb;
             GameServer.Instance.BombExploded -= GameServer_BombExploded;
+            GameServer.Instance.PlayerKilled -= GameServer_PlayerKilled;
+            GameServer.Instance.PlayerSuicide -= GameServer_PlayerSuicide;
             GameServer.Instance.PowerUpDrop -= GameServer_PowerUpDrop;
         }
 
@@ -226,6 +228,18 @@ namespace FBClient.Network
                 Entities.Add(ex);
             }
             */
+        }
+
+        private void GameServer_PlayerKilled(int victimId, int killerId)
+        {
+            GameServer.Instance.GameManager.KillPlayer(victimId, killerId);
+        }
+
+        private void GameServer_PlayerSuicide(int suicidalId)
+        {
+            Player suicidalPlayer = GameServer.Instance.GameManager.GetPlayerFromClientId(suicidalId);
+
+            GameServer.Instance.GameManager.SuicidePlayer(suicidalPlayer);
         }
 
         private void GameServer_PowerUpDrop(PowerUpType type, Point position)

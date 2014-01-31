@@ -63,6 +63,12 @@ namespace FBClient.Network
                 case (byte)MessageType.ServerMessage.BombExploded:
                     ReceiveBombExploded(message);
                     break;
+                case (byte)MessageType.ServerMessage.PlayerKill:
+                    ReceivePlayerKill(message.ReadInt32(), message.ReadInt32());
+                    break;
+                case (byte)MessageType.ServerMessage.PlayerSuicide:
+                    ReceivePlayerSuicide(message.ReadInt32());
+                    break;
                 case (byte)MessageType.ServerMessage.PowerUpDrop:
                     ReceivePowerupDrop((PowerUpType)message.ReadByte(), message.ReadPoint());
                     break;

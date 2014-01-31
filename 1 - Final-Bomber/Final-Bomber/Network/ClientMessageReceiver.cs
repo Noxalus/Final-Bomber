@@ -154,12 +154,22 @@ namespace FBClient.Network
             //OnBombExploded(position);
         }
 
+        private void ReceivePlayerKill(int victimId, int killerId)
+        {
+            OnPlayerKilled(victimId, killerId);
+        }
+
+        private void ReceivePlayerSuicide(int suicidalId)
+        {
+            OnPlayerSuicide(suicidalId);
+        }
+
         private void ReceivePowerupDrop(PowerUpType type, Point position)
         {
             OnPowerUpDrop(type, position);
         }
 
-        public void ReceivePowerUpPickUp(int playerId, Point position, PowerUpType type)
+        private void ReceivePowerUpPickUp(int playerId, Point position, PowerUpType type)
         {
             OnPowerUpPickUp(playerId, position, type);
         }
@@ -278,6 +288,28 @@ namespace FBClient.Network
         {
             if (BombExploded != null)
                 BombExploded(position);
+        }
+        #endregion
+
+        #region PlayerKilled
+        public delegate void PlayerKilledEventHandler(int victimId, int killerId);
+        public event PlayerKilledEventHandler PlayerKilled;
+
+        private void OnPlayerKilled(int victimId, int killerId)
+        {
+            if (PlayerKilled != null)
+                PlayerKilled(victimId, killerId);
+        }
+        #endregion
+
+        #region PlayerSuicide
+        public delegate void PlayerSuicideEventHandler(int suicidalId);
+        public event PlayerSuicideEventHandler PlayerSuicide;
+
+        private void OnPlayerSuicide(int suicidalId)
+        {
+            if (PlayerSuicide != null)
+                PlayerSuicide(suicidalId);
         }
         #endregion
 
