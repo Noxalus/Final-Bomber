@@ -505,12 +505,17 @@ namespace FBServer.Core
             base.AddPowerUp(powerUp);
         }
 
-        protected override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
+        public override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
         {
             powerUp.ApplyEffect(player);
             powerUp.PickUp();
 
             Program.Log.Info("Power up at " + powerUp.CellPosition + " has been taken by player " + player.Name + ".");
+
+
+            Client client = GetClientFromPlayer(player);
+
+            GameServer.Instance.SendPowerUpPickUp(client, (PowerUp)powerUp);
 
             powerUp.Remove();
         }
@@ -537,5 +542,10 @@ namespace FBServer.Core
         }
 
         #endregion
+
+        private Client GetClientFromPlayer(BasePlayer player)
+        {
+            return GameServer.Instance.Clients.Find(c => c.Player == player);
+        }
     }
 }

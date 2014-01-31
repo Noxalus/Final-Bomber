@@ -66,8 +66,8 @@ namespace FBClient.Network
                 case (byte)MessageType.ServerMessage.PowerUpDrop:
                     ReceivePowerupDrop((PowerUpType)message.ReadByte(), message.ReadPoint());
                     break;
-                case (byte)MessageType.ServerMessage.PowerUpPick:
-                    //ReceivePowerupPick(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadInt32(), buffer.ReadFloat());
+                case (byte)MessageType.ServerMessage.PowerUpPickUp:
+                    ReceivePowerUpPickUp(message.ReadInt32(), message.ReadPoint(), (PowerUpType)message.ReadByte());
                     break;
                 case (byte)MessageType.ServerMessage.SuddenDeath:
                     //ReceiveSuddenDeath();

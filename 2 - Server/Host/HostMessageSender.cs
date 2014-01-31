@@ -290,18 +290,19 @@ namespace FBServer.Host
             Program.Log.Info("[SEND] Power up dropped ! (type: " + powerUp.Type + "|position: " + powerUp.CellPosition + ")");
         }
 
-        public void SendPowerUpPick(Client client, PowerUp powerUp)
+        public void SendPowerUpPickUp(Client client, PowerUp powerUp)
         {
             NetOutgoingMessage message = _server.CreateMessage();
 
-            message.Write((byte)MessageType.ServerMessage.PowerUpPick);
+            message.Write((byte)MessageType.ServerMessage.PowerUpPickUp);
 
             message.Write(client.ClientId);
             message.Write(powerUp.CellPosition);
+            message.Write((byte)powerUp.Type);
 
             _server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
 
-            Program.Log.Info("[SENT] Power up pick by client #" + client.ClientId + " !");
+            Program.Log.Info("[SENT] Power up pick up by client #" + client.ClientId + " ! (type: " + powerUp.Type + "|position: " + powerUp.CellPosition + ")");
         }
 
         public void SendSuddenDeath()

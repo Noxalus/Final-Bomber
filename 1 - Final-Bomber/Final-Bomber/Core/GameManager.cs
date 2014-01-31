@@ -26,7 +26,7 @@ namespace FBClient.Core
 
         // Collections
         public readonly List<Bomb> BombList;
-        protected readonly List<PowerUp> PowerUpList;
+        public readonly List<PowerUp> PowerUpList;
         protected readonly List<Wall> WallList;
 
         // Map
@@ -87,7 +87,6 @@ namespace FBClient.Core
 
             GameEventManager.Initialize();
 
-            Camera = new Camera2D(FinalBomber.Instance.Graphics.GraphicsDevice.Viewport, CurrentMap.Size, 1f);
         }
 
         public virtual void Dispose()
@@ -119,6 +118,8 @@ namespace FBClient.Core
             MediaPlayer.Play(_mapSong);
 
             CurrentMap.LoadContent();
+
+            Camera = new Camera2D(FinalBomber.Instance.Graphics.GraphicsDevice.Viewport, CurrentMap.Size, 1f);
 
             // Load players content
             Players.ForEach(player => player.LoadContent());
@@ -329,7 +330,7 @@ namespace FBClient.Core
             base.AddPowerUp(powerUp);
         }
 
-        protected override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
+        public override void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp)
         {
             powerUp.ApplyEffect(player);
             powerUp.PickUp();

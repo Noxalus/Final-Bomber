@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using FBClient.Entities;
 using FBLibrary;
 using FBLibrary.Core;
 using FBClient.Core.Entities;
@@ -58,6 +59,7 @@ namespace FBClient.Network
             GameServer.Instance.PlacingBomb += GameServer_PlacingBomb;
             GameServer.Instance.BombExploded += GameServer_BombExploded;
             GameServer.Instance.PowerUpDrop += GameServer_PowerUpDrop;
+            GameServer.Instance.PowerUpPickUp += GameServer_PowerUpPickUp;
         }
 
         public void Dispose()
@@ -229,6 +231,25 @@ namespace FBClient.Network
         private void GameServer_PowerUpDrop(PowerUpType type, Point position)
         {
             GameServer.Instance.GameManager.AddPowerUp(type, position);
+        }
+
+        private void GameServer_PowerUpPickUp(int playerId, Point position, PowerUpType type)
+        {
+            // Get power up
+            PowerUp powerUp = GameServer.Instance.GameManager.PowerUpList.Find(pu => pu.CellPosition == position);
+
+            // Get player
+            Player player = GameServer.Instance.GameManager.Players.Find(p => p.Id == playerId);
+
+            // Apply power up
+            if (powerUp != null)
+            {
+                GameServer.Instance.GameManager.PickUpPowerUp(player, powerUp);
+            }
+            else
+            {
+                Program.Log.Error("This power up doesn't exist ! (position: " + position + "| type: " + type + ")");
+            }
         }
 
         #endregion

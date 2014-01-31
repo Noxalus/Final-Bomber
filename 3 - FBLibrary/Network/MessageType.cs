@@ -31,7 +31,7 @@ namespace FBLibrary.Network
             StartGame = 9, // Tells to client that the game will start (also sends generated wall positions) 
             End = 10, // Sends that the game is finished (with the winner)
             PowerUpDrop = 11, // Sends that a power up has dropped
-            PowerUpPick = 12, // Sens that a player has picked up a power up
+            PowerUpPickUp = 12, // Sens that a player has picked up a power up
             SuddenDeath = 13, // Tells to players that the sudden death began
             RoundEnd = 15, // Sends that the round is finished
             ClientId = 16, // Sends the server generated id to its corresponding client

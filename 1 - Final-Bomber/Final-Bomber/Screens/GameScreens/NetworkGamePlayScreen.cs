@@ -96,8 +96,6 @@ namespace FBClient.Screens.GameScreens
         {
             _gameManager.Update();
 
-            _gameManager.Camera.Update(GameServer.Instance.Clients.Me.Player.Position);
-
             base.Update(gameTime);
         }
 

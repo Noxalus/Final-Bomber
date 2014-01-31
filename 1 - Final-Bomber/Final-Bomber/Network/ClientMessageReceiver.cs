@@ -159,12 +159,10 @@ namespace FBClient.Network
             OnPowerUpDrop(type, position);
         }
 
-        /*
-        public void ReceivePowerupPick(float xPos, float yPos, int playerId, float amount)
+        public void ReceivePowerUpPickUp(int playerId, Point position, PowerUpType type)
         {
-            OnPowerupPick(xPos, yPos, playerId, amount);
+            OnPowerUpPickUp(playerId, position, type);
         }
-        */
 
         /*
         public void ReceiveSuddenDeath()
@@ -294,17 +292,15 @@ namespace FBClient.Network
         }
         #endregion
 
-        /*
-        #region PowerupPick
-        public delegate void PowerupPickEventHandler(float xPos, float yPos, int playerId, float amount);
-        public event PowerupPickEventHandler PowerupPick;
-        protected virtual void OnPowerupPick(float xPos, float yPos, int playerId, float amount)
+        #region PowerUpPickUp
+        public delegate void PowerUpPickUpEventHandler(int playerId, Point position, PowerUpType type);
+        public event PowerUpPickUpEventHandler PowerUpPickUp;
+        private void OnPowerUpPickUp(int playerId, Point position, PowerUpType type)
         {
-            if (PowerupPick != null)
-                PowerupPick(xPos, yPos, playerId, amount);
+            if (PowerUpPickUp != null)
+                PowerUpPickUp(playerId, position, type);
         }
         #endregion
-        */
 
         /*
         #region SuddenDeath

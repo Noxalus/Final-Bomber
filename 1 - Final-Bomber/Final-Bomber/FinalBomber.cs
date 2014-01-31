@@ -91,7 +91,7 @@ namespace FBClient
             Graphics.SynchronizeWithVerticalRetrace = true;
 #endif
             // Don't fix FPS to 60 => this wont work when vsync is ON
-            IsFixedTimeStep = true;
+            IsFixedTimeStep = false;
 
             Graphics.IsFullScreen = Config.FullScreen;
             Graphics.ApplyChanges();

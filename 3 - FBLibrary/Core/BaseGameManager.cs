@@ -124,9 +124,8 @@ namespace FBLibrary.Core
                         if (!WaitServerResponse)
                         {
                             // Pick up a power up ?
-                            var powerUp =
-                                BaseCurrentMap.Board[basePlayer.CellPosition.X, basePlayer.CellPosition.Y] as
-                                    BasePowerUp;
+                            var powerUp = _basePowerUpList.Find(pu => pu.CellPosition == basePlayer.CellPosition);
+
                             if (powerUp != null)
                             {
                                 if (!powerUp.InDestruction)
@@ -139,7 +138,7 @@ namespace FBLibrary.Core
                                 }
                             }
 
-                        // Is it die ?
+                            // Is it die ?
                             if (!basePlayer.InDestruction && !basePlayer.IsInvincible &&
                                 HazardMap[basePlayer.CellPosition.X, basePlayer.CellPosition.Y] == 3)
                             {
@@ -160,7 +159,7 @@ namespace FBLibrary.Core
                                     basePlayer.Stats.Suicides++;
                                     basePlayer.Stats.Score -= GameConfiguration.ScoreBySuicide;
                                 }
-                                    // Kill
+                                // Kill
                                 else if (bombId >= 0 && bombId < _basePlayerList.Count)
                                 {
                                     GetPlayerById(bombId).Stats.Kills++;
@@ -342,7 +341,7 @@ namespace FBLibrary.Core
             _basePowerUpList.Remove(basePowerUp);
         }
 
-        protected abstract void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp);
+        public abstract void PickUpPowerUp(BasePlayer player, BasePowerUp powerUp);
 
         #endregion
 
@@ -376,15 +375,16 @@ namespace FBLibrary.Core
         private bool NearPlayerSpawn(int x, int y)
         {
             return
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y - 1)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1)) ||
-                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1));
+                BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y - 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y))
+                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1))
+                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1))
+                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1))
+                //|| BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1))
+                ;
         }
         #endregion
 

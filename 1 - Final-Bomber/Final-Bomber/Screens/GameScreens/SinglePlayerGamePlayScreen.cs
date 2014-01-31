@@ -31,7 +31,7 @@ namespace FBClient.Screens.GameScreens
         public override void Initialize()
         {
             // Map
-            _gameManager.LoadMap("generated.map"/*MapLoader.MapFileDictionary.Keys.First()*/);
+            _gameManager.LoadMap("classic1.map"/*MapLoader.MapFileDictionary.Keys.First()*/);
             _gameManager.GenerateRandomWalls();
 
             _gameManager.Initialize();
@@ -73,7 +73,7 @@ namespace FBClient.Screens.GameScreens
 
         public override void Draw(GameTime gameTime)
         {
-            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _gameManager.Camera.GetTransformation());
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, _gameManager.Camera.GetTransformation());
 
             _gameManager.Draw(gameTime, _gameManager.Camera);
 
