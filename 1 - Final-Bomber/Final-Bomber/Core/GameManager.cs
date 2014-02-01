@@ -132,14 +132,6 @@ namespace FBClient.Core
             var gameTime = new GameTime(TimeSpan.Zero, TimeSpan.FromTicks(GameConfiguration.DeltaTime));
             _gameTime = gameTime;
 
-            // Camera position
-            var cameraPosition = Vector2.Zero;
-            var firstPlayer = Players.Find(p => p.Id == 0);
-            if (firstPlayer != null)
-                cameraPosition = firstPlayer.Position;
-
-            Camera.Update(cameraPosition);
-
             base.Update();
         }
 

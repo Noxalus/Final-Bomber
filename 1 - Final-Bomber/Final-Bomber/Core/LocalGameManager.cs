@@ -50,6 +50,14 @@ namespace FBClient.Core
         public override void Update()
         {
             base.Update();
+
+            // Camera position
+            var cameraPosition = Vector2.Zero;
+            var firstPlayer = Players.Find(p => p.Id == 0);
+            if (firstPlayer != null)
+                cameraPosition = firstPlayer.Position;
+
+            Camera.Update(cameraPosition);
         }
 
         protected override void RemoveWall(Wall wall)

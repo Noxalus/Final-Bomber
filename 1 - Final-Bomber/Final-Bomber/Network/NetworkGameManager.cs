@@ -49,6 +49,11 @@ namespace FBClient.Network
         {
             base.Update();
 
+            // Camera position
+            var cameraPosition = GameServer.Instance.Clients.Me.Player.Position;
+
+            Camera.Update(cameraPosition);
+
             NetworkManager.Update();
         }
 
