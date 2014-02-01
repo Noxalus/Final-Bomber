@@ -1,4 +1,5 @@
-﻿using FBLibrary.Network;
+﻿using FBLibrary.Core;
+using FBLibrary.Network;
 using Lidgren.Network;
 
 namespace FBClient.Network
@@ -12,7 +13,7 @@ namespace FBClient.Network
                 NetOutgoingMessage send = _client.CreateMessage();
 
                 send.Write((byte)MessageType.ClientMessage.NeedMap);
-                
+
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
@@ -37,7 +38,7 @@ namespace FBClient.Network
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
-                
+
                 send.Write((byte)MessageType.ClientMessage.Ready);
                 send.Write(value);
 
@@ -87,7 +88,12 @@ namespace FBClient.Network
             if (_client.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage send = _client.CreateMessage();
+
                 send.Write(direction);
+
+                if (direction == (byte)MessageType.ClientMessage.Standing)
+                    send.WriteTime(true);
+
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }
@@ -99,7 +105,7 @@ namespace FBClient.Network
                 NetOutgoingMessage send = _client.CreateMessage();
 
                 send.Write((byte)MessageType.ClientMessage.PlaceBomb);
-                
+
                 _client.SendMessage(send, NetDeliveryMethod.ReliableOrdered);
             }
         }

@@ -29,6 +29,9 @@ namespace FBClient
         //public MainServer Server;
         public bool HasLoggedIn = false;
 
+        // Debug timer
+        private TimeSpan _debugTimer = TimeSpan.Zero;
+
         #region XNA Field Region
 
         public readonly GraphicsDeviceManager Graphics;
@@ -205,6 +208,12 @@ namespace FBClient
             // Delta time
             //GameConfiguration.DeltaTime = gameTime.ElapsedGameTime.Ticks;
             GameConfiguration.DeltaTime = _timer.Elapsed.Ticks;
+
+            /*
+            // Debug time
+            _debugTimer += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
+            Debug.Print("Timer: " + _debugTimer);
+            */
 
             _timer.Restart();
         }

@@ -52,7 +52,7 @@ namespace FBServer.Host
                     break;
                 case (byte)MessageType.ClientMessage.Standing:
                     Program.Log.Info("[RECEIVE][Client #" + client.ClientId + "] Want to stay here !");
-                    ReceiveMovePlayer(client, LookDirection.Idle);
+                    ReceiveMovePlayer(client, LookDirection.Idle, message.ReadTime(client.ClientConnection, true));
                     break;
                 case (byte)MessageType.ClientMessage.PlaceBomb:
                     Program.Log.Info("[RECEIVE][Client #" + client.ClientId + "] Want to place bomb !");

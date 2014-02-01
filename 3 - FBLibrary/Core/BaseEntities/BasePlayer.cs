@@ -344,9 +344,9 @@ namespace FBLibrary.Core.BaseEntities
 
         #endregion
 
-        protected float GetMovementSpeed()
+        protected float GetMovementSpeed(float? customDeltaTime = null)
         {
-            var deltaTime = (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
+            var deltaTime = customDeltaTime ?? (float)TimeSpan.FromTicks(GameConfiguration.DeltaTime).TotalSeconds;
 
             float speedValue = (Speed * deltaTime);
             return speedValue;

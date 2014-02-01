@@ -45,19 +45,23 @@ namespace FBServer
                 while(server.Running)
                 {
                     server.Update();
-
-                    // Compute delta time
-                    GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
-
+                    
+                    // Debug time :)
                     /*
                     timerTest += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
                     Console.WriteLine("Timer test: " + timerTest);
                     */
 
+                    // Compute delta time
+                    GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
+
                     timer.Restart();
 
                     // Max 15 milliseconds between 2 main loop
-                    Thread.Sleep(15);
+                    if (timer.Elapsed.Milliseconds < ServerSettings.MaxDeltaTime)
+                        Thread.Sleep(ServerSettings.MaxDeltaTime - timer.Elapsed.Milliseconds);
+                    else
+                        Thread.Sleep(ServerSettings.MaxDeltaTime);
                 }
             }
         }

@@ -154,7 +154,7 @@ namespace FBClient.Network
                 if (client.Player != null)
                 {
                     // If it's us, we interpolate
-                    if (client == GameServer.Instance.Clients.Me)
+                    if (false /*client == GameServer.Instance.Clients.Me*/)
                     {
                         var me = (OnlineHumanPlayer)client.Player;
 

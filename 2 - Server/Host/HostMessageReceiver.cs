@@ -68,11 +68,11 @@ namespace FBServer.Host
         #endregion
 
         #region Game actions
-        void ReceiveMovePlayer(Client client, LookDirection movement)
+        void ReceiveMovePlayer(Client client, LookDirection movement, double? ping = null)
         {
             // Receives the player's current direction
             if (client.Player.IsAlive)
-                client.Player.SetMovement(movement); 
+                client.Player.SetLookDirection(movement, ping); 
         }
 
         void ReceiveBombPlacing(Client client)
