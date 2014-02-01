@@ -10,7 +10,7 @@ namespace FBServer
         public const int SendPlayersPositionTime = 1000; // milliseconds
 
         // Gameplay
-        public const int WallPercentage = 100; // From 0% to 100%
+        public const int WallPercentage = 0; // From 0% to 100%
         public const int ScoreToWin = 20;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FBLibrary;
 using FBLibrary.Core;
 using FBClient.Controls;
@@ -31,7 +32,7 @@ namespace FBClient.Screens.GameScreens
         public override void Initialize()
         {
             // Map
-            _gameManager.LoadMap("classic1.map"/*MapLoader.MapFileDictionary.Keys.First()*/);
+            _gameManager.LoadMap(MapLoader.MapFileDictionary.Keys.First());
             _gameManager.GenerateRandomWalls();
 
             _gameManager.Initialize();

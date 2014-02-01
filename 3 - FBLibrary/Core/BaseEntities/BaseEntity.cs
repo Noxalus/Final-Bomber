@@ -18,8 +18,7 @@ namespace FBLibrary.Core
         public Vector2 Position
         {
             get { return _position; }
-            set
-            { _position = value; }
+            set { _position = value; }
         }
 
         public float PositionX

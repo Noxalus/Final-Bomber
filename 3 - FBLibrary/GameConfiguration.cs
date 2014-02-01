@@ -92,11 +92,11 @@ namespace FBLibrary
 #endif
 
 #if !DEBUG
-        public const int MinimumPlayerNumber = 1;
+        public const int MinimumPlayerNumber = 2;
 #endif
 
         // TO DELETE
-        public const int PlayerNumber = 2;
+        public const int PlayerNumber = 5;
         public const string ServerIp = "localhost";
         public const string ServerPort = "2643";
         public const int AlivePlayerRemaining = PlayerNumber - 1;

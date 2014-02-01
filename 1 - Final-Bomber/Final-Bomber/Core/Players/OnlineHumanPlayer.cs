@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using FBLibrary.Core;
 using FBClient.Controls;
 using FBClient.Network;
@@ -11,10 +12,26 @@ namespace FBClient.Core.Players
     public class OnlineHumanPlayer : BaseHumanPlayer
     {
         public float Ping = 0f;
+        private Vector2 _initialPosition;
+        private Vector2 _nextPosition;
+        private bool _isInterpolating;
+        private TimeSpan _interpolationTimer;
+
+        private TimeSpan _movementInterpolationTime = TimeSpan.FromMilliseconds(25);
+
+        public void SetNextPosition(Vector2 nextPosition)
+        {
+            _nextPosition = nextPosition;
+        }
+
 
         public OnlineHumanPlayer(int id, int controlSettingsId)
             : base(id, controlSettingsId)
         {
+            _initialPosition = Vector2.Zero;
+            _nextPosition = Vector2.Zero;
+            _isInterpolating = false;
+            _interpolationTimer = TimeSpan.Zero;
         }
 
         public OnlineHumanPlayer(int id, int controlSettingsId, PlayerStats stats)
@@ -27,6 +44,38 @@ namespace FBClient.Core.Players
             base.Move(gameTime, map, hazardMap);
 
             SendMovement();
+
+            #region Movement interpolation
+            // If a new position has been received from server
+            if (_nextPosition != Vector2.Zero)
+            {
+                // If the position received from server is not reached yet
+                if (Math.Abs(Position.X - _nextPosition.X) > 0.1f &&
+                    Math.Abs(Position.Y - _nextPosition.Y) > 0.1f)
+                {
+                    // First time that we interpolate => save the initial position
+                    if (!_isInterpolating)
+                    {
+                        _isInterpolating = true;
+                        _initialPosition = Position;
+                    }
+
+                    _interpolationTimer += gameTime.ElapsedGameTime;
+
+                    // We interpolate
+                    float interpolationAmount = MathHelper.Clamp((float)_interpolationTimer.TotalMilliseconds / (float)_movementInterpolationTime.TotalMilliseconds, 0f, 1f);
+                    PositionX = MathHelper.Lerp(_initialPosition.X, _nextPosition.X, interpolationAmount);
+                    PositionY = MathHelper.Lerp(_initialPosition.Y, _nextPosition.Y, interpolationAmount);
+
+                    if (_interpolationTimer >= _movementInterpolationTime)
+                    {
+                        _interpolationTimer = TimeSpan.Zero;
+                        _nextPosition = Vector2.Zero;
+                        _isInterpolating = false;
+                    }
+                }
+            }
+            #endregion
 
             #region Bomb
 
@@ -81,23 +130,23 @@ namespace FBClient.Core.Players
                 {
                     case LookDirection.Down:
                         Debug.Print("[Client]I want to go down !");
-                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveDown);
+                        GameServer.Instance.SendMovement((byte)MessageType.ClientMessage.MoveDown);
                         break;
                     case LookDirection.Left:
                         Debug.Print("[Client]I want to go left !");
-                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveLeft);
+                        GameServer.Instance.SendMovement((byte)MessageType.ClientMessage.MoveLeft);
                         break;
                     case LookDirection.Right:
                         Debug.Print("[Client]I want to go right !");
-                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveRight);
+                        GameServer.Instance.SendMovement((byte)MessageType.ClientMessage.MoveRight);
                         break;
                     case LookDirection.Up:
                         Debug.Print("[Client]I want to go up !");
-                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.MoveUp);
+                        GameServer.Instance.SendMovement((byte)MessageType.ClientMessage.MoveUp);
                         break;
                     default:
                         Debug.Print("[Client]I want to go stay here !");
-                        GameServer.Instance.SendMovement((byte) MessageType.ClientMessage.Standing);
+                        GameServer.Instance.SendMovement((byte)MessageType.ClientMessage.Standing);
                         break;
                 }
             }

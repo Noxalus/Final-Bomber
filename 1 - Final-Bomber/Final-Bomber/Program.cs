@@ -1,5 +1,4 @@
 using System;
-using System.Net.Mime;
 using System.Threading;
 using log4net;
 using log4net.Config;
@@ -24,7 +23,7 @@ namespace FBClient
             Assembly asm = Assembly.GetExecutingAssembly();
             using (var mutex = new Mutex(false, @"Global\" + asm.GetType().GUID))
             {
-#if FALSE
+#if !DEBUG
                 if (!mutex.WaitOne(0, false))
                 {
                     Log.Error("Instance already running");

@@ -22,6 +22,9 @@ namespace FBClient.Core
         {
             for (var i = 0; i < GameConfiguration.PlayerNumber; i++)
             {
+                if (i >= CurrentMap.PlayerSpawnPoints.Count)
+                    break;
+
                 var player = new HumanPlayer(i, i) { Name = PlayerInfo.Username + i };
                 player.SetGameManager(this);
                 player.ChangePosition(CurrentMap.PlayerSpawnPoints[player.Id]);

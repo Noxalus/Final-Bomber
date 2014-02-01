@@ -19,7 +19,7 @@ namespace FBLibrary
                 try
                 {
                     //Get all the map files
-                    foreach (var source in Directory.GetFiles(@"Content\Maps\", "*.map", SearchOption.AllDirectories))
+                    foreach (var source in Directory.GetFiles("Content/Maps/", "*.map", SearchOption.AllDirectories))
                     {
                         using (var stream = File.OpenRead(source))
                         {
@@ -43,7 +43,7 @@ namespace FBLibrary
             mapName = Path.GetFileNameWithoutExtension(mapName);
             string mapNr = "";
             int counter = 1;
-            while (File.Exists("Content\\Maps\\" + mapName + mapNr + ".map"))
+            while (File.Exists(@"Content\Maps\" + mapName + mapNr + ".map"))
             {
                 mapNr = " ~ " + counter;
                 counter++;

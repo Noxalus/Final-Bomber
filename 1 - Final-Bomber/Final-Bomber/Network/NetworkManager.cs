@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using FBClient.Core.Players;
 using FBClient.Entities;
 using FBLibrary.Core;
 using FBClient.Core.Entities;
@@ -35,7 +36,7 @@ namespace FBClient.Network
         #endregion
 
         #endregion
-        
+
         public string PublicIp;
         public bool IsConnected;
         public bool IsReady;
@@ -124,7 +125,7 @@ namespace FBClient.Network
 
                 var client = new Client(clientId)
                 {
-                    Username = username, 
+                    Username = username,
                     IsReady = isReady
                 };
 
@@ -152,7 +153,18 @@ namespace FBClient.Network
             {
                 if (client.Player != null)
                 {
-                    client.Player.Position = arg.Position;
+                    // If it's us, we interpolate
+                    if (client == GameServer.Instance.Clients.Me)
+                    {
+                        var me = (OnlineHumanPlayer)client.Player;
+
+                        me.SetNextPosition(arg.Position);
+                    }
+                    else
+                    {
+                        client.Player.Position = arg.Position;
+                    }
+
                     client.Player.ChangeLookDirection(arg.Direction);
                 }
                 else
