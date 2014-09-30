@@ -712,22 +712,22 @@ namespace FBClient.Screens.GameScreens
                 #region Draw each elements
 
                 foreach (EdgeWall e in _edgeWallList)
-                    e.Draw(gameTime);
+                    e.Draw(gameTime, null);
 
                 foreach (UnbreakableWall u in UnbreakableWallList)
-                    u.Draw(gameTime);
+                    u.Draw(gameTime, null);
 
                 foreach (Wall w in _wallList)
-                    w.Draw(gameTime);
+                    w.Draw(gameTime, null);
 
                 foreach (PowerUp i in _itemList)
                     i.Draw(gameTime);
 
                 foreach (Teleporter t in TeleporterList)
-                    t.Draw(gameTime);
+                    t.Draw(gameTime, null);
 
                 foreach (Arrow a in ArrowList)
-                    a.Draw(gameTime);
+                    a.Draw(gameTime, null);
 
                 foreach (Bomb b in BombList)
                     b.Draw(gameTime);

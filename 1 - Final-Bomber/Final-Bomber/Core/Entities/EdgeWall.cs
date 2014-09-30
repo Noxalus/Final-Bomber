@@ -1,4 +1,5 @@
-﻿using FBLibrary.Core;
+﻿using FBClient.WorldEngine;
+using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using FBClient.Sprites;
 using Microsoft.Xna.Framework;
@@ -31,9 +32,10 @@ namespace FBClient.Core.Entities
             Sprite.Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, Camera2D camera)
         {
-            Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
+            if (camera.IsVisible(Position))
+                Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
         }
 
         #endregion

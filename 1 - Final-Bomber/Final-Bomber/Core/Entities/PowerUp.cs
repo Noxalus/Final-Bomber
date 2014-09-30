@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FBClient.WorldEngine;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using FBClient.Entities;
@@ -75,8 +76,11 @@ namespace FBClient.Core.Entities
             base.Update();
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, Camera2D camera)
         {
+            if (!camera.IsVisible(Position))
+                return;
+
             Sprite.Draw(gameTime, FinalBomber.Instance.SpriteBatch, Position);
 
             if (_itemDestroyAnimation.IsAnimating)

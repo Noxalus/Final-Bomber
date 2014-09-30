@@ -94,7 +94,7 @@ namespace FBClient.Core
             GameEventManager.Dispose();
         }
 
-        public override void Reset()
+        protected override void Reset()
         {
             MediaPlayer.Play(_mapSong);
 
@@ -200,13 +200,13 @@ namespace FBClient.Core
             CurrentMap.Draw(gameTime, FinalBomber.Instance.SpriteBatch, camera);
 
             foreach (Wall wall in WallList)
-                wall.Draw(gameTime);
+                wall.Draw(gameTime, camera);
 
             foreach (PowerUp powerUp in PowerUpList)
-                powerUp.Draw(gameTime);
+                powerUp.Draw(gameTime, camera);
 
             foreach (Bomb bomb in BombList)
-                bomb.Draw(gameTime);
+                bomb.Draw(gameTime, camera);
 
             Players.Sort(new PlayerOverlappingSort());
             foreach (Player player in Players)

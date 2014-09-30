@@ -234,5 +234,13 @@ namespace FBClient.WorldEngine
 
             return _transform;
         }
+
+        public bool IsVisible(Vector2 position)
+        {
+            return (position.X >= -(_viewport.Width * (1 / _zoom)) / 2f + _position.X - Engine.TileWidth && 
+                    position.X <= (_viewport.Width * (1 / _zoom)) / 2f + _position.X + Engine.TileWidth &&
+                    position.Y >= -(_viewport.Height * (1 / _zoom)) / 2f + _position.Y - Engine.TileHeight && 
+                    position.Y <= (_viewport.Height * (1 / _zoom)) / 2f + _position.Y + Engine.TileHeight);
+        }
     }
 }

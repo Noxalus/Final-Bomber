@@ -35,7 +35,7 @@ namespace FBClient.Core
             base.Initialize();
         }
 
-        public override void Reset()
+        protected override void Reset()
         {
             base.Reset();
 

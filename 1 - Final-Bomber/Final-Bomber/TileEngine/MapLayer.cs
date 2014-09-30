@@ -67,38 +67,16 @@ namespace FBClient.TileEngine
             layer[y, x] = new Tile(tileIndex, tileset);
         }
 
-        public void Draw(Camera2D camera, List<Tileset> tilesets, bool[,] collisionLayer)
+        public void Draw(Camera2D camera, List<Tileset> tilesets)
         {
-            var min = Point.Zero;
-            var max = new Point(Width, Height);
-
-            /*
-            // Change camera position according to zoom
-            Vector2 cameraPosition = camera.Position;
-
-            var cameraViewportSize = new Vector2(camera.ViewportRectangle.Width, camera.ViewportRectangle.Height);
-            var cameraRealPosition = cameraViewportSize / 2f - cameraPosition;
-            var cameraRealCellPosition = Engine.VectorToCell(cameraViewportSize - cameraRealPosition);
-
-
-            // Compute number of cells to draw
-            var cameraMaxCellNumbers = Engine.VectorToCell(cameraViewportSize);
-            var maxCellNumberToDraw = Engine.VectorToCell(cameraViewportSize - cameraRealPosition);
-
-            max.X = Math.Min(maxCellNumberToDraw.X + 1, Width);
-            max.Y = Math.Min(maxCellNumberToDraw.Y + 1, Height);
-
-            min.X = Math.Max(0, -(cameraMaxCellNumbers.X) + max.X + Math.Max(0, maxCellNumberToDraw.X - Width) - 1);
-            min.Y = Math.Max(0, -(cameraMaxCellNumbers.Y) + max.Y + Math.Max(0, maxCellNumberToDraw.Y - Height) - 2);
-            */
-
             var destination = new Rectangle(0, 0, Engine.TileWidth, Engine.TileHeight);
 
-            for (int y = min.Y; y < max.Y; y++)
+            // TODO: Replace this drawcall with a single drawcall to render all grass tiles
+            for (int y = 0; y < Height; y++)
             {
                 destination.Y = y * Engine.TileHeight + (int)Engine.Origin.Y;
 
-                for (int x = min.X; x < max.X; x++)
+                for (int x = 0; x < Width; x++)
                 {
                     Tile tile = GetTile(x, y);
 
@@ -107,15 +85,8 @@ namespace FBClient.TileEngine
 
                     destination.X = x * Engine.TileWidth + (int)Engine.Origin.X;
 
-                    if (collisionLayer[x, y])
-                    {
-                        FinalBomber.Instance.SpriteBatch.Draw(
-                            tilesets[tile.Tileset].Texture,
-                            destination,
-                            tilesets[tile.Tileset].SourceRectangles[tile.TileIndex],
-                            Color.White);
-                    }
-                    else
+                    var position = new Vector2(destination.X, destination.Y);
+                    if (camera.IsVisible(position))
                     {
                         FinalBomber.Instance.SpriteBatch.Draw(
                             tilesets[tile.Tileset].Texture,

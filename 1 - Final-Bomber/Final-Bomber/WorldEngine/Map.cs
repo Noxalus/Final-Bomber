@@ -95,20 +95,20 @@ namespace FBClient.WorldEngine
             */
 
             if (_tileMap != null)
-            _tileMap.Draw(spriteBatch, camera, CollisionLayer);
+            _tileMap.Draw(spriteBatch, camera);
 
             // Draw entities
             foreach (var edgeWall in _edgeWallList)
-                edgeWall.Draw(gameTime);
+                edgeWall.Draw(gameTime, camera);
 
             foreach (var unbreakableWall in _unbreakableWallList)
-                unbreakableWall.Draw(gameTime);
+                unbreakableWall.Draw(gameTime, camera);
 
             foreach (var teleporter in TeleporterList)
-                teleporter.Draw(gameTime);
+                teleporter.Draw(gameTime, camera);
 
             foreach (var arrow in _arrowList)
-                arrow.Draw(gameTime);
+                arrow.Draw(gameTime, camera);
         }
 
         protected override void AddUnbreakableWall(Point position)

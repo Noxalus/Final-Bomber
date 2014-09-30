@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using FBClient.WorldEngine;
 using FBLibrary.Core;
 using FBLibrary.Core.BaseEntities;
 using FBClient.Sprites;
@@ -256,8 +257,11 @@ namespace FBClient.Core.Entities
             base.Update();
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, Camera2D camera)
         {
+            if (!camera.IsVisible(Position))
+                return;
+
             if (InDestruction)
             {
                 if (_explosionAnimationsDirection.Count == 0)

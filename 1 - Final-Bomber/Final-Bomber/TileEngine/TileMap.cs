@@ -78,11 +78,11 @@ namespace FBClient.TileEngine
             tilesets.Add(tileset);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera2D camera, bool[,] collisionLayer)
+        public void Draw(SpriteBatch spriteBatch, Camera2D camera)
         {
             foreach (MapLayer layer in mapLayers)
             {
-                layer.Draw(camera, tilesets, collisionLayer);
+                layer.Draw(camera, tilesets);
             }
         }
 
