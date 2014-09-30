@@ -721,7 +721,7 @@ namespace FBClient.Screens.GameScreens
                     w.Draw(gameTime, null);
 
                 foreach (PowerUp i in _itemList)
-                    i.Draw(gameTime);
+                    i.Draw(gameTime, null);
 
                 foreach (Teleporter t in TeleporterList)
                     t.Draw(gameTime, null);
@@ -730,7 +730,7 @@ namespace FBClient.Screens.GameScreens
                     a.Draw(gameTime, null);
 
                 foreach (Bomb b in BombList)
-                    b.Draw(gameTime);
+                    b.Draw(gameTime, null);
 
                 // Window boxes
                 _scoresWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
