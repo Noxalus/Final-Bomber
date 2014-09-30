@@ -78,8 +78,11 @@
     <Compile Include="Timer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
+    <None Include="Content\Maps\very big.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Maps\huge.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Maps\classic0.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -115,4 +118,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <Delete Files="$(TargetDir)$(TargetFileName).config" />
+    <Copy SourceFiles="$(ProjectDir)Config\App.$(Configuration).config"
+    DestinationFiles="$(TargetDir)$(TargetFileName).config" />
+  </Target>
 </Project>
