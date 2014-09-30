@@ -101,7 +101,9 @@ namespace FBClient.Screens.GameScreens
 
         public override void Draw(GameTime gameTime)
         {
-            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _gameManager.Camera.GetTransformation());
+            base.Draw(gameTime);
+
+            FinalBomber.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, _gameManager.Camera.GetTransformation());
 
             _gameManager.Draw(gameTime, _gameManager.Camera);
 
@@ -120,7 +122,7 @@ namespace FBClient.Screens.GameScreens
             // Players ping
             for (int i = 0; i < GameServer.Instance.Clients.Count; i++)
             {
-                string ping = "Ping: " + GameServer.Instance.Clients[i].Ping;
+                string ping = "Ping: " + GameServer.Instance.Clients[i].GetRoundedPing();
 
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(1, 21 + (20 * i)), Color.Black);
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, ping, new Vector2(0, 20 + (20 * i)), Color.White);
@@ -148,13 +150,13 @@ namespace FBClient.Screens.GameScreens
             // Window boxes
             ScoresWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
             TimerWindowBox.Draw(FinalBomber.Instance.SpriteBatch);
-
+            
             // Draw player HUD
             foreach (var p in _gameManager.Players)
             {
                 // HUD => Item Info
                 FinalBomber.Instance.SpriteBatch.DrawString(ControlManager.SpriteFont, p.Name + ": "
-                     + p.Stats.Score + " pt(s)|" + _gameManager.GetClientFromPlayer(p).GetRoundedPing(),
+                     + p.Stats.Score + " | " + _gameManager.GetClientFromPlayer(p).GetRoundedPing(),
                     new Vector2(HudOrigin.X + HudMarginLeft, HudOrigin.Y + HudTopSpace + (p.Id) * Config.HUDPlayerInfoSpace), Color.Black);
 
 #if DEBUG
@@ -373,8 +375,6 @@ namespace FBClient.Screens.GameScreens
 #endif
 
             FinalBomber.Instance.SpriteBatch.End();
-
-            base.Draw(gameTime);
         }
 
         #endregion
