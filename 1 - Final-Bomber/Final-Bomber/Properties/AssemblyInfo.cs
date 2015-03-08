@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Final-Bomber")]
 [assembly: AssemblyProduct("Final-Bomber")]
-[assembly: AssemblyDescription("Final-Bomber est une reprise de Dynablaster axée sur le multijoueur")]
+[assembly: AssemblyDescription("Final-Bomber est une reprise de Dynablaster axée sur le multijoueur.")]
 [assembly: AssemblyCompany("Final-Bomber")]
-[assembly: AssemblyCopyright("Copyright © Final-Bomber 2013")]
+[assembly: AssemblyCopyright("Copyright © Final-Bomber 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

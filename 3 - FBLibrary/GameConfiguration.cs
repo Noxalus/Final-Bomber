@@ -49,8 +49,8 @@ namespace FBLibrary
 
         // Game info
         public const float PlayerSpeedIncrementeurPercentage = 5; // Percentage of base player speed
-        public static int WallPercentage = 100; // From 0% to 100%
-        public const int PowerUpPercentage = 50;
+        public static int WallPercentage = 0; // From 0% to 100%
+        public const int PowerUpPercentage = 100;
 
         public static TimeSpan BombDestructionTime = TimeSpan.FromMilliseconds(350);
         public static TimeSpan WallDestructionTime = TimeSpan.FromMilliseconds(300);
@@ -89,16 +89,16 @@ namespace FBLibrary
 
 #if DEBUG
         public const int MinimumPlayerNumber = 1;
-#endif
-
-#if !DEBUG
+#else
         public const int MinimumPlayerNumber = 2;
 #endif
 
+        public const string NetworkAppIdentifier = "Final-Bomber";
+
         // TO DELETE
         public const int PlayerNumber = 5;
-        public const string ServerIp = "localhost";
         public const string ServerPort = "2643";
         public const int AlivePlayerRemaining = PlayerNumber - 1;
+        public const float SimulatedMinimumLatency = 0.05f; // 0.05f for a ping of 50 ms
     }
 }

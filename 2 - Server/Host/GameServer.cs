@@ -105,7 +105,7 @@ namespace FBServer.Host
             Clients = new ClientCollection();
 
             // Server basic configuration
-            var config = new NetPeerConfiguration("Final-Bomber")
+            var config = new NetPeerConfiguration(GameConfiguration.NetworkAppIdentifier)
             {
                 MaximumConnections = ServerSettings.MaxConnection, 
                 Port = ServerSettings.Port,

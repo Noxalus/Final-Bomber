@@ -26,7 +26,6 @@ namespace FBClient.Core.Players
             _nextPosition = nextPosition;
         }
 
-
         public OnlineHumanPlayer(int id, int controlSettingsId)
             : base(id, controlSettingsId)
         {
@@ -102,21 +101,6 @@ namespace FBClient.Core.Players
         protected override void RemoveBadItem()
         {
             base.RemoveBadItem();
-
-            switch (BadEffect)
-            {
-                case BadEffect.TooSlow:
-                    Speed = SpeedSaved;
-                    break;
-                case BadEffect.TooSpeed:
-                    Speed = SpeedSaved;
-                    break;
-                case BadEffect.KeysInversion:
-                    break;
-                case BadEffect.BombTimerChanged:
-                    BombTimer = BombTimerSaved;
-                    break;
-            }
         }
 
         protected override void MoveFromEdgeWall()

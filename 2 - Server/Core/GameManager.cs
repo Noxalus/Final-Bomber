@@ -91,7 +91,7 @@ namespace FBServer.Core
             _hasStarted = true;
         }
 
-        public override void Reset()
+        protected override void Reset()
         {
             base.Reset();
 
@@ -178,17 +178,14 @@ namespace FBServer.Core
         private void CheckRoundEnd()
         {
             // Round end ?
-            if (false && // TODO: Remove this
+            if (//false && // TODO: Remove this
+                GameServer.Instance.GameManager.PlayerList.Count(player => player.IsAlive) == 0 && // TODO: Remove this
                 GameInitialized &&
                 GameServer.Instance.GameManager.PlayerList.Count(player => player.IsAlive) <=
                 GameConfiguration.AlivePlayerRemaining)
             {
                 int maxScore = GameServer.Instance.GameManager.PlayerList.First().Stats.Score;
-                foreach (var player in GameServer.Instance.GameManager.PlayerList)
-                {
-                    if (player.Stats.Score > maxScore)
-                        maxScore = player.Stats.Score;
-                }
+                maxScore = GameServer.Instance.GameManager.PlayerList.Select(player => player.Stats.Score).Concat(new[] {maxScore}).Max();
 
                 if (maxScore >= ServerSettings.ScoreToWin)
                 {

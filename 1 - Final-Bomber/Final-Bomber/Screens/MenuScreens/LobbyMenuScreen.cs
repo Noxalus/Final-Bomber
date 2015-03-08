@@ -31,7 +31,7 @@ namespace FBClient.Screens.MenuScreens
             base.Initialize();
 
             // Start connexion with server
-            GameServer.Instance.StartClientConnection(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
+            GameServer.Instance.StartClientConnection(Config.ServerIp, GameConfiguration.ServerPort);
         }
 
         void Instance_Exiting(object sender, EventArgs e)
@@ -69,7 +69,7 @@ namespace FBClient.Screens.MenuScreens
                 if (InputHandler.KeyPressed(Keys.Space))
                 {
                     GameServer.Instance.FailedToConnect = false;
-                    GameServer.Instance.TryToConnect(GameConfiguration.ServerIp, GameConfiguration.ServerPort);
+                    GameServer.Instance.TryToConnect(Config.ServerIp, GameConfiguration.ServerPort);
                 }
             }
 

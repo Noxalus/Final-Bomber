@@ -40,7 +40,7 @@ namespace FBLibrary.Core
             WaitServerResponse = false;
         }
 
-        public virtual void Reset()
+        protected virtual void Reset()
         {
             BaseCurrentMap.Reset();
 
@@ -77,45 +77,44 @@ namespace FBLibrary.Core
 
         protected virtual void UpdateWalls()
         {
-            for (int i = 0; i < _baseWallList.Count; i++)
+            foreach (BaseWall w in _baseWallList)
             {
-                if (HazardMap[_baseWallList[i].CellPosition.X, _baseWallList[i].CellPosition.Y] == 3 &&
-                    !_baseWallList[i].InDestruction)
+                if (HazardMap[w.CellPosition.X, w.CellPosition.Y] == 3 &&
+                    !w.InDestruction)
                 {
-                    DestroyWall(_baseWallList[i].CellPosition);
-                    HazardMap[_baseWallList[i].CellPosition.X, _baseWallList[i].CellPosition.Y] = 0;
+                    DestroyWall(w.CellPosition);
+                    HazardMap[w.CellPosition.X, w.CellPosition.Y] = 0;
                 }
             }
         }
 
         protected virtual void UpdateBombs()
         {
-            for (int i = 0; i < _baseBombList.Count; i++)
+            foreach (BaseBomb b in _baseBombList)
             {
                 // Is it die ?
-                if ((HazardMap[_baseBombList[i].CellPosition.X, _baseBombList[i].CellPosition.Y] == 3 ||
-                    _baseBombList[i].Timer <= TimeSpan.Zero) && !_baseBombList[i].InDestruction)
+                if ((HazardMap[b.CellPosition.X, b.CellPosition.Y] == 3 ||
+                     b.Timer <= TimeSpan.Zero) && !b.InDestruction)
                 {
-                    DestroyBomb(_baseBombList[i].CellPosition);
+                    DestroyBomb(b.CellPosition);
                 }
             }
         }
 
         protected virtual void UpdatePowerUps()
         {
-            for (int i = 0; i < _basePowerUpList.Count; i++)
+            foreach (BasePowerUp p in _basePowerUpList)
             {
                 // Is it die ?
-                if (HazardMap[_basePowerUpList[i].CellPosition.X, _basePowerUpList[i].CellPosition.Y] == 3)
-                    DestroyPowerUp(_basePowerUpList[i].CellPosition);
+                if (HazardMap[p.CellPosition.X, p.CellPosition.Y] == 3)
+                    DestroyPowerUp(p.CellPosition);
             }
         }
 
         protected virtual void UpdatePlayers()
         {
-            for (var i = 0; i < _basePlayerList.Count; i++)
+            foreach (var basePlayer in _basePlayerList)
             {
-                var basePlayer = _basePlayerList[i];
                 if (basePlayer.IsAlive)
                 {
                     // We clean the obsolete players
@@ -400,10 +399,11 @@ namespace FBLibrary.Core
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x, y + 1))
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y))
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y))
+                /*
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y - 1))
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y - 1))
                 || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x + 1, y + 1))
-                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1))
+                || BaseCurrentMap.PlayerSpawnPoints.Contains(new Point(x - 1, y + 1))*/
                 ;
         }
         #endregion

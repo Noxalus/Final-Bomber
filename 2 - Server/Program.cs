@@ -22,9 +22,10 @@ namespace FBServer
 
             if (args.Length > 0)
             {
-                // Arguments like max client number (ex: 32)
+                // Arguments to create a server with specific configuration 
+                // (max player number, score to win, etc...)
                 Log.Info("Arguments:");
-                foreach (string s in args)
+                foreach (var s in args)
                 {
                     Log.Info(s);
                 }
@@ -34,7 +35,7 @@ namespace FBServer
 
             if (!server.Running)
             {
-                Log.Info("[CONFIG] Player Number: " + GameConfiguration.PlayerNumber);
+                Log.Info(string.Format("[CONFIG] Player Number: {0}", GameConfiguration.PlayerNumber));
 
                 server = new GameServerHandler();
                 server.Initialize();
@@ -42,6 +43,8 @@ namespace FBServer
                 var timer = new Stopwatch();
                 timer.Start();
                 TimeSpan timerTest = TimeSpan.Zero;
+                TimeSpan timerForTimePerSecond = TimeSpan.Zero;
+                int timePerSecond = 0;
                 while(server.Running)
                 {
                     server.Update();
@@ -50,8 +53,17 @@ namespace FBServer
                     /*
                     timerTest += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
                     Console.WriteLine("Timer test: " + timerTest);
-                    */
+                    
+                    timerForTimePerSecond += TimeSpan.FromTicks(GameConfiguration.DeltaTime);
 
+                    timePerSecond++;
+                    if (timerForTimePerSecond.TotalSeconds > 1)
+                    {
+                        timerForTimePerSecond = TimeSpan.Zero;
+                        Console.WriteLine("Framerate: " + timePerSecond);
+                        timePerSecond = 0;
+                    }
+                    */
                     // Compute delta time
                     GameConfiguration.DeltaTime = timer.Elapsed.Ticks;
 

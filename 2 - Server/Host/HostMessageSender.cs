@@ -13,7 +13,7 @@ namespace FBServer.Host
 {
     sealed partial class GameServer
     {
-        #region Pre game
+        #region Pre game actions
 
         private void SendCurrentMap(Client client)
         {
@@ -263,7 +263,7 @@ namespace FBServer.Host
             Program.Log.Info("[SEND][Client #" + client.ClientId + "] Planted a bomb !");
         }
 
-        // Send to all players that a bomb has blow up
+        // Send to all players that a bomb has blown up
         public void SendBombExploded(Bomb bomb)
         {
             NetOutgoingMessage message = _server.CreateMessage();
@@ -380,6 +380,8 @@ namespace FBServer.Host
 
         #endregion
 
+        #region Additional actions
+
         public void SendPings()
         {
             NetOutgoingMessage message = _server.CreateMessage();
@@ -396,5 +398,7 @@ namespace FBServer.Host
 
             //Program.Log.Info("[SEND] Pings of all players to all players !");
         }
+
+        #endregion
     }
 }

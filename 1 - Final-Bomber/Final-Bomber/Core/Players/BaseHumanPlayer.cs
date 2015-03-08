@@ -123,5 +123,25 @@ namespace FBClient.Core.Players
                     break;
             }
         }
+
+        protected override void RemoveBadItem()
+        {
+            base.RemoveBadItem();
+
+            switch (BadEffect)
+            {
+                case BadEffect.TooSlow:
+                    Speed = SpeedSaved;
+                    break;
+                case BadEffect.TooSpeed:
+                    Speed = SpeedSaved;
+                    break;
+                case BadEffect.KeysInversion:
+                    break;
+                case BadEffect.BombTimerChanged:
+                    BombTimer = BombTimerSaved;
+                    break;
+            }
+        }
     }
 }

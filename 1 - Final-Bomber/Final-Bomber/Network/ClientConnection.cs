@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using FBLibrary;
 using Lidgren.Network;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,12 +42,12 @@ namespace FBClient.Network
 
         public void StartClientConnection(string ip, string port)
         {
-            _config = new NetPeerConfiguration("Final-Bomber")
+            _config = new NetPeerConfiguration(GameConfiguration.NetworkAppIdentifier)
             {
 #if DEBUG
                 //PingInterval = 1f, // send ping every 1 second
                 //SimulatedLoss = 0.5f, // from 0 to 1
-                SimulatedMinimumLatency = 0.05f, // 0.05f for a ping of 50 ms
+                SimulatedMinimumLatency = GameConfiguration.SimulatedMinimumLatency,
 #endif
             };
 

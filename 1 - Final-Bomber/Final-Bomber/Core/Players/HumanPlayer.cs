@@ -28,19 +28,19 @@ namespace FBClient.Core.Players
                 ((Config.PlayersUsingController[Id] && InputHandler.ButtonDown(Buttons[4], PlayerIndex.One)) || InputHandler.KeyPressed(Keys[4]) &&
                 (!HasBadEffect || (HasBadEffect && BadEffect != BadEffect.NoBomb))))
             {
-                if (this.CurrentBombAmount > 0)
-                {
-                    var bo = GameManager.BombList.Find(b => b.CellPosition == this.CellPosition);
-                    if (bo == null)
-                    {
-                        // Plant a new bomb
-                        var bomb = new Bomb(Id, CellPosition, BombPower, BombTimer, Speed);
-                        CurrentBombAmount--;
-                        bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);
+                // Do we still have a bomb to plant?
+                if (CurrentBombAmount <= 0) return;
 
-                        GameManager.AddBomb(bomb);
-                    }
-                }
+                // Is there already a bomb here?
+                var bo = GameManager.BombList.Find(b => b.CellPosition == CellPosition);
+                if (bo != null) return;
+
+                // Plant a new bomb
+                var bomb = new Bomb(Id, CellPosition, BombPower, BombTimer, Speed);
+                CurrentBombAmount--;
+                bomb.Initialize(GameManager.CurrentMap.Size, GameManager.CurrentMap.CollisionLayer, GameManager.HazardMap);
+
+                GameManager.AddBomb(bomb);
             }
 
             #endregion
@@ -49,21 +49,6 @@ namespace FBClient.Core.Players
         protected override void RemoveBadItem()
         {
             base.RemoveBadItem();
-
-            switch (BadEffect)
-            {
-                case BadEffect.TooSlow:
-                    Speed = SpeedSaved;
-                    break;
-                case BadEffect.TooSpeed:
-                    Speed = SpeedSaved;
-                    break;
-                case BadEffect.KeysInversion:
-                    break;
-                case BadEffect.BombTimerChanged:
-                    BombTimer = BombTimerSaved;
-                    break;
-            }
         }
     }
 }

@@ -120,7 +120,7 @@ namespace FBClient
 
         // Volume
         public static float MusicVolume = 0.1f; // 0 to 1 (100%)
-        public static float SoundVolume = 0.01f; // 0 to 1 (100%)
+        public static float SoundVolume = 0.1f; // 0 to 1 (100%)
 
         // IA
         public static bool InactiveAI = false;
@@ -141,7 +141,7 @@ namespace FBClient
             { SuddenDeathTypeEnum.OnlyWall, "Murs" },
             { SuddenDeathTypeEnum.Whole, "Trous" }
         };
-        public static readonly SuddenDeathTypeEnum[] SuddenDeathTypeArray = new SuddenDeathTypeEnum[]
+        public static readonly SuddenDeathTypeEnum[] SuddenDeathTypeArray =
         {
             SuddenDeathTypeEnum.BombAndWall,
             SuddenDeathTypeEnum.OnlyBomb,
@@ -160,5 +160,8 @@ namespace FBClient
 
         // Keyboarding
         public const float TextCursorBlinkFrequency = 0.5f;
+
+        // Server
+        public const string ServerIp = "78.192.239.32";
     }
 }

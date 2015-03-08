@@ -7,11 +7,11 @@ namespace FBServer
         public const int MaxConnection = 50;
         public const int Port = 2643;
 
-        public const int SendPlayersPositionTime = 2000000; // Milliseconds
+        public const int SendPlayersPositionTime = 2000000000; // Milliseconds
 
         public const int MaxDeltaTime = 15; // Milliseconds
 
-        public const int MaxLatency = 500; // Milliseconds
+        public const int MaxLatency = 250; // Milliseconds
         public const int StorePreviousPlayerPositionTime = 5; // Milliseconds
 
         // Gameplay
